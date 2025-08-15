@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('address_id')->constrained('addresses')->onDelete('cascade');
+            $table->foreignId('coupon_id')->constrained('coupons')->nullable();
             $table->string('order_number');
             $table->decimal('total_amount', 10, 2);
             $table->enum('payment_method', ['cash', 'credit']);
