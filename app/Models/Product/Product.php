@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Models\Product;
+
+use App\Models\Category\Category;
+use App\Models\Product\ProductImage;
+use App\Models\Product\ProductVariant;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    protected $fillable = [
+        'name',
+        'slug',
+        'sku',
+        'description',
+        'quantity',
+    ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+}
