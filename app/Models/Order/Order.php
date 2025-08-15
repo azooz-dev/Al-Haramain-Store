@@ -4,6 +4,7 @@ namespace App\Models\Order;
 
 use App\Models\User\User;
 use App\Models\Order\OrderItem;
+use App\Models\Review\Review;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User\UserAddresses\Address;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,5 +41,10 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }
