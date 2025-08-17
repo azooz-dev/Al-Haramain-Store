@@ -2,14 +2,15 @@
 
 namespace App\Models\Admin;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Admin extends Authenticatable implements FilamentUser
+class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail, HasName
 {
     /** @use HasFactory<\Database\Factories\AdminFactory> */
     use HasFactory, Notifiable;
@@ -26,6 +27,7 @@ class Admin extends Authenticatable implements FilamentUser
         'password',
         'phone',
         'email_verified_at',
+        'verified'
     ];
 
     /**
@@ -53,6 +55,20 @@ class Admin extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->hasVerifiedEmail();
+    }
+
+    /**
+     * Get the user's name for Filament.
+     * This tells Filament to use first_name and last_name instead of name.
+     */
+    public function getFilamentName(): string
+    {
+        $firstName = $this->first_name ?? '';
+        $lastName = $this->last_name ?? '';
+
+        $fullName = trim($firstName . ' ' . $lastName);
+
+        return $fullName ?: $this->email;
     }
 }

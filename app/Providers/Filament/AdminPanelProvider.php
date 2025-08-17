@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->authGuard('admin')
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -53,6 +54,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->userMenuItems([
+                'profile' => \Filament\Navigation\UserMenuItem::make()
+                    ->label('Profile')
+                    ->url(fn(): string => '#')
+                    ->icon('heroicon-o-user'),
             ]);
     }
 }
