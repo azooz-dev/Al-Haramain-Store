@@ -55,7 +55,7 @@ class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail, Ha
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasVerifiedEmail();
+        return $this->hasVerifiedEmail() && $this->verified;
     }
 
     /**
