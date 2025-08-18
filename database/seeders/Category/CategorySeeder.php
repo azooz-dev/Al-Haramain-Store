@@ -5,6 +5,7 @@ namespace Database\Seeders\Category;
 use App\Models\Category\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -14,7 +15,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         Category::create([
-            'slug' => 'electronics',
+            'slug' => Str::slug('electronics'),
             'image' => 'image.jpg',
         ]);
     }
