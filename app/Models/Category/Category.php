@@ -16,4 +16,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function translations()
+    {
+        return $this->hasMany(CategoryTranslation::class);
+    }
 }

@@ -3,16 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category\Category;
+use App\Services\Category\CategoryTranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Log;
 
 class CategoryResource extends Resource
 {
@@ -32,6 +30,8 @@ class CategoryResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Categories';
 
+    protected static ?string $recordTitleAttribute = 'slug';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -40,30 +40,48 @@ class CategoryResource extends Resource
                     ->description('Enter the basic details for this category')
                     ->icon('heroicon-o-tag')
                     ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->regex('/^[A-Z]/', 'The category name must start with a capital letter.')
-                                    ->placeholder('Enter category name...')
-                                    ->prefixIcon('heroicon-o-tag')
-                                    ->columnSpan(1),
+                        // Slug will be auto-generated from the name
+                        Forms\Components\Hidden::make('slug'),
 
-                                Forms\Components\TextInput::make('slug')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->placeholder('category-slug')
-                                    ->prefixIcon('heroicon-o-link')
-                                    ->helperText('This will be used in URLs')
-                                    ->columnSpan(1),
+                        Forms\Components\Tabs::make('Translations')
+                            ->columnSpanFull()
+                            ->tabs([
+                                Forms\Components\Tabs\Tab::make('English')
+                                    ->icon('heroicon-o-language')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('en.name')
+                                            ->label('Name (EN)')
+                                            ->maxLength(255)
+                                            ->placeholder('Enter category name (English)')
+                                            ->prefixIcon('heroicon-o-tag')
+                                            ->required()
+                                            ->rules(['required', 'string', 'max:255']),
+                                        Forms\Components\Textarea::make('en.description')
+                                            ->label('Description (EN)')
+                                            ->maxLength(65535)
+                                            ->placeholder('Describe this category in English...')
+                                            ->rows(4)
+                                            ->rules(['nullable', 'string', 'max:65535']),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('Arabic')
+                                    ->icon('heroicon-o-globe-asia-australia')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('ar.name')
+                                            ->label('Name (AR)')
+                                            ->maxLength(255)
+                                            ->placeholder('أدخل اسم التصنيف')
+                                            ->extraAttributes(['dir' => 'rtl'])
+                                            ->required()
+                                            ->rules(['required', 'string', 'max:255']),
+                                        Forms\Components\Textarea::make('ar.description')
+                                            ->label('Description (AR)')
+                                            ->maxLength(65535)
+                                            ->placeholder('صِف هذا التصنيف باللغة العربية...')
+                                            ->rows(4)
+                                            ->extraAttributes(['dir' => 'rtl'])
+                                            ->rules(['nullable', 'string', 'max:65535']),
+                                    ]),
                             ]),
-
-                        Forms\Components\Textarea::make('description')
-                            ->maxLength(65535)
-                            ->placeholder('Describe what this category is about...')
-                            ->rows(4)
-                            ->columnSpanFull(),
                     ])
                     ->columns(2)
                     ->collapsible()
@@ -98,6 +116,8 @@ class CategoryResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $translationService = app(CategoryTranslationService::class);
+
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
@@ -108,13 +128,20 @@ class CategoryResource extends Resource
                     ->disk('local')
                     ->visibility('private'),
 
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('translated_name')
                     ->label('Category Name')
-                    ->searchable()
+                    ->searchable(query: function (Builder $query, string $search) {
+                        $query->whereHas('translations', function (Builder $q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%");
+                        });
+                    })
                     ->sortable()
                     ->weight('bold')
                     ->color('primary')
-                    ->icon('heroicon-o-tag'),
+                    ->icon('heroicon-o-tag')
+                    ->state(function (Category $record) use ($translationService) {
+                        return $translationService->getTranslatedName($record);
+                    }),
 
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Slug')
@@ -126,11 +153,19 @@ class CategoryResource extends Resource
                     ->badge()
                     ->color('gray'),
 
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('translated_description')
                     ->label('Description')
                     ->limit(50)
                     ->wrap()
-                    ->searchable()
+                    ->searchable(query: function (Builder $query, string $search) {
+                        $query->whereHas('translations', function (Builder $q) use ($search) {
+                            $q->where('description', 'like', "%{$search}%");
+                        });
+                    })
+                    ->sortable()
+                    ->state(function (Category $record) use ($translationService) {
+                        return $translationService->getTranslatedDescription($record);
+                    })
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('product_count')
@@ -142,7 +177,7 @@ class CategoryResource extends Resource
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')
-                    ->dateTime('M j, Yg:i A')
+                    ->dateTime('M j, Y g:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->icon('heroicon-o-calendar'),
@@ -153,7 +188,6 @@ class CategoryResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->icon('heroicon-o-clock'),
-
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -178,7 +212,8 @@ class CategoryResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
-                        ->icon('heroicon-o-eye'),
+                        ->icon('heroicon-o-eye')
+                        ->url(fn($record) => static::getUrl('view', ['record' => $record])),
                     Tables\Actions\EditAction::make()
                         ->icon('heroicon-o-pencil'),
                     Tables\Actions\DeleteAction::make()
@@ -210,6 +245,7 @@ class CategoryResource extends Resource
         return [
             'index' => Pages\ListCategories::route('/'),
             'create' => Pages\CreateCategory::route('/create'),
+            'view' => Pages\ViewCategory::route('/{record}'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
