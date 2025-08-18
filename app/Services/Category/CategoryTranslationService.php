@@ -118,22 +118,6 @@ class CategoryTranslationService
     return $this->categoryRepository->slugExists($slug);
   }
 
-  /**
-   * Generate slug for existing category (for updates)
-   */
-  public function generateSlugForUpdate(string $name, int $categoryId): string
-  {
-    $baseSlug = Str::slug($name, '-');
-    $slug = $baseSlug;
-    $counter = 1;
-
-    while ($this->slugExistsExcluding($slug, $categoryId)) {
-      $slug = $baseSlug . '-' . $counter;
-      $counter++;
-    }
-
-    return $slug;
-  }
 
   /**
    * Check if slug exists excluding a specific category ID

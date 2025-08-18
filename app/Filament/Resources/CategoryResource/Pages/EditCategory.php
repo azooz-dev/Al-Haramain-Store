@@ -100,8 +100,8 @@ class EditCategory extends EditRecord
         $currentName = $this->translationService->getTranslatedName($this->record);
 
         // If name changed, regenerate slug
-        if ($mainData['en']['name'] !== $currentName) {
-            $mainData['slug'] = $this->translationService->generateSlugForUpdate($mainData['en']['name'], $this->record->id);
+        if ($this->translationData['en']['name'] !== $currentName) {
+            $mainData['slug'] = $this->generateSlugFromName($this->translationData['en']['name']);
         }
 
         return $mainData;
