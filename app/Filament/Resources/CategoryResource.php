@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category\Category;
 use App\Services\Category\CategoryTranslationService;
+use App\Traits\HasTranslations;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CategoryResource extends Resource
 {
+    use HasTranslations;
     protected static ?string $model = Category::class;
 
     protected static ?string $slug = 'categories';
@@ -30,53 +32,85 @@ class CategoryResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Categories';
 
+    /**
+     * Get the translated navigation group
+     */
+    public static function getNavigationGroup(): ?string
+    {
+        return __('app.navigation.store_management');
+    }
+
+    /**
+     * Get the translated navigation label
+     */
+    public static function getNavigationLabel(): string
+    {
+        return __('app.resources.category.navigation_label');
+    }
+
+    /**
+     * Get the translated model label
+     */
+    public static function getModelLabel(): string
+    {
+        return __('app.resources.category.label');
+    }
+
+    /**
+     * Get the translated plural model label
+     */
+    public static function getPluralModelLabel(): string
+    {
+        return __('app.resources.category.plural_label');
+    }
+
     protected static ?string $recordTitleAttribute = 'slug';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Category Information')
-                    ->description('Enter the basic details for this category')
+                Forms\Components\Section::make(__('app.forms.category.information'))
+                    ->description(__('app.forms.category.information_description'))
                     ->icon('heroicon-o-tag')
                     ->schema([
                         // Slug will be auto-generated from the name
                         Forms\Components\Hidden::make('slug'),
 
-                        Forms\Components\Tabs::make('Translations')
+                        Forms\Components\Tabs::make(__('app.forms.category.translations'))
                             ->columnSpanFull()
                             ->tabs([
-                                Forms\Components\Tabs\Tab::make('English')
+                                Forms\Components\Tabs\Tab::make(__('app.forms.category.english'))
                                     ->icon('heroicon-o-language')
                                     ->schema([
                                         Forms\Components\TextInput::make('en.name')
-                                            ->label('Name (EN)')
+                                            ->label(__('app.forms.category.name_en'))
                                             ->maxLength(255)
-                                            ->placeholder('Enter category name (English)')
+                                            ->placeholder(__('app.forms.category.enter_name_en'))
                                             ->prefixIcon('heroicon-o-tag')
                                             ->required()
                                             ->rules(['required', 'string', 'max:255']),
                                         Forms\Components\Textarea::make('en.description')
-                                            ->label('Description (EN)')
+                                            ->label(__('app.forms.category.description_en'))
                                             ->maxLength(65535)
-                                            ->placeholder('Describe this category in English...')
+                                            ->placeholder(__('app.forms.category.enter_description_en'))
                                             ->rows(4)
                                             ->rules(['nullable', 'string', 'max:65535']),
                                     ]),
-                                Forms\Components\Tabs\Tab::make('Arabic')
+                                Forms\Components\Tabs\Tab::make(__('app.forms.category.arabic'))
                                     ->icon('heroicon-o-globe-asia-australia')
                                     ->schema([
                                         Forms\Components\TextInput::make('ar.name')
-                                            ->label('Name (AR)')
+                                            ->label(__('app.forms.category.name_ar'))
                                             ->maxLength(255)
-                                            ->placeholder('أدخل اسم التصنيف')
+                                            ->placeholder(__('app.forms.category.enter_name_ar'))
                                             ->extraAttributes(['dir' => 'rtl'])
                                             ->required()
                                             ->rules(['required', 'string', 'max:255']),
                                         Forms\Components\Textarea::make('ar.description')
-                                            ->label('Description (AR)')
+                                            ->label(__('app.forms.category.description_ar'))
                                             ->maxLength(65535)
-                                            ->placeholder('صِف هذا التصنيف باللغة العربية...')
+                                            ->placeholder(__('app.forms.category.enter_description_ar'))
                                             ->rows(4)
                                             ->extraAttributes(['dir' => 'rtl'])
                                             ->rules(['nullable', 'string', 'max:65535']),
@@ -87,8 +121,8 @@ class CategoryResource extends Resource
                     ->collapsible()
                     ->collapsed(false),
 
-                Forms\Components\Section::make('Category Image')
-                    ->description('Upload a representative image for this category')
+                Forms\Components\Section::make(__('app.forms.category.image'))
+                    ->description(__('app.forms.category.image_description'))
                     ->icon('heroicon-o-photo')
                     ->schema([
                         Forms\Components\FileUpload::make('image')
@@ -102,7 +136,7 @@ class CategoryResource extends Resource
                             ->directory('categories/images')
                             ->visibility('private')
                             ->maxSize(2048)
-                            ->helperText('Upload a high-quality image (max 2MB). Recommended size: 800x450px')
+                            ->helperText(__('app.forms.category.upload_image_help'))
                             ->columnSpanFull()
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->previewable()
@@ -121,7 +155,7 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
+                    ->label(__('app.columns.image'))
                     ->circular()
                     ->size(50)
                     ->square()
@@ -129,7 +163,7 @@ class CategoryResource extends Resource
                     ->visibility('private'),
 
                 Tables\Columns\TextColumn::make('translated_name')
-                    ->label('Category Name')
+                    ->label(__('app.columns.translated_name'))
                     ->searchable(query: function (Builder $query, string $search) {
                         $query->whereHas('translations', function (Builder $q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
@@ -144,17 +178,17 @@ class CategoryResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('slug')
-                    ->label('Slug')
+                    ->label(__('app.columns.slug'))
                     ->searchable()
                     ->sortable()
                     ->copyable()
-                    ->copyMessage('Slug copied!')
+                    ->copyMessage(__('app.messages.slug_copied'))
                     ->copyMessageDuration(1500)
                     ->badge()
                     ->color('gray'),
 
                 Tables\Columns\TextColumn::make('translated_description')
-                    ->label('Description')
+                    ->label(__('app.columns.translated_description'))
                     ->limit(50)
                     ->wrap()
                     ->searchable(query: function (Builder $query, string $search) {
@@ -169,21 +203,21 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('product_count')
-                    ->label('Products')
+                    ->label(__('app.columns.product_count'))
                     ->counts('products')
                     ->badge()
                     ->color('success')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Created')
+                    ->label(__('app.columns.created_at'))
                     ->dateTime('M j, Y g:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->icon('heroicon-o-calendar'),
 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Updated')
+                    ->label(__('app.columns.updated_at'))
                     ->dateTime('M j, Y g:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -191,9 +225,12 @@ class CategoryResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
+                    ->label(__('app.filters.created_at'))
                     ->form([
-                        Forms\Components\DatePicker::make('created_from'),
+                        Forms\Components\DatePicker::make('created_from')
+                            ->label(__('app.filters.created_from')),
                         Forms\Components\DatePicker::make('created_until')
+                            ->label(__('app.filters.created_until'))
                     ])
                     ->query(
                         function (Builder $query, array $data): Builder {
@@ -218,14 +255,27 @@ class CategoryResource extends Resource
                         ->icon('heroicon-o-pencil'),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
-                        ->color('danger'),
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.confirm_delete_heading'))
+                        ->modalDescription(function (Category $record) use ($translationService) {
+                            $translatedName = $translationService->getTranslatedName($record);
+                            return __('app.messages.confirm_delete_description', ['name' => $translatedName]);
+                        })
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->modalCancelActionLabel(__('app.actions.cancel')),
                 ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
                         ->icon('heroicon-o-trash')
-                        ->color('danger'),
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.confirm_delete_bulk_heading'))
+                        ->modalDescription(__('app.messages.confirm_delete_bulk_description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->modalCancelActionLabel(__('app.actions.cancel')),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')

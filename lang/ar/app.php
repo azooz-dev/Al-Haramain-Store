@@ -1,0 +1,206 @@
+<?php
+
+return [
+  // Navigation Groups
+  'navigation' => [
+    'store_management' => 'إدارة المتجر',
+    'user_management' => 'إدارة المستخدمين',
+    'content_management' => 'إدارة المحتوى',
+    'system' => 'النظام',
+  ],
+
+  // Resource Labels
+  'resources' => [
+    'category' => [
+      'label' => 'التصنيف',
+      'plural_label' => 'التصنيفات',
+      'navigation_label' => 'التصنيفات',
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-squares-2x2',
+      'navigation_sort' => 1,
+    ],
+    'product' => [
+      'label' => 'المنتج',
+      'plural_label' => 'المنتجات',
+      'navigation_label' => 'المنتجات',
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-cube',
+      'navigation_sort' => 2,
+    ],
+    'order' => [
+      'label' => 'الطلب',
+      'plural_label' => 'الطلبات',
+      'navigation_label' => 'الطلبات',
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-shopping-cart',
+      'navigation_sort' => 3,
+    ],
+    'user' => [
+      'label' => 'المستخدم',
+      'plural_label' => 'المستخدمين',
+      'navigation_label' => 'المستخدمين',
+      'navigation_group' => 'إدارة المستخدمين',
+      'navigation_icon' => 'heroicon-o-users',
+      'navigation_sort' => 1,
+    ],
+    'review' => [
+      'label' => 'التقييم',
+      'plural_label' => 'التقييمات',
+      'navigation_label' => 'التقييمات',
+      'navigation_group' => 'إدارة المحتوى',
+      'navigation_icon' => 'heroicon-o-star',
+      'navigation_sort' => 1,
+    ],
+    'offer' => [
+      'label' => 'العرض',
+      'plural_label' => 'العروض',
+      'navigation_label' => 'العروض',
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-gift',
+      'navigation_sort' => 4,
+    ],
+    'coupon' => [
+      'label' => 'الكوبون',
+      'plural_label' => 'الكوبونات',
+      'navigation_label' => 'الكوبونات',
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-ticket',
+      'navigation_sort' => 5,
+    ],
+    'payment' => [
+      'label' => 'الدفع',
+      'plural_label' => 'المدفوعات',
+      'navigation_label' => 'المدفوعات',
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-credit-card',
+      'navigation_sort' => 6,
+    ],
+    'favorite' => [
+      'label' => 'المفضلة',
+      'plural_label' => 'المفضلات',
+      'navigation_label' => 'المفضلات',
+      'navigation_group' => 'إدارة المستخدمين',
+      'navigation_icon' => 'heroicon-o-heart',
+      'navigation_sort' => 2,
+    ],
+  ],
+
+  // Form Sections and Fields
+  'forms' => [
+    'category' => [
+      'information' => 'معلومات التصنيف',
+      'information_description' => 'أدخل التفاصيل الأساسية لهذا التصنيف',
+      'image' => 'صورة التصنيف',
+      'image_description' => 'قم برفع صورة تمثيلية لهذا التصنيف',
+      'translations' => 'الترجمات',
+      'english' => 'الإنجليزية',
+      'arabic' => 'العربية',
+      'name_en' => 'الاسم (EN)',
+      'name_ar' => 'الاسم (AR)',
+      'description_en' => 'الوصف (EN)',
+      'description_ar' => 'الوصف (AR)',
+      'enter_name_en' => 'أدخل اسم التصنيف (الإنجليزية)',
+      'enter_name_ar' => 'أدخل اسم التصنيف',
+      'enter_description_en' => 'صِف هذا التصنيف باللغة الإنجليزية...',
+      'enter_description_ar' => 'صِف هذا التصنيف باللغة العربية...',
+      'upload_image_help' => 'قم برفع صورة عالية الجودة (الحد الأقصى 2 ميجابايت). الحجم الموصى به: 800×450 بكسل',
+    ],
+  ],
+
+  // Table Columns
+  'columns' => [
+    'translated_name' => 'اسم التصنيف',
+    'translated_description' => 'الوصف',
+    'product_count' => 'المنتجات',
+    'slug' => 'الرابط المختصر',
+    'image' => 'الصورة',
+    'status' => 'الحالة',
+    'price' => 'السعر',
+    'quantity' => 'الكمية',
+    'total' => 'المجموع',
+    'user' => 'المستخدم',
+    'category' => 'التصنيف',
+    'order' => 'الطلب',
+    'review' => 'التقييم',
+    'offer' => 'العرض',
+    'coupon' => 'الكوبون',
+    'payment' => 'الدفع',
+    'favorite' => 'المفضلة',
+    'created_at' => 'تم الإنشاء',
+    'updated_at' => 'تم التحديث',
+  ],
+
+  // Messages
+  'messages' => [
+    'slug_copied' => 'تم نسخ الرابط المختصر!',
+    'category_created' => 'تم إنشاء التصنيف بنجاح.',
+    'category_updated' => 'تم تحديث التصنيف بنجاح.',
+    'category_deleted' => 'تم حذف التصنيف بنجاح.',
+    'translation_saved' => 'تم حفظ الترجمة بنجاح.',
+    'image_uploaded' => 'تم رفع الصورة بنجاح.',
+    'no_products_in_category' => 'لا توجد منتجات في هذا التصنيف.',
+    'category_has_products' => 'هذا التصنيف يحتوي على منتجات ولا يمكن حذفه.',
+    'confirm_delete_heading' => 'حذف التصنيف',
+    'confirm_delete_description' => 'هل أنت متأكد من أنك تريد حذف ":name"؟ لا يمكن التراجع عن هذا الإجراء.',
+    'confirm_delete_bulk_heading' => 'حذف التصنيفات المحددة',
+    'confirm_delete_bulk_description' => 'هل أنت متأكد من أنك تريد حذف التصنيفات المحددة؟ لا يمكن التراجع عن هذا الإجراء.',
+  ],
+
+  // Status Labels
+  'status' => [
+    'active' => 'نشط',
+    'inactive' => 'غير نشط',
+    'draft' => 'مسودة',
+    'published' => 'منشور',
+    'pending' => 'في الانتظار',
+    'approved' => 'موافق عليه',
+    'rejected' => 'مرفوض',
+    'archived' => 'مؤرشف',
+    'deleted' => 'محذوف',
+  ],
+
+  // Actions
+  'actions' => [
+    'view_products' => 'عرض المنتجات',
+    'manage_translations' => 'إدارة الترجمات',
+    'generate_slug' => 'إنشاء رابط مختصر',
+    'preview_category' => 'معاينة التصنيف',
+    'export_categories' => 'تصدير التصنيفات',
+    'import_categories' => 'استيراد التصنيفات',
+    'delete' => 'حذف',
+    'cancel' => 'إلغاء',
+  ],
+
+  // Filters
+  'filters' => [
+    'has_products' => 'يحتوي على منتجات',
+    'no_products' => 'لا يحتوي على منتجات',
+    'created_today' => 'تم إنشاؤه اليوم',
+    'created_this_week' => 'تم إنشاؤه هذا الأسبوع',
+    'created_this_month' => 'تم إنشاؤه هذا الشهر',
+    'updated_recently' => 'تم تحديثه مؤخراً',
+    'created_at' => 'تاريخ الإنشاء',
+    'created_from' => 'من تاريخ',
+    'created_until' => 'إلى تاريخ',
+  ],
+
+  // Placeholders
+  'placeholders' => [
+    'search_categories' => 'البحث في التصنيفات...',
+    'select_category' => 'اختر تصنيفاً...',
+    'enter_category_name' => 'أدخل اسم التصنيف...',
+    'enter_category_description' => 'أدخل وصف التصنيف...',
+  ],
+
+  // Tooltips
+  'tooltips' => [
+    'view_category_details' => 'عرض تفاصيل التصنيف',
+    'edit_category' => 'تعديل التصنيف',
+    'delete_category' => 'حذف التصنيف',
+    'copy_slug' => 'نسخ الرابط المختصر إلى الحافظة',
+    'preview_image' => 'معاينة الصورة',
+    'download_image' => 'تحميل الصورة',
+    'view_products_in_category' => 'عرض المنتجات في هذا التصنيف',
+    'manage_category_translations' => 'إدارة ترجمات التصنيف',
+  ],
+];
