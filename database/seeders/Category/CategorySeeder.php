@@ -14,10 +14,8 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         Category::create([
-            'name' => 'Electronics',
             'slug' => 'electronics',
             'image' => 'image.jpg',
-            'description' => 'Electronics description',
         ]);
     }
 }
