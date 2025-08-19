@@ -2,6 +2,7 @@
 
 namespace App\Services\Category;
 
+use App\Http\Resources\Category\CategoryApiResource;
 use App\Models\Category\Category;
 use App\Repositories\interface\Category\CategoryRepositoryInterface;
 use App\Repositories\interface\Category\CategoryTranslationRepositoryInterface;
@@ -58,21 +59,7 @@ class CategoryTranslationService
 
   public function getFormData(Category $category): array
   {
-    $enTranslation = $this->translationRepository->getTranslationByLocale($category, 'en');
-    $arTranslation = $this->translationRepository->getTranslationByLocale($category, 'ar');
-
-    return [
-      'slug' => $category->slug,
-      'image' => $category->image,
-      'en' => [
-        'name' => $enTranslation?->name ?? '',
-        'description' => $enTranslation?->description ?? '',
-      ],
-      'ar' => [
-        'name' => $arTranslation?->name ?? '',
-        'description' => $arTranslation?->description ?? '',
-      ],
-    ];
+    return (new CategoryApiResource($category->load('translations')))->toArray(request());
   }
 
   public function findCategoryWithTranslations(int $id): ?Category

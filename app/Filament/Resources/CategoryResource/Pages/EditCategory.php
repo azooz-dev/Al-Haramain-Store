@@ -73,6 +73,9 @@ class EditCategory extends EditRecord
         // Load and populate translation data if we have a record
         if ($record = $this->record) {
             $formData = $this->getTranslationData();
+            $formData['en'] = ['name' => $formData['en']['title'] ?? ($formData['en']['name'] ?? ''), 'description' => $formData['en']['details'] ?? ($formData['en']['description'] ?? '')];
+            $formData['ar'] = ['name' => $formData['ar']['title'] ?? ($formData['ar']['name'] ?? ''), 'description' => $formData['ar']['details'] ?? ($formData['ar']['description'] ?? '')];
+
             $this->form->fill($formData);
         }
     }

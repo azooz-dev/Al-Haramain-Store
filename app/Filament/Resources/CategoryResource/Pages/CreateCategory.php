@@ -64,7 +64,8 @@ class CreateCategory extends CreateRecord
 
         // Generate slug from English name (or Arabic if English not available)
         $mainData = $extracted['main'];
-        $mainData['slug'] = $this->generateSlugFromName($mainData['en']['name']);
+
+        $mainData['slug'] = $this->generateSlugFromName($extracted['translations']['en']['name']);
 
         return $mainData;
     }
