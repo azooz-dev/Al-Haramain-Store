@@ -97,6 +97,7 @@ class CategoryResource extends Resource
                                             ->rows(4)
                                             ->rules(['nullable', 'string', 'max:65535']),
                                     ]),
+
                                 Forms\Components\Tabs\Tab::make(__('app.forms.category.arabic'))
                                     ->icon('heroicon-o-globe-asia-australia')
                                     ->schema([
@@ -155,7 +156,7 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label(__('app.columns.image'))
+                    ->label(__('app.columns.category.image'))
                     ->circular()
                     ->size(50)
                     ->square()
@@ -163,7 +164,7 @@ class CategoryResource extends Resource
                     ->visibility('private'),
 
                 Tables\Columns\TextColumn::make('translated_name')
-                    ->label(__('app.columns.translated_name'))
+                    ->label(__('app.columns.category.translated_name'))
                     ->searchable(query: function (Builder $query, string $search) {
                         $query->whereHas('translations', function (Builder $q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
@@ -178,17 +179,17 @@ class CategoryResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('slug')
-                    ->label(__('app.columns.slug'))
+                    ->label(__('app.columns.category.slug'))
                     ->searchable()
                     ->sortable()
                     ->copyable()
-                    ->copyMessage(__('app.messages.slug_copied'))
+                    ->copyMessage(__('app.messages.category.slug_copied'))
                     ->copyMessageDuration(1500)
                     ->badge()
                     ->color('gray'),
 
                 Tables\Columns\TextColumn::make('translated_description')
-                    ->label(__('app.columns.translated_description'))
+                    ->label(__('app.columns.category.translated_description'))
                     ->limit(50)
                     ->wrap()
                     ->searchable(query: function (Builder $query, string $search) {
@@ -203,21 +204,21 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('product_count')
-                    ->label(__('app.columns.product_count'))
+                    ->label(__('app.columns.category.product_count'))
                     ->counts('products')
                     ->badge()
                     ->color('success')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('app.columns.created_at'))
+                    ->label(__('app.columns.category.created_at'))
                     ->dateTime('M j, Y g:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->icon('heroicon-o-calendar'),
 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('app.columns.updated_at'))
+                    ->label(__('app.columns.category.updated_at'))
                     ->dateTime('M j, Y g:i A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -257,10 +258,10 @@ class CategoryResource extends Resource
                         ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading(__('app.messages.confirm_delete_heading'))
+                        ->modalHeading(__('app.messages.category.confirm_delete_heading'))
                         ->modalDescription(function (Category $record) use ($translationService) {
                             $translatedName = $translationService->getTranslatedName($record);
-                            return __('app.messages.confirm_delete_description', ['name' => $translatedName]);
+                            return __('app.messages.category.confirm_delete_description', ['name' => $translatedName]);
                         })
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->modalCancelActionLabel(__('app.actions.cancel')),
@@ -272,8 +273,8 @@ class CategoryResource extends Resource
                         ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading(__('app.messages.confirm_delete_bulk_heading'))
-                        ->modalDescription(__('app.messages.confirm_delete_bulk_description'))
+                        ->modalHeading(__('app.messages.category.confirm_delete_bulk_heading'))
+                        ->modalDescription(__('app.messages.category.confirm_delete_bulk_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->modalCancelActionLabel(__('app.actions.cancel')),
                 ]),
