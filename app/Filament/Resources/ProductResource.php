@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Product\Product;
 use App\Services\Product\ProductTranslationService;
+use Filament\Support\Colors\Color;
 
 class ProductResource extends Resource
 {
@@ -125,12 +126,18 @@ class ProductResource extends Resource
                                             ->prefixIcon('heroicon-o-tag')
                                             ->columnSpanFull(),
 
-                                        Forms\Components\Textarea::make('en.description')
+                                        Forms\Components\RichEditor::make('en.description')
                                             ->label(__('app.forms.product.description_en'))
                                             ->required()
-                                            ->maxLength(65535)
                                             ->placeholder(__('app.forms.product.enter_description_en'))
-                                            ->rows(6)
+                                            ->toolbarButtons([
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                                'bulletList',
+                                                'orderedList',
+                                                'link',
+                                            ])
                                             ->columnSpanFull(),
                                     ]),
 
@@ -147,16 +154,103 @@ class ProductResource extends Resource
                                             ->extraAttributes(['dir' => 'rtl'])
                                             ->columnSpanFull(),
 
-                                        Forms\Components\Textarea::make('ar.description')
+                                        Forms\Components\RichEditor::make('ar.description')
                                             ->label(__('app.forms.product.description_ar'))
                                             ->required()
-                                            ->maxLength(65535)
                                             ->placeholder(__('app.forms.product.enter_description_ar'))
-                                            ->rows(6)
+                                            ->toolbarButtons([
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                                'bulletList',
+                                                'orderedList',
+                                                'link',
+                                            ])
                                             ->extraAttributes(['dir' => 'rtl'])
                                             ->columnSpanFull(),
                                     ]),
                             ])
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
+                // Product Colors & Images Section
+                Forms\Components\Section::make(__('app.forms.product.colors_and_images'))
+                    ->description(__('app.forms.product.colors_and_images_description'))
+                    ->icon('heroicon-o-swatch')
+                    ->schema([
+                        Forms\Components\Repeater::make('colors')
+                            ->relationship()
+                            ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\ColorPicker::make('color_code')
+                                            ->label(__('app.forms.product.color.color_code'))
+                                            ->required()
+                                            ->hex()
+                                            ->columnSpan(1),
+
+                                        Forms\Components\Placeholder::make('color_preview')
+                                            ->label(__('app.forms.product.color.preview'))
+                                            ->content(fn($get) => new \Illuminate\Support\HtmlString(
+                                                '<div class="w-8 h-8 rounded-full border-2 border-gray-300" style="background-color: ' . ($get('color_code') ?? '#ffffff') . '"></div>'
+                                            ))
+                                            ->columnSpan(1),
+                                    ]),
+
+                                // Color Images Sub-Repeater
+                                Forms\Components\Repeater::make('images')
+                                    ->relationship('images')
+                                    ->label(__('app.forms.product.color.images'))
+                                    ->schema([
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                Forms\Components\FileUpload::make('image_url')
+                                                    ->label(__('app.forms.product.color.image'))
+                                                    ->image()
+                                                    ->imageEditor()
+                                                    ->imageCropAspectRatio('1:1')
+                                                    ->imageResizeTargetWidth('800')
+                                                    ->imageResizeTargetHeight('800')
+                                                    ->disk('public')
+                                                    ->directory('products/colors/images')
+                                                    ->visibility('public')
+                                                    ->maxSize(2048)
+                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                                    ->previewable()
+                                                    ->downloadable()
+                                                    ->openable()
+                                                    ->required()
+                                                    ->columnSpan(2),
+
+                                                Forms\Components\TextInput::make('alt_text')
+                                                    ->label(__('app.forms.product.color.alt_text'))
+                                                    ->maxLength(255)
+                                                    ->placeholder(__('app.forms.product.color.enter_alt_text'))
+                                                    ->helperText(__('app.forms.product.color.alt_text_help'))
+                                                    ->columnSpan(2),
+                                            ]),
+                                    ])
+                                    ->defaultItems(1)
+                                    ->collapsible()
+                                    ->itemLabel(fn(array $state): ?string => $state['alt_text'] ?? __('app.forms.product.color.image'))
+                                    ->addActionLabel(__('app.forms.product.color.add_image'))
+                                    ->reorderableWithButtons()
+                                    ->cloneable()
+                                    ->columnSpanFull(),
+                            ])
+                            ->defaultItems(0)
+                            ->collapsible()
+                            ->itemLabel(
+                                fn(array $state): ?string =>
+                                isset($state['color_code'])
+                                    ? __('app.forms.product.color.color') . ': ' . strtoupper($state['color_code'])
+                                    : __('app.forms.product.color.new_color')
+                            )
+                            ->addActionLabel(__('app.forms.product.color.add_color'))
+                            ->reorderableWithButtons()
+                            ->cloneable()
                             ->columnSpanFull(),
                     ])
                     ->collapsible()
@@ -170,21 +264,23 @@ class ProductResource extends Resource
                         Forms\Components\Repeater::make('variants')
                             ->relationship()
                             ->schema([
-                                Forms\Components\Grid::make(3)
+                                Forms\Components\Grid::make(2)
                                     ->schema([
+                                        // Forms\Components\Select::make('color_id')
+                                        //     ->label(__('app.forms.product.variant.color'))
+                                        //     ->relationship('color', 'color_code')
+                                        //     ->getOptionLabelFromRecordUsing(fn($record) => strtoupper($record->color_code))
+                                        //     ->searchable()
+                                        //     ->preload()
+                                        //     ->required()
+                                        //     ->columnSpan(1),
+
                                         Forms\Components\TextInput::make('size')
                                             ->label(__('app.forms.product.variant.size'))
                                             ->required()
-                                            ->maxLength(50)
                                             ->placeholder(__('app.forms.product.enter_size'))
-                                            ->prefixIcon('heroicon-o-arrows-pointing-out'),
-
-                                        Forms\Components\TextInput::make('color')
-                                            ->label(__('app.forms.product.variant.color'))
-                                            ->required()
                                             ->maxLength(50)
-                                            ->placeholder(__('app.forms.product.enter_color'))
-                                            ->prefixIcon('heroicon-o-swatch'),
+                                            ->columnSpan(1),
 
                                         Forms\Components\TextInput::make('quantity')
                                             ->label(__('app.forms.product.variant.quantity'))
@@ -192,11 +288,9 @@ class ProductResource extends Resource
                                             ->required()
                                             ->minValue(0)
                                             ->placeholder(__('app.forms.product.enter_variant_quantity'))
-                                            ->prefixIcon('heroicon-o-archive-box'),
-                                    ]),
+                                            ->prefixIcon('heroicon-o-archive-box')
+                                            ->columnSpan(1),
 
-                                Forms\Components\Grid::make(2)
-                                    ->schema([
                                         Forms\Components\TextInput::make('price')
                                             ->label(__('app.forms.product.variant.price'))
                                             ->numeric()
@@ -205,7 +299,8 @@ class ProductResource extends Resource
                                             ->step(0.01)
                                             ->prefix('$')
                                             ->placeholder(__('app.forms.product.enter_price'))
-                                            ->prefixIcon('heroicon-o-currency-dollar'),
+                                            ->prefixIcon('heroicon-o-currency-dollar')
+                                            ->columnSpan(1),
 
                                         Forms\Components\TextInput::make('amount_discount_price')
                                             ->label(__('app.forms.product.variant.discount_price'))
@@ -215,71 +310,29 @@ class ProductResource extends Resource
                                             ->prefix('$')
                                             ->placeholder(__('app.forms.product.enter_discount_price'))
                                             ->prefixIcon('heroicon-o-tag')
-                                            ->helperText(__('app.forms.product.variant.discount_price_help')),
+                                            ->helperText(__('app.forms.product.variant.discount_price_help'))
+                                            ->columnSpan(1),
                                     ]),
+
+                                // Forms\Components\Grid::make(2)
+                                //     ->schema([]),
                             ])
                             ->columns(1)
                             ->defaultItems(0)
-                            ->reorderable(false)
+                            ->reorderableWithButtons()
                             ->collapsible()
-                            ->itemLabel(
-                                fn(array $state): ?string =>
-                                isset($state['size'], $state['color'])
-                                    ? "{$state['size']} - {$state['color']}"
-                                    : null
-                            )
+                            ->itemLabel(function (array $state): ?string {
+                                $size = $state['size'] ?? '';
+                                $colorId = $state['color_id'] ?? '';
+
+                                if ($size && $colorId) {
+                                    // You might need to fetch the color for display
+                                    return "{$size} - Color #{$colorId}";
+                                }
+
+                                return __('app.forms.product.variant.new_variant');
+                            })
                             ->addActionLabel(__('app.forms.product.add_variant'))
-                            ->cloneable()
-                            ->columnSpanFull(),
-                    ])
-                    ->collapsible()
-                    ->collapsed(false),
-
-                // Product Images Section
-                Forms\Components\Section::make(__('app.forms.product.images'))
-                    ->description(__('app.forms.product.images_description'))
-                    ->icon('heroicon-o-photo')
-                    ->schema([
-                        Forms\Components\Repeater::make('images')
-                            ->relationship()
-                            ->schema([
-                                Forms\Components\Grid::make(2)
-                                    ->schema([
-                                        Forms\Components\FileUpload::make('image_url')
-                                            ->label(__('app.forms.product.image'))
-                                            ->image()
-                                            ->imageEditor()
-                                            ->imageCropAspectRatio('4:3')
-                                            ->imageResizeTargetWidth('800')
-                                            ->imageResizeTargetHeight('600')
-                                            ->disk('public')
-                                            ->directory('products/images')
-                                            ->visibility('public')
-                                            ->maxSize(2048)
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                                            ->previewable()
-                                            ->downloadable()
-                                            ->openable()
-                                            ->required()
-                                            ->columnSpan(1),
-
-                                        Forms\Components\TextInput::make('alt_text')
-                                            ->label(__('app.forms.product.alt_text'))
-                                            ->maxLength(255)
-                                            ->placeholder(__('app.forms.product.enter_alt_text'))
-                                            ->helperText(__('app.forms.product.alt_text_help'))
-                                            ->columnSpan(1),
-                                    ]),
-                            ])
-                            ->columns(1)
-                            ->defaultItems(0)
-                            ->reorderable(true)
-                            ->collapsible()
-                            ->itemLabel(
-                                fn(array $state): ?string =>
-                                isset($state['alt_text']) ? $state['alt_text'] : __('app.forms.product.image')
-                            )
-                            ->addActionLabel(__('app.forms.product.add_image'))
                             ->cloneable()
                             ->columnSpanFull(),
                     ])
@@ -340,9 +393,9 @@ class ProductResource extends Resource
                                     ->imageCropAspectRatio('16:9')
                                     ->imageResizeTargetWidth('800')
                                     ->imageResizeTargetHeight('450')
-                                    ->disk('local')
-                                    ->directory('products/images')
-                                    ->visibility('private')
+                                    ->disk('public')
+                                    ->directory('categories/images')
+                                    ->visibility('public')
                                     ->maxSize(2048)
                                     ->helperText(__('app.forms.category.upload_image_help'))
                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -360,8 +413,6 @@ class ProductResource extends Resource
                     ])
                     ->collapsible()
                     ->collapsed(false),
-
-
             ]);
     }
 
@@ -378,7 +429,8 @@ class ProductResource extends Resource
                     ->copyable()
                     ->badge()
                     ->color('gray')
-                    ->icon('heroicon-o-tag'),
+                    ->icon('heroicon-o-tag')
+                    ->weight('medium'),
 
                 Tables\Columns\TextColumn::make('translated_name')
                     ->label(__('app.columns.product.name'))
@@ -391,6 +443,7 @@ class ProductResource extends Resource
                     ->weight('bold')
                     ->color('primary')
                     ->icon('heroicon-o-cube')
+                    ->wrap()
                     ->state(function (Product $record) use ($translationService) {
                         return $translationService->getTranslatedName($record);
                     }),
@@ -402,25 +455,39 @@ class ProductResource extends Resource
                     ->badge()
                     ->color(
                         fn(Product $record): string =>
-                        $record->quantity > 10 ? 'success' : ($record->quantity > 0 ? 'warning' : 'danger')
+                        $record->quantity > 50 ? 'success' : ($record->quantity > 10 ? 'warning' : ($record->quantity > 0 ? 'danger' : 'gray'))
                     )
-                    ->icon('heroicon-o-archive-box'),
+                    ->icon('heroicon-o-archive-box')
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('colors_count')
+                    ->label(__('app.columns.product.colors_count'))
+                    ->counts('colors')
+                    ->badge()
+                    ->color('info')
+                    ->sortable()
+                    ->icon('heroicon-o-swatch')
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('variants_count')
                     ->label(__('app.columns.product.variants_count'))
                     ->counts('variants')
                     ->badge()
-                    ->color('info')
+                    ->color('success')
                     ->sortable()
-                    ->icon('heroicon-o-squares-2x2'),
+                    ->icon('heroicon-o-squares-2x2')
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('images_count')
                     ->label(__('app.columns.product.images_count'))
-                    ->counts('images')
+                    ->state(function (Product $record) {
+                        return $record->colors->sum(fn($color) => $color->images()->count());
+                    })
                     ->badge()
-                    ->color('success')
-                    ->sortable()
-                    ->icon('heroicon-o-photo'),
+                    ->color('purple')
+                    ->sortable(false)
+                    ->icon('heroicon-o-photo')
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('categories_count')
                     ->label(__('app.columns.product.categories_count'))
@@ -428,9 +495,31 @@ class ProductResource extends Resource
                     ->badge()
                     ->color('warning')
                     ->sortable()
-                    ->icon('heroicon-o-rectangle-stack'),
+                    ->icon('heroicon-o-rectangle-stack')
+                    ->alignCenter(),
 
+                Tables\Columns\TextColumn::make('price_range')
+                    ->label(__('app.columns.product.price_range'))
+                    ->state(function (Product $record) {
+                        $variants = $record->variants;
 
+                        if ($variants->isEmpty()) {
+                            return __('app.columns.product.no_variants');
+                        }
+
+                        $minPrice = $variants->min('price');
+                        $maxPrice = $variants->max('price');
+
+                        if ($minPrice === $maxPrice) {
+                            return '$' . number_format($minPrice, 2);
+                        }
+
+                        return '$' . number_format($minPrice, 2) . ' - $' . number_format($maxPrice, 2);
+                    })
+                    ->badge()
+                    ->color('emerald')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->sortable(false),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('app.columns.product.created_at'))
@@ -466,14 +555,48 @@ class ProductResource extends Resource
                                 fn(Builder $query, $data): Builder => $query->whereDate('created_at', '<=', $data)
                             );
                     }),
+
+                Tables\Filters\Filter::make('stock_status')
+                    ->label(__('app.filters.stock_status'))
+                    ->form([
+                        Forms\Components\Select::make('stock')
+                            ->label(__('app.filters.stock_level'))
+                            ->options([
+                                'in_stock' => __('app.filters.in_stock'),
+                                'low_stock' => __('app.filters.low_stock'),
+                                'out_of_stock' => __('app.filters.out_of_stock'),
+                            ])
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['stock'], function ($query, $stock) {
+                            match ($stock) {
+                                'in_stock' => $query->where('quantity', '>', 10),
+                                'low_stock' => $query->whereBetween('quantity', [1, 10]),
+                                'out_of_stock' => $query->where('quantity', 0),
+                            };
+                        });
+                    }),
+
+                Tables\Filters\Filter::make('has_variants')
+                    ->label(__('app.filters.has_variants'))
+                    ->toggle()
+                    ->query(fn(Builder $query): Builder => $query->has('variants')),
+
+                Tables\Filters\Filter::make('has_colors')
+                    ->label(__('app.filters.has_colors'))
+                    ->toggle()
+                    ->query(fn(Builder $query): Builder => $query->has('colors')),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
                         ->icon('heroicon-o-eye')
-                        ->url(fn($record) => static::getUrl('view', ['record' => $record])),
+                        ->color('info'),
+
                     Tables\Actions\EditAction::make()
-                        ->icon('heroicon-o-pencil'),
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning'),
+
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
                         ->color('danger')
@@ -499,17 +622,28 @@ class ProductResource extends Resource
                         ->modalDescription(__('app.messages.product.confirm_delete_bulk_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->modalCancelActionLabel(__('app.actions.cancel')),
+
+                    Tables\Actions\BulkAction::make('export')
+                        ->label(__('app.actions.export'))
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->color('success')
+                        ->action(function () {
+                            // Export logic would go here
+                        }),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
-            ->paginated([10, 25, 50, 100]);
+            ->paginated([10, 25, 50, 100])
+            ->poll('30s') // Auto-refresh every 30 seconds
+            ->extremePaginationLinks()
+            ->deferLoading();
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            // You might want to add relation managers here
         ];
     }
 
@@ -521,5 +655,14 @@ class ProductResource extends Resource
             'view' => Pages\ViewProduct::route('/{record}'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ])
+            ->with(['translations', 'colors.images', 'variants', 'categories.translations']);
     }
 }

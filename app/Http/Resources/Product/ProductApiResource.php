@@ -5,7 +5,6 @@ namespace App\Http\Resources\Product;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class ProductApiResource extends JsonResource
 {
@@ -31,23 +30,48 @@ class ProductApiResource extends JsonResource
                 'title' => $ar->name,
                 'details' => $ar->description
             ],
-            'images' => $this->images->map(function ($image) {
+
+            // Colors with images
+            'colors' => $this->colors->map(function ($color) {
                 return [
-                    'image_url' => Storage::url($image->image_url),
-                    'alt_text' => $image->alt_text,
+                    'id' => $color->id,
+                    'color_code' => $color->color_code,
+                    'images' => $color->images->map(function ($image) {
+                        return [
+                            'id' => $image->id,
+                            'image_url' => $image->image_url,
+                            'alt_text' => $image->alt_text,
+                        ];
+                    }),
                 ];
-            })->toArray(),
-            'categories' => $this->categories->pluck('id')->toArray(),
+            }),
+
+            // Variants
             'variants' => $this->variants->map(function ($variant) {
                 return [
+                    'id' => $variant->id,
+                    'color_id' => $variant->color_id,
                     'size' => $variant->size,
-                    'color' => $variant->color,
-                    'quantity' => $variant->quantity,
                     'price' => $variant->price,
                     'amount_discount_price' => $variant->amount_discount_price,
+                    'quantity' => $variant->quantity,
                 ];
-            })->toArray(),
+            }),
 
+            'categories' => $this->categories->pluck('id')->toArray(),
+
+            // Timestamps
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+
+            // Computed attributes
+            'total_stock' => $this->total_stock,
+            'min_price' => $this->min_price,
+            'max_price' => $this->max_price,
+            'price_range' => $this->price_range,
+            'total_images_count' => $this->total_images_count,
+            'available_sizes' => $this->available_sizes,
+            'available_colors' => $this->available_colors,
         ];
     }
 }
