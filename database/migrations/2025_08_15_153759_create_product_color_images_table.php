@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_color_id')->constrained('product_colors')->onDelete('cascade');
             $table->string('image_url');
+            $table->string('alt_text')->nullable();
             $table->timestamps();
         });
     }
