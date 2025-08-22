@@ -3,21 +3,20 @@
 namespace Database\Seeders\Product;
 
 use App\Models\Product\Product;
-use App\Models\Product\ProductImage;
+use App\Models\Product\ProductColor;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ProductImageSeeder extends Seeder
+class ProductColorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        ProductImage::create([
+        ProductColor::create([
             'product_id' => Product::all()->random()->id,
-            'image_url' => 'image.jpg',
-            'alt_text' => 'Product 1 image',
+            'color_code' => '#FF5733'
         ]);
     }
 }

@@ -14,13 +14,14 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::create([
+        $product = Product::create([
             'slug' => 'product-1',
             'sku' => '1234567890',
-            'price' => 100,
-            'amount_discount_price' => 90,
             'quantity' => 10,
-            'categories' => Category::all()->random()->pluck('id'),
         ]);
+
+        // Attach random categories (assuming you want to attach, for example, 2 random categories)
+        $categoryIds = Category::inRandomOrder()->limit(2)->pluck('id');
+        $product->categories()->attach($categoryIds);
     }
 }

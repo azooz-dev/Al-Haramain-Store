@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_variants', function (Blueprint $table) {
+        Schema::create('product_colors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('color_id')->constrained('product_colors')->onDelete('cascade');
-            $table->string('size');
-            $table->decimal('price', 10, 2);
-            $table->decimal('amount_discount_price', 10, 2)->nullable();
-            $table->integer('quantity');
+            $table->string('color_code')->nullable(false); // failed type for color code is string
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_variants');
+        Schema::dropIfExists('product_colors');
     }
 };
