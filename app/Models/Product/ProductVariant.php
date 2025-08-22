@@ -8,8 +8,8 @@ class ProductVariant extends Model
 {
     protected $fillable = [
         'product_id',
+        'color_id',
         'size',
-        'color',
         'price',
         'amount_discount_price',
         'quantity',

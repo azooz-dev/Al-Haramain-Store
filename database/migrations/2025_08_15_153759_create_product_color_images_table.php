@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_images', function (Blueprint $table) {
+        Schema::create('product_color_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->foreignId('product_color_id')->constrained('product_colors')->onDelete('cascade');
             $table->string('image_url');
-            $table->string('alt_text')->nullable();
             $table->timestamps();
         });
     }
