@@ -17,6 +17,7 @@ class ProductColorImageSeeder extends Seeder
         ProductColorImage::create([
             'product_color_id' => ProductColor::all()->random()->id,
             'image_url' => 'image.jpg',
+            'alt_text' => 'any thing'
         ]);
     }
 }
