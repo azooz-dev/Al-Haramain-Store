@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Product\Product;
+use App\Services\Product\ProductTranslationService;
 
 class ProductResource extends Resource
 {
@@ -251,7 +252,7 @@ class ProductResource extends Resource
                                             ->imageCropAspectRatio('4:3')
                                             ->imageResizeTargetWidth('800')
                                             ->imageResizeTargetHeight('600')
-                                            ->disk('local')
+                                            ->disk('public')
                                             ->directory('products/images')
                                             ->visibility('public')
                                             ->maxSize(2048)
@@ -340,7 +341,7 @@ class ProductResource extends Resource
                                     ->imageResizeTargetWidth('800')
                                     ->imageResizeTargetHeight('450')
                                     ->disk('local')
-                                    ->directory('categories/images')
+                                    ->directory('products/images')
                                     ->visibility('private')
                                     ->maxSize(2048)
                                     ->helperText(__('app.forms.category.upload_image_help'))
@@ -366,6 +367,8 @@ class ProductResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $translationService = app(ProductTranslationService::class);
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('sku')
@@ -388,10 +391,8 @@ class ProductResource extends Resource
                     ->weight('bold')
                     ->color('primary')
                     ->icon('heroicon-o-cube')
-                    ->state(function (Product $record) {
-                        return $record->translations->where('local', app()->getLocale())->first()?->name
-                            ?? $record->translations->first()?->name
-                            ?? $record->slug;
+                    ->state(function (Product $record) use ($translationService) {
+                        return $translationService->getTranslatedName($record);
                     }),
 
                 Tables\Columns\TextColumn::make('quantity')

@@ -18,6 +18,7 @@ class CategoryApiResource extends JsonResource
         $ar = $this->translations->where('local', 'ar')->first();
 
         return [
+            'identifier' => $this->id,
             'slug' => $this->slug,
             'image' => $this->image,
             'en' => [

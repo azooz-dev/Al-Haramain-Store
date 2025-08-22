@@ -73,8 +73,8 @@ class EditCategory extends EditRecord
         // Load and populate translation data if we have a record
         if ($record = $this->record) {
             $formData = $this->getTranslationData();
-            $formData['en'] = ['name' => $formData['en']['title'] ?? ($formData['en']['name'] ?? ''), 'description' => $formData['en']['details'] ?? ($formData['en']['description'] ?? '')];
-            $formData['ar'] = ['name' => $formData['ar']['title'] ?? ($formData['ar']['name'] ?? ''), 'description' => $formData['ar']['details'] ?? ($formData['ar']['description'] ?? '')];
+            $formData['en'] = ['name' => $formData['en']['title'], 'description' => $formData['en']['details']];
+            $formData['ar'] = ['name' => $formData['ar']['title'], 'description' => $formData['ar']['details']];
 
             $this->form->fill($formData);
         }
@@ -104,7 +104,7 @@ class EditCategory extends EditRecord
 
         // If name changed, regenerate slug
         if ($this->translationData['en']['name'] !== $currentName) {
-            $mainData['slug'] = $this->generateSlugFromName($this->translationData['en']['name']);
+            $mainData['slug'] = $this->generateSlugFromName($extracted['en']['name']);
         }
 
         return $mainData;
