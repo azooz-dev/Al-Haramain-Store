@@ -103,4 +103,16 @@ class ProductVariant extends Model
 
         return "{$this->size} - {$colorCode}";
     }
+
+    protected static function booted()
+    {
+        static::creating(function ($variant) {
+            if (empty($variant->product_id) && !empty($variant->color_id)) {
+                $color = ProductColor::find($variant->color_id);
+                if ($color) {
+                    $variant->product_id = $color->product_id;
+                }
+            }
+        });
+    }
 }

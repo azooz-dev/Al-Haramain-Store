@@ -104,13 +104,4 @@ class CategoryTranslationService
   {
     return $this->categoryRepository->slugExists($slug);
   }
-
-
-  /**
-   * Check if slug exists excluding a specific category ID
-   */
-  private function slugExistsExcluding(string $slug, int $excludeId): bool
-  {
-    return $this->categoryRepository->slugExistsExcluding($slug, $excludeId);
-  }
 }

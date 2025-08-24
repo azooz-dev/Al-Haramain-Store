@@ -285,6 +285,7 @@ return [
     'duplicate' => 'Duplicate',
     'export' => 'Export',
     'actions' => 'Actions',
+    'add' => 'Add',
   ],
 
   // Filters

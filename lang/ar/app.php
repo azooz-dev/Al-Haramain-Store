@@ -284,6 +284,7 @@ return [
     'duplicate' => 'نسخ',
     'export' => 'تصدير',
     'actions' => 'الإجراءات',
+    'add' => 'إضافة',
   ],
 
   // Filters

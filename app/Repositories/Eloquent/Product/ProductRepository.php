@@ -49,9 +49,4 @@ class ProductRepository implements ProductRepositoryInterface
   {
     return Product::where('slug', $slug)->exists();
   }
-
-  public function slugExistsExcluding(string $slug, int $excluded): bool
-  {
-    return Product::where('slug', $slug)->where('id', '!=', $excluded)->exists;
-  }
 }

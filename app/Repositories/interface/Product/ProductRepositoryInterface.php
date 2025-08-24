@@ -22,6 +22,4 @@ interface ProductRepositoryInterface
   public function searchByName(string $search): Collection;
 
   public function slugExists(string $slug): bool;
-
-  public function slugExistsExcluding(string $slug, int $excluded): bool;
 }

@@ -136,19 +136,4 @@ class CategoryRepository implements CategoryRepositoryInterface
   {
     return Category::where('slug', $slug)->exists();
   }
-
-  /**
-   * Check if a slug exists excluding a specific category
-   * 
-   * Existence check that excludes a specific category ID from the search.
-   * Used when updating existing categories to allow keeping the same slug.
-   * 
-   * @param string $slug - The slug to check
-   * @param int $excludeId - The category ID to exclude from the check
-   * @return bool - True if slug exists (excluding the specified ID), false otherwise
-   */
-  public function slugExistsExcluding(string $slug, int $excludeId): bool
-  {
-    return Category::where('slug', $slug)->where('id', '!=', $excludeId)->exists();
-  }
 }

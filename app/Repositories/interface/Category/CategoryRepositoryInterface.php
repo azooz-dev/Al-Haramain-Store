@@ -58,40 +58,6 @@ interface CategoryRepositoryInterface
   public function getAllWithTranslations(): Collection;
 
   /**
-   * Create a new category
-   * 
-   * Creates a new category record in the database.
-   * Only handles the main category data - translations are handled separately.
-   * 
-   * @param array $data - Category data (slug, image, etc.)
-   * @return Category - The newly created category model
-   */
-  public function create(array $data): Category;
-
-  /**
-   * Update an existing category
-   * 
-   * Updates an existing category record in the database.
-   * Only handles the main category data - translations are handled separately.
-   * 
-   * @param Category $category - The category model to update
-   * @param array $data - Updated category data
-   * @return bool - True if update was successful, false otherwise
-   */
-  public function update(Category $category, array $data): bool;
-
-  /**
-   * Delete a category
-   * 
-   * Removes a category from the database.
-   * Note: This should handle related translations deletion (cascade or manual).
-   * 
-   * @param Category $category - The category model to delete
-   * @return bool - True if deletion was successful, false otherwise
-   */
-  public function delete(Category $category): bool;
-
-  /**
    * Search categories by name across translations
    * 
    * Performs a search across all translation names (English, Arabic, etc.)
@@ -112,16 +78,4 @@ interface CategoryRepositoryInterface
    * @return bool - True if slug exists, false otherwise
    */
   public function slugExists(string $slug): bool;
-
-  /**
-   * Check if a slug exists excluding a specific category
-   * 
-   * Validates slug uniqueness while excluding a specific category from the check.
-   * Used when updating existing categories to allow keeping the same slug.
-   * 
-   * @param string $slug - The slug to check
-   * @param int $excludeId - The category ID to exclude from the check
-   * @return bool - True if slug exists (excluding the specified ID), false otherwise
-   */
-  public function slugExistsExcluding(string $slug, int $excludeId): bool;
 }
