@@ -4,6 +4,7 @@ namespace App\Models\Product;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class ProductColorImage extends Model
 {
@@ -32,21 +33,21 @@ class ProductColorImage extends Model
     }
 
     /**
-     * Get the full URL for the image
+     * Get the full URL for the image (use this method when you need full URLs)
      */
-    public function getImageUrlAttribute($value): string
+    public function getFullImageUrlAttribute(): string
     {
-        if (!$value) {
+        if (!$this->image_url) {
             return '';
         }
 
         // If it's already a full URL, return as is
-        if (str_starts_with($value, 'http')) {
-            return $value;
+        if (str_starts_with($this->image_url, 'http')) {
+            return $this->image_url;
         }
 
         // Otherwise, prepend the storage URL
-        return asset('storage/' . $value);
+        return Storage::url($this->image_url);
     }
 
     /**

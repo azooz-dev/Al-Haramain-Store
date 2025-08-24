@@ -39,24 +39,25 @@ class ProductApiResource extends JsonResource
                     'images' => $color->images->map(function ($image) {
                         return [
                             'id' => $image->id,
-                            'image_url' => $image->image_url,
-                            'alt_text' => $image->alt_text,
+                            'image_url' => $this->extractRelativeImagePath($image->getRawOriginal('image_url')),
+                            'alt_text' => $image->alt_text ?? '',
                         ];
-                    }),
+                    })->values()->toArray(),
+                    // Variants
+                    'variants' => $this->variants->where('color_id', $color->id)->map(function ($variant) {
+                        return [
+                            'id' => $variant->id,
+                            'color_id' => $variant->color_id,
+                            'size' => $variant->size,
+                            'price' => $variant->price,
+                            'amount_discount_price' => $variant->amount_discount_price,
+                            'quantity' => $variant->quantity,
+                        ];
+                    })->values()->toArray(),
                 ];
-            }),
+            })->values()->toArray(),
 
-            // Variants
-            'variants' => $this->variants->map(function ($variant) {
-                return [
-                    'id' => $variant->id,
-                    'color_id' => $variant->color_id,
-                    'size' => $variant->size,
-                    'price' => $variant->price,
-                    'amount_discount_price' => $variant->amount_discount_price,
-                    'quantity' => $variant->quantity,
-                ];
-            }),
+
 
             'categories' => $this->categories->pluck('id')->toArray(),
 
@@ -73,5 +74,42 @@ class ProductApiResource extends JsonResource
             'available_sizes' => $this->available_sizes,
             'available_colors' => $this->available_colors,
         ];
+    }
+
+    /**
+     * Extract relative path from image URL for Filament FileUpload compatibility
+     */
+    private function extractRelativeImagePath(string $imageUrl): string
+    {
+        // If it's already a relative path, return as is
+        if (!str_contains($imageUrl, 'http') && !str_contains($imageUrl, '/storage/')) {
+            return $imageUrl;
+        }
+
+        // If it's a full URL with /storage/, extract the relative part
+        if (str_contains($imageUrl, '/storage/')) {
+            $parts = explode('/storage/', $imageUrl);
+            return end($parts);
+        }
+
+        // If it starts with storage/, remove it
+        if (str_starts_with($imageUrl, 'storage/')) {
+            return substr($imageUrl, 8); // Remove 'storage/' prefix
+        }
+
+        // Return as is if we can't process it
+        return $imageUrl;
+    }
+
+    /**
+     * Get full image URL for API responses (when needed)
+     */
+    public function getFullImageUrl(string $relativePath): string
+    {
+        if (str_starts_with($relativePath, 'http')) {
+            return $relativePath;
+        }
+
+        return asset('storage/' . $relativePath);
     }
 }

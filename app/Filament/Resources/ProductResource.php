@@ -16,6 +16,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Services\Product\ProductTranslationService;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends Resource
 {
@@ -219,8 +220,13 @@ class ProductResource extends Resource
                                                             ->directory('products/images')
                                                             ->visibility('public')
                                                             ->maxSize(2048)
-                                                            ->multiple()
                                                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                                                            // Key settings for proper preview
+                                                            ->imagePreviewHeight('200')
+                                                            ->panelAspectRatio('1:1')
+                                                            ->panelLayout('integrated')
+                                                            ->previewable(true)
+                                                            ->downloadable(true)
                                                             ->columnSpan(1),
 
                                                         Forms\Components\TextInput::make('alt_text')

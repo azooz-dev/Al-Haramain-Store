@@ -38,9 +38,11 @@ class EditProduct extends EditRecord
             $formData['en'] = ['name' => $formData['en']['title'], 'description' => $formData['en']['details']];
             $formData['ar'] = ['name' => $formData['ar']['title'], 'description' => $formData['ar']['details']];
             $formData['quantity'] = $formData['stock'];
+            unset($formData['stock']);
 
             // Remove images from custom form data - let Filament handle the relationship
             unset($formData['stock'], $formData['images']);
+            // dd($formData);
             $this->form->fill($formData);
         }
     }
@@ -58,7 +60,7 @@ class EditProduct extends EditRecord
 
         //If name changed, regenerated slug
         if ($this->translationData['en']['name'] !== $currentName) {
-            $mainData['slug'] = $this->generateSlugFromName($extracted['en']['name']);
+            $mainData['slug'] = $this->generateSlugFromName($this->translationData['en']['name']);
         }
 
         return $mainData;
