@@ -104,7 +104,7 @@ class EditCategory extends EditRecord
 
         // If name changed, regenerate slug
         if ($this->translationData['en']['name'] !== $currentName) {
-            $mainData['slug'] = $this->generateSlugFromName($extracted['en']['name']);
+            $mainData['slug'] = $this->generateSlugFromName($this->translationData['en']['name']);
         }
 
         return $mainData;
