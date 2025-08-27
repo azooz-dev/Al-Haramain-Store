@@ -351,7 +351,7 @@ class ViewOrder extends ViewRecord
                       ->label(__('app.fields.sku'))
                       ->badge()
                       ->color('gray')
-                      ->prefix('SKU: '),
+                      ->prefix(__('app.prefixes.sku')),
 
                     Infolists\Components\Grid::make(4)
                       ->schema([
@@ -359,7 +359,7 @@ class ViewOrder extends ViewRecord
                           ->label(__('app.fields.quantity'))
                           ->badge()
                           ->color('info')
-                          ->prefix('Qty: '),
+                          ->prefix(__('app.prefixes.qty')),
 
                         Infolists\Components\TextEntry::make('price')
                           ->label(__('app.fields.unit_price'))

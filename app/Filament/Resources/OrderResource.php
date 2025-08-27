@@ -25,7 +25,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationLabel = 'Orders';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $modelLabel = 'Order';
 
@@ -38,7 +38,7 @@ class OrderResource extends Resource
      */
     public static function getNavigationGroup(): ?string
     {
-        return __('app.navigation.order_management');
+        return __('app.navigation.store_management');
     }
 
     /**
@@ -415,7 +415,6 @@ class OrderResource extends Resource
                             in_array($record->status, [Order::CANCELLED, Order::REFUNDED])
                         ),
                 ])
-                    ->tooltip(__('app.tooltips.order_actions')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

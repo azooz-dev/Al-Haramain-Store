@@ -342,6 +342,21 @@ return [
     'edit' => 'تعديل',
     'actions' => 'الإجراءات',
     'add' => 'إضافة',
+    'view_order' => 'عرض الطلب',
+  ],
+
+  // Notifications
+  'notifications' => [
+    'order_updated' => [
+      'title' => 'تم تحديث الطلب',
+      'body' => 'تم تحديث الطلب رقم :order_number بنجاح.',
+    ],
+  ],
+
+  // Prefixes
+  'prefixes' => [
+    'sku' => 'رمز المنتج: ',
+    'qty' => 'الكمية: ',
   ],
 
   // Bulk Actions

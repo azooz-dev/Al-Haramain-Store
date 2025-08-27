@@ -6,7 +6,6 @@ return [
     'store_management' => 'Store Management',
     'user_management' => 'User Management',
     'content_management' => 'Content Management',
-    'order_management' => 'Order Management',
     'system' => 'System',
   ],
 
@@ -343,6 +342,21 @@ return [
     'edit' => 'Edit',
     'actions' => 'Actions',
     'add' => 'Add',
+    'view_order' => 'View Order',
+  ],
+
+  // Notifications
+  'notifications' => [
+    'order_updated' => [
+      'title' => 'Order Updated',
+      'body' => 'Order #:order_number has been updated successfully.',
+    ],
+  ],
+
+  // Prefixes
+  'prefixes' => [
+    'sku' => 'SKU: ',
+    'qty' => 'Qty: ',
   ],
 
   // Bulk Actions
