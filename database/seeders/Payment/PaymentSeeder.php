@@ -15,7 +15,7 @@ class PaymentSeeder extends Seeder
     public function run(): void
     {
         Payment::create([
-            'order_id' => Order::random()->id,
+            'order_id' => Order::first()->id,
             'payment_method' => 'cash',
             'transaction_id' => '1234567890',
             'amount' => 100,

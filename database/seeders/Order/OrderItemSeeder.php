@@ -16,8 +16,8 @@ class OrderItemSeeder extends Seeder
     public function run(): void
     {
         OrderItem::create([
-            'order_id' => Order::random()->id,
-            'product_id' => Product::random()->id,
+            'order_id' => Order::first()->id,
+            'product_id' => Product::first()->id,
             'quantity' => 1,
             'total_price' => 100,
             'amount_discount_price' => 100,

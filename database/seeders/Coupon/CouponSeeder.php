@@ -16,13 +16,13 @@ class CouponSeeder extends Seeder
         Coupon::create([
             'code' => '1234567890',
             'name' => 'Coupon 1',
-            'type' => Random::element([Coupon::FIXED, Coupon::PERCENTAGE]),
+            'type' => collect([Coupon::FIXED, Coupon::PERCENTAGE])->random(),
             'discount_amount' => 100,
             'usage_limit' => 100,
             'usage_limit_per_user' => 1,
             'start_date' => now(),
             'end_date' => now()->addDays(30),
-            'status' => Random::element([Coupon::ACTIVE, Coupon::INACTIVE]),
+            'status' => collect([Coupon::ACTIVE, Coupon::INACTIVE])->random(),
         ]);
     }
 }

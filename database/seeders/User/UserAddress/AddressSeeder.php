@@ -3,18 +3,15 @@
 namespace Database\Seeders\User\UserAddress;
 
 use App\Models\User\UserAddresses\Address;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User\User;  // Add this import
 use Illuminate\Database\Seeder;
 
 class AddressSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         Address::create([
-            'user_id' => 1,
+            'user_id' => User::first()->id,
             'full_name' => 'John Doe',
             'phone' => '1234567890',
             'street' => '123 Main St',

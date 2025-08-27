@@ -6,6 +6,7 @@ return [
     'store_management' => 'Store Management',
     'user_management' => 'User Management',
     'content_management' => 'Content Management',
+    'order_management' => 'Order Management',
     'system' => 'System',
   ],
 
@@ -31,7 +32,7 @@ return [
       'label' => 'Order',
       'plural_label' => 'Orders',
       'navigation_label' => 'Orders',
-      'navigation_group' => 'Store Management',
+      'navigation_group' => 'Order Management',
       'navigation_icon' => 'heroicon-o-shopping-cart',
       'navigation_sort' => 3,
     ],
@@ -172,6 +173,21 @@ return [
       'select_categories' => 'Select Categories',
       'upload_image_help' => 'Upload a high-quality image (max 2MB). Recommended size: 800x600px',
     ],
+    'order' => [
+      'status_management' => 'Status Management',
+      'status_management_description' => 'Update order status and add admin notes',
+      'status' => 'Order Status',
+      'status_options' => [
+        'pending' => 'Pending',
+        'processing' => 'Processing',
+        'shipped' => 'Shipped',
+        'delivered' => 'Delivered',
+        'cancelled' => 'Cancelled',
+        'refunded' => 'Refunded',
+      ],
+      'admin_notes' => 'Admin Notes',
+      'admin_notes_placeholder' => 'Add internal notes about this order...',
+    ],
   ],
 
   // Table Columns
@@ -225,6 +241,18 @@ return [
       'created_at' => 'Created',
       'updated_at' => 'Updated',
     ],
+    'order' => [
+      'order_number' => 'Order Number',
+      'customer' => 'Customer',
+      'status' => 'Status',
+      'items_count' => 'Items',
+      'total_amount' => 'Total Amount',
+      'payment_method' => 'Payment Method',
+      'payment_status' => 'Payment Status',
+      'shipping_address' => 'Shipping Address',
+      'created_at' => 'Order Date',
+      'updated_at' => 'Updated',
+    ],
   ],
 
   // Messages
@@ -255,7 +283,7 @@ return [
       'confirm_delete_bulk_heading' => 'Delete Selected Products',
       'confirm_delete_bulk_description' => 'Are you sure you want to delete the selected products? This action cannot be undone.',
     ],
-
+    'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
   ],
 
   // Status Labels
@@ -265,10 +293,31 @@ return [
     'draft' => 'Draft',
     'published' => 'Published',
     'pending' => 'Pending',
+    'processing' => 'Processing',
+    'shipped' => 'Shipped',
+    'delivered' => 'Delivered',
+    'cancelled' => 'Cancelled',
+    'refunded' => 'Refunded',
     'approved' => 'Approved',
     'rejected' => 'Rejected',
     'archived' => 'Archived',
     'deleted' => 'Deleted',
+  ],
+
+  // Payment Methods
+  'payment' => [
+    'credit_card' => 'Credit Card',
+    'paypal' => 'PayPal',
+    'cash_on_delivery' => 'Cash on Delivery',
+    'bank_transfer' => 'Bank Transfer',
+  ],
+
+  // Payment Status
+  'payment_status' => [
+    'paid' => 'Paid',
+    'pending' => 'Pending',
+    'failed' => 'Failed',
+    'unknown' => 'Unknown',
   ],
 
   // Actions
@@ -284,8 +333,115 @@ return [
     'cancel' => 'Cancel',
     'duplicate' => 'Duplicate',
     'export' => 'Export',
+    'export_orders' => 'Export Orders',
+    'view_analytics' => 'View Analytics',
+    'print_invoice' => 'Print Invoice',
+    'notify_customer' => 'Notify Customer',
+    'track_order' => 'Track Order',
+    'cancel_order' => 'Cancel Order',
+    'refund_order' => 'Refund Order',
+    'edit' => 'Edit',
     'actions' => 'Actions',
     'add' => 'Add',
+  ],
+
+  // Bulk Actions
+  'bulk_actions' => [
+    'mark_processing' => 'Mark as Processing',
+    'mark_shipped' => 'Mark as Shipped',
+    'export' => 'Export Orders',
+  ],
+
+  // Modals
+  'modals' => [
+    'send_notification' => [
+      'heading' => 'Send Notification',
+      'description' => 'Send a notification to the customer about their order status.',
+    ],
+    'delete_order' => [
+      'heading' => 'Delete Order',
+      'description' => 'Are you sure you want to delete this order? This action cannot be undone.',
+    ],
+    'cancel_order' => [
+      'heading' => 'Cancel Order',
+      'description' => 'Are you sure you want to cancel this order? This action cannot be undone.',
+    ],
+    'refund_order' => [
+      'heading' => 'Refund Order',
+      'description' => 'Are you sure you want to refund this order? This action cannot be undone.',
+    ],
+  ],
+
+  // Tooltips
+  'tooltips' => [
+    'order_actions' => 'Order Actions',
+  ],
+
+  // Sections
+  'sections' => [
+    'order_overview' => 'Order Overview',
+    'order_overview_description' => 'Complete order details and status information',
+    'customer_information' => 'Customer Information',
+    'customer_information_description' => 'Customer details and order history',
+    'shipping_address' => 'Shipping Address',
+    'shipping_address_description' => 'Delivery address and contact information',
+    'order_items' => 'Order Items',
+    'order_items_description' => ':count items with a total quantity of :total',
+    'payment_information' => 'Payment Information',
+    'payment_information_description' => 'Payment method and transaction details',
+    'admin_notes' => 'Admin Notes',
+  ],
+
+  // Fields
+  'fields' => [
+    'order_number' => 'Order Number',
+    'status' => 'Status',
+    'order_date' => 'Order Date',
+    'total_amount' => 'Total Amount',
+    'payment_method' => 'Payment Method',
+    'total_items' => 'Total Items',
+    'customer_name' => 'Customer Name',
+    'customer_email' => 'Customer Email',
+    'customer_phone' => 'Customer Phone',
+    'shipping_address' => 'Shipping Address',
+    'product_name' => 'Product Name',
+    'quantity' => 'Quantity',
+    'unit_price' => 'Unit Price',
+    'discount' => 'Discount',
+    'total' => 'Total',
+    'payment_transactions' => 'Payment Transactions',
+    'transaction_id' => 'Transaction ID',
+    'amount' => 'Amount',
+    'processed_at' => 'Processed At',
+    'last_updated' => 'Last Updated',
+    'customer_since' => 'Customer Since',
+    'total_orders' => 'Total Orders',
+    'total_spent' => 'Total Spent',
+    'recipient_name' => 'Recipient Name',
+    'recipient_phone' => 'Recipient Phone',
+    'address_line_1' => 'Address Line 1',
+    'address_line_2' => 'Address Line 2',
+    'city' => 'City',
+    'state' => 'State',
+    'postal_code' => 'Postal Code',
+    'country' => 'Country',
+    'sku' => 'SKU',
+    'line_total' => 'Line Total',
+    'subtotal' => 'Subtotal',
+    'total_discount' => 'Total Discount',
+    'final_total' => 'Final Total',
+    'payment_status' => 'Payment Status',
+  ],
+
+  // Tabs
+  'tabs' => [
+    'all_orders' => 'All Orders',
+    'pending' => 'Pending',
+    'processing' => 'Processing',
+    'shipped' => 'Shipped',
+    'delivered' => 'Delivered',
+    'cancelled' => 'Cancelled',
+    'refunded' => 'Refunded',
   ],
 
   // Filters
@@ -299,6 +455,13 @@ return [
     'created_at' => 'Created Date',
     'created_from' => 'Created From',
     'created_until' => 'Created Until',
+    'order_status' => 'Order Status',
+    'payment_method' => 'Payment Method',
+    'order_amount' => 'Order Amount',
+    'amount_from' => 'Amount From',
+    'amount_to' => 'Amount To',
+    'order_date' => 'Order Date',
+    'payment_status' => 'Payment Status',
     'stock_status' => 'Stock Status',
     'stock_level' => 'Stock Level',
     'in_stock' => 'In Stock',
@@ -325,6 +488,8 @@ return [
     'select_category' => 'Select a category...',
     'enter_category_name' => 'Enter category name...',
     'enter_category_description' => 'Enter category description...',
+    'not_provided' => 'Not provided',
+    'no_notes_added' => 'No notes added',
   ],
 
   // Tooltips

@@ -31,7 +31,7 @@ return [
       'label' => 'الطلب',
       'plural_label' => 'الطلبات',
       'navigation_label' => 'الطلبات',
-      'navigation_group' => 'إدارة المتجر',
+      'navigation_group' => 'إدارة الطلبات',
       'navigation_icon' => 'heroicon-o-shopping-cart',
       'navigation_sort' => 3,
     ],
@@ -172,6 +172,21 @@ return [
       'select_categories' => 'اختر التصنيفات',
       'upload_image_help' => 'قم برفع صورة عالية الجودة (الحد الأقصى 2 ميجابايت). الحجم الموصى به: 800×600 بكسل',
     ],
+    'order' => [
+      'status_management' => 'إدارة الحالة',
+      'status_management_description' => 'تحديث حالة الطلب وإضافة ملاحظات الإدارة',
+      'status' => 'حالة الطلب',
+      'status_options' => [
+        'pending' => 'في الانتظار',
+        'processing' => 'قيد المعالجة',
+        'shipped' => 'تم الشحن',
+        'delivered' => 'تم التسليم',
+        'cancelled' => 'ملغي',
+        'refunded' => 'مسترد',
+      ],
+      'admin_notes' => 'ملاحظات الإدارة',
+      'admin_notes_placeholder' => 'أضف ملاحظات داخلية حول هذا الطلب...',
+    ],
   ],
 
   // Table Columns
@@ -225,6 +240,18 @@ return [
       'created_at' => 'تم الإنشاء',
       'updated_at' => 'تم التحديث',
     ],
+    'order' => [
+      'order_number' => 'رقم الطلب',
+      'customer' => 'العميل',
+      'status' => 'الحالة',
+      'items_count' => 'العناصر',
+      'total_amount' => 'المبلغ الإجمالي',
+      'payment_method' => 'طريقة الدفع',
+      'payment_status' => 'حالة الدفع',
+      'shipping_address' => 'عنوان الشحن',
+      'created_at' => 'تاريخ الطلب',
+      'updated_at' => 'تم التحديث',
+    ],
   ],
 
   // Messages
@@ -254,7 +281,8 @@ return [
       'confirm_delete_description' => 'هل أنت متأكد من أنك تريد حذف ":name"؟ لا يمكن التراجع عن هذا الإجراء.',
       'confirm_delete_bulk_heading' => 'حذف المنتجات المحددة',
       'confirm_delete_bulk_description' => 'هل أنت متأكد من أنك تريد حذف المنتجات المحددة؟ لا يمكن التراجع عن هذا الإجراء.',
-    ]
+    ],
+    'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
   ],
 
   // Status Labels
@@ -264,10 +292,31 @@ return [
     'draft' => 'مسودة',
     'published' => 'منشور',
     'pending' => 'في الانتظار',
+    'processing' => 'قيد المعالجة',
+    'shipped' => 'تم الشحن',
+    'delivered' => 'تم التسليم',
+    'cancelled' => 'ملغي',
+    'refunded' => 'مسترد',
     'approved' => 'موافق عليه',
     'rejected' => 'مرفوض',
     'archived' => 'مؤرشف',
     'deleted' => 'محذوف',
+  ],
+
+  // Payment Methods
+  'payment' => [
+    'credit_card' => 'بطاقة ائتمان',
+    'paypal' => 'باي بال',
+    'cash_on_delivery' => 'الدفع عند الاستلام',
+    'bank_transfer' => 'تحويل بنكي',
+  ],
+
+  // Payment Status
+  'payment_status' => [
+    'paid' => 'مدفوع',
+    'pending' => 'في الانتظار',
+    'failed' => 'فشل',
+    'unknown' => 'غير معروف',
   ],
 
   // Actions
@@ -283,8 +332,115 @@ return [
     'cancel' => 'إلغاء',
     'duplicate' => 'نسخ',
     'export' => 'تصدير',
+    'export_orders' => 'تصدير الطلبات',
+    'view_analytics' => 'عرض التحليلات',
+    'print_invoice' => 'طباعة الفاتورة',
+    'notify_customer' => 'إشعار العميل',
+    'track_order' => 'تتبع الطلب',
+    'cancel_order' => 'إلغاء الطلب',
+    'refund_order' => 'استرداد الطلب',
+    'edit' => 'تعديل',
     'actions' => 'الإجراءات',
     'add' => 'إضافة',
+  ],
+
+  // Bulk Actions
+  'bulk_actions' => [
+    'mark_processing' => 'تحديد كقيد المعالجة',
+    'mark_shipped' => 'تحديد كتم الشحن',
+    'export' => 'تصدير الطلبات',
+  ],
+
+  // Modals
+  'modals' => [
+    'send_notification' => [
+      'heading' => 'إرسال إشعار',
+      'description' => 'إرسال إشعار للعميل حول حالة طلبه.',
+    ],
+    'delete_order' => [
+      'heading' => 'حذف الطلب',
+      'description' => 'هل أنت متأكد من أنك تريد حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
+    ],
+    'cancel_order' => [
+      'heading' => 'إلغاء الطلب',
+      'description' => 'هل أنت متأكد من أنك تريد إلغاء هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
+    ],
+    'refund_order' => [
+      'heading' => 'استرداد الطلب',
+      'description' => 'هل أنت متأكد من أنك تريد استرداد هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.',
+    ],
+  ],
+
+  // Tooltips
+  'tooltips' => [
+    'order_actions' => 'إجراءات الطلب',
+  ],
+
+  // Sections
+  'sections' => [
+    'order_overview' => 'نظرة عامة على الطلب',
+    'order_overview_description' => 'تفاصيل الطلب الكاملة ومعلومات الحالة',
+    'customer_information' => 'معلومات العميل',
+    'customer_information_description' => 'تفاصيل العميل وسجل الطلبات',
+    'shipping_address' => 'عنوان الشحن',
+    'shipping_address_description' => 'عنوان التسليم ومعلومات الاتصال',
+    'order_items' => 'عناصر الطلب',
+    'order_items_description' => ':count عنصر بإجمالي كمية :total',
+    'payment_information' => 'معلومات الدفع',
+    'payment_information_description' => 'طريقة الدفع وتفاصيل المعاملة',
+    'admin_notes' => 'ملاحظات الإدارة',
+  ],
+
+  // Fields
+  'fields' => [
+    'order_number' => 'رقم الطلب',
+    'status' => 'الحالة',
+    'order_date' => 'تاريخ الطلب',
+    'total_amount' => 'المبلغ الإجمالي',
+    'payment_method' => 'طريقة الدفع',
+    'total_items' => 'إجمالي العناصر',
+    'customer_name' => 'اسم العميل',
+    'customer_email' => 'بريد العميل الإلكتروني',
+    'customer_phone' => 'هاتف العميل',
+    'shipping_address' => 'عنوان الشحن',
+    'product_name' => 'اسم المنتج',
+    'quantity' => 'الكمية',
+    'unit_price' => 'سعر الوحدة',
+    'discount' => 'الخصم',
+    'total' => 'المجموع',
+    'payment_transactions' => 'معاملات الدفع',
+    'transaction_id' => 'معرف المعاملة',
+    'amount' => 'المبلغ',
+    'processed_at' => 'تمت المعالجة في',
+    'last_updated' => 'آخر تحديث',
+    'customer_since' => 'عميل منذ',
+    'total_orders' => 'إجمالي الطلبات',
+    'total_spent' => 'إجمالي الإنفاق',
+    'recipient_name' => 'اسم المستلم',
+    'recipient_phone' => 'هاتف المستلم',
+    'address_line_1' => 'عنوان السطر الأول',
+    'address_line_2' => 'عنوان السطر الثاني',
+    'city' => 'المدينة',
+    'state' => 'الولاية',
+    'postal_code' => 'الرمز البريدي',
+    'country' => 'البلد',
+    'sku' => 'رمز المنتج',
+    'line_total' => 'إجمالي السطر',
+    'subtotal' => 'المجموع الفرعي',
+    'total_discount' => 'إجمالي الخصم',
+    'final_total' => 'المجموع النهائي',
+    'payment_status' => 'حالة الدفع',
+  ],
+
+  // Tabs
+  'tabs' => [
+    'all_orders' => 'جميع الطلبات',
+    'pending' => 'في الانتظار',
+    'processing' => 'قيد المعالجة',
+    'shipped' => 'تم الشحن',
+    'delivered' => 'تم التسليم',
+    'cancelled' => 'ملغي',
+    'refunded' => 'مسترد',
   ],
 
   // Filters
@@ -298,6 +454,13 @@ return [
     'created_at' => 'تاريخ الإنشاء',
     'created_from' => 'من تاريخ',
     'created_until' => 'إلى تاريخ',
+    'order_status' => 'حالة الطلب',
+    'payment_method' => 'طريقة الدفع',
+    'order_amount' => 'مبلغ الطلب',
+    'amount_from' => 'المبلغ من',
+    'amount_to' => 'المبلغ إلى',
+    'order_date' => 'تاريخ الطلب',
+    'payment_status' => 'حالة الدفع',
     'stock_status' => 'حالة المخزون',
     'stock_level' => 'مستوى المخزون',
     'in_stock' => 'متوفر',
@@ -322,6 +485,8 @@ return [
     'select_category' => 'اختر تصنيفاً...',
     'enter_category_name' => 'أدخل اسم التصنيف...',
     'enter_category_description' => 'أدخل وصف التصنيف...',
+    'not_provided' => 'غير متوفر',
+    'no_notes_added' => 'لا توجد ملاحظات مضافة',
   ],
 
   // Tooltips

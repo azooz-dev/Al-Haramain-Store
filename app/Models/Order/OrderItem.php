@@ -13,8 +13,14 @@ class OrderItem extends Model
         'order_id',
         'product_id',
         'quantity',
-        'total_price',
-        'amount_discount_price',
+        'price',
+        'discount_price',
+    ];
+
+    protected $casts = [
+        'quantity' => 'integer',
+        'price' => 'decimal:2',
+        'discount_price' => 'decimal:2',
     ];
 
     public function order(): BelongsTo
@@ -25,5 +31,73 @@ class OrderItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Get the effective price per item (after discount)
+     */
+    public function getEffectivePriceAttribute(): float
+    {
+        return $this->price - ($this->discount_price ?? 0);
+    }
+
+    /**
+     * Get the total line amount (effective price × quantity)
+     */
+    public function getLineTotalAttribute(): float
+    {
+        return $this->effective_price * $this->quantity;
+    }
+
+    /**
+     * Get the original line total (before discounts)
+     */
+    public function getOriginalLineTotalAttribute(): float
+    {
+        return $this->price * $this->quantity;
+    }
+
+    /**
+     * Get the total discount for this line item
+     */
+    public function getTotalDiscountAttribute(): float
+    {
+        return ($this->discount_price ?? 0) * $this->quantity;
+    }
+
+    /**
+     * Get the discount percentage for this item
+     */
+    public function getDiscountPercentageAttribute(): float
+    {
+        if (!$this->discount_price || $this->price <= 0) {
+            return 0;
+        }
+
+        return round(($this->discount_price / $this->price) * 100, 2);
+    }
+
+    /**
+     * Check if this item has a discount
+     */
+    public function hasDiscount(): bool
+    {
+        return $this->discount_price && $this->discount_price > 0;
+    }
+
+    /**
+     * Get formatted product name with translations
+     */
+    public function getProductNameAttribute(): string
+    {
+        if (!$this->product) {
+            return 'Product Not Found';
+        }
+
+        return $this->product->translations
+            ->where('local', app()->getLocale())
+            ->first()?->name ??
+            $this->product->translations->first()?->name ??
+            $this->product->sku;
     }
 }
