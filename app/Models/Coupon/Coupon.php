@@ -32,4 +32,9 @@ class Coupon extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function couponUsers(): HasMany
+    {
+        return $this->hasMany(CouponUser::class);
+    }
 }
