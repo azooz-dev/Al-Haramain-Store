@@ -6,8 +6,6 @@ use App\Models\User\User;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Review\ReviewTranslation;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -25,7 +23,8 @@ class Review extends Model
         "order_id",
         "rating",
         "comment",
-        "status"
+        "status",
+        "locale",
     ];
 
     public function user(): BelongsTo
@@ -41,10 +40,5 @@ class Review extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
-    }
-
-    public function translations(): HasMany
-    {
-        return $this->hasMany(ReviewTranslation::class);
     }
 }

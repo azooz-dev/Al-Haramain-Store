@@ -15,7 +15,6 @@ use Database\Seeders\Category\CategorySeeder;
 use Database\Seeders\Coupon\CouponUserSeeder;
 use Database\Seeders\Product\ProductColorSeeder;
 use Database\Seeders\Product\ProductVariantSeeder;
-use Database\Seeders\Review\ReviewTranslationSeeder;
 use Database\Seeders\User\UserAddress\AddressSeeder;
 use Database\Seeders\Product\ProductColorImageSeeder;
 use Database\Seeders\Category\CategoryTranslationSeeder;
@@ -43,7 +42,6 @@ class DatabaseSeeder extends Seeder
             OrderItemSeeder::class,
             PaymentSeeder::class,
             ReviewSeeder::class,
-            ReviewTranslationSeeder::class,
         ]);
     }
 }
