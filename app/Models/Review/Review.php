@@ -47,4 +47,9 @@ class Review extends Model
     {
         return $this->hasMany(ReviewTranslation::class);
     }
+
+    public function getStatusLabelAttribute()
+    {
+        return __('app.status.' . $this->status);
+    }
 }
