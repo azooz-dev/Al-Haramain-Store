@@ -47,9 +47,9 @@ return [
       'label' => 'التقييم',
       'plural_label' => 'التقييمات',
       'navigation_label' => 'التقييمات',
-      'navigation_group' => 'إدارة المحتوى',
-      'navigation_icon' => 'heroicon-o-star',
-      'navigation_sort' => 1,
+      'navigation_group' => 'إدارة المتجر',
+      'navigation_icon' => 'heroicon-o-chat-bubble-left-right',
+      'navigation_sort' => 4,
     ],
     'offer' => [
       'label' => 'العرض',
@@ -57,7 +57,7 @@ return [
       'navigation_label' => 'العروض',
       'navigation_group' => 'إدارة المتجر',
       'navigation_icon' => 'heroicon-o-gift',
-      'navigation_sort' => 4,
+      'navigation_sort' => 5,
     ],
     'coupon' => [
       'label' => 'الكوبون',
@@ -210,6 +210,20 @@ return [
       'admin_notes' => 'ملاحظات الإدارة',
       'admin_notes_placeholder' => 'أضف ملاحظات داخلية حول هذا الطلب...',
     ],
+    'review' => [
+      'status_management' => 'إدارة الحالة',
+      'status_management_description' => 'تحديث حالة التقييم وإضافة ملاحظات الإدارة',
+      'status' => 'حالة التقييم',
+      'admin_notes' => 'ملاحظات الإدارة',
+      'enter_admin_notes' => 'أضف ملاحظات داخلية حول هذا التقييم...',
+      'review_details' => 'تفاصيل التقييم',
+      'review_details_description' => 'معلومات التقييم المقدمة من العميل',
+      'rating' => 'التقييم',
+      'user' => 'العميل',
+      'product' => 'المنتج',
+      'order' => 'الطلب',
+      'comment' => 'التعليق',
+    ],
   ],
 
   // Table Columns
@@ -288,6 +302,16 @@ return [
       'created_at' => 'تاريخ الطلب',
       'updated_at' => 'تم التحديث',
     ],
+    'review' => [
+      'id' => 'الرقم',
+      'user' => 'العميل',
+      'product' => 'المنتج',
+      'rating' => 'التقييم',
+      'comment' => 'التعليق',
+      'order' => 'الطلب',
+      'status' => 'الحالة',
+      'created_at' => 'تاريخ الإنشاء',
+    ],
     'order_item' => [
       'product_name' => 'اسم المنتج',
       'sku' => 'رمز المنتج',
@@ -342,6 +366,7 @@ return [
       'refund_recorded' => 'تم تسجيل الاسترداد وتحديد الطلب كمسترد.',
     ],
     'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
+    'status_updated' => 'تم تحديث حالة التقييم',
   ],
 
   // Status Labels
@@ -408,6 +433,20 @@ return [
     'mark_shipped' => 'تحديد كتم الشحن',
     'download_invoice' => 'تحميل الفاتورة',
     'generate_invoice' => 'إنشاء الفاتورة',
+    'review' => [
+      'approve' => 'الموافقة على التقييم',
+      'reject' => 'رفض التقييم',
+      'approve_selected' => 'الموافقة على المحدد',
+      'reject_selected' => 'رفض المحدد',
+      'approve_modal_heading' => 'الموافقة على التقييم',
+      'approve_modal_description' => 'هل أنت متأكد من أنك تريد الموافقة على هذا التقييم؟ سيكون مرئياً للعملاء.',
+      'reject_modal_heading' => 'رفض التقييم',
+      'reject_modal_description' => 'هل أنت متأكد من أنك تريد رفض هذا التقييم؟ لن يكون مرئياً للعملاء.',
+      'approve_selected_modal_heading' => 'الموافقة على التقييمات المحددة',
+      'approve_selected_modal_description' => 'هل أنت متأكد من أنك تريد الموافقة على التقييمات المحددة؟ ستكون مرئية للعملاء.',
+      'reject_selected_modal_heading' => 'رفض التقييمات المحددة',
+      'reject_selected_modal_description' => 'هل أنت متأكد من أنك تريد رفض التقييمات المحددة؟ لن تكون مرئية للعملاء.',
+    ],
   ],
 
   // Common
@@ -572,6 +611,12 @@ return [
       'not_featured' => 'غير مميز',
       'all_statuses' => 'جميع الحالات',
       'all_products' => 'جميع المنتجات',
+    ],
+    'review' => [
+      'status' => 'الحالة',
+      'rating' => 'التقييم',
+      'created_from' => 'من تاريخ',
+      'created_until' => 'إلى تاريخ',
     ],
   ],
 

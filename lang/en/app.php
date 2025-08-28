@@ -47,9 +47,9 @@ return [
       'label' => 'Review',
       'plural_label' => 'Reviews',
       'navigation_label' => 'Reviews',
-      'navigation_group' => 'Content Management',
-      'navigation_icon' => 'heroicon-o-star',
-      'navigation_sort' => 1,
+      'navigation_group' => 'Store Management',
+      'navigation_icon' => 'heroicon-o-chat-bubble-left-right',
+      'navigation_sort' => 4,
     ],
     'offer' => [
       'label' => 'Offer',
@@ -57,7 +57,7 @@ return [
       'navigation_label' => 'Offers',
       'navigation_group' => 'Store Management',
       'navigation_icon' => 'heroicon-o-gift',
-      'navigation_sort' => 4,
+      'navigation_sort' => 5,
     ],
     'coupon' => [
       'label' => 'Coupon',
@@ -210,6 +210,20 @@ return [
       'admin_notes' => 'Admin Notes',
       'admin_notes_placeholder' => 'Add internal notes about this order...',
     ],
+    'review' => [
+      'status_management' => 'Status Management',
+      'status_management_description' => 'Update review status and add admin notes',
+      'status' => 'Review Status',
+      'admin_notes' => 'Admin Notes',
+      'enter_admin_notes' => 'Add internal notes about this review...',
+      'review_details' => 'Review Details',
+      'review_details_description' => 'Review information submitted by the customer',
+      'rating' => 'Rating',
+      'user' => 'Customer',
+      'product' => 'Product',
+      'order' => 'Order',
+      'comment' => 'Comment',
+    ],
   ],
 
   // Table Columns
@@ -288,6 +302,16 @@ return [
       'created_at' => 'Order Date',
       'updated_at' => 'Updated',
     ],
+    'review' => [
+      'id' => 'ID',
+      'user' => 'Customer',
+      'product' => 'Product',
+      'rating' => 'Rating',
+      'comment' => 'Comment',
+      'order' => 'Order',
+      'status' => 'Status',
+      'created_at' => 'Created At',
+    ],
     'order_item' => [
       'product_name' => 'Product Name',
       'sku' => 'SKU',
@@ -342,6 +366,7 @@ return [
       'refund_recorded' => 'Refund recorded and order marked as refunded.',
     ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
+    'status_updated' => 'Status updated',
   ],
 
   // Status Labels
@@ -408,6 +433,20 @@ return [
     'mark_shipped' => 'Mark as Shipped',
     'download_invoice' => 'Download Invoice',
     'generate_invoice' => 'Generate Invoice',
+    'review' => [
+      'approve' => 'Approve Review',
+      'reject' => 'Reject Review',
+      'approve_selected' => 'Approve Selected',
+      'reject_selected' => 'Reject Selected',
+      'approve_modal_heading' => 'Approve Review',
+      'approve_modal_description' => 'Are you sure you want to approve this review? It will be visible to customers.',
+      'reject_modal_heading' => 'Reject Review',
+      'reject_modal_description' => 'Are you sure you want to reject this review? It will not be visible to customers.',
+      'approve_selected_modal_heading' => 'Approve Selected Reviews',
+      'approve_selected_modal_description' => 'Are you sure you want to approve the selected reviews? They will be visible to customers.',
+      'reject_selected_modal_heading' => 'Reject Selected Reviews',
+      'reject_selected_modal_description' => 'Are you sure you want to reject the selected reviews? They will not be visible to customers.',
+    ],
   ],
 
   // Common
@@ -574,6 +613,12 @@ return [
       'not_featured' => 'Not Featured',
       'all_statuses' => 'All Statuses',
       'all_products' => 'All Products',
+    ],
+    'review' => [
+      'status' => 'Status',
+      'rating' => 'Rating',
+      'created_from' => 'Created From',
+      'created_until' => 'Created Until',
     ],
   ],
 
