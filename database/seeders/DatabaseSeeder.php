@@ -13,14 +13,12 @@ use Database\Seeders\Payment\PaymentSeeder;
 use Database\Seeders\Product\ProductSeeder;
 use Database\Seeders\Category\CategorySeeder;
 use Database\Seeders\Coupon\CouponUserSeeder;
-use Database\Seeders\Review\ReviewReplySeeder;
 use Database\Seeders\Product\ProductColorSeeder;
 use Database\Seeders\Product\ProductVariantSeeder;
 use Database\Seeders\Review\ReviewTranslationSeeder;
 use Database\Seeders\User\UserAddress\AddressSeeder;
 use Database\Seeders\Product\ProductColorImageSeeder;
 use Database\Seeders\Category\CategoryTranslationSeeder;
-use Database\Seeders\Review\ReviewReplyTranslationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -46,8 +44,6 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             ReviewSeeder::class,
             ReviewTranslationSeeder::class,
-            ReviewReplySeeder::class,
-            ReviewReplyTranslationSeeder::class,
         ]);
     }
 }
