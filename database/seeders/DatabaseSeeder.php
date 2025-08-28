@@ -40,6 +40,10 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             OrderItemSeeder::class,
             PaymentSeeder::class,
+            ReviewSeeder::class,
+            ReviewTranslationSeeder::class,
+            ReviewReplySeeder::class,
+            ReviewReplyTranslationSeeder::class,
         ]);
     }
 }
