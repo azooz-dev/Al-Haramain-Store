@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('order_id')->constrained('orders');
             $table->tinyInteger('rating');
-            $table->unique(['order_id']);
+            $table->enum('locale', ['en', 'ar'])->default('en');
+            $table->text('comment');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
