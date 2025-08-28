@@ -25,5 +25,15 @@ class OrderSeeder extends Seeder
             'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
             'status' => collect([Order::PENDING, Order::PROCESSING, Order::SHIPPED, Order::DELIVERED, Order::CANCELLED, Order::REFUNDED])->random(),
         ]);
+
+        Order::create([
+            'user_id' => User::first()->id,
+            'address_id' => Address::first()->id,
+            'coupon_id' => Coupon::first()->id,
+            'order_number' => '123123123',
+            'total_amount' => 100,
+            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'status' => collect([Order::PENDING, Order::PROCESSING, Order::SHIPPED, Order::DELIVERED, Order::CANCELLED, Order::REFUNDED])->random(),
+        ]);
     }
 }

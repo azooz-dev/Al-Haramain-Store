@@ -8,7 +8,7 @@ use App\Models\User\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ReviewReplaySeeder extends Seeder
+class ReviewReplySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,6 +17,11 @@ class ReviewReplaySeeder extends Seeder
     {
         ReviewReply::create([
             'review_id' => Review::first()->id,
+            'user_id' => User::first()->id,
+        ]);
+
+        ReviewReply::create([
+            'review_id' => Review::find(2)->id,
             'user_id' => User::first()->id,
         ]);
     }

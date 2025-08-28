@@ -22,7 +22,7 @@ class ReviewSeeder extends Seeder
             'product_id' => Product::first()->id,
             'order_id' => Order::first()->id,
             'rating' => 5,
-            'status' => Random::element([Review::PENDING, Review::APPROVED, Review::REJECTED]),
+            'status' => collect([Review::PENDING, Review::APPROVED, Review::REJECTED])->random(),
         ]);
 
         Review::create([
@@ -30,7 +30,7 @@ class ReviewSeeder extends Seeder
             'product_id' => Product::first()->id,
             'order_id' => Order::find(2)->id,
             'rating' => 5,
-            'status' => Random::element([Review::PENDING, Review::APPROVED, Review::REJECTED]),
+            'status' => collect([Review::PENDING, Review::APPROVED, Review::REJECTED])->random(),
         ]);
     }
 }

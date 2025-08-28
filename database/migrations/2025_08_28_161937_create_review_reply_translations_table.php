@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('review_reply_id')->constrained('review_replies')->onDelete('cascade');
             $table->enum('locale', ['ar', 'en'])->default('en');
-            $table->string('reply');
+            $table->text('reply');
             $table->unique(['review_reply_id', 'locale']);
             $table->timestamps();
         });
