@@ -13,14 +13,14 @@ class OrderItem extends Model
         'order_id',
         'product_id',
         'quantity',
-        'price',
-        'discount_price',
+        'total_price',
+        'amount_discount_price',
     ];
 
     protected $casts = [
         'quantity' => 'integer',
-        'price' => 'decimal:2',
-        'discount_price' => 'decimal:2',
+        'total_price' => 'decimal:2',
+        'amount_discount_price' => 'decimal:2',
     ];
 
     public function order(): BelongsTo
@@ -38,7 +38,7 @@ class OrderItem extends Model
      */
     public function getEffectivePriceAttribute(): float
     {
-        return $this->price - ($this->discount_price ?? 0);
+        return $this->total_price - ($this->amount_discount_price ?? 0);
     }
 
     /**
@@ -54,7 +54,7 @@ class OrderItem extends Model
      */
     public function getOriginalLineTotalAttribute(): float
     {
-        return $this->price * $this->quantity;
+        return $this->total_price * $this->quantity;
     }
 
     /**
@@ -62,7 +62,7 @@ class OrderItem extends Model
      */
     public function getTotalDiscountAttribute(): float
     {
-        return ($this->discount_price ?? 0) * $this->quantity;
+        return ($this->amount_discount_price ?? 0) * $this->quantity;
     }
 
     /**
@@ -70,11 +70,11 @@ class OrderItem extends Model
      */
     public function getDiscountPercentageAttribute(): float
     {
-        if (!$this->discount_price || $this->price <= 0) {
+        if (!$this->amount_discount_price || $this->total_price <= 0) {
             return 0;
         }
 
-        return round(($this->discount_price / $this->price) * 100, 2);
+        return round(($this->amount_discount_price / $this->total_price) * 100, 2);
     }
 
     /**
@@ -82,7 +82,7 @@ class OrderItem extends Model
      */
     public function hasDiscount(): bool
     {
-        return $this->discount_price && $this->discount_price > 0;
+        return $this->amount_discount_price && $this->amount_discount_price > 0;
     }
 
     /**

@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\OrderResource\Pages;
-use App\Models\Order\Order;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\Order\Order;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
+use App\Filament\Resources\OrderResource\RelationManagers\PaymentsRelationManager;
 
 class OrderResource extends Resource
 {
@@ -33,33 +35,21 @@ class OrderResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'order_number';
 
-    /**
-     * Get the translated navigation group
-     */
     public static function getNavigationGroup(): ?string
     {
         return __('app.navigation.store_management');
     }
 
-    /**
-     * Get the translated navigation label
-     */
     public static function getNavigationLabel(): string
     {
         return __('app.resources.order.navigation_label');
     }
 
-    /**
-     * Get the translated model label
-     */
     public static function getModelLabel(): string
     {
         return __('app.resources.order.label');
     }
 
-    /**
-     * Get the translated plural model label
-     */
     public static function getPluralModelLabel(): string
     {
         return __('app.resources.order.plural_label');
@@ -76,22 +66,17 @@ class OrderResource extends Resource
                         Forms\Components\Select::make('status')
                             ->label(__('app.forms.order.status'))
                             ->options([
-                                Order::PENDING => __('app.forms.order.status_options.pending'),
-                                Order::PROCESSING => __('app.forms.order.status_options.processing'),
-                                Order::SHIPPED => __('app.forms.order.status_options.shipped'),
-                                Order::DELIVERED => __('app.forms.order.status_options.delivered'),
-                                Order::CANCELLED => __('app.forms.order.status_options.cancelled'),
-                                Order::REFUNDED => __('app.forms.order.status_options.refunded'),
+                                Order::PENDING => __('app.status.pending'),
+                                Order::PROCESSING => __('app.status.processing'),
+                                Order::SHIPPED => __('app.status.shipped'),
+                                Order::DELIVERED => __('app.status.delivered'),
+                                Order::CANCELLED => __('app.status.cancelled'),
+                                Order::REFUNDED => __('app.status.refunded'),
                             ])
                             ->required()
                             ->native(false)
                             ->prefixIcon('heroicon-o-truck'),
 
-                        Forms\Components\Textarea::make('admin_notes')
-                            ->label(__('app.forms.order.admin_notes'))
-                            ->placeholder(__('app.forms.order.admin_notes_placeholder'))
-                            ->rows(3)
-                            ->columnSpanFull(),
                     ])
                     ->columns(2)
                     ->collapsible(),
@@ -230,9 +215,7 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('address.full_address')
                     ->label(__('app.columns.order.shipping_address'))
                     ->limit(30)
-                    ->tooltip(function (Order $record): ?string {
-                        return $record->address?->full_address;
-                    })
+                    ->tooltip(fn(Order $record): ?string => $record->address?->full_address)
                     ->icon('heroicon-o-map-pin')
                     ->color('gray')
                     ->wrap()
@@ -372,50 +355,6 @@ class OrderResource extends Resource
                         });
                     }),
             ])
-            ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make()
-                        ->icon('heroicon-o-eye')
-                        ->color('info'),
-
-                    Tables\Actions\EditAction::make()
-                        ->icon('heroicon-o-pencil')
-                        ->color('warning')
-                        ->visible(
-                            fn(Order $record): bool =>
-                            in_array($record->status, [Order::PENDING, Order::PROCESSING, Order::SHIPPED])
-                        ),
-
-                    // Tables\Actions\Action::make('print_invoice')
-                    //     ->label(__('app.actions.print_invoice'))
-                    //     ->icon('heroicon-o-printer')
-                    //     ->color('success')
-                    //     ->url(fn(Order $record): string => route('admin.orders.invoice', $record))
-                    //     ->openUrlInNewTab(),
-
-                    // Tables\Actions\Action::make('send_notification')
-                    //     ->label(__('app.actions.notify_customer'))
-                    //     ->icon('heroicon-o-bell')
-                    //     ->color('primary')
-                    //     ->action(function (Order $record) {
-                    //         // Logic to send notification to customer
-                    //     })
-                    //     ->requiresConfirmation()
-                    //     ->modalHeading(__('app.modals.send_notification.heading'))
-                    //     ->modalDescription(__('app.modals.send_notification.description')),
-
-                    Tables\Actions\DeleteAction::make()
-                        ->icon('heroicon-o-trash')
-                        ->color('danger')
-                        ->requiresConfirmation()
-                        ->modalHeading(__('app.modals.delete_order.heading'))
-                        ->modalDescription(__('app.modals.delete_order.description'))
-                        ->visible(
-                            fn(Order $record): bool =>
-                            in_array($record->status, [Order::CANCELLED, Order::REFUNDED])
-                        ),
-                ])
-            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('mark_as_processing')
@@ -440,17 +379,37 @@ class OrderResource extends Resource
                         })
                         ->requiresConfirmation(),
 
-                    Tables\Actions\BulkAction::make('export_orders')
-                        ->label(__('app.bulk_actions.export'))
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->color('success')
-                        ->action(function ($records) {
-                            // Export logic here
-                        }),
-
                     Tables\Actions\DeleteBulkAction::make()
                         ->requiresConfirmation(),
                 ]),
+            ])
+            ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->icon('heroicon-o-eye')
+                        ->color('info'),
+                    Tables\Actions\EditAction::make()
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning')
+                        ->visible(fn(Order $record): bool => in_array($record->status, [Order::PENDING, Order::PROCESSING, Order::SHIPPED])),
+                    Tables\Actions\DeleteAction::make()
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.modals.delete_order.heading'))
+                        ->modalDescription(__('app.modals.delete_order.description'))
+                        ->visible(fn(Order $record): bool => in_array($record->status, [Order::CANCELLED, Order::REFUNDED])),
+
+                    Tables\Actions\Action::make('download_invoice')
+                        ->label(__('app.actions.generate_invoice'))
+                        ->icon('heroicon-o-printer')
+                        ->color('success')
+                        ->action(function (Order $record) {
+                            return response()->streamDownload(function () use ($record) {
+                                echo view('invoices.order', ['order' => $record])->render();
+                            }, 'invoice-' . $record->order_number . '.html');
+                        }),
+                ])
             ])
             ->defaultSort('created_at', 'desc')
             ->striped()
@@ -462,6 +421,7 @@ class OrderResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        // Note: The View page will define a richer layout; this is kept for default behavior.
         return $infolist
             ->schema([
                 Infolists\Components\Section::make(__('app.sections.order_overview'))
@@ -504,8 +464,7 @@ class OrderResource extends Resource
 
                                         Infolists\Components\TextEntry::make('payment_method')
                                             ->label(__('app.fields.payment_method'))
-                                            ->badge()
-                                            ->color('info'),
+                                            ->badge(),
 
                                         Infolists\Components\TextEntry::make('items_count')
                                             ->label(__('app.fields.total_items'))
@@ -518,88 +477,24 @@ class OrderResource extends Resource
 
                 Infolists\Components\Section::make(__('app.sections.customer_information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('user.name')
-                            ->label(__('app.fields.customer_name')),
-
-                        Infolists\Components\TextEntry::make('user.email')
-                            ->label(__('app.fields.customer_email'))
-                            ->copyable(),
-
-                        Infolists\Components\TextEntry::make('user.phone')
-                            ->label(__('app.fields.customer_phone'))
-                            ->copyable(),
-
-                        Infolists\Components\TextEntry::make('address.full_address')
-                            ->label(__('app.fields.shipping_address'))
-                            ->columnSpanFull(),
+                        Infolists\Components\TextEntry::make('user.name')->label(__('app.fields.customer_name')),
+                        Infolists\Components\TextEntry::make('user.email')->label(__('app.fields.customer_email'))->copyable(),
+                        Infolists\Components\TextEntry::make('user.phone')->label(__('app.fields.customer_phone'))->copyable(),
+                        Infolists\Components\TextEntry::make('address.full_address')->label(__('app.fields.shipping_address'))->columnSpanFull(),
                     ])
                     ->columns(3)
                     ->collapsible(),
 
-                Infolists\Components\Section::make(__('app.sections.order_items'))
-                    ->schema([
-                        Infolists\Components\RepeatableEntry::make('items')
-                            ->schema([
-                                Infolists\Components\Split::make([
-                                    Infolists\Components\ImageEntry::make('product.primary_image')
-                                        ->label('')
-                                        ->height(60)
-                                        ->width(60),
-
-                                    Infolists\Components\Group::make([
-                                        Infolists\Components\TextEntry::make('product.name')
-                                            ->label(__('app.fields.product_name'))
-                                            ->weight('bold'),
-
-                                        Infolists\Components\TextEntry::make('quantity')
-                                            ->label(__('app.fields.quantity'))
-                                            ->badge(),
-
-                                        Infolists\Components\TextEntry::make('price')
-                                            ->label(__('app.fields.unit_price'))
-                                            ->money('USD'),
-
-                                        Infolists\Components\TextEntry::make('discount_price')
-                                            ->label(__('app.fields.discount'))
-                                            ->money('USD')
-                                            ->color('danger')
-                                            ->visible(fn($state): bool => !empty($state)),
-                                    ])->columns(2),
-
-                                    Infolists\Components\TextEntry::make('total_price')
-                                        ->label(__('app.fields.total'))
-                                        ->money('USD')
-                                        ->weight('bold')
-                                        ->color('success'),
-                                ]),
-                            ])
-                            ->columns(1),
-                    ])
-                    ->collapsible(),
-
                 Infolists\Components\Section::make(__('app.sections.payment_information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('payment_method')
-                            ->label(__('app.fields.payment_method')),
-
+                        Infolists\Components\TextEntry::make('payment_method')->label(__('app.fields.payment_method')),
                         Infolists\Components\RepeatableEntry::make('payments')
                             ->label(__('app.fields.payment_transactions'))
                             ->schema([
-                                Infolists\Components\TextEntry::make('transaction_id')
-                                    ->label(__('app.fields.transaction_id'))
-                                    ->copyable(),
-
-                                Infolists\Components\TextEntry::make('amount')
-                                    ->label(__('app.fields.amount'))
-                                    ->money('USD'),
-
-                                Infolists\Components\TextEntry::make('status')
-                                    ->label(__('app.fields.status'))
-                                    ->badge(),
-
-                                Infolists\Components\TextEntry::make('created_at')
-                                    ->label(__('app.fields.processed_at'))
-                                    ->dateTime(),
+                                Infolists\Components\TextEntry::make('transaction_id')->label(__('app.fields.transaction_id'))->copyable(),
+                                Infolists\Components\TextEntry::make('amount')->label(__('app.fields.amount'))->money('USD'),
+                                Infolists\Components\TextEntry::make('status')->label(__('app.fields.status'))->badge(),
+                                Infolists\Components\TextEntry::make('paid_at')->label(__('app.fields.processed_at'))->dateTime(),
                             ])
                             ->columns(4)
                             ->visible(fn(Order $record): bool => $record->payments->isNotEmpty()),
@@ -612,7 +507,8 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Add relation managers if needed
+            ItemsRelationManager::class,
+            PaymentsRelationManager::class,
         ];
     }
 
@@ -631,8 +527,9 @@ class OrderResource extends Resource
             ->with([
                 'user',
                 'address',
+                'coupon',
                 'items.product.translations',
-                'payments'
+                'payments',
             ]);
     }
 

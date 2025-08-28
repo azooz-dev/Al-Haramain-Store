@@ -13,26 +13,6 @@ class ListOrders extends ListRecords
 {
     protected static string $resource = OrderResource::class;
 
-    // protected function getHeaderActions(): array
-    // {
-    //     return [
-    //         Actions\Action::make('export_orders')
-    //             ->label(__('app.actions.export_orders'))
-    //             ->icon('heroicon-o-arrow-down-tray')
-    //             ->color('success')
-    //             ->action(function () {
-    //                 // Export logic here
-    //             }),
-
-    //         Actions\Action::make('order_analytics')
-    //             ->label(__('app.actions.view_analytics'))
-    //             ->icon('heroicon-o-chart-bar')
-    //             ->color('primary')
-    //             // ->url(route('admin.orders.analytics'))
-    //             ->openUrlInNewTab(),
-    //     ];
-    // }
-
     public function getTabs(): array
     {
         return [
@@ -77,11 +57,4 @@ class ListOrders extends ListRecords
                 ->badgeColor('gray'),
         ];
     }
-
-    // protected function getHeaderWidgets(): array
-    // {
-    //     return [
-    //         OrderResource\Widgets\OrderStatsWidget::class,
-    //     ];
-    // }
 }

@@ -20,11 +20,13 @@ class Payment extends Model
         'amount',
         'status',
         'gateway_response',
+        'paid_at',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
         'gateway_response' => 'json',
+        'paid_at' => 'datetime',
     ];
 
     public function order(): BelongsTo
