@@ -41,12 +41,6 @@ class Review extends Model
     {
         return $this->belongsTo(Order::class);
     }
-
-    public function translations(): HasMany
-    {
-        return $this->hasMany(ReviewTranslation::class);
-    }
-
     public function getStatusLabelAttribute()
     {
         return __('app.status.' . $this->status);
