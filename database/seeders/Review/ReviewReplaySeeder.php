@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Review;
 
-use App\Models\Review\ReviewReplay;
+use App\Models\Review\ReviewReply;
 use App\Models\Review\Review;
 use App\Models\User\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,10 +15,9 @@ class ReviewReplaySeeder extends Seeder
      */
     public function run(): void
     {
-        ReviewReplay::create([
-            'review_id' => Review::random()->id,
-            'user_id' => User::random()->id,
-            'replay' => 'This is a test replay',
+        ReviewReply::create([
+            'review_id' => Review::first()->id,
+            'user_id' => User::first()->id,
         ]);
     }
 }
