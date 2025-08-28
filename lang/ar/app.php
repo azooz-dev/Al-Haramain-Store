@@ -87,6 +87,29 @@ return [
 
   // Form Sections and Fields
   'forms' => [
+    'coupon' => [
+      'section_details' => 'تفاصيل الكوبون',
+      'code' => 'الكود',
+      'name' => 'الاسم',
+      'type' => 'نوع الخصم',
+      'sar' => 'ر.س',
+      'type_options' => [
+        'fixed' => 'مبلغ ثابت',
+        'percentage' => 'نسبة مئوية',
+      ],
+      'discount_amount' => 'الخصم',
+      'status' => 'الحالة',
+      'status_options' => [
+        'active' => 'نشط',
+        'inactive' => 'غير نشط',
+      ],
+      'usage_limit' => 'الحد الإجمالي للاستخدام',
+      'usage_limit_help' => 'اتركه فارغاً لاستخدام غير محدود',
+      'usage_limit_per_user' => 'الحد لكل مستخدم',
+      'usage_limit_per_user_help' => 'اتركه فارغاً لاستخدام غير محدود لكل مستخدم',
+      'start_date' => 'تاريخ البداية',
+      'end_date' => 'تاريخ الانتهاء',
+    ],
     'category' => [
       'information' => 'معلومات التصنيف',
       'information_description' => 'أدخل التفاصيل الأساسية لهذا التصنيف',
@@ -191,6 +214,19 @@ return [
 
   // Table Columns
   'columns' => [
+    'coupon' => [
+      'code' => 'الكود',
+      'name' => 'الاسم',
+      'type' => 'النوع',
+      'discount' => 'الخصم',
+      'times_used' => 'عدد مرات الاستخدام',
+      'usage_limit' => 'الحد الإجمالي للاستخدام',
+      'remaining_uses' => 'الاستخدامات المتبقية',
+      'start_date' => 'تاريخ البداية',
+      'end_date' => 'تاريخ الانتهاء',
+      'status' => 'الحالة',
+      'created_at' => 'تاريخ الإنشاء',
+    ],
     'category' => [
       'translated_name' => 'اسم التصنيف',
       'translated_description' => 'الوصف',
@@ -344,6 +380,9 @@ return [
 
   // Actions
   'actions' => [
+    'toggle_status' => 'تبديل الحالة',
+    'activate' => 'تفعيل',
+    'deactivate' => 'تعطيل',
     'view_products' => 'عرض المنتجات',
     'manage_translations' => 'إدارة الترجمات',
     'generate_slug' => 'إنشاء رابط مختصر',
@@ -369,6 +408,11 @@ return [
     'mark_shipped' => 'تحديد كتم الشحن',
     'download_invoice' => 'تحميل الفاتورة',
     'generate_invoice' => 'إنشاء الفاتورة',
+  ],
+
+  // Common
+  'common' => [
+    'unlimited' => 'غير محدود',
   ],
 
   // Notifications

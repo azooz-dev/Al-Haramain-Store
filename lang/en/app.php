@@ -87,6 +87,29 @@ return [
 
   // Form Sections and Fields
   'forms' => [
+    'coupon' => [
+      'section_details' => 'Coupon Details',
+      'code' => 'Code',
+      'name' => 'Name',
+      'type' => 'Discount Type',
+      'sar' => 'SAR',
+      'type_options' => [
+        'fixed' => 'Fixed Amount',
+        'percentage' => 'Percentage',
+      ],
+      'discount_amount' => 'Discount',
+      'status' => 'Status',
+      'status_options' => [
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+      ],
+      'usage_limit' => 'Total Usage Limit',
+      'usage_limit_help' => 'Leave empty for unlimited total uses',
+      'usage_limit_per_user' => 'Usage Limit per User',
+      'usage_limit_per_user_help' => 'Leave empty for unlimited per user',
+      'start_date' => 'Start Date',
+      'end_date' => 'End Date',
+    ],
     'category' => [
       'information' => 'Category Information',
       'information_description' => 'Enter the basic details for this category',
@@ -191,6 +214,19 @@ return [
 
   // Table Columns
   'columns' => [
+    'coupon' => [
+      'code' => 'Code',
+      'name' => 'Name',
+      'type' => 'Type',
+      'discount' => 'Discount',
+      'times_used' => 'Times Used',
+      'usage_limit' => 'Usage Limit',
+      'remaining_uses' => 'Remaining Uses',
+      'start_date' => 'Start Date',
+      'end_date' => 'End Date',
+      'status' => 'Status',
+      'created_at' => 'Created',
+    ],
     'category' => [
       'translated_name' => 'Category Name',
       'translated_description' => 'Description',
@@ -344,6 +380,9 @@ return [
 
   // Actions
   'actions' => [
+    'toggle_status' => 'Toggle Status',
+    'activate' => 'Activate',
+    'deactivate' => 'Deactivate',
     'view_products' => 'View Products',
     'manage_translations' => 'Manage Translations',
     'generate_slug' => 'Generate Slug',
@@ -369,6 +408,11 @@ return [
     'mark_shipped' => 'Mark as Shipped',
     'download_invoice' => 'Download Invoice',
     'generate_invoice' => 'Generate Invoice',
+  ],
+
+  // Common
+  'common' => [
+    'unlimited' => 'Unlimited',
   ],
 
   // Notifications
