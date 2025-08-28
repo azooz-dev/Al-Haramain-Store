@@ -18,11 +18,18 @@ class ReviewSeeder extends Seeder
     public function run(): void
     {
         Review::create([
-            'user_id' => User::random()->id,
-            'product_id' => Product::random()->id,
-            'order_id' => Order::random()->id,
+            'user_id' => User::first()->id,
+            'product_id' => Product::first()->id,
+            'order_id' => Order::first()->id,
             'rating' => 5,
-            'comment' => 'This is a test review',
+            'status' => Random::element([Review::PENDING, Review::APPROVED, Review::REJECTED]),
+        ]);
+
+        Review::create([
+            'user_id' => User::first()->id,
+            'product_id' => Product::first()->id,
+            'order_id' => Order::find(2)->id,
+            'rating' => 5,
             'status' => Random::element([Review::PENDING, Review::APPROVED, Review::REJECTED]),
         ]);
     }

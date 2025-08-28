@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('review_replays', function (Blueprint $table) {
+        Schema::create('review_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('review_id')->constrained('reviews');
-            $table->foreignId('user_id')->constrained('users');
-            $table->text('replay');
+            $table->foreignId('review_id')->constrained('reviews')->onDelete('cascade');
+            $table->enum('locale', ['ar', 'en'])->default('en');
+            $table->string('comment');
+            $table->unique(['review_id', 'locale']);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('review_replays');
+        Schema::dropIfExists('review_translations');
     }
 };
