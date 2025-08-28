@@ -22,6 +22,8 @@ class ReviewSeeder extends Seeder
             'product_id' => Product::first()->id,
             'order_id' => Order::first()->id,
             'rating' => 5,
+            'comment' => 'The product is very awesome',
+            'locale' => 'en',
             'status' => collect([Review::PENDING, Review::APPROVED, Review::REJECTED])->random(),
         ]);
 
@@ -30,6 +32,8 @@ class ReviewSeeder extends Seeder
             'product_id' => Product::first()->id,
             'order_id' => Order::find(2)->id,
             'rating' => 5,
+            'comment' => 'المنتج مرره رهييب',
+            'locale' => 'ar',
             'status' => collect([Review::PENDING, Review::APPROVED, Review::REJECTED])->random(),
         ]);
     }
