@@ -133,9 +133,9 @@ class CategoryResource extends Resource
                             ->imageCropAspectRatio('16:9')
                             ->imageResizeTargetWidth('800')
                             ->imageResizeTargetHeight('450')
-                            ->disk('local')
+                            ->disk('public')
                             ->directory('categories/images')
-                            ->visibility('private')
+                            ->visibility('public')
                             ->maxSize(2048)
                             ->helperText(__('app.forms.category.upload_image_help'))
                             ->columnSpanFull()
@@ -160,8 +160,8 @@ class CategoryResource extends Resource
                     ->circular()
                     ->size(50)
                     ->square()
-                    ->disk('local')
-                    ->visibility('private'),
+                    ->disk('public')
+                    ->visibility('public'),
 
                 Tables\Columns\TextColumn::make('translated_name')
                     ->label(__('app.columns.category.translated_name'))
