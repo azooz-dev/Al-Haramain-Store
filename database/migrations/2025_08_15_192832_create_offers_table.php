@@ -14,13 +14,12 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
             $table->string('image_path');
             $table->enum('discount_type', [Offer::FIXED, Offer::PERCENTAGE]);
             $table->decimal('discount_amount', 10, 2);
             $table->date('start_date');
             $table->date('end_date');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->enum('status', [Offer::ACTIVE, Offer::INACTIVE])->default(Offer::ACTIVE);
             $table->timestamps();
         });

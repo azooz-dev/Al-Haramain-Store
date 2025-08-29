@@ -3,11 +3,13 @@
 namespace App\Models\Product;
 
 use App\Models\Category\Category;
+use App\Models\Offer\Offer;
 use App\Models\Product\ProductColor;
 use App\Models\Product\ProductColorImage;
 use App\Models\Product\ProductTranslation;
 use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\hasManyThrough;
@@ -172,5 +174,10 @@ class Product extends Model
     public function getAvailableColorsAttribute(): array
     {
         return $this->colors->pluck('color_code')->unique()->values()->toArray();
+    }
+
+    public function offer(): BelongsTo
+    {
+        return $this->belongsTo(Offer::class);
     }
 }

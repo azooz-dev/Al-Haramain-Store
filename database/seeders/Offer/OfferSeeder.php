@@ -3,8 +3,9 @@
 namespace Database\Seeders\Offer;
 
 use App\Models\Offer\Offer;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Product\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OfferSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class OfferSeeder extends Seeder
             'discount_amount' => 100,
             'start_date' => now(),
             'end_date' => now()->addDays(30),
+            'product_id' => Product::first()->id,
             'status' => Offer::ACTIVE,
         ]);
     }
