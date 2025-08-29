@@ -15,8 +15,6 @@ class OfferSeeder extends Seeder
     public function run(): void
     {
         Offer::create([
-            'name' => 'Offer 1',
-            'description' => 'This is a test offer',
             'image_path' => 'https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=800&h=600&fit=crop',
             'discount_type' => Offer::FIXED,
             'discount_amount' => 100,

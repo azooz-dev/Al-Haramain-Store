@@ -18,6 +18,8 @@ use Database\Seeders\Product\ProductVariantSeeder;
 use Database\Seeders\User\UserAddress\AddressSeeder;
 use Database\Seeders\Product\ProductColorImageSeeder;
 use Database\Seeders\Category\CategoryTranslationSeeder;
+use Database\Seeders\Offer\OfferSeeder;
+use Database\Seeders\Offer\OfferTranslationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,6 +44,8 @@ class DatabaseSeeder extends Seeder
             OrderItemSeeder::class,
             PaymentSeeder::class,
             ReviewSeeder::class,
+            OfferSeeder::class,
+            OfferTranslationSeeder::class
         ]);
     }
 }

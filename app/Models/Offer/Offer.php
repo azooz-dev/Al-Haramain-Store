@@ -19,8 +19,6 @@ class Offer extends Model
     const INACTIVE = 'inactive';
 
     protected $fillable = [
-        'name',
-        'description',
         'image_path',
         'discount_type',
         'discount_amount',

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders\Offer;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Offer\Offer;
 use Illuminate\Database\Seeder;
+use App\Models\Offer\OfferTranslation;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OfferTranslationSeeder extends Seeder
 {
@@ -12,6 +14,18 @@ class OfferTranslationSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        OfferTranslation::create([
+            'name' => 'Offer 1',
+            'description' => 'This is a test offer',
+            'locale' => 'en',
+            'offer_id' => Offer::first()->id
+        ]);
+
+        OfferTranslation::create([
+            'name' => 'العرض 1',
+            'description' => 'وصف العرض الاول',
+            'locale' => 'ar',
+            'offer_id' => Offer::first()->id
+        ]);
     }
 }
