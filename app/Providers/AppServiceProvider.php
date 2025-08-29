@@ -3,16 +3,18 @@
 namespace App\Providers;
 
 use App\Models\Product\Product;
-use App\Repositories\Eloquent\Category\CategoryRepository;
-use App\Repositories\Eloquent\Category\CategoryTranslationRepository;
-use App\Repositories\Eloquent\Product\ProductRepository;
-use App\Repositories\Eloquent\Product\ProductTranslationRepository;
-
-use App\Repositories\interface\Category\CategoryRepositoryInterface;
-use App\Repositories\interface\Category\CategoryTranslationRepositoryInterface;
-use App\Repositories\interface\Product\ProductRepositoryInterface;
-use App\Repositories\interface\Product\ProductTranslationRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Eloquent\Product\ProductRepository;
+use App\Repositories\Eloquent\Category\CategoryRepository;
+use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
+
+use App\Repositories\interface\Product\ProductRepositoryInterface;
+use App\Repositories\Eloquent\Product\ProductTranslationRepository;
+use App\Repositories\interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Eloquent\Category\CategoryTranslationRepository;
+use App\Repositories\interface\Offer\OfferTranslationRepositoryInterface;
+use App\Repositories\interface\Product\ProductTranslationRepositoryInterface;
+use App\Repositories\interface\Category\CategoryTranslationRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(ProductTranslationRepositoryInterface::class, ProductTranslationRepository::class);
+
+        $this->app->bind(OfferTranslationRepositoryInterface::class, OfferTranslationRepository::class);
     }
 
     /**

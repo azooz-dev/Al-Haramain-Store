@@ -87,6 +87,31 @@ return [
 
   // Form Sections and Fields
   'forms' => [
+    'offer' => [
+      'basic_information' => 'Basic Information',
+      'basic_information_description' => 'Choose the product and upload an offer image',
+      'image' => 'Offer Image',
+      'product' => 'Product',
+      'discount' => 'Discount',
+      'discount_description' => 'Configure discount type and amount',
+      'discount_type' => 'Discount Type',
+      'discount_type_fixed' => 'Fixed Amount',
+      'discount_type_percentage' => 'Percentage',
+      'discount_amount' => 'Discount Amount',
+      'status' => 'Status',
+      'schedule' => 'Schedule',
+      'schedule_description' => 'Define the start and end date for this offer',
+      'start_date' => 'Start Date',
+      'end_date' => 'End Date',
+      'translations' => 'Translations',
+      'translations_description' => 'Manage offer translations',
+      'english' => 'English',
+      'arabic' => 'Arabic',
+      'name_en' => 'Name (EN)',
+      'description_en' => 'Description (EN)',
+      'name_ar' => 'Name (AR)',
+      'description_ar' => 'Description (AR)',
+    ],
     'coupon' => [
       'section_details' => 'Coupon Details',
       'code' => 'Code',
@@ -228,6 +253,16 @@ return [
 
   // Table Columns
   'columns' => [
+    'offer' => [
+      'image' => 'Image',
+      'name' => 'Offer Name',
+      'product' => 'Product',
+      'discount' => 'Discount',
+      'start_date' => 'Start Date',
+      'end_date' => 'End Date',
+      'status' => 'Status',
+      'runtime_status' => 'Runtime',
+    ],
     'coupon' => [
       'code' => 'Code',
       'name' => 'Name',
@@ -580,6 +615,15 @@ return [
 
   // Filters
   'filters' => [
+    'offer_status' => 'Offer Status',
+    'discount_type' => 'Discount Type',
+    'offer_window' => 'Offer Window',
+    'running' => 'Running',
+    'upcoming' => 'Upcoming',
+    'expired' => 'Expired',
+    'schedule' => 'Schedule',
+    'start_from' => 'Start From',
+    'end_until' => 'End Until',
     'has_products' => 'Has Products',
     'no_products' => 'No Products',
     'created_today' => 'Created Today',

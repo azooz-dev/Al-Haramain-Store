@@ -87,6 +87,31 @@ return [
 
   // Form Sections and Fields
   'forms' => [
+    'offer' => [
+      'basic_information' => 'المعلومات الأساسية',
+      'basic_information_description' => 'اختر المنتج وارفع صورة العرض',
+      'image' => 'صورة العرض',
+      'product' => 'المنتج',
+      'discount' => 'الخصم',
+      'discount_description' => 'إعداد نوع الخصم ومبلغه',
+      'discount_type' => 'نوع الخصم',
+      'discount_type_fixed' => 'مبلغ ثابت',
+      'discount_type_percentage' => 'نسبة مئوية',
+      'discount_amount' => 'مبلغ الخصم',
+      'status' => 'الحالة',
+      'schedule' => 'الجدولة',
+      'schedule_description' => 'تحديد تاريخ البداية والنهاية لهذا العرض',
+      'start_date' => 'تاريخ البداية',
+      'end_date' => 'تاريخ الانتهاء',
+      'translations' => 'الترجمات',
+      'translations_description' => 'إدارة ترجمات العرض',
+      'english' => 'الإنجليزية',
+      'arabic' => 'العربية',
+      'name_en' => 'الاسم (EN)',
+      'description_en' => 'الوصف (EN)',
+      'name_ar' => 'الاسم (AR)',
+      'description_ar' => 'الوصف (AR)',
+    ],
     'coupon' => [
       'section_details' => 'تفاصيل الكوبون',
       'code' => 'الكود',
@@ -228,6 +253,16 @@ return [
 
   // Table Columns
   'columns' => [
+    'offer' => [
+      'image' => 'الصورة',
+      'name' => 'اسم العرض',
+      'product' => 'المنتج',
+      'discount' => 'الخصم',
+      'start_date' => 'تاريخ البداية',
+      'end_date' => 'تاريخ الانتهاء',
+      'status' => 'الحالة',
+      'runtime_status' => 'حالة التشغيل',
+    ],
     'coupon' => [
       'code' => 'الكود',
       'name' => 'الاسم',
@@ -580,6 +615,15 @@ return [
 
   // Filters
   'filters' => [
+    'offer_status' => 'حالة العرض',
+    'discount_type' => 'نوع الخصم',
+    'offer_window' => 'حالة العرض الزمنية',
+    'running' => 'قيد التشغيل',
+    'upcoming' => 'قادِم',
+    'expired' => 'منتهي',
+    'schedule' => 'الجدولة',
+    'start_from' => 'بداية من',
+    'end_until' => 'حتى تاريخ',
     'has_products' => 'يحتوي على منتجات',
     'no_products' => 'لا يحتوي على منتجات',
     'created_today' => 'تم إنشاؤه اليوم',

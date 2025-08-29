@@ -1,0 +1,418 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\OfferResource\Pages;
+use App\Models\Offer\Offer;
+use App\Traits\HasTranslations;
+use App\Services\Product\ProductTranslationService;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+
+class OfferResource extends Resource
+{
+    use HasTranslations;
+    protected static ?string $model = Offer::class;
+
+    protected static ?string $slug = 'offers';
+
+    protected static ?string $navigationIcon = 'heroicon-o-percent-badge';
+
+    protected static ?string $navigationGroup = 'Store Management';
+
+    protected static ?string $navigationLabel = 'Offers';
+
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $modelLabel = 'Offer';
+
+    protected static ?string $pluralModelLabel = 'Offers';
+
+    protected static ?string $recordTitleAttribute = 'id';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('app.navigation.store_management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('app.resources.offer.navigation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('app.resources.offer.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('app.resources.offer.plural_label');
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+
+                Forms\Components\Section::make(__('app.forms.offer.translations'))
+                    ->description(__('app.forms.offer.translations_description'))
+                    ->icon('heroicon-o-language')
+                    ->schema([
+                        Forms\Components\Tabs::make('translations')
+                            ->tabs([
+                                Forms\Components\Tabs\Tab::make(__('app.forms.offer.english'))
+                                    ->icon('heroicon-o-flag')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('en.name')
+                                            ->label(__('app.forms.offer.name_en'))
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->columnSpanFull(),
+                                        Forms\Components\Textarea::make('en.description')
+                                            ->label(__('app.forms.offer.description_en'))
+                                            ->rows(4)
+                                            ->maxLength(65535)
+                                            ->columnSpanFull(),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make(__('app.forms.offer.arabic'))
+                                    ->icon('heroicon-o-globe-asia-australia')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('ar.name')
+                                            ->label(__('app.forms.offer.name_ar'))
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->extraAttributes(['dir' => 'rtl'])
+                                            ->columnSpanFull(),
+                                        Forms\Components\Textarea::make('ar.description')
+                                            ->label(__('app.forms.offer.description_ar'))
+                                            ->rows(4)
+                                            ->maxLength(65535)
+                                            ->extraAttributes(['dir' => 'rtl'])
+                                            ->columnSpanFull(),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(false),
+
+                Forms\Components\Section::make(__('app.forms.offer.basic_information'))
+                    ->description(__('app.forms.offer.basic_information_description'))
+                    ->icon('heroicon-o-percent-badge')
+                    ->schema([
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\Select::make('product_id')
+                                    ->relationship('product', 'name', fn($query) => $query->with('translations'))
+                                    ->label(__('app.forms.offer.product'))
+                                    ->required()
+                                    ->searchable()
+                                    ->preload()
+                                    ->native(false)
+                                    ->optionsLimit(10)
+                                    ->getOptionLabelFromRecordUsing(function ($record) {
+                                        $service = app(ProductTranslationService::class);
+                                        return $service->getTranslatedName($record);
+                                    })
+                                    ->columnSpan(3),
+
+                                Forms\Components\FileUpload::make('image_path')
+                                    ->label(__('app.forms.offer.image'))
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageCropAspectRatio('16:9')
+                                    ->imageResizeTargetWidth('1200')
+                                    ->imageResizeTargetHeight('675')
+                                    ->disk('public')
+                                    ->directory('offers/images')
+                                    ->visibility('public')
+                                    ->maxSize(4096)
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->columnSpanFull(1),
+                            ]),
+                    ])
+                    ->columns(3)
+                    ->collapsible()
+                    ->collapsed(false),
+
+                Forms\Components\Section::make(__('app.forms.offer.discount'))
+                    ->description(__('app.forms.offer.discount_description'))
+                    ->icon('heroicon-o-tag')
+                    ->schema([
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\Select::make('discount_type')
+                                    ->label(__('app.forms.offer.discount_type'))
+                                    ->options([
+                                        Offer::FIXED => __('app.forms.offer.discount_type_fixed'),
+                                        Offer::PERCENTAGE => __('app.forms.offer.discount_type_percentage'),
+                                    ])
+                                    ->required()
+                                    ->native(false),
+
+                                Forms\Components\TextInput::make('discount_amount')
+                                    ->label(__('app.forms.offer.discount_amount'))
+                                    ->numeric()
+                                    ->required()
+                                    ->minValue(0)
+                                    ->step(0.01)
+                                    ->suffix(function (callable $get) {
+                                        return $get('discount_type') === Offer::PERCENTAGE ? '%' : '$';
+                                    })
+                                    ->prefixIcon('heroicon-o-currency-dollar')
+                                    ->columnSpan(1),
+
+                                Forms\Components\Select::make('status')
+                                    ->label(__('app.forms.offer.status'))
+                                    ->options([
+                                        Offer::ACTIVE => __('app.status.active'),
+                                        Offer::INACTIVE => __('app.status.inactive'),
+                                    ])
+                                    ->required()
+                                    ->native(false)
+                                    ->columnSpan(1),
+                            ]),
+                    ])
+                    ->columns(3)
+                    ->collapsible(),
+
+                Forms\Components\Section::make(__('app.forms.offer.schedule'))
+                    ->description(__('app.forms.offer.schedule_description'))
+                    ->icon('heroicon-o-calendar')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('start_date')
+                                    ->label(__('app.forms.offer.start_date'))
+                                    ->required()
+                                    ->seconds(false),
+                                Forms\Components\DateTimePicker::make('end_date')
+                                    ->label(__('app.forms.offer.end_date'))
+                                    ->required()
+                                    ->seconds(false)
+                                    ->after('start_date'),
+                            ]),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->label(__('app.columns.offer.image'))
+                    ->circular()
+                    ->size(50)
+                    ->square()
+                    ->disk('public'),
+
+                Tables\Columns\TextColumn::make('translated_name')
+                    ->label(__('app.columns.offer.name'))
+                    ->searchable(query: function (Builder $query, string $search) {
+                        $query->whereHas('translations', function (Builder $q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%");
+                        });
+                    })
+                    ->sortable()
+                    ->weight('bold')
+                    ->color('primary')
+                    ->icon('heroicon-o-tag')
+                    ->state(function (Offer $record) {
+                        $locale = app()->getLocale();
+                        return $record->translations->firstWhere('locale', $locale)?->name
+                            ?? $record->translations->first()?->name
+                            ?? ('#' . $record->id);
+                    }),
+
+                Tables\Columns\TextColumn::make('product.sku')
+                    ->label(__('app.columns.offer.product'))
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->icon('heroicon-o-cube'),
+
+                Tables\Columns\TextColumn::make('discount')
+                    ->label(__('app.columns.offer.discount'))
+                    ->state(function (Offer $record) {
+                        $amount = number_format((float)$record->discount_amount, 2);
+                        return $record->discount_type === Offer::PERCENTAGE ? ($amount . '%') : ('$' . $amount);
+                    })
+                    ->badge()
+                    ->color(fn(Offer $record): string => $record->discount_type === Offer::PERCENTAGE ? 'info' : 'success')
+                    ->icon('heroicon-o-tag')
+                    ->sortable(false),
+
+                Tables\Columns\TextColumn::make('start_date')
+                    ->label(__('app.columns.offer.start_date'))
+                    ->dateTime('M j, Y g:i A')
+                    ->sortable()
+                    ->icon('heroicon-o-calendar'),
+
+                Tables\Columns\TextColumn::make('end_date')
+                    ->label(__('app.columns.offer.end_date'))
+                    ->dateTime('M j, Y g:i A')
+                    ->sortable()
+                    ->icon('heroicon-o-calendar'),
+
+                Tables\Columns\TextColumn::make('status')
+                    ->label(__('app.columns.offer.status'))
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        Offer::ACTIVE => 'success',
+                        Offer::INACTIVE => 'gray',
+                        default => 'gray',
+                    })
+                    ->icon(fn(string $state): string => match ($state) {
+                        Offer::ACTIVE => 'heroicon-o-check-badge',
+                        Offer::INACTIVE => 'heroicon-o-pause-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        Offer::ACTIVE => __('app.status.active'),
+                        Offer::INACTIVE => __('app.status.inactive'),
+                        default => $state,
+                    })
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('is_running')
+                    ->label(__('app.columns.offer.runtime_status'))
+                    ->badge()
+                    ->state(function (Offer $record) {
+                        $now = now();
+                        if ($record->start_date && $record->end_date) {
+                            if ($now->lt($record->start_date)) {
+                                return 'upcoming';
+                            }
+                            if ($now->between($record->start_date, $record->end_date)) {
+                                return 'running';
+                            }
+                            return 'expired';
+                        }
+                        return 'unknown';
+                    })
+                    ->colors([
+                        'info' => 'upcoming',
+                        'success' => 'running',
+                        'danger' => 'expired',
+                        'gray' => 'unknown',
+                    ])
+                    ->icons([
+                        'heroicon-o-clock' => 'upcoming',
+                        'heroicon-o-play-circle' => 'running',
+                        'heroicon-o-x-circle' => 'expired',
+                        'heroicon-o-question-mark-circle' => 'unknown',
+                    ])
+                    ->sortable(false)
+                    ->toggleable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->label(__('app.filters.offer_status'))
+                    ->options([
+                        Offer::ACTIVE => __('app.status.active'),
+                        Offer::INACTIVE => __('app.status.inactive'),
+                    ])
+                    ->multiple()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('discount_type')
+                    ->label(__('app.filters.discount_type'))
+                    ->options([
+                        Offer::FIXED => __('app.forms.offer.discount_type_fixed'),
+                        Offer::PERCENTAGE => __('app.forms.offer.discount_type_percentage'),
+                    ])
+                    ->multiple()
+                    ->preload(),
+
+                Tables\Filters\Filter::make('active_window')
+                    ->label(__('app.filters.offer_window'))
+                    ->form([
+                        Forms\Components\Select::make('window')
+                            ->options([
+                                'running' => __('app.filters.running'),
+                                'upcoming' => __('app.filters.upcoming'),
+                                'expired' => __('app.filters.expired'),
+                            ])
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $now = now();
+                        return $query->when($data['window'] ?? null, function (Builder $q, $window) use ($now) {
+                            return match ($window) {
+                                'running' => $q->where('start_date', '<=', $now)->where('end_date', '>=', $now),
+                                'upcoming' => $q->where('start_date', '>', $now),
+                                'expired' => $q->where('end_date', '<', $now),
+                                default => $q,
+                            };
+                        });
+                    }),
+
+                Tables\Filters\Filter::make('schedule')
+                    ->label(__('app.filters.schedule'))
+                    ->form([
+                        Forms\Components\DatePicker::make('from')->label(__('app.filters.start_from')),
+                        Forms\Components\DatePicker::make('until')->label(__('app.filters.end_until')),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'] ?? null, fn(Builder $q, $date) => $q->whereDate('start_date', '>=', $date))
+                            ->when($data['until'] ?? null, fn(Builder $q, $date) => $q->whereDate('end_date', '<=', $date));
+                    }),
+            ])
+            ->actions([
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning'),
+                    Tables\Actions\DeleteAction::make()
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation(),
+                ])
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation(),
+                ]),
+            ])
+            ->defaultSort('start_date', 'desc')
+            ->striped()
+            ->paginated([10, 25, 50, 100])
+            ->poll('30s')
+            ->extremePaginationLinks()
+            ->deferLoading();
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListOffers::route('/'),
+            'create' => Pages\CreateOffer::route('/create'),
+            'edit' => Pages\EditOffer::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['translations', 'product.translations']);
+    }
+}
