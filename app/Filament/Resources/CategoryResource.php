@@ -205,7 +205,9 @@ class CategoryResource extends Resource
 
                 Tables\Columns\TextColumn::make('product_count')
                     ->label(__('app.columns.category.product_count'))
-                    ->counts('products')
+                    ->state(function (Category $record) {
+                        return $record->products->count();
+                    })
                     ->badge()
                     ->color('success')
                     ->sortable(),
