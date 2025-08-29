@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\User\UserSeeder;
 use Database\Seeders\Admin\AdminSeeder;
+use Database\Seeders\Offer\OfferSeeder;
 use Database\Seeders\Order\OrderSeeder;
 use Database\Seeders\Coupon\CouponSeeder;
 use Database\Seeders\Review\ReviewSeeder;
@@ -13,13 +14,13 @@ use Database\Seeders\Payment\PaymentSeeder;
 use Database\Seeders\Product\ProductSeeder;
 use Database\Seeders\Category\CategorySeeder;
 use Database\Seeders\Coupon\CouponUserSeeder;
+use Database\Seeders\Favorite\FavoriteSeeder;
 use Database\Seeders\Product\ProductColorSeeder;
+use Database\Seeders\Offer\OfferTranslationSeeder;
 use Database\Seeders\Product\ProductVariantSeeder;
 use Database\Seeders\User\UserAddress\AddressSeeder;
 use Database\Seeders\Product\ProductColorImageSeeder;
 use Database\Seeders\Category\CategoryTranslationSeeder;
-use Database\Seeders\Offer\OfferSeeder;
-use Database\Seeders\Offer\OfferTranslationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -45,7 +46,8 @@ class DatabaseSeeder extends Seeder
             PaymentSeeder::class,
             ReviewSeeder::class,
             OfferSeeder::class,
-            OfferTranslationSeeder::class
+            OfferTranslationSeeder::class,
+            FavoriteSeeder::class,
         ]);
     }
 }
