@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Closure;
 
 class OfferResource extends Resource
 {
@@ -159,13 +160,48 @@ class OfferResource extends Resource
                                     ->label(__('app.forms.offer.discount_amount'))
                                     ->numeric()
                                     ->required()
-                                    ->minValue(0)
-                                    ->step(0.01)
+                                    ->minValue(function (callable $get) {
+                                        return $get('discount_type') === Offer::PERCENTAGE ? 1 : 0;
+                                    })
+                                    ->maxValue(function (callable $get) {
+                                        return $get('discount_type') === Offer::PERCENTAGE ? 100 : null;
+                                    })
+                                    ->step(function (callable $get) {
+                                        return $get('discount_type') === Offer::PERCENTAGE ? 1 : 0.01;
+                                    })
+                                    ->validationMessages([
+                                        'min' => function (callable $get) {
+                                            return $get('discount_type') === Offer::PERCENTAGE
+                                                ? __('app.forms.offer.discount_amount_percentage_validation')
+                                                : __('app.forms.offer.discount_amount_fixed_validation');
+                                        }
+                                    ])
                                     ->suffix(function (callable $get) {
                                         return $get('discount_type') === Offer::PERCENTAGE ? '%' : '$';
                                     })
                                     ->prefixIcon('heroicon-o-currency-dollar')
-                                    ->columnSpan(1),
+                                    ->helperText(function (callable $get) {
+                                        $discountType = $get('discount_type');
+                                        if ($discountType === Offer::PERCENTAGE) {
+                                            return __('app.forms.offer.discount_amount_percentage_help');
+                                        }
+                                        return __('app.forms.offer.discount_amount_fixed_help');
+                                    })
+                                    ->columnSpan(1)
+                                    ->rules([
+                                        'required',
+                                        'numeric',
+                                        'min:0'
+                                    ])
+                                    ->live()
+                                    ->reactive()
+                                    ->afterStateUpdated(function (callable $set, callable $get, $state) {
+                                        // Validate based on discount type
+                                        $discountType = $get('discount_type');
+                                        if ($discountType === Offer::PERCENTAGE && $state > 100) {
+                                            $set('discount_amount', 100);
+                                        }
+                                    }),
 
                                 Forms\Components\Select::make('status')
                                     ->label(__('app.forms.offer.status'))
@@ -190,10 +226,24 @@ class OfferResource extends Resource
                                 Forms\Components\DateTimePicker::make('start_date')
                                     ->label(__('app.forms.offer.start_date'))
                                     ->required()
+                                    ->minDate(now())
+                                    ->afterStateUpdated(function (callable $set, callable $get, $state) {
+                                        $startDate = $get('start_date');
+                                        $endDate = $get('end_date');
+                                        if ($startDate && $endDate && $startDate > $endDate) {
+                                            $set('end_date', null);
+                                        }
+                                    })
+                                    ->native(false)
                                     ->seconds(false),
                                 Forms\Components\DateTimePicker::make('end_date')
                                     ->label(__('app.forms.offer.end_date'))
                                     ->required()
+                                    ->minDate(function (callable $get) {
+                                        $startDate = $get('start_date');
+                                        return $startDate ? $startDate : now();
+                                    })
+                                    ->native(false)
                                     ->seconds(false)
                                     ->after('start_date'),
                             ]),
@@ -331,29 +381,6 @@ class OfferResource extends Resource
                     ])
                     ->multiple()
                     ->preload(),
-
-                Tables\Filters\Filter::make('active_window')
-                    ->label(__('app.filters.offer_window'))
-                    ->form([
-                        Forms\Components\Select::make('window')
-                            ->options([
-                                'running' => __('app.filters.running'),
-                                'upcoming' => __('app.filters.upcoming'),
-                                'expired' => __('app.filters.expired'),
-                            ])
-                            ->native(false),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        $now = now();
-                        return $query->when($data['window'] ?? null, function (Builder $q, $window) use ($now) {
-                            return match ($window) {
-                                'running' => $q->where('start_date', '<=', $now)->where('end_date', '>=', $now),
-                                'upcoming' => $q->where('start_date', '>', $now),
-                                'expired' => $q->where('end_date', '<', $now),
-                                default => $q,
-                            };
-                        });
-                    }),
 
                 Tables\Filters\Filter::make('schedule')
                     ->label(__('app.filters.schedule'))

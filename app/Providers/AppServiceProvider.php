@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Offer\Offer;
 use App\Models\Product\Product;
+use App\Observers\Offer\OfferObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
-use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 
+use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\interface\Product\ProductRepositoryInterface;
 use App\Repositories\Eloquent\Product\ProductTranslationRepository;
 use App\Repositories\interface\Category\CategoryRepositoryInterface;
@@ -38,6 +40,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Offer::observe(OfferObserver::class);
     }
 }
