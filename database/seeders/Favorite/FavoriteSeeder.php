@@ -16,8 +16,8 @@ class FavoriteSeeder extends Seeder
     public function run(): void
     {
         Favorite::create([
-            'user_id' => User::random()->id,
-            'product_id' => Product::random()->id,
+            'user_id' => User::first()->id,
+            'product_id' => Product::first()->id,
         ]);
     }
 }
