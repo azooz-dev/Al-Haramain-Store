@@ -668,6 +668,21 @@ return [
       'created_from' => 'Created From',
       'created_until' => 'Created Until',
     ],
+    'favorite' => [
+      'information' => 'Favorite Information',
+      'information_description' => 'Manage user favorites and product preferences',
+      'user' => 'User',
+      'product' => 'Product',
+      'created_from' => 'Created From',
+      'created_until' => 'Created Until',
+      'id' => 'ID',
+      'user_name' => 'User Name',
+      'user_email' => 'User Email',
+      'product_sku' => 'Product SKU',
+      'product_name' => 'Product Name',
+      'created_at' => 'Created At',
+      'updated_at' => 'Updated At',
+    ],
   ],
 
   // Placeholders
@@ -682,6 +697,40 @@ return [
     'enter_carrier' => 'UPS / FedEx / DHL',
     'enter_refund_amount' => 'Enter refund amount...',
     'enter_refund_reason' => 'Enter refund reason...',
+    'search_favorites' => 'Search favorites...',
+    'select_user' => 'Select a user...',
+    'select_product' => 'Select a product...',
+  ],
+
+  // Filters
+  'filters' => [
+    'favorite' => [
+      'user' => 'Filter by User',
+      'product' => 'Filter by Product',
+      'created_at' => 'Filter by Creation Date',
+    ],
+  ],
+
+  // Actions
+  'actions' => [
+    'create_favorite' => 'Add to Favorites',
+    'edit_favorite' => 'Edit Favorite',
+    'delete_favorite' => 'Remove from Favorites',
+  ],
+
+  // Tabs
+  'tabs' => [
+    'all' => 'All',
+    'recent' => 'Recent (7 days)',
+  ],
+
+  // Notifications
+  'notifications' => [
+    'favorite' => [
+      'created' => 'Product added to favorites successfully!',
+      'updated' => 'Favorite updated successfully!',
+      'deleted' => 'Product removed from favorites successfully!',
+    ],
   ],
 
   // Tooltips
