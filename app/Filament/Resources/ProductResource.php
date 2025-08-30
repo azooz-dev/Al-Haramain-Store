@@ -94,12 +94,13 @@ class ProductResource extends Resource
                                             ->columnSpan(1),
 
                                         Forms\Components\TextInput::make('quantity')
-                                            ->label(__('app.forms.product.quantity'))
+                                            ->label(__('app.forms.product.total_stock_quantity'))
                                             ->numeric()
                                             ->required()
                                             ->minValue(0)
-                                            ->placeholder(__('app.forms.product.enter_quantity'))
+                                            ->placeholder(__('app.forms.product.enter_total_stock'))
                                             ->prefixIcon('heroicon-o-archive-box')
+                                            ->helperText(__('app.forms.product.total_stock_help'))
                                             ->columnSpan(1),
 
                                         Forms\Components\Hidden::make('slug')
@@ -249,6 +250,7 @@ class ProductResource extends Resource
                                         Forms\Components\Repeater::make('variants')
                                             ->relationship('variants')
                                             ->label(__('app.forms.product.variants'))
+                                            ->validationRules(static::getVariantValidationRules())
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
@@ -260,11 +262,12 @@ class ProductResource extends Resource
                                                             ->columnSpan(1),
 
                                                         Forms\Components\TextInput::make('quantity')
-                                                            ->label(__('app.forms.product.variant.quantity'))
+                                                            ->label(__('app.forms.product.variant.available_quantity'))
                                                             ->numeric()
                                                             ->required()
                                                             ->minValue(0)
-                                                            ->placeholder(__('app.forms.product.enter_variant_quantity'))
+                                                            ->placeholder(__('app.forms.product.enter_variant_available_quantity'))
+                                                            ->helperText(__('app.forms.product.variant.quantity_help'))
                                                             ->columnSpan(1),
 
                                                         Forms\Components\TextInput::make('price')
@@ -645,5 +648,30 @@ class ProductResource extends Resource
                 SoftDeletingScope::class,
             ])
             ->with(['translations', 'colors.images', 'variants', 'categories.translations']);
+    }
+
+    /**
+     * Custom validation rules for product variants
+     */
+    public static function getVariantValidationRules(): array
+    {
+        return [
+            'variants.*.quantity' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    // Get the main product quantity from the form data
+                    $mainQuantity = request()->input('quantity', 0);
+
+                    if ($value > $mainQuantity) {
+                        $fail(__('app.validation.variant_quantity_exceeds_stock', [
+                            'variant_quantity' => $value,
+                            'total_stock' => $mainQuantity
+                        ]));
+                    }
+                },
+            ],
+        ];
     }
 }

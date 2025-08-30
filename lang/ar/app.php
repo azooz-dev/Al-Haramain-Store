@@ -122,6 +122,9 @@ return [
       'enter_description_ar' => 'صِف هذا المنتج باللغة العربية...',
       'sku' => 'رمز المنتج',
       'enter_sku' => 'أدخل رمز المنتج',
+      'total_stock_quantity' => 'إجمالي كمية المخزون',
+      'enter_total_stock' => 'أدخل إجمالي كمية المخزون',
+      'total_stock_help' => 'هذه هي الكمية الإجمالية المتاحة لجميع المتغيرات مجتمعة',
       'quantity' => 'الكمية',
       'enter_quantity' => 'أدخل كمية المنتج',
       'variants' => 'متغيرات المنتج',
@@ -129,6 +132,7 @@ return [
       'variant' => [
         'size' => 'الحجم',
         'color' => 'اللون',
+        'available_quantity' => 'الكمية المتاحة',
         'quantity' => 'الكمية',
         'price' => 'السعر',
         'discount_price' => 'سعر الخصم',
@@ -137,10 +141,12 @@ return [
         'savings' => 'التوفير: :amount',
         'no_discount' => 'لا يوجد خصم مطبق',
         'new_variant' => 'متغير جديد',
+        'quantity_help' => 'لا يمكن أن تتجاوز هذه الكمية إجمالي كمية المخزون',
       ],
       'enter_size' => 'أدخل الحجم (مثل: S، M، L، XL)',
       'enter_color' => 'أدخل اللون (مثل: أحمر، أزرق، أسود)',
       'enter_variant_quantity' => 'أدخل كمية المتغير',
+      'enter_variant_available_quantity' => 'أدخل الكمية المتاحة لهذا المتغير',
       'enter_price' => 'أدخل السعر',
       'enter_discount_price' => 'أدخل سعر الخصم',
       'add_variant' => 'إضافة متغير',
@@ -334,5 +340,10 @@ return [
     'download_image' => 'تحميل الصورة',
     'view_products_in_category' => 'عرض المنتجات في هذا التصنيف',
     'manage_category_translations' => 'إدارة ترجمات التصنيف',
+  ],
+
+  // Validation Messages
+  'validation' => [
+    'variant_quantity_exceeds_stock' => 'لا يمكن أن تتجاوز كمية المتغير (:variant_quantity) إجمالي كمية المخزون (:total_stock)',
   ],
 ];

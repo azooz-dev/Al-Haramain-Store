@@ -122,14 +122,15 @@ return [
       'enter_description_ar' => 'صِف هذا المنتج باللغة العربية...',
       'sku' => 'SKU',
       'enter_sku' => 'Enter product SKU',
-      'quantity' => 'Quantity',
-      'enter_quantity' => 'Enter product quantity',
+      'total_stock_quantity' => 'Total Stock Quantity',
+      'enter_total_stock' => 'Enter total available stock',
+      'total_stock_help' => 'This is the total quantity available for all variants combined',
       'variants' => 'Product Variants',
       'variants_description' => 'Manage product variants (size, color, price)',
       'variant' => [
         'size' => 'Size',
         'color' => 'Color',
-        'quantity' => 'Quantity',
+        'available_quantity' => 'Available Quantity',
         'price' => 'Price',
         'discount_price' => 'Discount Price',
         'discount_price_help' => 'Optional discounted price for this variant',
@@ -137,10 +138,12 @@ return [
         'savings' => 'Savings: :amount',
         'no_discount' => 'No discount applied',
         'new_variant' => 'New Variant',
+        'quantity_help' => 'This quantity cannot exceed the total stock quantity',
       ],
       'enter_size' => 'Enter size (e.g., S, M, L, XL)',
       'enter_color' => 'Enter color (e.g., Red, Blue, Black)',
       'enter_variant_quantity' => 'Enter variant quantity',
+      'enter_variant_available_quantity' => 'Enter available quantity for this variant',
       'enter_price' => 'Enter price',
       'enter_discount_price' => 'Enter discount price',
       'add_variant' => 'Add Variant',
@@ -337,5 +340,10 @@ return [
     'download_image' => 'Download image',
     'view_products_in_category' => 'View products in this category',
     'manage_category_translations' => 'Manage category translations',
+  ],
+
+  // Validation Messages
+  'validation' => [
+    'variant_quantity_exceeds_stock' => 'Variant quantity (:variant_quantity) cannot exceed total stock quantity (:total_stock)',
   ],
 ];
