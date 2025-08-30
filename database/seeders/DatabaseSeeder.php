@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\Role\RoleSeeder;
 use Database\Seeders\User\UserSeeder;
+use Database\Seeders\PermissionSeeder;
 use Database\Seeders\Admin\AdminSeeder;
 use Database\Seeders\Offer\OfferSeeder;
 use Database\Seeders\Order\OrderSeeder;
@@ -48,6 +50,8 @@ class DatabaseSeeder extends Seeder
             OfferSeeder::class,
             OfferTranslationSeeder::class,
             FavoriteSeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
         ]);
     }
 }
