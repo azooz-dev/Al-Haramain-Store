@@ -140,7 +140,7 @@ class ViewAdmin extends ViewRecord
                 TextEntry::make('created_at')
                   ->label(__('app.columns.admin.created'))
                   ->dateTime()
-                  ->icon('heroicon-o-calendar-plus')
+                  ->icon('heroicon-o-calendar')
                   ->color('success'),
 
                 TextEntry::make('updated_at')
@@ -167,13 +167,13 @@ class ViewAdmin extends ViewRecord
               ->label(__('app.forms.admin.account_details'))
               ->keyLabel(__('app.forms.admin.field'))
               ->valueLabel(__('app.forms.admin.value'))
-              ->data([
+              ->columnSpanFull()
+              ->state(fn($record) => [
                 __('app.forms.admin.account_type') => 'Administrator',
-                __('app.forms.admin.access_level') => fn($record) => $record->roles->count() > 0 ? 'Role-based' : 'Basic',
-                __('app.forms.admin.last_activity') => fn($record) => $record->updated_at ? $record->updated_at->diffForHumans() : 'Never',
-                __('app.forms.admin.status') => fn($record) => $record->verified ? 'Active' : 'Inactive',
-              ])
-              ->columnSpanFull(),
+                __('app.forms.admin.access_level') => $record->roles->count() > 0 ? 'Role-based' : 'Basic',
+                __('app.forms.admin.last_activity') => $record->updated_at ? $record->updated_at->diffForHumans() : 'Never',
+                __('app.forms.admin.status') => $record->verified ? 'Active' : 'Inactive',
+              ]),
           ])
           ->collapsible(false),
       ]);
