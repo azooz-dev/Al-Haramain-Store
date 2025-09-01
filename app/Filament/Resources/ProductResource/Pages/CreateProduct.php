@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ProductResource\Pages;
 
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductResource;
 use App\Traits\Product\HasProductTranslations;
@@ -38,8 +39,15 @@ class CreateProduct extends CreateRecord
     protected function afterCreate(): void
     {
         $this->saveTranslations($this->translationData);
-        $this->notifySuccess(__('app.messages.product.created_success'), __('app.messages.product.created_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
-            ?? $this->record->translations->first()?->name
-            ?? $this->record->slug]));
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return self::buildSuccessNotification(
+            __('app.messages.product.created_success'),
+            __('app.messages.product.created_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
+                ?? $this->record->translations->first()?->name
+                ?? $this->record->slug])
+        );
     }
 }

@@ -2,14 +2,16 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Filament\Resources\OrderResource;
-use App\Models\Order\Order;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use App\Models\Order\Order;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\OrderResource;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditOrder extends EditRecord
 {
+    use SendsFilamentNotifications;
     protected static string $resource = OrderResource::class;
 
     protected function getHeaderActions(): array
@@ -51,20 +53,12 @@ class EditOrder extends EditRecord
         }
     }
 
-    public function getSavedNotification(): Notification
+    public function getSavedNotification(): ?Notification
     {
-        $oldStatus = $this->record->getOriginal('status');
-        $newStatus = $this->record->status;
-
-        return Notification::make()
-            ->title(__('app.notifications.order_updated.title'))
-            ->body(__('app.notifications.order_updated.body', [
-                'order_number' => $this->record->order_number,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-            ]))
-            ->success()
-            ->send();
+        return self::buildSuccessNotification(
+            __('app.messages.order.status_updated'),
+            __('app.messages.order.order_status_updated', ['num' => $this->record->order_number, 'status' => $newStatus])
+        );
     }
     public static function getRelations(): array
     {

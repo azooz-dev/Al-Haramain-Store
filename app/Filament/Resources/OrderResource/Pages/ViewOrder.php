@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Filament\Resources\OrderResource;
-use App\Models\Order\Order;
-use App\Models\Payment\Payment;
 use Filament\Actions;
+use App\Models\Order\Order;
+use Illuminate\Support\Str;
 use Filament\Actions\Action;
+use App\Models\Payment\Payment;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use Illuminate\Support\Str;
+use App\Filament\Resources\OrderResource;
+use App\Filament\Concerns\SendsFilamentNotifications;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ViewOrder extends ViewRecord
 {
+  use SendsFilamentNotifications;
   protected static string $resource = OrderResource::class;
 
   protected function getHeaderActions(): array
@@ -42,11 +44,10 @@ class ViewOrder extends ViewRecord
           $order = $this->record;
           $order->update(['status' => $data['status']]);
 
-          Notification::make()
-            ->title(__('app.messages.order.status_updated'))
-            ->body(__('app.messages.order.order_status_updated', ['num' => $order->order_number, 'status' => Str::headline($order->status)]))
-            ->success()
-            ->send();
+          return self::buildSuccessNotification(
+            __('app.messages.order.status_updated'),
+            __('app.messages.order.order_status_updated', ['num' => $order->order_number, 'status' => Str::headline($order->status)])
+          );
         })
         ->requiresConfirmation(),
 

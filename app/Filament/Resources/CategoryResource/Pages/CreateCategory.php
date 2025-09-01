@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CategoryResource\Pages;
 
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\CategoryResource;
 use App\Traits\Category\HasCategoryTranslations;
@@ -84,8 +85,15 @@ class CreateCategory extends CreateRecord
     protected function afterCreate(): void
     {
         $this->saveTranslations($this->translationData);
-        $this->notifySuccess(__('app.messages.category.created_success'), __('app.messages.category.created_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
-            ?? $this->record->translations->first()?->name
-            ?? $this->record->slug]));
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return self::buildSuccessNotification(
+            __('app.messages.category.created_success'),
+            __('app.messages.category.created_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
+                ?? $this->record->translations->first()?->name
+                ?? $this->record->slug])
+        );
     }
 }

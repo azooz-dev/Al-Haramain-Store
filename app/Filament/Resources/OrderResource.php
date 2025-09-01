@@ -12,11 +12,13 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Concerns\SendsFilamentNotifications;
 use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\PaymentsRelationManager;
 
 class OrderResource extends Resource
 {
+    use SendsFilamentNotifications;
     protected static ?string $model = Order::class;
 
     protected static ?string $slug = 'orders';
@@ -366,7 +368,14 @@ class OrderResource extends Resource
                                 $record->update(['status' => Order::PROCESSING]);
                             });
                         })
-                        ->requiresConfirmation(),
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.order.confirm_change_status_heading'))
+                        ->modalDescription(__('app.messages.order.confirm_change_status_description'))
+                        ->modalSubmitActionLabel(__('app.actions.change_status'))
+                        ->successNotification(fn($records) => self::buildSuccessNotification(
+                            __('app.messages.order.status_changed_success'),
+                            __('app.messages.order.status_changed_success_body', ['status' => $records->status])
+                        )),
 
                     Tables\Actions\BulkAction::make('mark_as_shipped')
                         ->label(__('app.bulk_actions.mark_shipped'))
@@ -377,10 +386,24 @@ class OrderResource extends Resource
                                 $record->update(['status' => Order::SHIPPED]);
                             });
                         })
-                        ->requiresConfirmation(),
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.order.confirm_change_status_heading'))
+                        ->modalDescription(__('app.messages.order.confirm_change_status_description'))
+                        ->modalSubmitActionLabel(__('app.actions.change_status'))
+                        ->successNotification(fn($records) => self::buildSuccessNotification(
+                            __('app.messages.order.status_changed_success'),
+                            __('app.messages.order.status_changed_success_body', ['status' => $records->status])
+                        )),
 
                     Tables\Actions\DeleteBulkAction::make()
-                        ->requiresConfirmation(),
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.order.confirm_delete_heading'))
+                        ->modalDescription(__('app.messages.order.confirm_delete_description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->successNotification(fn($records) => self::buildSuccessNotification(
+                            __('app.messages.order.deleted_success'),
+                            __('app.messages.order.deleted_success_body', ['name' => $records->name])
+                        )),
                 ]),
             ])
             ->actions([
@@ -396,8 +419,14 @@ class OrderResource extends Resource
                         ->icon('heroicon-o-trash')
                         ->color('danger')
                         ->requiresConfirmation()
-                        ->modalHeading(__('app.modals.delete_order.heading'))
-                        ->modalDescription(__('app.modals.delete_order.description'))
+                        ->modalHeading(__('app.messages.order.delete_order.heading'))
+                        ->modalDescription(__('app.messages.order.delete_order.description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->modalCancelActionLabel(__('app.actions.cancel'))
+                        ->successNotification(fn($record) => self::buildSuccessNotification(
+                            __('app.messages.order.deleted_success'),
+                            __('app.messages.order.deleted_success_body', ['name' => $record->order_number])
+                        ))
                         ->visible(fn(Order $record): bool => in_array($record->status, [Order::CANCELLED, Order::REFUNDED])),
 
                     Tables\Actions\Action::make('download_invoice')
@@ -408,7 +437,11 @@ class OrderResource extends Resource
                             return response()->streamDownload(function () use ($record) {
                                 echo view('invoices.order', ['order' => $record])->render();
                             }, 'invoice-' . $record->order_number . '.html');
-                        }),
+                        })
+                        ->successNotification(fn($record) => self::buildSuccessNotification(
+                            __('app.messages.order.invoice_generated_success'),
+                            __('app.messages.order.invoice_generated_success_body', ['name' => $record->name])
+                        )),
                 ])
             ])
             ->defaultSort('created_at', 'desc')
