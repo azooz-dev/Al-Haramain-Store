@@ -2,28 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdminResource\Pages;
-use App\Models\Admin\Admin;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
-use Filament\Forms\Components\Section;
+use App\Models\Admin\Admin;
+use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Validation\Rules\Password;
+use App\Filament\Resources\AdminResource\Pages;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class AdminResource extends Resource
 {
+    use SendsFilamentNotifications;
     protected static ?string $model = Admin::class;
 
     protected static ?string $slug = 'admins';
@@ -285,12 +287,12 @@ class AdminResource extends Resource
                         ->requiresConfirmation()
                         ->modalHeading(__('app.messages.admin.confirm_delete_heading'))
                         ->modalDescription(__('app.messages.admin.confirm_delete_description'))
-                        ->modalSubmitActionLabel('Yes, delete user')
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->successNotification(
-                            Notification::make()
-                                ->success()
-                                ->title(__('app.messages.admin.deleted_success'))
-                                ->body(__('app.messages.admin.deleted_success_body'))
+                            fn($record) => self::buildSuccessNotification(
+                                __('app.messages.admin.deleted_success'),
+                                __('app.messages.admin.deleted_success_body', ['name' => $record->first_name . ' ' . $record->last_name])
+                            )
                         ),
                 ])
             ])
@@ -300,7 +302,13 @@ class AdminResource extends Resource
                         ->requiresConfirmation()
                         ->modalHeading(__('app.messages.admin.confirm_delete_bulk_heading'))
                         ->modalDescription(__('app.messages.admin.confirm_delete_bulk_description'))
-                        ->modalSubmitActionLabel('Yes, delete users'),
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->successNotification(
+                            fn($records) => self::buildSuccessNotification(
+                                __('app.messages.admin.deleted_success_bulk'),
+                                __('app.messages.admin.deleted_success_body_bulk')
+                            )
+                        ),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
