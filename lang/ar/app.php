@@ -675,6 +675,10 @@ return [
       'confirm_delete_bulk_heading' => 'حذف العروض المحددة',
       'confirm_delete_bulk_description' => 'هل أنت متأكد من أنك تريد حذف العروض المحددة؟ لا يمكن التراجع عن هذا الإجراء.',
     ],
+    'review' => [
+      'updated_success' => 'تم تحديث حالة التقييم بنجاح.',
+      'updated_success_body' => 'تم تحديث حالة التقييم :name بنجاح.',
+    ],
     'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
     'status_updated' => 'تم تحديث حالة التقييم',
   ],

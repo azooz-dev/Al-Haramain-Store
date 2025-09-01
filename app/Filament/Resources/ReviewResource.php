@@ -2,22 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ReviewResource\Pages;
-use App\Models\Review\Review;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Review\Review;
+use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
-use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Support\Collection;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ReviewResource\Pages;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class ReviewResource extends Resource
 {
+  use SendsFilamentNotifications;
   protected static ?string $model = Review::class;
 
   protected static ?string $slug = 'reviews';
@@ -278,10 +280,10 @@ class ReviewResource extends Resource
             ->action(function (array $data, $record) {
               $record->update(['status' => $data['status']]);
 
-              \Filament\Notifications\Notification::make()
-                ->title(__('app.messages.status_updated'))
-                ->success()
-                ->send();
+              return self::buildSuccessNotification(
+                __('app.messages.review.status_updated'),
+                __('app.messages.review.status_updated_body', ['status' => $data['status']])
+              );
             })
         ]),
       ])

@@ -5,9 +5,11 @@ namespace App\Filament\Resources\ReviewResource\Pages;
 use App\Models\Review\Review;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\ReviewResource;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class ViewReview extends ViewRecord
 {
+  use SendsFilamentNotifications;
   protected static string $resource = ReviewResource::class;
 
   protected function getHeaderActions(): array
@@ -32,10 +34,10 @@ class ViewReview extends ViewRecord
         ->action(function (array $data, $record) {
           $record->update(['status' => $data['status']]);
 
-          \Filament\Notifications\Notification::make()
-            ->title(__('app.messages.status_updated'))
-            ->success()
-            ->send();
+          return self::buildSuccessNotification(
+            __('app.messages.review.status_updated'),
+            __('app.messages.review.status_updated_body', ['status' => $data['status']])
+          );
         })
         ->after(function () {
           $this->fillForm();
