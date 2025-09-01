@@ -17,11 +17,12 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Services\Product\ProductTranslationService;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Concerns\SendsFilamentNotifications;
 use App\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
-    use HasTranslations;
+    use HasTranslations, SendsFilamentNotifications;
 
     protected static ?string $model = Product::class;
 
@@ -596,7 +597,13 @@ class ProductResource extends Resource
                             return __('app.messages.product.confirm_delete_description', ['name' => $translatedName]);
                         })
                         ->modalSubmitActionLabel(__('app.actions.delete'))
-                        ->modalCancelActionLabel(__('app.actions.cancel')),
+                        ->modalCancelActionLabel(__('app.actions.cancel'))
+                        ->successNotification(fn($record) => self::buildSuccessNotification(
+                            __('app.messages.product.deleted_success'),
+                            __('app.messages.product.deleted_success_body', ['name' => $record->translations->where('local', app()->getLocale())->first()?->name
+                                ?? $record->translations->first()?->name
+                                ?? $record->slug])
+                        )),
                 ])
             ])
             ->bulkActions([

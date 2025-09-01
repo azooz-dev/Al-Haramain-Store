@@ -588,6 +588,12 @@ return [
       'confirm_delete_description' => 'هل أنت متأكد من أنك تريد حذف ":name"؟ لا يمكن التراجع عن هذا الإجراء.',
       'confirm_delete_bulk_heading' => 'حذف المنتجات المحددة',
       'confirm_delete_bulk_description' => 'هل أنت متأكد من أنك تريد حذف المنتجات المحددة؟ لا يمكن التراجع عن هذا الإجراء.',
+      'created_success' => 'تم إنشاء المنتج بنجاح!',
+      'created_success_body' => 'تمت إضافة المنتج ":name" بنجاح إلى المتجر.',
+      'updated_success' => 'تم تحديث المنتج بنجاح!',
+      'updated_success_body' => 'تم تحديث المنتج ":name" بنجاح.',
+      'deleted_success' => 'تم حذف المنتج بنجاح!',
+      'deleted_success_body' => 'تم حذف المنتج ":name" بنجاح.',
     ],
     'order' => [
       'status_updated' => 'تم تحديث حالة الطلب',

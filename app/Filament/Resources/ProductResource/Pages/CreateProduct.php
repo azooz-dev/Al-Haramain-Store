@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources\ProductResource\Pages;
 
-use App\Filament\Resources\ProductResource;
-use App\Traits\Product\HasProductTranslations;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Resources\ProductResource;
+use App\Traits\Product\HasProductTranslations;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class CreateProduct extends CreateRecord
 {
-    use HasProductTranslations;
+    use HasProductTranslations, SendsFilamentNotifications;
 
     protected static string $resource = ProductResource::class;
 
@@ -37,5 +38,8 @@ class CreateProduct extends CreateRecord
     protected function afterCreate(): void
     {
         $this->saveTranslations($this->translationData);
+        $this->notifySuccess(__('app.messages.product.created_success'), __('app.messages.product.created_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
+            ?? $this->record->translations->first()?->name
+            ?? $this->record->slug]));
     }
 }

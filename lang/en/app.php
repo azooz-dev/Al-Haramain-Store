@@ -473,6 +473,12 @@ return [
       'confirm_delete_description' => 'Are you sure you want to delete ":name"? This action cannot be undone.',
       'confirm_delete_bulk_heading' => 'Delete Selected Products',
       'confirm_delete_bulk_description' => 'Are you sure you want to delete the selected products? This action cannot be undone.',
+      'created_success' => 'Product created successfully!',
+      'created_success_body' => 'Product ":name" added successfully to the store.',
+      'updated_success' => 'Product updated successfully!',
+      'updated_success_body' => 'Product ":name" updated successfully.',
+      'deleted_success' => 'Product deleted successfully!',
+      'deleted_success_body' => 'Product ":name" deleted successfully.',
     ],
     'order' => [
       'status_updated' => 'Order status updated',
