@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\CategoryResource\Pages;
 
-use App\Filament\Resources\CategoryResource;
-use App\Traits\Category\HasCategoryTranslations;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\CategoryResource;
+use App\Traits\Category\HasCategoryTranslations;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 /**
  * EditCategory Page
@@ -30,7 +31,7 @@ use Filament\Resources\Pages\EditRecord;
  */
 class EditCategory extends EditRecord
 {
-    use HasCategoryTranslations;
+    use HasCategoryTranslations, SendsFilamentNotifications;
 
     protected static string $resource = CategoryResource::class;
 
@@ -123,5 +124,8 @@ class EditCategory extends EditRecord
     protected function afterSave(): void
     {
         $this->saveTranslations($this->translationData);
+        $this->notifySuccess(__('app.messages.category.updated_success'), __('app.messages.category.updated_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
+            ?? $this->record->translations->first()?->name
+            ?? $this->record->slug]));
     }
 }

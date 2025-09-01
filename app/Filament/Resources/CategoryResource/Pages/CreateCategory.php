@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\CategoryResource\Pages;
 
+use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\CategoryResource;
 use App\Traits\Category\HasCategoryTranslations;
-use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 /**
  * CreateCategory Page
@@ -27,7 +28,7 @@ use Filament\Resources\Pages\CreateRecord;
  */
 class CreateCategory extends CreateRecord
 {
-    use HasCategoryTranslations;
+    use HasCategoryTranslations, SendsFilamentNotifications;
 
     protected static string $resource = CategoryResource::class;
 
@@ -83,5 +84,8 @@ class CreateCategory extends CreateRecord
     protected function afterCreate(): void
     {
         $this->saveTranslations($this->translationData);
+        $this->notifySuccess(__('app.messages.category.created_success'), __('app.messages.category.created_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
+            ?? $this->record->translations->first()?->name
+            ?? $this->record->slug]));
     }
 }

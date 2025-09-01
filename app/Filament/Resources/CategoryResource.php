@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Models\Category\Category;
-use App\Services\Category\CategoryTranslationService;
-use App\Traits\HasTranslations;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Traits\HasTranslations;
+use Filament\Resources\Resource;
+use App\Models\Category\Category;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Concerns\SendsFilamentNotifications;
+use App\Services\Category\CategoryTranslationService;
 
 class CategoryResource extends Resource
 {
-    use HasTranslations;
+    use HasTranslations, SendsFilamentNotifications;
     protected static ?string $model = Category::class;
 
     protected static ?string $slug = 'categories';
@@ -266,7 +267,13 @@ class CategoryResource extends Resource
                             return __('app.messages.category.confirm_delete_description', ['name' => $translatedName]);
                         })
                         ->modalSubmitActionLabel(__('app.actions.delete'))
-                        ->modalCancelActionLabel(__('app.actions.cancel')),
+                        ->modalCancelActionLabel(__('app.actions.cancel'))
+                        ->successNotification(fn($record) => self::buildSuccessNotification(
+                            __('app.messages.category.deleted_success'),
+                            __('app.messages.category.deleted_success_body', ['name' => $record->translations->where('local', app()->getLocale())->first()?->name
+                                ?? $record->translations->first()?->name
+                                ?? $record->slug])
+                        )),
                 ])
             ])
             ->bulkActions([

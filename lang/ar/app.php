@@ -576,6 +576,12 @@ return [
       'confirm_delete_description' => 'هل أنت متأكد من أنك تريد حذف ":name"؟ لا يمكن التراجع عن هذا الإجراء.',
       'confirm_delete_bulk_heading' => 'حذف التصنيفات المحددة',
       'confirm_delete_bulk_description' => 'هل أنت متأكد من أنك تريد حذف التصنيفات المحددة؟ لا يمكن التراجع عن هذا الإجراء.',
+      'created_success' => 'تم إنشاء التصنيف بنجاح!',
+      'created_success_body' => 'تمت إضافة المنتج ":name" بنجاح إلى المتجر.',
+      'updated_success' => 'تم تحديث التصنيف بنجاح!',
+      'updated_success_body' => 'تم تحديث التصنيف ":name" بنجاح.',
+      'deleted_success' => 'تم حذف التصنيف بنجاح!',
+      'deleted_success_body' => 'تم حذف المنتج ":name" بنجاح.',
     ],
     'product' => [
       'slug_copied' => 'تم نسخ الرابط المختصر!',

@@ -461,6 +461,12 @@ return [
       'confirm_delete_description' => 'Are you sure you want to delete ":name"? This action cannot be undone.',
       'confirm_delete_bulk_heading' => 'Delete Selected Categories',
       'confirm_delete_bulk_description' => 'Are you sure you want to delete the selected categories? This action cannot be undone.',
+      'created_success' => 'Category created successfully!',
+      'created_success_body' => 'Category ":name" added successfully to the store.',
+      'updated_success' => 'Category updated successfully!',
+      'updated_success_body' => 'Category ":name" updated successfully.',
+      'deleted_success' => 'Category deleted successfully!',
+      'deleted_success_body' => 'Category ":name" deleted successfully.',
     ],
     'product' => [
       'slug_copied' => 'Slug copied!',
