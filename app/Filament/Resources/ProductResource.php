@@ -250,7 +250,7 @@ class ProductResource extends Resource
                                         Forms\Components\Repeater::make('variants')
                                             ->relationship('variants')
                                             ->label(__('app.forms.product.variants'))
-                                            ->validationRules(static::getVariantValidationRules())
+                                            ->rules(static::getVariantValidationRules())
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
