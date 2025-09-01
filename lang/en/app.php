@@ -211,6 +211,7 @@ return [
       'colors_and_images' => 'Colors and Images',
       'colors_and_images_description' => 'Manage product colors and their associated images',
       'color' => [
+        'color' => 'Color',
         'color_code' => 'Color Code',
         'preview' => 'Color Preview',
         'images' => 'Color Images',
@@ -779,6 +780,16 @@ return [
 
   // Filters
   'filters' => [
+    'created_at' => 'Created Date',
+    'created_from' => 'Created From',
+    'created_until' => 'Created Until',
+    'stock_status' => 'Stock Status',
+    'stock_level' => 'Stock Level',
+    'in_stock' => 'In Stock',
+    'low_stock' => 'Low Stock',
+    'out_of_stock' => 'Out of Stock',
+    'has_variants' => 'Has Variants',
+    'has_colors' => 'Has Colors',
     'favorite' => [
       'user' => 'Filter by User',
       'product' => 'Filter by Product',
@@ -788,6 +799,10 @@ return [
 
   // Actions
   'actions' => [
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'cancel' => 'Cancel',
+    'export' => 'Export',
     'create_favorite' => 'Add to Favorites',
     'edit_favorite' => 'Edit Favorite',
     'delete_favorite' => 'Remove from Favorites',
@@ -874,6 +889,8 @@ return [
   // Validation Messages
   'validation' => [
     'variant_quantity_exceeds_stock' => 'Variant quantity (:variant_quantity) cannot exceed total stock quantity (:total_stock)',
+    'invalid_variants_format' => 'Invalid variants format provided',
+    'variants_total_must_equal_product_quantity' => 'Total variants quantity (:variants_total) must equal product total quantity (:product_total)',
   ],
 
   // Widgets

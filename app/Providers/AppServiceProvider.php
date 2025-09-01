@@ -6,9 +6,11 @@ use App\Models\Offer\Offer;
 use App\Models\Product\Product;
 use App\Observers\Offer\OfferObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Product\ProductColorImage;
+use App\Observers\Product\ProductColorImageObserver;
+
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
-
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\interface\Product\ProductRepositoryInterface;
 use App\Repositories\Eloquent\Product\ProductTranslationRepository;
@@ -41,5 +43,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Offer::observe(OfferObserver::class);
+        ProductColorImage::observe(ProductColorImageObserver::class);
     }
 }

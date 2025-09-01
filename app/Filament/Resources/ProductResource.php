@@ -11,12 +11,13 @@ use App\Models\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use App\Rules\VariantQuantityMaxRule;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Services\Product\ProductTranslationService;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductResource\RelationManagers;
-use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends Resource
 {
@@ -74,6 +75,9 @@ class ProductResource extends Resource
 
     public static function form(Form $form): Form
     {
+        // get per-variant rules (now contains a Rule object, not closures)
+        $perVariantRules = static::getVariantValidationRules()['variants.*.quantity'] ?? ['required', 'numeric', 'min:0'];
+
         return $form->schema([
             Forms\Components\Wizard::make([
                 Forms\Components\Wizard\Step::make(__('app.forms.product.basic_information'))
@@ -250,7 +254,6 @@ class ProductResource extends Resource
                                         Forms\Components\Repeater::make('variants')
                                             ->relationship('variants')
                                             ->label(__('app.forms.product.variants'))
-                                            ->rules(static::getVariantValidationRules())
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
@@ -266,7 +269,7 @@ class ProductResource extends Resource
                                                             ->numeric()
                                                             ->required()
                                                             ->minValue(0)
-                                                            ->placeholder(__('app.forms.product.enter_variant_available_quantity'))
+                                                            ->rules($perVariantRules)->placeholder(__('app.forms.product.enter_variant_available_quantity'))
                                                             ->helperText(__('app.forms.product.variant.quantity_help'))
                                                             ->columnSpan(1),
 
@@ -606,14 +609,6 @@ class ProductResource extends Resource
                         ->modalDescription(__('app.messages.product.confirm_delete_bulk_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->modalCancelActionLabel(__('app.actions.cancel')),
-
-                    Tables\Actions\BulkAction::make('export')
-                        ->label(__('app.actions.export'))
-                        ->icon('heroicon-o-arrow-down-tray')
-                        ->color('success')
-                        ->action(function () {
-                            // Export logic would go here
-                        }),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
@@ -660,14 +655,27 @@ class ProductResource extends Resource
                 'required',
                 'numeric',
                 'min:0',
-                function ($attribute, $value, $fail) {
-                    // Get the main product quantity from the form data
-                    $mainQuantity = request()->input('quantity', 0);
+                new VariantQuantityMaxRule(),
+            ],
 
-                    if ($value > $mainQuantity) {
-                        $fail(__('app.validation.variant_quantity_exceeds_stock', [
-                            'variant_quantity' => $value,
-                            'total_stock' => $mainQuantity
+            // aggregate rule for variants array (keep the closure here for the server-side check)
+            'variants' => [
+                function ($attribute, $value, $fail) {
+                    $totalFromVariants = 0;
+                    if (!is_array($value)) {
+                        $fail(__('app.validation.invalid_variants_format'));
+                        return;
+                    }
+                    foreach ($value as $variant) {
+                        $qty = isset($variant['quantity']) ? (int) $variant['quantity'] : 0;
+                        $totalFromVariants += $qty;
+                    }
+                    $mainQuantity = (int) request()->input('quantity', 0);
+
+                    if ($totalFromVariants !== $mainQuantity) {
+                        $fail(__('app.validation.variants_total_must_equal_product_quantity', [
+                            'variants_total' => $totalFromVariants,
+                            'product_total'  => $mainQuantity,
                         ]));
                     }
                 },

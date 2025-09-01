@@ -35,7 +35,7 @@ class ProductTranslationService
       $translation = $this->translationRepository->getTranslationByLocale($product, 'en');
     }
 
-    return $translation->name;
+    return $translation->name ?? "";
   }
 
   public function getTranslatedDescription(Product $product, $locale = null)
