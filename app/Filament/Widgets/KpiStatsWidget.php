@@ -42,7 +42,7 @@ class KpiStatsWidget extends BaseWidget
                 ->description($this->getAOVGrowth())
                 ->descriptionIcon($this->getAOVGrowth() >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($this->getAOVGrowth() >= 0 ? 'success' : 'danger')
-                ->chart($this->getLast7DaysAVO()),
+                ->chart($this->getLast7DaysAOV()),
 
             // New Customer
             Stat::make(__('app.widgets.new_customers'), number_format($this->getNewCustomersToday()))
@@ -173,45 +173,72 @@ class KpiStatsWidget extends BaseWidget
 
     private function getLast7DaysRevenue(): array
     {
-        return Order::where('status', '!=', Order::CANCELLED)
+        // Generate a collection of the last 7 days' dates in 'Y-m-d' format
+        $dates = collect(range(0, 6))
+            ->map(fn($i) => now()->subDays(6 - $i)->format('Y-m-d'));
+
+        // Get revenue data grouped by date
+        $revenueData = Order::where('status', '!=', Order::CANCELLED)
             ->where('status', '!=', Order::REFUNDED)
             ->whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy(DB::raw('DATE(created_at)'))
-            ->pluck(DB::raw('SUM(total_amount)'))
-            ->toArray();
+            ->selectRaw('DATE(created_at) as date, SUM(total_amount) as revenue')
+            ->groupBy('date')
+            ->pluck('revenue', 'date');
+
+        // Map each date to its revenue (0 if no data)
+        return $dates->map(fn($date) => (float) ($revenueData->get($date, 0)))->toArray();
     }
 
     private function getLast7DaysOrders(): array
     {
-        return Order::whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy(DB::raw('DATE(created_at)'))
-            ->pluck(DB::raw('COUNT(*)'))
-            ->toArray();
+        // Generate a collection of the last 7 days' dates in 'Y-m-d' format
+        $dates = collect(range(0, 6))
+            ->map(fn($i) => now()->subDays(6 - $i)->format('Y-m-d'));
+
+        // Get orders data grouped by date
+        $ordersData = Order::whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->pluck('count', 'date');
+
+        // Map each date to its order count (0 if no data)
+        return $dates->map(fn($date) => (int) ($ordersData->get($date, 0)))->toArray();
     }
 
 
-    private function getLast7DaysAVO(): array
+    private function getLast7DaysAOV(): array
     {
-        $data = Order::where('status', '!=', Order::CANCELLED)
+        // Generate a collection of the last 7 days' dates in 'Y-m-d' format
+        $dates = collect(range(0, 6))
+            ->map(fn($i) => now()->subDays(6 - $i)->format('Y-m-d'));
+
+        // Get AOV data grouped by date
+        $aovData = Order::where('status', '!=', Order::CANCELLED)
             ->where('status', '!=', Order::REFUNDED)
             ->whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
-            ->selectRaw('DATE(created_at) as Date, AVG(total_amount) as avg_value')
+            ->selectRaw('DATE(created_at) as date, AVG(total_amount) as avg_value')
             ->groupBy('date')
-            ->orderBy('date')
-            ->pluck('avg_value')
-            ->toArray();
+            ->pluck('avg_value', 'date');
 
-        return array_map(fn($value) => round($value, 2), $data);
+        // Map each date to its AOV (0 if no data)
+        return $dates->map(fn($date) => round((float) ($aovData->get($date, 0)), 2))->toArray();
     }
 
     private function getLast7DaysCustomers(): array
     {
-        return User::whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy(DB::raw('DATE(created_at)'))
-            ->pluck(DB::raw('COUNT(*)'))
-            ->toArray();
+        // Create array of last 7 days
+        $dates = collect();
+        for ($i = 6; $i >= 0; $i--) {
+            $dates->push(now()->subDays($i)->format('Y-m-d'));
+        }
+
+        // Get customer data grouped by date
+        $customersData = User::whereBetween('created_at', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->pluck('count', 'date');
+
+        // Map each date to its customer count (0 if no data)
+        return $dates->map(fn($date) => (int) ($customersData->get($date, 0)))->toArray();
     }
 }
