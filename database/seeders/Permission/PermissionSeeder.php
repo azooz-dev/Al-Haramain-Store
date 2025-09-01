@@ -30,6 +30,7 @@ class PermissionSeeder extends Seeder
       'review',
       'favorite',
       'role',
+      'admin'
     ];
 
     $actions = [
