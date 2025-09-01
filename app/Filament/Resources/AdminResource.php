@@ -20,6 +20,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Notifications\Notification;
 
 class AdminResource extends Resource
 {
@@ -269,22 +270,29 @@ class AdminResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->icon('heroicon-o-eye')
-                    ->color('info'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->icon('heroicon-o-eye')
+                        ->color('info'),
 
-                Tables\Actions\EditAction::make()
-                    ->icon('heroicon-o-pencil')
-                    ->color('warning'),
+                    Tables\Actions\EditAction::make()
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning'),
 
-                Tables\Actions\DeleteAction::make()
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->modalHeading(__('app.messages.admin.confirm_delete_heading'))
-                    ->modalDescription(__('app.messages.admin.confirm_delete_description'))
-                    ->getDeletedNotificationTitle(__("notifications.admin.deleted"))
-                    ->modalSubmitActionLabel('Yes, delete user'),
+                    Tables\Actions\DeleteAction::make()
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.admin.confirm_delete_heading'))
+                        ->modalDescription(__('app.messages.admin.confirm_delete_description'))
+                        ->modalSubmitActionLabel('Yes, delete user')
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title(__('app.messages.admin.deleted_success'))
+                                ->body(__('app.messages.admin.deleted_success_body'))
+                        ),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -313,6 +321,7 @@ class AdminResource extends Resource
             'index' => Pages\ListAdmins::route('/'),
             'create' => Pages\CreateAdmin::route('/create'),
             'edit' => Pages\EditAdmin::route('/{record}/edit'),
+            'view' => Pages\ViewAdmin::route('/{record}'),
         ];
     }
 
