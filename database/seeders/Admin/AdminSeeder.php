@@ -14,7 +14,11 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::firstOrCreate([
+        // Create sample admins using factory
+        Admin::factory(10)->create();
+
+        // Create specific admin for testing
+        $admin = Admin::firstOrCreate([
             'first_name' => 'Admin',
             'last_name' => 'Admin',
             'email' => 'admin@admin.com',
@@ -23,5 +27,7 @@ class AdminSeeder extends Seeder
             'verified' => true,
             'email_verified_at' => now(),
         ]);
+
+        $admin->assignRole('super_admin');
     }
 }

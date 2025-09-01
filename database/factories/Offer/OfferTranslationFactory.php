@@ -1,0 +1,48 @@
+<?php
+
+namespace Database\Factories\Offer;
+
+use App\Models\Offer\Offer;
+use App\Models\Offer\OfferTranslation;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Offer\OfferTranslation>
+ */
+class OfferTranslationFactory extends Factory
+{
+  /**
+   * Define the model's default state.
+   *
+   * @return array<string, mixed>
+   */
+  public function definition(): array
+  {
+    return [
+      'offer_id' => Offer::factory(),
+      'locale' => fake()->randomElement(['en', 'ar']),
+      'name' => fake()->words(2, true),
+      'description' => fake()->sentence(10, false),
+    ];
+  }
+
+  /**
+   * Indicate that the translation is in English.
+   */
+  public function english(): static
+  {
+    return $this->state(fn(array $attributes) => [
+      'locale' => 'en',
+    ]);
+  }
+
+  /**
+   * Indicate that the translation is in Arabic.
+   */
+  public function arabic(): static
+  {
+    return $this->state(fn(array $attributes) => [
+      'locale' => 'ar',
+    ]);
+  }
+}

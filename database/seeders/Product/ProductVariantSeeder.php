@@ -15,6 +15,10 @@ class ProductVariantSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample product variants using factory
+        ProductVariant::factory(250)->create();
+
+        // Create specific product variant for testing
         ProductVariant::create([
             'product_id' => Product::all()->random()->id,
             'color_id' => ProductColor::all()->random()->id,

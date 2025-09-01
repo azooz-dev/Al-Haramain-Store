@@ -2,22 +2,23 @@
 
 namespace App\Models\Product;
 
-use App\Models\Category\Category;
 use App\Models\Offer\Offer;
+use App\Models\Category\Category;
 use App\Models\Product\ProductColor;
-use App\Models\Product\ProductColorImage;
-use App\Models\Product\ProductTranslation;
 use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\hasManyThrough;
+use App\Models\Product\ProductColorImage;
+use App\Models\Product\ProductTranslation;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\hasManyThrough;
 
 class Product extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $fillable = [
         'slug',

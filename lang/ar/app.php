@@ -620,17 +620,6 @@ return [
     'no_name' => 'لا يوجد اسم',
   ],
 
-  // Tabs
-  'tabs' => [
-    'all_orders' => 'جميع الطلبات',
-    'pending' => 'في الانتظار',
-    'processing' => 'قيد المعالجة',
-    'shipped' => 'تم الشحن',
-    'delivered' => 'تم التسليم',
-    'cancelled' => 'ملغي',
-    'refunded' => 'مسترد',
-  ],
-
   // Filters
   'filters' => [
     'offer_status' => 'حالة العرض',
@@ -724,6 +713,13 @@ return [
   'tabs' => [
     'all' => 'الكل',
     'recent' => 'الأحدث (7 أيام)',
+    'all_orders' => 'جميع الطلبات',
+    'pending' => 'في الانتظار',
+    'processing' => 'قيد المعالجة',
+    'shipped' => 'تم الشحن',
+    'delivered' => 'تم التسليم',
+    'cancelled' => 'ملغي',
+    'refunded' => 'مسترد',
   ],
 
   // Notifications

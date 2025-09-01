@@ -15,6 +15,10 @@ class OrderItemSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample order items using factory
+        OrderItem::factory(300)->create();
+
+        // Create specific order item for testing
         OrderItem::create([
             'order_id' => Order::first()->id,
             'product_id' => Product::first()->id,

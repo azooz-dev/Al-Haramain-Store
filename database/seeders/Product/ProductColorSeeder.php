@@ -14,6 +14,10 @@ class ProductColorSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample product colors using factory
+        ProductColor::factory(150)->create();
+
+        // Create specific product color for testing
         ProductColor::create([
             'product_id' => Product::all()->random()->id,
             'color_code' => '#FF5733'

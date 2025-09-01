@@ -15,6 +15,10 @@ class FavoriteSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample favorites using factory
+        Favorite::factory(100)->create();
+
+        // Create specific favorite for testing
         Favorite::create([
             'user_id' => User::first()->id,
             'product_id' => Product::first()->id,

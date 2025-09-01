@@ -14,6 +14,10 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample categories using factory
+        Category::factory(20)->create();
+
+        // Create specific category for testing
         Category::create([
             'slug' => Str::slug('electronics'),
             'image' => 'image.jpg',

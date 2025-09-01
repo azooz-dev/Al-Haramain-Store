@@ -3,11 +3,14 @@
 namespace App\Models\Coupon;
 
 use App\Models\User\User;
+use App\Models\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CouponUser extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'coupon_id',
         'user_id',

@@ -10,6 +10,10 @@ class AddressSeeder extends Seeder
 {
     public function run(): void
     {
+        // Create sample addresses using factory
+        Address::factory(100)->create();
+
+        // Create specific address for testing
         Address::create([
             'user_id' => User::first()->id,
             'full_name' => 'John Doe',

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\Role\RoleSeeder;
 use Database\Seeders\User\UserSeeder;
-use Database\Seeders\PermissionSeeder;
 use Database\Seeders\Admin\AdminSeeder;
 use Database\Seeders\Offer\OfferSeeder;
 use Database\Seeders\Order\OrderSeeder;
@@ -18,10 +17,12 @@ use Database\Seeders\Category\CategorySeeder;
 use Database\Seeders\Coupon\CouponUserSeeder;
 use Database\Seeders\Favorite\FavoriteSeeder;
 use Database\Seeders\Product\ProductColorSeeder;
+use Database\Seeders\Permission\PermissionSeeder;
 use Database\Seeders\Offer\OfferTranslationSeeder;
 use Database\Seeders\Product\ProductVariantSeeder;
 use Database\Seeders\User\UserAddress\AddressSeeder;
 use Database\Seeders\Product\ProductColorImageSeeder;
+use Database\Seeders\Product\ProductTranslationSeeder;
 use Database\Seeders\Category\CategoryTranslationSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,6 +35,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             AddressSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
             AdminSeeder::class,
             CategorySeeder::class,
             CategoryTranslationSeeder::class,
@@ -41,6 +44,7 @@ class DatabaseSeeder extends Seeder
             ProductColorSeeder::class,
             ProductVariantSeeder::class,
             ProductColorImageSeeder::class,
+            ProductTranslationSeeder::class,
             CouponSeeder::class,
             CouponUserSeeder::class,
             OrderSeeder::class,
@@ -50,8 +54,6 @@ class DatabaseSeeder extends Seeder
             OfferSeeder::class,
             OfferTranslationSeeder::class,
             FavoriteSeeder::class,
-            RoleSeeder::class,
-            PermissionSeeder::class,
         ]);
     }
 }

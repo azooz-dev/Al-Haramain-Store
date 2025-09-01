@@ -3,11 +3,13 @@
 namespace App\Models\Product;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductColorImage extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'product_color_id',
         'image_url',

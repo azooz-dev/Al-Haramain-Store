@@ -16,6 +16,10 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample orders using factory
+        Order::factory(200)->create();
+
+        // Create specific orders for testing
         Order::create([
             'user_id' => User::first()->id,
             'address_id' => Address::first()->id,

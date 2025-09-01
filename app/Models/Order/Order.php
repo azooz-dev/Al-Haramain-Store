@@ -3,20 +3,21 @@
 namespace App\Models\Order;
 
 use App\Models\User\User;
+use App\Models\Coupon\Coupon;
+use App\Models\Review\Review;
 use App\Models\Order\OrderItem;
 use App\Models\Payment\Payment;
-use App\Models\Review\Review;
-use App\Models\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User\UserAddresses\Address;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     const PENDING = 'pending';
     const PROCESSING = 'processing';

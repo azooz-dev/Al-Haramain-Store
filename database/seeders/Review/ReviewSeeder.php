@@ -8,7 +8,6 @@ use App\Models\Product\Product;
 use App\Models\Order\Order;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Nette\Utils\Random;
 
 class ReviewSeeder extends Seeder
 {
@@ -17,6 +16,10 @@ class ReviewSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create some sample reviews using factories
+        Review::factory(20)->create();
+
+        // Create specific reviews for testing
         Review::create([
             'user_id' => User::first()->id,
             'product_id' => Product::first()->id,

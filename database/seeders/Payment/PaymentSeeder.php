@@ -14,6 +14,10 @@ class PaymentSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample payments using factory
+        Payment::factory(150)->create();
+
+        // Create specific payment for testing
         Payment::create([
             'order_id' => Order::first()->id,
             'payment_method' => 'cash',

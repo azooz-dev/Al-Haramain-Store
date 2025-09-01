@@ -682,17 +682,6 @@ return [
     'no_name' => 'No name',
   ],
 
-  // Tabs
-  'tabs' => [
-    'all_orders' => 'All Orders',
-    'pending' => 'Pending',
-    'processing' => 'Processing',
-    'shipped' => 'Shipped',
-    'delivered' => 'Delivered',
-    'cancelled' => 'Cancelled',
-    'refunded' => 'Refunded',
-  ],
-
   // Filters
   'filters' => [
     'offer_status' => 'Offer Status',
@@ -798,6 +787,13 @@ return [
   'tabs' => [
     'all' => 'All',
     'recent' => 'Recent (7 days)',
+    'all_orders' => 'All Orders',
+    'pending' => 'Pending',
+    'processing' => 'Processing',
+    'shipped' => 'Shipped',
+    'delivered' => 'Delivered',
+    'cancelled' => 'Cancelled',
+    'refunded' => 'Refunded',
   ],
 
   // Notifications

@@ -14,6 +14,10 @@ class CategoryTranslationSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample category translations using factory
+        CategoryTranslation::factory(40)->create();
+
+        // Create specific category translations for testing
         CategoryTranslation::create([
             'category_id' => Category::first()->id,
             'name' => 'Electronics',

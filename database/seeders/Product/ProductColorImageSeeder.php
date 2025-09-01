@@ -14,6 +14,10 @@ class ProductColorImageSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample product color images using factory
+        ProductColorImage::factory(200)->create();
+
+        // Create specific product color image for testing
         ProductColorImage::create([
             'product_color_id' => ProductColor::all()->random()->id,
             'image_url' => 'image.jpg',

@@ -15,6 +15,7 @@ class TopProductsWidget extends BaseWidget
 {
     protected static ?string $heading = null;
     protected static ?int $sort = 4;
+    protected static ?string $maxHeight = '350px';
     protected int | string | array $columnSpan = [
         'md' => 2,
         'xl' => 1,

@@ -15,6 +15,10 @@ class CouponUserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Create sample coupon users using factory
+        CouponUser::factory(80)->create();
+
+        // Create specific coupon user for testing
         CouponUser::create([
             'coupon_id' => Coupon::first()->id,
             'user_id' => User::first()->id,
