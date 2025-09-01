@@ -26,9 +26,6 @@ class CouponUsersRelationManager extends RelationManager
         TextColumn::make('created_at')->label('First Used')->dateTime()->toggleable(isToggledHiddenByDefault: true),
         TextColumn::make('updated_at')->label('Last Used')->dateTime(),
       ])
-      ->filters([
-        // No filters needed for a compact view; can be added later
-      ])
       ->headerActions([])
       ->actions([])
       ->bulkActions([]);

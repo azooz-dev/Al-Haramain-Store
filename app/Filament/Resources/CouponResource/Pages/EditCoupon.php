@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\CouponResource\Pages;
 
-use App\Filament\Resources\CouponResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\CouponResource;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditCoupon extends EditRecord
 {
+    use SendsFilamentNotifications;
     protected static string $resource = CouponResource::class;
 
     protected function getHeaderActions(): array
@@ -15,5 +17,10 @@ class EditCoupon extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function afterSave(): void
+    {
+        $this->notifySuccess(__('app.messages.coupon.updated_success'), __('app.messages.coupon.updated_success_body', ['name' => $this->record->name]));
     }
 }

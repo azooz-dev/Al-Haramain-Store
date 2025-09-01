@@ -2,28 +2,31 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CouponResource\Pages;
-use App\Models\Coupon\Coupon;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\BadgeColumn;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\Coupon\Coupon;
+use Illuminate\Validation\Rule;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Validation\Rule;
+use App\Filament\Resources\CouponResource\Pages;
+use App\Filament\Concerns\SendsFilamentNotifications;
+use Filament\Support\Exceptions\Halt;
 
 class CouponResource extends Resource
 {
+    use SendsFilamentNotifications;
     protected static ?string $model = Coupon::class;
 
     protected static ?string $slug = 'coupons';
@@ -288,10 +291,37 @@ class CouponResource extends Resource
                         })
                         ->requiresConfirmation()
                         ->icon('heroicon-o-power')
-                        ->color('success'),
+                        ->color('success')
+                        ->successNotification(
+                            fn($record) => self::buildSuccessNotification(
+                                __('app.messages.coupon.status_updated'),
+                                __('app.messages.coupon.status_updated_body', ['status' => $record->status === Coupon::ACTIVE ? __('app.status.active') : __('app.status.inactive')])
+                            )
+                        ),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
-                        ->color('danger'),
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.coupon.confirm_delete_heading'))
+                        ->modalDescription(__('app.messages.coupon.confirm_delete_description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->before(function (Coupon $record) {
+                            if ($record->couponUsers->count() > 0) {
+                                self::buildErrorNotification(
+                                    __('app.messages.coupon.must_be_empty'),
+                                    __('app.messages.coupon.must_be_empty_description')
+                                )->send();
+
+                                throw new Halt();
+                            }
+                            return true;
+                        })
+                        ->successNotification(
+                            fn($record) => self::buildSuccessNotification(
+                                __('app.messages.coupon.deleted_success'),
+                                __('app.messages.coupon.deleted_success_body', ['name' => $record->name])
+                            )
+                        ),
                 ])
             ])
             ->bulkActions([
@@ -300,13 +330,47 @@ class CouponResource extends Resource
                         ->label(__('app.actions.activate'))
                         ->action(fn(\Illuminate\Support\Collection $records) => $records->each->update(['status' => Coupon::ACTIVE]))
                         ->color('success')
-                        ->icon('heroicon-o-bolt'),
+                        ->icon('heroicon-o-bolt')
+                        ->successNotification(
+                            fn($records) => self::buildSuccessNotification(
+                                __('app.messages.coupon.activated_success_bulk'),
+                                __('app.messages.coupon.activated_success_body_bulk')
+                            )
+                        ),
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label(__('app.actions.deactivate'))
                         ->action(fn(\Illuminate\Support\Collection $records) => $records->each->update(['status' => Coupon::INACTIVE]))
                         ->color('danger')
-                        ->icon('heroicon-o-power'),
-                    Tables\Actions\DeleteBulkAction::make(),
+                        ->icon('heroicon-o-power')
+                        ->successNotification(
+                            fn($records) => self::buildSuccessNotification(
+                                __('app.messages.coupon.deactivated_success_bulk'),
+                                __('app.messages.coupon.deactivated_success_body_bulk')
+                            )
+                        ),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.coupon.confirm_delete_bulk_heading'))
+                        ->modalDescription(__('app.messages.coupon.confirm_delete_bulk_description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->before(function (\Illuminate\Support\Collection $records) {
+                            foreach ($records as $record) {
+                                if ($record->couponUsers->count() > 0) {
+                                    return self::buildErrorNotification(
+                                        __('app.messages.coupon.must_be_empty'),
+                                        __('app.messages.coupon.must_be_empty_description')
+                                    );
+                                }
+                            }
+                            return true;
+                        })
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->successNotification(
+                            fn($records) => self::buildSuccessNotification(
+                                __('app.messages.coupon.deleted_success_bulk'),
+                                __('app.messages.coupon.deleted_success_body_bulk')
+                            )
+                        ),
                 ]),
             ]);
     }
