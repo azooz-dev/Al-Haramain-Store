@@ -2,21 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\OfferResource\Pages;
+use Closure;
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
 use App\Models\Offer\Offer;
 use App\Traits\HasTranslations;
-use App\Services\Product\ProductTranslationService;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Closure;
+use App\Filament\Resources\OfferResource\Pages;
+use App\Services\Product\ProductTranslationService;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class OfferResource extends Resource
 {
-    use HasTranslations;
+    use HasTranslations, SendsFilamentNotifications;
     protected static ?string $model = Offer::class;
 
     protected static ?string $slug = 'offers';
@@ -402,7 +403,14 @@ class OfferResource extends Resource
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
                         ->color('danger')
-                        ->requiresConfirmation(),
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.offer.confirm_delete_heading'))
+                        ->modalDescription(__('app.messages.offer.confirm_delete_description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->successNotification(fn($record) => self::buildSuccessNotification(
+                            __('app.messages.offer.deleted_success'),
+                            __('app.messages.offer.deleted_success_body', ['name' => $record->name])
+                        )),
                 ])
             ])
             ->bulkActions([
@@ -410,7 +418,14 @@ class OfferResource extends Resource
                     Tables\Actions\DeleteBulkAction::make()
                         ->icon('heroicon-o-trash')
                         ->color('danger')
-                        ->requiresConfirmation(),
+                        ->requiresConfirmation()
+                        ->modalHeading(__('app.messages.offer.confirm_delete_bulk_heading'))
+                        ->modalDescription(__('app.messages.offer.confirm_delete_bulk_description'))
+                        ->modalSubmitActionLabel(__('app.actions.delete'))
+                        ->successNotification(fn($records) => self::buildSuccessNotification(
+                            __('app.messages.offer.deleted_success_bulk'),
+                            __('app.messages.offer.deleted_success_body_bulk')
+                        )),
                 ]),
             ])
             ->defaultSort('start_date', 'desc')

@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources\OfferResource\Pages;
 
+use Filament\Actions;
 use App\Filament\Resources\OfferResource;
 use App\Traits\Offer\HasOfferTranslations;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Concerns\SendsFilamentNotifications;
 
 class CreateOffer extends CreateRecord
 {
-    use HasOfferTranslations;
+    use HasOfferTranslations, SendsFilamentNotifications;
 
     protected static string $resource = OfferResource::class;
 
@@ -54,5 +55,6 @@ class CreateOffer extends CreateRecord
     protected function afterCreate(): void
     {
         $this->saveTranslations($this->translationData);
+        $this->notifySuccess(__('app.messages.offer.created_success'), __('app.messages.offer.created_success_body', ['name' => $this->record->name]));
     }
 }

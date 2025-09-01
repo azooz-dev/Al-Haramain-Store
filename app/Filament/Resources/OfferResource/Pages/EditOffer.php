@@ -2,14 +2,16 @@
 
 namespace App\Filament\Resources\OfferResource\Pages;
 
-use App\Filament\Resources\OfferResource;
-use App\Traits\Offer\HasOfferTranslations;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\OfferResource;
+use App\Traits\Offer\HasOfferTranslations;
+use App\Filament\Concerns\SendsFilamentNotifications;
+use Filament\Notifications\Notification;
 
 class EditOffer extends EditRecord
 {
-    use HasOfferTranslations;
+    use HasOfferTranslations, SendsFilamentNotifications;
 
     protected static string $resource = OfferResource::class;
 
@@ -60,5 +62,13 @@ class EditOffer extends EditRecord
     protected function afterSave(): void
     {
         $this->saveTranslations($this->translationData);
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return self::buildSuccessNotification(
+            __('app.messages.offer.updated_success'),
+            __('app.messages.offer.updated_success_body', ['name' => $this->record->name])
+        );
     }
 }

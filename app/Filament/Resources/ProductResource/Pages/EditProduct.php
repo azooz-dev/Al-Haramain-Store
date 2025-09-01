@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ProductResource\Pages;
 
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\ProductResource;
 use App\Traits\Product\HasProductTranslations;
@@ -70,8 +71,15 @@ class EditProduct extends EditRecord
     protected function afterSave(): void
     {
         $this->saveTranslations($this->translationData);
-        $this->notifySuccess(__('app.messages.product.updated_success'), __('app.messages.product.updated_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
-            ?? $this->record->translations->first()?->name
-            ?? $this->record->slug]));
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return self::buildSuccessNotification(
+            __('app.messages.product.updated_success'),
+            __('app.messages.product.updated_success_body', ['name' => $this->record->translations->where('local', app()->getLocale())->first()?->name
+                ?? $this->record->translations->first()?->name
+                ?? $this->record->slug])
+        );
     }
 }
