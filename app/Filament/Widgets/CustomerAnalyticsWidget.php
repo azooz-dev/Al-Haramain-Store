@@ -9,9 +9,11 @@ use App\Models\Category\Category;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 use App\Services\Category\CategoryTranslationService;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class CustomerAnalyticsWidget extends ChartWidget
 {
+    use HasWidgetShield;
     protected static ?string $heading = null;
     protected static ?int $sort = 5;
     protected static ?string $maxHeight = '350px';

@@ -10,9 +10,11 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget as BaseWidget;
 use App\Services\Product\ProductTranslationService;
 use Filament\Tables\Columns\TextColumn\TextColumnSize;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class TopProductsWidget extends BaseWidget
 {
+    use HasWidgetShield;
     protected static ?string $heading = null;
     protected static ?int $sort = 4;
     protected static ?string $maxHeight = '350px';

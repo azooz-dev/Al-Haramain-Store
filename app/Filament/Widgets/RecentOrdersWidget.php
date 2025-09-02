@@ -8,9 +8,11 @@ use App\Models\Order\Order;
 use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Widgets\TableWidget as BaseWidget;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RecentOrdersWidget extends BaseWidget
 {
+    use HasWidgetShield;
     protected static ?string $heading = null;
     protected static ?int $sort = 6;
     protected int | string | array $columnSpan = 'full';
