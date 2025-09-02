@@ -13,7 +13,7 @@ class PermissionSeeder extends Seeder
     app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
     $this->createResourcePermissions();
-    $this->createPagePermissions();
+    $this->createWidgetPermissions();
 
     $this->command->info('All permissions created successfully!');
     $this->command->info('Total permissions: ' . Permission::where('guard_name', 'admin')->count());
@@ -58,16 +58,21 @@ class PermissionSeeder extends Seeder
     }
   }
 
-  private function createPagePermissions(): void
+  private function createWidgetPermissions(): void
   {
-    $pages = [
-      'dashboard',
-      'profile',
+    $widgets = [
+      'kpi_stats_widget',
+      'order_status_widget',
+      'revenue_overview_widget',
+      'top_products_widget',
+      'customer_analytics_widget',
+      'recent_orders_widget',
+      'review_analytics_widget',
     ];
 
-    foreach ($pages as $page) {
+    foreach ($widgets as $widget) {
       Permission::firstOrCreate([
-        'name' => "page_{$page}",
+        'name' => "widget_{$widget}",
         'guard_name' => 'admin',
       ]);
     }
