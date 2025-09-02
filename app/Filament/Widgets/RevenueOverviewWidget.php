@@ -5,9 +5,11 @@ namespace App\Filament\Widgets;
 use Carbon\Carbon;
 use App\Models\Order\Order;
 use Filament\Widgets\ChartWidget;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RevenueOverviewWidget extends ChartWidget
 {
+    use HasWidgetShield;
     protected static ?string $heading = 'Chart';
     protected static ?int $sort = 6;
     protected static ?string $maxHeight = '350px';

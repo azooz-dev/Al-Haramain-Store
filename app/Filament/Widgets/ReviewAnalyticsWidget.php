@@ -5,9 +5,11 @@ namespace App\Filament\Widgets;
 use App\Models\Review\Review;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class ReviewAnalyticsWidget extends ChartWidget
 {
+    use HasWidgetShield;
     protected static ?string $heading = null;
     protected static ?int $sort = 2;
     protected static ?string $maxHeight = '300px';

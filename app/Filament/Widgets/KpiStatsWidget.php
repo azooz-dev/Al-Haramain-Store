@@ -7,10 +7,12 @@ use App\Models\Order\Order;
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\DB;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class KpiStatsWidget extends BaseWidget
 {
+    use HasWidgetShield;
     protected static ?int $sort = 1;
     protected static bool $isLazy = false;
 

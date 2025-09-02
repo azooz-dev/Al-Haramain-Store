@@ -7,9 +7,11 @@ use App\Models\Order\Order;
 use App\Models\Product\Product;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class OrderStatusWidget extends ChartWidget
 {
+    use HasWidgetShield;
     protected static ?string $heading = null;
     protected static ?int $sort = 1;
     protected static ?string $maxHeight = '300px';
