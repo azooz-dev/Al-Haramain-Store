@@ -2,14 +2,15 @@
 
 namespace App\Filament\Resources\AdminResource\Pages;
 
-use App\Filament\Resources\AdminResource;
-use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\TextEntry;
+use Illuminate\Support\Facades\Auth;
 use Filament\Infolists\Components\Grid;
+use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\AdminResource;
+use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\IconEntry;
 
+use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\KeyValueEntry;
 
 class ViewAdmin extends ViewRecord
@@ -25,23 +26,14 @@ class ViewAdmin extends ViewRecord
           ->description(__('app.forms.admin.basic_information_description'))
           ->icon('heroicon-o-user')
           ->schema([
-            Grid::make(2)
+            Grid::make(3)
               ->schema([
-                TextEntry::make('first_name')
-                  ->label(__('app.forms.admin.first_name'))
+                TextEntry::make('name')
+                  ->label(__('app.forms.admin.name'))
                   ->size(TextEntry\TextEntrySize::Large)
                   ->weight('bold')
                   ->icon('heroicon-o-user-circle'),
 
-                TextEntry::make('last_name')
-                  ->label(__('app.forms.admin.last_name'))
-                  ->size(TextEntry\TextEntrySize::Large)
-                  ->weight('bold')
-                  ->icon('heroicon-o-user-circle'),
-              ]),
-
-            Grid::make(2)
-              ->schema([
                 TextEntry::make('email')
                   ->label(__('app.forms.admin.email'))
                   ->icon('heroicon-m-envelope')
@@ -56,14 +48,6 @@ class ViewAdmin extends ViewRecord
                   ->url(fn($record) => $record->phone ? "tel:{$record->phone}" : null)
                   ->color('info'),
               ]),
-
-            TextEntry::make('full_name')
-              ->label(__('app.forms.admin.full_name'))
-              ->state(fn($record) => $record->getFilamentName())
-              ->size(TextEntry\TextEntrySize::Large)
-              ->weight('bold')
-              ->color('primary')
-              ->icon('heroicon-o-identification'),
           ])
           ->collapsible(false),
 
@@ -171,7 +155,7 @@ class ViewAdmin extends ViewRecord
               ->state(fn($record) => [
                 __('app.forms.admin.account_type') => 'Administrator',
                 __('app.forms.admin.access_level') => $record->roles->count() > 0 ? 'Role-based' : 'Basic',
-                __('app.forms.admin.last_activity') => $record->updated_at ? $record->updated_at->diffForHumans() : 'Never',
+                __('app.forms.admin.last_activity') => session()->get('last_activity_' . Auth::guard('admin')->id()) ?? __('app.forms.admin.never'),
                 __('app.forms.admin.status') => $record->verified ? 'Active' : 'Inactive',
               ]),
           ])

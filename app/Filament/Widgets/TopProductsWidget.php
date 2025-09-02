@@ -62,7 +62,7 @@ class TopProductsWidget extends BaseWidget
                     ->whereBetween('orders.created_at', [$period['start'], $period['end']])
                     ->groupBy('products.id')
                     ->orderByDesc('total_sold')
-                    ->limit(10)
+                    ->limit(3)
                     ->with(['translations', 'colors', 'variants'])
             )
             ->columns([

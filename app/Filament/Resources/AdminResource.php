@@ -75,25 +75,15 @@ class AdminResource extends Resource
                     ->description(__('app.forms.admin.basic_information_description'))
                     ->icon('heroicon-o-user')
                     ->schema([
-                        Grid::make(2)
+                        Grid::make(3)
                             ->schema([
-                                TextInput::make('first_name')
-                                    ->label(__('app.forms.admin.first_name'))
+                                TextInput::make('name')
+                                    ->label(__('app.forms.admin.name'))
                                     ->required()
                                     ->maxLength(255)
-                                    ->placeholder(__('app.forms.admin.enter_first_name'))
-                                    ->columnSpan(1),
+                                    ->placeholder(__('app.forms.admin.enter_name'))
+                                    ->columnSpan(2),
 
-                                TextInput::make('last_name')
-                                    ->label(__('app.forms.admin.last_name'))
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->placeholder(__('app.forms.admin.enter_last_name'))
-                                    ->columnSpan(1),
-                            ]),
-
-                        Grid::make(2)
-                            ->schema([
                                 TextInput::make('email')
                                     ->label(__('app.forms.admin.email'))
                                     ->email()
@@ -101,14 +91,14 @@ class AdminResource extends Resource
                                     ->maxLength(255)
                                     ->unique(ignoreRecord: true)
                                     ->placeholder(__('app.forms.admin.enter_email'))
-                                    ->columnSpan(1),
+                                    ->columnSpan(2),
 
                                 TextInput::make('phone')
                                     ->label(__('app.forms.admin.phone'))
                                     ->tel()
                                     ->maxLength(255)
                                     ->placeholder(__('app.forms.admin.enter_phone'))
-                                    ->columnSpan(1),
+                                    ->columnSpan(2),
                             ]),
                     ])
                     ->collapsible(false),
@@ -168,14 +158,8 @@ class AdminResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('first_name')
-                    ->label(__('app.columns.admin.first_name'))
-                    ->searchable()
-                    ->sortable()
-                    ->weight('bold'),
-
-                TextColumn::make('last_name')
-                    ->label(__('app.columns.admin.last_name'))
+                TextColumn::make('name')
+                    ->label(__('app.columns.admin.name'))
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
@@ -291,7 +275,7 @@ class AdminResource extends Resource
                         ->successNotification(
                             fn($record) => self::buildSuccessNotification(
                                 __('app.messages.admin.deleted_success'),
-                                __('app.messages.admin.deleted_success_body', ['name' => $record->first_name . ' ' . $record->last_name])
+                                __('app.messages.admin.deleted_success_body', ['name' => $record->name])
                             )
                         ),
                 ])
