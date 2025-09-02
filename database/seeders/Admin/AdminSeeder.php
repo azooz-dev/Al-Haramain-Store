@@ -19,8 +19,7 @@ class AdminSeeder extends Seeder
 
         // Create specific admin for testing
         $admin = Admin::firstOrCreate([
-            'first_name' => 'Admin',
-            'last_name' => 'Admin',
+            'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
             'phone' => '1234567890',
