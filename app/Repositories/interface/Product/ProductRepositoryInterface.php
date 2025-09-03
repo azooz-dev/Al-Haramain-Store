@@ -7,17 +7,11 @@ use Illuminate\Support\Collection;
 
 interface ProductRepositoryInterface
 {
+  public function getAllProducts();
+
   public function findById(int $id): ?Product;
 
   public function findByIdWithTranslations(int $id): ?Product;
-
-  public function getAllWithTranslations(): Collection;
-
-  public function create(array $data): ?Product;
-
-  public function update(Product $product, array $data): bool;
-
-  public function delete(Product $product): bool;
 
   public function searchByName(string $search): Collection;
 

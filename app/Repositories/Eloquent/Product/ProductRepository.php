@@ -8,34 +8,19 @@ use Illuminate\Support\Collection;
 
 class ProductRepository implements ProductRepositoryInterface
 {
+  public function getAllProducts()
+  {
+    return Product::with(['translations', 'colors', 'colors.images', 'colors.variants'])->get();
+  }
+
   public function findById(int $id): ?Product
   {
-    return Product::find($id);
+    return Product::with(['translations', 'colors', 'colors.images', 'colors.variants'])->find($id);
   }
 
   public function findByIdWithTranslations(int $id): ?Product
   {
     return Product::with('translations')->find($id);
-  }
-
-  public function getAllWithTranslations(): Collection
-  {
-    return Product::with('translations')->get();
-  }
-
-  public function create(array $data): ?Product
-  {
-    return Product::create($data);
-  }
-
-  public function update(Product $product, array $data): bool
-  {
-    return $product->update($data);
-  }
-
-  public function delete(Product $product): bool
-  {
-    return $product->delete();
   }
 
   public function searchByName(string $search): Collection
