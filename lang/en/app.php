@@ -470,6 +470,7 @@ return [
       'updated_success_body' => 'Category ":name" updated successfully.',
       'deleted_success' => 'Category deleted successfully!',
       'deleted_success_body' => 'Category ":name" deleted successfully.',
+      "category_error" => 'Category error occurred!'
     ],
     'product' => [
       'slug_copied' => 'Slug copied!',
