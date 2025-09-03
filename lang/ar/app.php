@@ -603,7 +603,7 @@ return [
       'updated_success_body' => 'تم تحديث المنتج ":name" بنجاح.',
       'deleted_success' => 'تم حذف المنتج بنجاح!',
       'deleted_success_body' => 'تم حذف المنتج ":name" بنجاح.',
-      "Product_error" => 'حدث خطأ في المنتج !'
+      "product_error" => 'حدث خطأ في المنتج !'
     ],
     'order' => [
       'status_updated' => 'تم تحديث حالة الطلب',
