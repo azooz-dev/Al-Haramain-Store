@@ -488,6 +488,7 @@ return [
       'updated_success_body' => 'Product ":name" updated successfully.',
       'deleted_success' => 'Product deleted successfully!',
       'deleted_success_body' => 'Product ":name" deleted successfully.',
+      "Product_error" => "Product error occurred!"
     ],
     'order' => [
       'status_updated' => 'Order status updated',
