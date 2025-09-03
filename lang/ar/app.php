@@ -585,6 +585,7 @@ return [
       'updated_success_body' => 'تم تحديث التصنيف ":name" بنجاح.',
       'deleted_success' => 'تم حذف التصنيف بنجاح!',
       'deleted_success_body' => 'تم حذف المنتج ":name" بنجاح.',
+      "category_error" => 'حدث خطأ في التصنيف !'
     ],
     'product' => [
       'slug_copied' => 'تم نسخ الرابط المختصر!',
