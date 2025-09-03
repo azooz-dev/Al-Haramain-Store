@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Services\Product\ProductService;
 
+use function App\Helpers\showAll;
+use function App\Helpers\showOne;
+
 class ProductController extends Controller
 {
 
@@ -14,9 +17,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'data' => $this->productService->getProducts()
-        ]);
+        $products = $this->productService->getProducts();
+
+        return showAll($products, 'products', 200);
     }
 
     /**
@@ -24,8 +27,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json([
-            'data' => $this->productService->findProductById($id)
-        ]);
+        $product = $this->productService->findProductById($id);
+
+        return showOne($product, 'product', 201);
     }
 }

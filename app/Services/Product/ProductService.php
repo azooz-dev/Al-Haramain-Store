@@ -11,11 +11,15 @@ class ProductService
 
   public function getProducts()
   {
-    return ProductApiResource::collection($this->productRepository->getAllProducts());
+    $products = $this->productRepository->getAllProducts();
+
+    return ProductApiResource::collection($products);
   }
 
   public function findProductById(int $id)
   {
-    return new ProductApiResource($this->productRepository->findById($id));
+    $product = $this->productRepository->findById($id);
+
+    return new ProductApiResource($product);
   }
 }
