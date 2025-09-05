@@ -5,6 +5,7 @@ use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\User\UserOrderController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Product\ProductReviewController;
 
 // Products
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);

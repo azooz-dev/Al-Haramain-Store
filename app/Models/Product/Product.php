@@ -9,6 +9,7 @@ use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product\ProductColorImage;
 use App\Models\Product\ProductTranslation;
+use App\Models\Review\Review;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +50,11 @@ class Product extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(ProductTranslation::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 
     /**
