@@ -489,7 +489,8 @@ return [
       'updated_success_body' => 'Product ":name" updated successfully.',
       'deleted_success' => 'Product deleted successfully!',
       'deleted_success_body' => 'Product ":name" deleted successfully.',
-      "product_error" => "Product error occurred!"
+      "product_error" => "Product error occurred!",
+      'out_of_stock' => 'There is not enough quantity of this product',
     ],
     'order' => [
       'status_updated' => 'Order status updated',
@@ -517,6 +518,13 @@ return [
       'delete_order' => [
         'heading' => 'Delete Order',
         'description' => 'Are you sure you want to delete this order?',
+      ],
+      'order_error' => 'Order error occurred!',
+      'buyer_not_verified' => "The buyer must be verified!",
+      'validation' => [
+        'variant_not_found' => 'The variant not found!',
+        'color_not_found' => 'The color not found!',
+        'variant_quantity_exceeds_stock' => 'The variant quantity (:variant_quantity) cannot exceed the total stock quantity (:total_stock)',
       ],
     ],
     'admin' => [

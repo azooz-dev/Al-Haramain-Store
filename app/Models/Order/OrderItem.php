@@ -44,14 +44,6 @@ class OrderItem extends Model
     }
 
     /**
-     * Get the total line amount (effective price × quantity)
-     */
-    public function getLineTotalAttribute(): float
-    {
-        return $this->effective_price * $this->quantity;
-    }
-
-    /**
      * Get the original line total (before discounts)
      */
     public function getOriginalLineTotalAttribute(): float

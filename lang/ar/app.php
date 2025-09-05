@@ -604,7 +604,8 @@ return [
       'updated_success_body' => 'تم تحديث المنتج ":name" بنجاح.',
       'deleted_success' => 'تم حذف المنتج بنجاح!',
       'deleted_success_body' => 'تم حذف المنتج ":name" بنجاح.',
-      "product_error" => 'حدث خطأ في المنتج !'
+      "product_error" => 'حدث خطأ في المنتج !',
+      'out_of_stock' => 'لا يوجد كمية كافية من هذا المنتج',
     ],
     'order' => [
       'status_updated' => 'تم تحديث حالة الطلب',
@@ -632,6 +633,13 @@ return [
       'delete_order' => [
         'heading' => 'حذف الطلب',
         'description' => 'هل أنت متأكد من أنك تريد حذف الطلب هذا؟',
+      ],
+      'order_error' => 'حدث خطأ في الطلب !',
+      'buyer_not_verified' => 'يجب على المشتري أن يكون متحقق من الحساب !',
+      'validation' => [
+        'variant_not_found' => 'المتغير غير موجود !',
+        'color_not_found' => 'اللون غير موجود !',
+        'variant_quantity_exceeds_stock' => 'لا يمكن أن تتجاوز كمية المتغير (:variant_quantity) إجمالي كمية المخزون (:total_stock)',
       ],
     ],
     'admin' => [
