@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\OrderRequest;
 use App\Services\Order\OrderService;
 
+use function App\Helpers\showOne;
+
 class OrderController extends Controller
 {
     public function __construct(private OrderService $orderService) {}
@@ -14,6 +16,8 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        return $this->orderService->storeOrder($request->validated());
+        $order = $this->orderService->storeOrder($request->validated());
+
+        return showOne($order, 'order', 201);
     }
 }
