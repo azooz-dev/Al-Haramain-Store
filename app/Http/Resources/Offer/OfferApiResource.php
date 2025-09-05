@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Offer;
 
+use App\Http\Resources\Product\ProductApiResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Services\Product\ProductTranslationService;
@@ -17,7 +18,6 @@ class OfferApiResource extends JsonResource
     {
         $en = $this->translations->where('locale', 'en')->first();
         $ar = $this->translations->where('locale', 'ar')->first();
-        $productName = app(ProductTranslationService::class)->getTranslatedName($this->product);
 
         return [
             'identifier' => $this->id,
@@ -27,7 +27,7 @@ class OfferApiResource extends JsonResource
             'startDate' => $this->start_date,
             'endDate' => $this->end_date,
             'status' => $this->status,
-            'product' => $productName,
+            'product' => new ProductApiResource($this->product),
             'en' => [
                 'title' => $en->name,
                 'details' => $en->description

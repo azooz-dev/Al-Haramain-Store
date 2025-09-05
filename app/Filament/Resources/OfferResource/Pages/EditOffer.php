@@ -42,6 +42,8 @@ class EditOffer extends EditRecord
             $formData['start_date'] = $formData['startDate'];
             $formData['end_date'] = $formData['endDate'];
             $formData['image_path'] = $formData['picture'];
+            $product = $formData['product'];
+            $formData['product'] = $product->translations->where('local', app()->getLocale())->first()->name;
 
             unset($formData['discountType'], $formData['discountAmount'], $formData['startDate'], $formData['endDate'], $formData['picture']);
             $this->form->fill($formData);

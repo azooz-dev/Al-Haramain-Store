@@ -57,7 +57,7 @@ class ProductApiResource extends JsonResource
                 ];
             })->values()->toArray(),
 
-            'reviews' => isset($this->reviews) ? new ReviewResource($this->reviews) : null,
+            'reviews' => isset($this->reviews) ? ReviewResource::collection($this->reviews) : null,
 
 
 
