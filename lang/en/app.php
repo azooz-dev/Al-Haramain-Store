@@ -562,6 +562,9 @@ return [
       'deactivated_success_body_bulk' => 'Coupons ":name" deactivated successfully.',
       'must_be_empty' => 'Coupon must be empty.',
       'must_be_empty_description' => 'This coupon was used by users and cannot be deleted.',
+      'apply_coupon' => 'Coupon has been applied successfully!',
+      'coupon_not_valid' => 'Coupon not valid to used!',
+      'coupon_error' => 'Coupon error occurred!'
     ],
     'offer' => [
       'created_success' => 'Offer created successfully.',

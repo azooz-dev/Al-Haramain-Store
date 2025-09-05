@@ -677,6 +677,9 @@ return [
       'deactivated_success_body_bulk' => 'تم تعطيل الكوبونات المحددة بنجاح.',
       'must_be_empty' => 'يجب أن يكون الكوبون فارغ.',
       'must_be_empty_description' => 'هذا الكوبون تم استخدامه بالمستخدمين ولا يمكن حذفه.',
+      'apply_coupon' => 'تم تطبيق الكوبون بنجاح!',
+      'coupon_not_valid' => 'الكوبون غير صالح للاستخدام!',
+      'coupon_error' => 'حدث خطأ في الطلب !'
     ],
     'offer' => [
       'created_success' => 'تم إنشاء العرض بنجاح.',
