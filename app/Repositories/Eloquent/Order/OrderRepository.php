@@ -11,4 +11,9 @@ class OrderRepository implements OrderRepositoryInterface
   {
     return Order::create($data);
   }
+
+  public function isDelivered(int $orderId): bool
+  {
+    return Order::find($orderId)->status === Order::DELIVERED;
+  }
 }

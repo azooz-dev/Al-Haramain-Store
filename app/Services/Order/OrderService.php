@@ -84,4 +84,9 @@ class OrderService
     // Re-index to a numerically indexed array
     return array_values($this->variantQuantities);
   }
+
+  public function isDelivered(int $orderId)
+  {
+    return $this->orderRepository->isDelivered($orderId);
+  }
 }

@@ -520,6 +520,8 @@ return [
         'description' => 'Are you sure you want to delete this order?',
       ],
       'order_error' => 'Order error occurred!',
+      "error_order_status" => 'Order status error occurred!',
+      'order_undelivered' => "The order has not yet been delivered!",
       'buyer_not_verified' => "The buyer must be verified!",
       'validation' => [
         'variant_not_found' => 'The variant not found!',
@@ -572,6 +574,11 @@ return [
       'confirm_delete_description' => 'Are you sure you want to delete this offer? This action cannot be undone.',
       'confirm_delete_bulk_heading' => 'Delete Selected Offers',
       'confirm_delete_bulk_description' => 'Are you sure you want to delete the selected offers? This action cannot be undone.',
+    ],
+    'review' => [
+      'updated_success' => 'Review status updated successfully.',
+      'updated_success_body' => 'Review status updated :name successfully.',
+      'review_error' => "Review error occurred!"
     ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',

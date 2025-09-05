@@ -7,4 +7,6 @@ use App\Models\Order\Order;
 interface OrderRepositoryInterface
 {
   public function store(array $data): Order;
+
+  public function isDelivered(int $orderId): bool;
 }

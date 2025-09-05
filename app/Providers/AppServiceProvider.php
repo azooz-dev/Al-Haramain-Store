@@ -24,6 +24,8 @@ use App\Repositories\interface\Order\OrderItem\OrderItemRepositoryInterface;
 use App\Repositories\interface\Product\ProductTranslationRepositoryInterface;
 use App\Repositories\interface\Category\CategoryTranslationRepositoryInterface;
 use App\Repositories\interface\Product\Variant\ProductVariantRepositoryInterface;
+use App\Repositories\Eloquent\User\Order\Product\Review\UserOrderProductReviewRepository;
+use App\Repositories\interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
         $this->app->bind(ProductVariantRepositoryInterface::class, ProductVariantRepository::class);
+        $this->app->bind(UserOrderProductReviewRepositoryInterface::class, UserOrderProductReviewRepository::class);
     }
 
     /**

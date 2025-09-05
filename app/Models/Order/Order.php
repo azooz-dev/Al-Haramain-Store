@@ -266,6 +266,7 @@ class Order extends Model
         static::creating(function ($order) {
             if (empty($order->order_number)) {
                 $order->order_number = self::generateOrderNumber();
+                $order->status = self::PENDING;
             }
         });
     }

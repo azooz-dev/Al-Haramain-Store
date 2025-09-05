@@ -45,4 +45,15 @@ class Review extends Model
     {
         return __('app.status.' . $this->status);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($review) {
+            if (empty($review->status)) {
+                $review->status = self::PENDING;
+            }
+        });
+    }
 }

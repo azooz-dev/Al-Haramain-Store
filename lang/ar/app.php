@@ -635,6 +635,8 @@ return [
         'description' => 'هل أنت متأكد من أنك تريد حذف الطلب هذا؟',
       ],
       'order_error' => 'حدث خطأ في الطلب !',
+      'error_order_status' => 'حدث خطأ في حالة الطلب !',
+      'order_undelivered' => 'الطلب مازال لم يتم تسليمه!',
       'buyer_not_verified' => 'يجب على المشتري أن يكون متحقق من الحساب !',
       'validation' => [
         'variant_not_found' => 'المتغير غير موجود !',
@@ -691,6 +693,7 @@ return [
     'review' => [
       'updated_success' => 'تم تحديث حالة التقييم بنجاح.',
       'updated_success_body' => 'تم تحديث حالة التقييم :name بنجاح.',
+      'review_error' => "حدث خطأ في التقييم!"
     ],
     'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
     'status_updated' => 'تم تحديث حالة التقييم',

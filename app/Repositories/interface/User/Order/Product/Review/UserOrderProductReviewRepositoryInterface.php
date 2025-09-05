@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Repositories\interface\User\Order\Product\Review;
+
+use App\Models\Review\Review;
+
+interface UserOrderProductReviewRepositoryInterface
+{
+  public function store(array $data, int $userId, int $orderId, int $productId): Review;
+}
