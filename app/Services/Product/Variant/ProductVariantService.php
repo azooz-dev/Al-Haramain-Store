@@ -33,7 +33,7 @@ class ProductVariantService
     return $itemTotal;
   }
 
-  public function calculateTotalVariantPrice($variantId, $quantity)
+  public function calculateTotalVariantPrice($variantId, $quantity): float
   {
     $price = $this->productVariantRepository->calculateTotalVariant($variantId);
 
@@ -45,5 +45,10 @@ class ProductVariantService
     foreach ($items as $item) {
       return $this->productVariantRepository->decrementVariantStock($item['variant_id'], $item['quantity']);
     }
+  }
+
+  public function fetchAllVariants($productIds, $colorIds, $variantIds)
+  {
+    return $this->productVariantRepository->fetchAllVariants($productIds, $colorIds, $variantIds);
   }
 }

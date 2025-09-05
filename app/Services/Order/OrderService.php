@@ -23,7 +23,7 @@ class OrderService
   public function storeOrder(array $data)
   {
     try {
-      $this->checkBuyerVerified($data['user_id']);
+      // $this->checkBuyerVerified($data['user_id']);
       $this->groupVariantQuantities($data['items']);
       $data['total_amount'] = $this->variantService->calculateTotalOrderPrice($this->variantQuantities);
 

@@ -5,10 +5,12 @@ namespace App\Http\Requests\Order;
 use App\Models\Order\Order;
 use App\Models\Product\ProductColor;
 use App\Models\Product\ProductVariant;
+use App\Services\Product\Variant\ProductVariantService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderRequest extends FormRequest
 {
+    public function __construct(private ProductVariantService $variantService) {}
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -47,10 +49,7 @@ class OrderRequest extends FormRequest
                 $variantIds = collect($items)->pluck('variant_id')->unique();
 
                 // Fetch all needed variants in one query
-                $variants = \App\Models\Product\ProductVariant::whereIn('product_id', $productIds)
-                    ->whereIn('color_id', $colorIds)
-                    ->whereIn('id', $variantIds)
-                    ->get();
+                $variants = $this->variantService->fetchAllVariants($productIds, $colorIds, $variantIds);
 
                 // Build color map: [product_id-color_id] => true
                 $colorMap = [];

@@ -12,7 +12,7 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
     return ProductVariant::find($variantId)->quantity;
   }
 
-  public function calculateTotalVariant($variantId): int
+  public function calculateTotalVariant($variantId): float
   {
     $variant = ProductVariant::find($variantId);
     $price = $variant->amount_discount_price ?? $variant->price;
@@ -32,5 +32,13 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
   public function getVariantsByIds(array $ids)
   {
     return ProductVariant::whereIn('id', $ids)->get()->keyBy('id');
+  }
+
+  public function fetchAllVariants($productIds, $colorIds, $variantIds)
+  {
+    return ProductVariant::whereIn('product_id', $productIds)
+      ->whereIn('color_id', $colorIds)
+      ->whereIn('id', $variantIds)
+      ->get();
   }
 }
