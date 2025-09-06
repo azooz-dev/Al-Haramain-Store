@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\interface\Category;
+namespace App\Repositories\Interface\Category;
 
 use App\Models\Category\Category;
 use App\Models\Category\CategoryTranslation;
@@ -22,7 +22,7 @@ use Illuminate\Support\Collection;
  * - EloquentCategoryTranslationRepository provides the concrete implementation
  * - Can be easily swapped for testing or different data sources
  * 
- * @package App\Repositories\interface\Category
+ * @package App\Repositories\Interface\Category
  */
 interface CategoryTranslationRepositoryInterface
 {

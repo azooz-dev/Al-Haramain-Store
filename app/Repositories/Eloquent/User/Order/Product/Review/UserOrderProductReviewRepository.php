@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent\User\Order\Product\Review;
 
 use App\Models\Review\Review;
-use App\Repositories\interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
+use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
 
 class UserOrderProductReviewRepository implements UserOrderProductReviewRepositoryInterface
 {

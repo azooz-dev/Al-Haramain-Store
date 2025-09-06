@@ -4,7 +4,7 @@ namespace App\Services\User\Order\Product\Review;
 
 use App\Exceptions\Order\CheckDeliveredOrderException;
 use App\Exceptions\Order\Review\ReviewException;
-use App\Repositories\interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
+use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
 use App\Services\Order\OrderService;
 
 use function App\Helpers\errorResponse;

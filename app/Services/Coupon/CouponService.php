@@ -4,7 +4,7 @@ namespace App\Services\Coupon;
 
 use App\Exceptions\Coupon\CouponException;
 use App\Models\Coupon\Coupon;
-use App\Repositories\interface\Coupon\CouponRepositoryInterface;
+use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 

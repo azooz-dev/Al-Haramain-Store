@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent\Order\OrderItem;
 
 use App\Models\Order\OrderItem;
 use App\Models\Product\ProductVariant;
-use App\Repositories\interface\Order\OrderItem\OrderItemRepositoryInterface;
+use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 
 class OrderItemRepository implements OrderItemRepositoryInterface
 {

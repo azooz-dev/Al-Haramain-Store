@@ -3,7 +3,7 @@
 namespace App\Services\Category;
 
 use App\Http\Resources\Category\CategoryApiResource;
-use App\Repositories\interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 
 class CategoryService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\interface\User\Order\Product\Review;
+namespace App\Repositories\Interface\User\Order\Product\Review;
 
 use App\Models\Review\Review;
 

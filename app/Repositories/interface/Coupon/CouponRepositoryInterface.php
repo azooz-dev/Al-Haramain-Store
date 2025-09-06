@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\interface\Coupon;
+namespace App\Repositories\Interface\Coupon;
 
 interface CouponRepositoryInterface
 {

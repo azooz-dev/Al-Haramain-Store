@@ -4,7 +4,7 @@ namespace App\Services\Offer;
 
 use App\Exceptions\Offer\OfferException;
 use App\Http\Resources\Offer\OfferApiResource;
-use App\Repositories\interface\Offer\OfferRepositoryInterface;
+use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 

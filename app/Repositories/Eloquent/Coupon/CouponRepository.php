@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent\Coupon;
 
 use App\Models\Coupon\Coupon;
-use App\Repositories\interface\Coupon\CouponRepositoryInterface;
+use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 class CouponRepository implements CouponRepositoryInterface
 {

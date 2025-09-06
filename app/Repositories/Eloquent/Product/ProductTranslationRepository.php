@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent\Product;
 
 use App\Models\Product\Product;
 use App\Models\Product\ProductTranslation;
-use App\Repositories\interface\Product\ProductTranslationRepositoryInterface;
+use App\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
 use Illuminate\Support\Collection;
 
 class ProductTranslationRepository implements ProductTranslationRepositoryInterface

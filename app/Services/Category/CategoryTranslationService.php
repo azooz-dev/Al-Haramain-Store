@@ -4,8 +4,8 @@ namespace App\Services\Category;
 
 use App\Http\Resources\Category\CategoryApiResource;
 use App\Models\Category\Category;
-use App\Repositories\interface\Category\CategoryRepositoryInterface;
-use App\Repositories\interface\Category\CategoryTranslationRepositoryInterface;
+use App\Repositories\Interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 

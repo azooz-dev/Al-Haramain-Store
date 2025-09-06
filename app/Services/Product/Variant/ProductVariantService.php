@@ -3,7 +3,7 @@
 namespace App\Services\Product\Variant;
 
 use App\Exceptions\Product\Variant\OutOfStockException;
-use App\Repositories\interface\Product\Variant\ProductVariantRepositoryInterface;
+use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 
 class ProductVariantService
 {

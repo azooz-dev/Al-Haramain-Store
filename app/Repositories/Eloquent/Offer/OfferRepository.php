@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent\Offer;
 
 use App\Models\Offer\Offer;
 use Illuminate\Database\Eloquent\Collection;
-use App\Repositories\interface\Offer\OfferRepositoryInterface;
+use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 
 class OfferRepository implements OfferRepositoryInterface
 {

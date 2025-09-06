@@ -5,7 +5,7 @@ namespace App\Repositories\Eloquent\Offer;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;
 use Filament\Notifications\Collection;
-use App\Repositories\interface\Offer\OfferTranslationRepositoryInterface;
+use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 
 class OfferTranslationRepository implements OfferTranslationRepositoryInterface
 {

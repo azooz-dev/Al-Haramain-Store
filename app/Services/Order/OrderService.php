@@ -7,7 +7,7 @@ use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Repositories\interface\Order\OrderItem\OrderItemRepositoryInterface;
+use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 use App\Services\Product\Variant\ProductVariantService;
 
 class OrderService

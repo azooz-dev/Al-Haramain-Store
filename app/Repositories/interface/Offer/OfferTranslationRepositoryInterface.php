@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\interface\Offer;
+namespace App\Repositories\Interface\Offer;
 
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferTranslation;

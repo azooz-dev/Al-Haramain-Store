@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent\Category;
 
 use App\Models\Category\Category;
 use App\Models\Category\CategoryTranslation;
-use App\Repositories\interface\Category\CategoryTranslationRepositoryInterface;
+use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use Illuminate\Support\Collection;
 
 /**

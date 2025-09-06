@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent\Product\Variant;
 
 use App\Models\Product\ProductVariant;
-use App\Repositories\interface\Product\Variant\ProductVariantRepositoryInterface;
+use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 
 class ProductVariantRepository implements ProductVariantRepositoryInterface
 {

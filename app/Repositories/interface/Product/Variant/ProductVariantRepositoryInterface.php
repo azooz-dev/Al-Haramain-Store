@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\interface\Product\Variant;
+namespace App\Repositories\Interface\Product\Variant;
 
 interface ProductVariantRepositoryInterface
 {

@@ -4,7 +4,7 @@ namespace App\Services\Product;
 
 use App\Exceptions\Product\ProductException;
 use App\Http\Resources\Product\ProductApiResource;
-use App\Repositories\interface\Product\ProductRepositoryInterface;
+use App\Repositories\Interface\Product\ProductRepositoryInterface;
 use function App\Helpers\errorResponse;
 
 class ProductService

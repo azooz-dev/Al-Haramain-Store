@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent\Category;
 
 use App\Models\Category\Category;
-use App\Repositories\interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 use Illuminate\Support\Collection;
 
 class CategoryRepository implements CategoryRepositoryInterface

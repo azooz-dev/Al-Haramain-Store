@@ -6,8 +6,8 @@ namespace App\Services\Product;
 
 use App\Http\Resources\Product\ProductApiResource;
 use App\Models\Product\Product;
-use App\Repositories\interface\Product\ProductRepositoryInterface;
-use App\Repositories\interface\Product\ProductTranslationRepositoryInterface;
+use App\Repositories\Interface\Product\ProductRepositoryInterface;
+use App\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 

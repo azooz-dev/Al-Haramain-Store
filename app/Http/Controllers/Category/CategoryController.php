@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 use App\Services\Category\CategoryService;
 
 use function App\Helpers\successResponse;

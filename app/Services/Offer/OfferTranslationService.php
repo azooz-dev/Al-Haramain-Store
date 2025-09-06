@@ -4,7 +4,7 @@ namespace App\Services\Offer;
 
 use App\Http\Resources\Offer\OfferApiResource;
 use App\Models\Offer\Offer;
-use App\Repositories\interface\Offer\OfferTranslationRepositoryInterface;
+use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 use Filament\Notifications\Collection;
 
 class OfferTranslationService
