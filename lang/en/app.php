@@ -520,6 +520,7 @@ return [
         'description' => 'Are you sure you want to delete this order?',
       ],
       'order_error' => 'Order error occurred!',
+      'new_order' => ' placed a new order — total: ',
       "error_order_status" => 'Order status error occurred!',
       'order_undelivered' => "The order has not yet been delivered!",
       'buyer_not_verified' => "The buyer must be verified!",

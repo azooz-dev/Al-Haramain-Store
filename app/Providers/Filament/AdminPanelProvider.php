@@ -82,6 +82,6 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-user'),
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('10s');
+            ->databaseNotificationsPolling('2s');
     }
 }
