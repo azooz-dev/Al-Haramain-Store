@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\interface\Category\CategoryRepositoryInterface;
 use App\Services\Category\CategoryService;
-
-use function App\Helpers\successResponse;
+use function App\Helpers\showAll;
+use function App\Helpers\showOne;
 
 class CategoryController extends Controller
 {
@@ -19,7 +18,7 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryService->getCategories();
 
-        return successResponse($categories, 'Categories', 200);
+        return showAll($categories, 'Categories', 200);
     }
 
     /**
@@ -29,6 +28,6 @@ class CategoryController extends Controller
     {
         $category = $this->categoryService->findCategoryById($id);
 
-        return successResponse($category, 'Category', 201);
+        return showOne($category, 'Category', 201);
     }
 }
