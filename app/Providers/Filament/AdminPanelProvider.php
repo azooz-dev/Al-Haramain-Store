@@ -80,6 +80,8 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Profile')
                     ->url(fn(): string => EditProfilePage::getUrl(panel: 'admin'))
                     ->icon('heroicon-o-user'),
-            ]);
+            ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('10s');
     }
 }
