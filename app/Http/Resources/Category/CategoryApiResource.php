@@ -22,12 +22,12 @@ class CategoryApiResource extends JsonResource
             'slug' => $this->slug,
             'image' => $this->image,
             'en' => [
-                'title' => $en->name,
-                'details' => $en->description,
+                'title' => $en?->name ?? '',
+                'details' => $en?->description ?? '',
             ],
             'ar' => [
-                'title' => $ar->name,
-                'details' => $ar->description,
+                'title' => $ar?->name ?? '',
+                'details' => $ar?->description ?? '',
             ],
         ];
     }
