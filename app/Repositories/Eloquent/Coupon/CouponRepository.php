@@ -9,6 +9,6 @@ class CouponRepository implements CouponRepositoryInterface
 {
   public function applyCoupon(int $couponId)
   {
-    return Coupon::find($couponId);
+    return Coupon::findOrFail($couponId);
   }
 }

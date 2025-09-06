@@ -27,9 +27,9 @@ interface CategoryRepositoryInterface
 {
   public function getAllCategories(): ?Collection;
 
-  public function findById(int $id): ?Category;
+  public function findById(int $id): Category;
 
-  public function findByIdWithTranslations(int $id): ?Category;
+  public function findByIdWithTranslations(int $id): Category;
 
   public function searchByName(string $search): Collection;
 

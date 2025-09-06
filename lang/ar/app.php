@@ -699,6 +699,12 @@ return [
       'updated_success_body' => 'تم تحديث حالة التقييم :name بنجاح.',
       'review_error' => "حدث خطأ في التقييم!"
     ],
+    'exception' => [
+      'not_found' => 'المورد :model غير موجود.',
+      'unauthenticated' => 'يجب عليك تسجيل الدخول للوصول إلى هذه الصفحة.',
+      'method_not_allowed' => 'طريقة الطلب غير مسموح بها.',
+      'integrity_constraint_violation' => 'لا يمكن حذف هذا المورد لأنه مرتبط ببيانات أخرى.',
+    ],
     'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
     'status_updated' => 'تم تحديث حالة التقييم',
   ],

@@ -584,6 +584,12 @@ return [
       'updated_success_body' => 'Review status updated :name successfully.',
       'review_error' => "Review error occurred!"
     ],
+    'exception' => [
+      'not_found' => 'The :model not found.',
+      'unauthenticated' => 'You must be logged in to access this page.',
+      'method_not_allowed' => 'Method not allowed.',
+      'integrity_constraint_violation' => 'This resource cannot be deleted because it is associated with other data.',
+    ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',
   ],

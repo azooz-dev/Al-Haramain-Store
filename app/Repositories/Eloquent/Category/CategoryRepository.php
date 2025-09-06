@@ -13,14 +13,14 @@ class CategoryRepository implements CategoryRepositoryInterface
     return Category::with('translations')->get();
   }
 
-  public function findById(int $id): ?Category
+  public function findById(int $id): Category
   {
-    return Category::find($id);
+    return Category::findOrFail($id);
   }
 
-  public function findByIdWithTranslations(int $id): ?Category
+  public function findByIdWithTranslations(int $id): Category
   {
-    return Category::with('translations')->find($id);
+    return Category::with('translations')->findOrFail($id);
   }
 
   public function searchByName(string $search): Collection

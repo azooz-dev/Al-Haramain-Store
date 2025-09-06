@@ -16,6 +16,6 @@ class OfferRepository implements OfferRepositoryInterface
 
   public function findOfferById(int $offerId)
   {
-    return Offer::with(['translations', 'product'])->find($offerId);
+    return Offer::with(['translations', 'product'])->findOrFail($offerId);
   }
 }

@@ -15,12 +15,12 @@ class ProductRepository implements ProductRepositoryInterface
 
   public function findById(int $id): ?Product
   {
-    return Product::with(['translations', 'colors', 'colors.images', 'colors.variants'])->find($id);
+    return Product::with(['translations', 'colors', 'colors.images', 'colors.variants'])->findOrFail($id);
   }
 
   public function findByIdWithTranslations(int $id): ?Product
   {
-    return Product::with('translations')->find($id);
+    return Product::with('translations')->findOrFail($id);
   }
 
   public function searchByName(string $search): Collection

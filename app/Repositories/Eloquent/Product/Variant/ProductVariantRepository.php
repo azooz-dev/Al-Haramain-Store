@@ -9,12 +9,12 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
 {
   public function getStockForVariant($variantId): int
   {
-    return ProductVariant::find($variantId)->quantity;
+    return ProductVariant::findOrFail($variantId)->quantity;
   }
 
   public function calculateTotalVariant($variantId): float
   {
-    $variant = ProductVariant::find($variantId);
+    $variant = ProductVariant::findOrFail($variantId);
     $price = $variant->amount_discount_price ?? $variant->price;
 
     return $price;
@@ -22,7 +22,7 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
 
   public function decrementVariantStock($variantId, $quantity)
   {
-    $variant = ProductVariant::find($variantId);
+    $variant = ProductVariant::findOrFail($variantId);
 
     $variant->quantity -= $quantity;
 
