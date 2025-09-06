@@ -52,6 +52,13 @@ if (!function_exists('showOne')) {
 }
 
 
+if (!function_exists('showMessage')) {
+  function showMessage($message, $status = 200): JsonResponse
+  {
+    return successResponse($message, $message, $status);
+  }
+}
+
 if (!function_exists('filterData')) {
   function filterData($collection, $transformer)
   {

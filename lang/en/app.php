@@ -590,6 +590,12 @@ return [
       'method_not_allowed' => 'Method not allowed.',
       'integrity_constraint_violation' => 'This resource cannot be deleted because it is associated with other data.',
     ],
+    'auth' => [
+      'unverified' => 'Your Account unverified, please check your email',
+      'user_error' => 'User register error occurred!',
+      'logged_out' => 'logged in successfully.',
+      'failed_logged_out' => 'login failed process'
+    ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',
   ],
