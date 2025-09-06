@@ -42,6 +42,8 @@ class AuthService
 
   private function handleAuth($userModel)
   {
+    if (!$userModel) return;
+
     $user = new UserResource($userModel);
     if (!$user->isVerified()) {
       return errorResponse(__("app.messages.auth.unverified"), 403);

@@ -9,11 +9,13 @@ use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 
 use App\Models\Product\ProductColorImage;
+use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Observers\Product\ProductColorImageObserver;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
+use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
@@ -53,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserOrderProductReviewRepositoryInterface::class, UserOrderProductReviewRepository::class);
 
         $this->app->bind(OfferRepositoryInterface::class, OfferRepository::class);
+        $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
     }
 
     /**

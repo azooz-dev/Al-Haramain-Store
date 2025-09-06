@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent\Auth;
 
 use App\Models\User\User;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
+use Illuminate\Support\Facades\Hash;
 
 class AuthRepository implements AuthRepositoryInterface
 {
@@ -19,9 +20,15 @@ class AuthRepository implements AuthRepositoryInterface
     ]);
   }
 
-  public function login(array $data): User
+  public function login(array $data): ?User
   {
-    return User::where('email', $data['email'])->where('password', $data['password'])->first();
+    $user = User::where('email', $data['email'])->first();
+
+    if ($user && Hash::check($data['password'], $user->password)) {
+      return $user;
+    }
+
+    return null;
   }
 
   public function logout(): bool

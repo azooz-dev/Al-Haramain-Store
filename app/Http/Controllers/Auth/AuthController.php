@@ -3,26 +3,27 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Services\Auth\AuthService;
 use function App\Helpers\showOne;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     public function __construct(private AuthService $authService) {}
 
-    public function register(Request $request)
+    public function register(UserStoreRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         $data = $this->authService->register($data);
         return showOne($data, 201);
     }
 
 
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-        $data = $request->input(['email', 'password']);
+        $data = $request->validated();
 
         $user = $this->authService->login($data);
 

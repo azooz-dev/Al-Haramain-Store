@@ -11,6 +11,7 @@ use App\Models\User\UserAddresses\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -89,5 +90,10 @@ class User extends Authenticatable
         static::creating(function ($user) {
             $user->verified = self::UNVERIFIED_USER;
         });
+    }
+
+    public static function generatedTokenString()
+    {
+        return Str::random(60);
     }
 }
