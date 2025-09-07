@@ -20,6 +20,8 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        if ($user->isDirty()) {
+            UserRegistered::dispatch($user);
+        }
     }
 }
