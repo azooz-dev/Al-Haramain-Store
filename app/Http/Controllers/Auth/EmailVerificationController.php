@@ -20,11 +20,4 @@ class EmailVerificationController extends Controller
 
         return showOne($userData, __("app.messages.auth.user_verified"));
     }
-
-    public function resend($userId)
-    {
-        $user = $this->emailVerificationService->resend($userId);
-
-        return showOne($user, __("app.messages.auth.resend_verification_link"));
-    }
 }
