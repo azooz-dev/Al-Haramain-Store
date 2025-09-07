@@ -11,6 +11,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Product\ProductColorImage;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Observers\Product\ProductColorImageObserver;
+use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Product\ProductRepository;
@@ -31,6 +32,7 @@ use App\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
 use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 use App\Repositories\Eloquent\User\Order\Product\Review\UserOrderProductReviewRepository;
+use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
@@ -56,6 +58,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(OfferRepositoryInterface::class, OfferRepository::class);
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
+
+        $this->app->bind(EmailVerificationRepositoryInterface::class, EmailVerificationRepository::class);
     }
 
     /**
