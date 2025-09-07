@@ -16,7 +16,9 @@ class AuthService
   public function register(array $data)
   {
     try {
-      return $this->handleAuth($this->authRepository->register($data));
+      $user = $this->authRepository->register($data);
+
+      return new UserResource($user);
     } catch (UserException $e) {
       return errorResponse($e->getMessage(), $e->getCode());
     }
@@ -25,7 +27,16 @@ class AuthService
   public function login(array $data)
   {
     try {
-      return $this->handleAuth($this->authRepository->login($data));
+      $user = $this->authRepository->login($data);
+
+      if (!$user->isVerified()) {
+        return errorResponse(__("app.messages.auth.unverified"), 403);
+      }
+
+      $user = new UserResource($user);
+
+      $token = $user->createToken('personal_token')->plainTextToken;
+      return ['user' => $user, 'token' => $token];
     } catch (UserException $e) {
       return errorResponse($e->getMessage(), $e->getCode());
     }
@@ -43,12 +54,5 @@ class AuthService
   private function handleAuth($userModel)
   {
     if (!$userModel) return;
-
-    $user = new UserResource($userModel);
-    if (!$user->isVerified()) {
-      return errorResponse(__("app.messages.auth.unverified"), 403);
-    }
-    $token = $user->createToken('personal_token')->plainTextToken;
-    return ['user' => $user, 'token' => $token];
   }
 }

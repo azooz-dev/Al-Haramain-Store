@@ -710,6 +710,11 @@ return [
       'user_error' => 'حدث خطأ عند تسجيل المستخدم !',
       'failed_logged_out' => 'فشل تسجيل الخروج',
       'logged_out' => 'تم تسجيل الخروج بنجاح',
+      'verification_email_failed' => 'فشل إرسال رسالة التحقق.',
+      'expired_code' => 'غير صالح أو انتهت صلاحية كود التحقق.',
+      'user_verified' => "تم التحقق من المستخدم.",
+      "already_verified" => "البريد الالكتروني قد تم تحقق مسبقاً.",
+      "resend_verification_link" => "رابط التحقق تم إرساله إلى بريدك الألكتروني."
     ],
     'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
     'status_updated' => 'تم تحديث حالة التقييم',

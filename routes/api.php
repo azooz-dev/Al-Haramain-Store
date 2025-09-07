@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Coupon\CouponController;
@@ -32,3 +33,5 @@ Route::get('coupons/{id}', [CouponController::class, 'apply']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [AuthController::class, 'register']);
+Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
+Route::post('users/{id}/email/resend-code', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1');

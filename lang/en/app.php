@@ -594,7 +594,12 @@ return [
       'unverified' => 'Your Account unverified, please check your email',
       'user_error' => 'User register error occurred!',
       'logged_out' => 'logged in successfully.',
-      'failed_logged_out' => 'login failed process'
+      'failed_logged_out' => 'login failed process',
+      'verification_email_failed' => 'Failed to send verification email.',
+      'expired_code' => "Invalid or expired code.",
+      'user_verified' => "Email Verified.",
+      "already_verified" => "Your email is already verified.",
+      "resend_verification_link" => "Verification link has been sent to your email address.",
     ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',
