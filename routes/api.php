@@ -2,13 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\EmailVerificationController;
-use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Order\OrderController;
 use App\Http\Controllers\Coupon\CouponController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Auth\ForgetPassowrdController;
+use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
 
 
@@ -36,3 +38,4 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
 Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
+Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);

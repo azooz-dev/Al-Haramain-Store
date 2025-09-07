@@ -600,6 +600,7 @@ return [
       'user_verified' => "Email Verified.",
       "already_verified" => "Your email is already verified.",
       "resend_verification_link" => "Verification link has been sent to your email address.",
+      'forgetPassword' => "If that email exists in our system, you will receive a password reset link shortly."
     ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',
