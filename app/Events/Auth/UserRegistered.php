@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\User;
+namespace App\Events\Auth;
 
 use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;

@@ -2,42 +2,49 @@
 
 namespace App\Providers;
 
+use App\Events\Auth\PasswordResetTokenCreated;
+use App\Events\Auth\UserRegistered;
+use App\Listeners\Auth\SendPasswordResetEmail;
+use App\Listeners\Auth\SendVerificationEmail;
+use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
+use App\Observers\User\UserObserver;
 use App\Observers\Offer\OfferObserver;
+
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
-
 use App\Models\Product\ProductColorImage;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Observers\Product\ProductColorImageObserver;
-use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
-use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
-use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
+use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
+use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\Eloquent\Order\OrderItem\OrderItemRepository;
 use App\Repositories\Interface\Product\ProductRepositoryInterface;
 use App\Repositories\Eloquent\Product\ProductTranslationRepository;
 use App\Repositories\Interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Eloquent\Category\CategoryTranslationRepository;
+use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
 use App\Repositories\Eloquent\Product\Variant\ProductVariantRepository;
+use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 use App\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
+use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 use App\Repositories\Eloquent\User\Order\Product\Review\UserOrderProductReviewRepository;
-use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
-use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
-use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
+use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -75,6 +82,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Offer::observe(OfferObserver::class);
         Order::observe(OrderObserver::class);
+        User::observe(UserObserver::class);
         ProductColorImage::observe(ProductColorImageObserver::class);
+
+        Event::listen(UserRegistered::class, SendVerificationEmail::class);
+        Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
     }
 }

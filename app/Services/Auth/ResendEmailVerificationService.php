@@ -2,10 +2,10 @@
 
 namespace App\Services\Auth;
 
-use App\Events\User\UserRegistered;
-use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
+use App\Events\Auth\UserRegistered;
 
 use function App\Helpers\errorResponse;
+use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 
 class ResendEmailVerificationService
 {
