@@ -114,4 +114,28 @@ class ProductApiResource extends JsonResource
 
         return asset('storage/' . $relativePath);
     }
+
+    public static function transformAttribute($index)
+    {
+        $attribute = [
+            'identifier'  => 'id',
+            'slug'        => 'slug',
+            'sku'         => 'sku',
+            'stock'       => 'quantity',
+            'colors'      => 'colors',
+            'reviews'     => 'reviews',
+            'categories'  => 'categories',
+            'created_at'  => 'created_at',
+            'updated_at'  => 'updated_at',
+            'total_stock' => 'total_stock',
+            'min_price'   => 'min_price',
+            'max_price'   => 'max_price',
+            'price_range' => 'price_range',
+            'total_images_count' => 'total_images_count',
+            'available_sizes' => 'available_sizes',
+            'available_colors' => 'available_colors',
+        ];
+
+        return isset($attribute[$index]) ? $attribute[$index] : null;
+    }
 }

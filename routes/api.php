@@ -14,32 +14,35 @@ use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
 
 
-// Products
-Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::middleware('set.locale')->group(function () {
+  // Products
+  Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 
-// Categories
-Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
+  // Categories
+  Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
-  // Orders
-  Route::apiResource('orders', OrderController::class)->only('store');
+  Route::apiResource('offers', OfferController::class)->only(['index', 'show']);
 
-  // User Orders
-  Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+  Route::middleware('auth:sanctum')->group(function () {
+    // Orders
+    Route::apiResource('orders', OrderController::class)->only('store');
 
-  // Coupons
-  Route::get('coupons/{id}', [CouponController::class, 'apply']);
+    // User Orders
+    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
-  Route::post('logout', [AuthController::class, 'logout']);
+    // Coupons
+    Route::get('coupons/{id}', [CouponController::class, 'apply']);
+
+    Route::post('logout', [AuthController::class, 'logout']);
+  });
+
+  // Offers
+
+  // Auth Routes
+  Route::post('login', [AuthController::class, 'login']);
+  Route::post('register', [AuthController::class, 'register']);
+  Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
+  Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
+  Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
+  Route::post("/reset-password", [ResetPasswordController::class, 'reset']);
 });
-
-// Offers
-Route::apiResource('offers', OfferController::class)->only(['index', 'show']);
-
-// Auth Routes
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
-Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
-Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
-Route::post("/reset-password", [ResetPasswordController::class, 'reset']);

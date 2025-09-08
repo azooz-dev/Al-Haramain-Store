@@ -22,7 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'set.locale' => \App\Http\Middleware\SetLocale::class,
+        ]);
+        // Ensure locale is set before any API group middleware runs (e.g., auth)
+        $middleware->prependToGroup('api', \App\Http\Middleware\SetLocale::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Throwable $exception, $request) {
