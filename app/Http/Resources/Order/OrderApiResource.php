@@ -17,17 +17,39 @@ class OrderApiResource extends JsonResource
         return [
             'identifier' => $this->id,
             'orderNumber' => $this->order_number,
-            'total_amount' => $this->total_amount,
-            'payment_method' => $this->payment_method,
+            'totalAmount' => $this->total_amount,
+            'paymentMethod' => $this->payment_method,
             'status' => $this->status,
-            'user' => $this->user,
+            'customer' => $this->user,
             'items' => $this->items,
             'address' => $this->address,
             'coupon' => $this->coupon,
             'reviews' => $this->reviews,
             'payments' => $this->payments,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'createdDate' => $this->created_at,
+            'lastChange' => $this->updated_at,
         ];
+    }
+
+
+    public function transformAttributes($index)
+    {
+        $attributes = [
+            'identifier' => "id",
+            'orderNumber' => "order_number",
+            'totalAmount' => "total_amount",
+            'paymentMethod' => "payment_method",
+            'status' => "status",
+            'customer' => "user",
+            'items' => "items",
+            'address' => "address",
+            'coupon' => "coupon",
+            'reviews' => "reviews",
+            'payments' => "payments",
+            'createdDate' => "created_at",
+            'lastChange' => "updated_at",
+        ];
+
+        return $attributes[$index] ?? null;
     }
 }
