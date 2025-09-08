@@ -29,6 +29,10 @@ class AuthService
     try {
       $user = $this->authRepository->login($data);
 
+      if (!$user) {
+        return showMessage(__("auth.failed"), 401);
+      }
+
       if (!$user->isVerified()) {
         return errorResponse(__("app.messages.auth.unverified"), 403);
       }

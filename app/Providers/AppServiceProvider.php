@@ -2,25 +2,29 @@
 
 namespace App\Providers;
 
-use App\Events\Auth\PasswordResetTokenCreated;
-use App\Events\Auth\UserRegistered;
-use App\Listeners\Auth\SendPasswordResetEmail;
-use App\Listeners\Auth\SendVerificationEmail;
 use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
+use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
+use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
-
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Product\ProductColorImage;
+use App\Events\Auth\ResendVerificationEmail;
+
+use App\Listeners\Auth\SendVerificationEmail;
+use App\Events\Auth\PasswordResetTokenCreated;
+use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Observers\Product\ProductColorImageObserver;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
+use App\Listeners\Auth\ResendVerificationEmailListener;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
+use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
 use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferRepositoryInterface;
@@ -33,6 +37,7 @@ use App\Repositories\Eloquent\Product\ProductTranslationRepository;
 use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Eloquent\Category\CategoryTranslationRepository;
+use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
 use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
 use App\Repositories\Eloquent\Product\Variant\ProductVariantRepository;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
@@ -44,7 +49,6 @@ use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 use App\Repositories\Eloquent\User\Order\Product\Review\UserOrderProductReviewRepository;
 use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
-use Illuminate\Support\Facades\Event;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -73,6 +77,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EmailVerificationRepositoryInterface::class, EmailVerificationRepository::class);
         $this->app->bind(ResendEmailVerificationRepositoryInterface::class, ResendEmailVerificationRepository::class);
         $this->app->bind(ForgetPasswordRepositoryInterface::class, ForgetPasswordRepository::class);
+        $this->app->bind(ResetPasswordRepositoryInterface::class, ResetPasswordRepository::class);
     }
 
     /**
@@ -87,5 +92,6 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(UserRegistered::class, SendVerificationEmail::class);
         Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
+        Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
     }
 }

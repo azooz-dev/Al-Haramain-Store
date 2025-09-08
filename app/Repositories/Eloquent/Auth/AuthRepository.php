@@ -24,11 +24,11 @@ class AuthRepository implements AuthRepositoryInterface
   {
     $user = User::where('email', $data['email'])->first();
 
-    if ($user && Hash::check($data['password'], $user->password)) {
-      return $user;
+    if (!$user || !Hash::check($data['password'], $user->password)) {
+      return null;
     }
 
-    return null;
+    return $user;
   }
 
   public function logout(): bool

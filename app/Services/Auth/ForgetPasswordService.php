@@ -3,7 +3,7 @@
 namespace App\Services\Auth;
 
 use Illuminate\Support\Facades\Password;
-use App\Events\PasswordResetTokenCreated;
+use App\Events\Auth\PasswordResetTokenCreated;
 use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
 
 class ForgetPasswordService

@@ -2,8 +2,7 @@
 
 namespace App\Services\Auth;
 
-use App\Events\Auth\UserRegistered;
-
+use App\Events\Auth\ResendVerificationEmail;
 use function App\Helpers\errorResponse;
 use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 
@@ -20,7 +19,7 @@ class ResendEmailVerificationService
       return errorResponse(__("app.messages.auth.already_verified"), 400);
     }
 
-    UserRegistered::dispatch($user);
+    ResendVerificationEmail::dispatch($user);
 
     return $user;
   }
