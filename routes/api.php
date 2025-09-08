@@ -8,7 +8,6 @@ use App\Http\Controllers\Coupon\CouponController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\ForgetPassowrdController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
@@ -21,21 +20,24 @@ Route::apiResource('products', ProductController::class)->only(['index', 'show']
 // Categories
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
-// Orders
-Route::apiResource('orders', OrderController::class)->only('store');
+Route::middleware('auth:sanctum')->group(function () {
+  // Orders
+  Route::apiResource('orders', OrderController::class)->only('store');
 
-// User Orders
-Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+  // User Orders
+  Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+
+  // Coupons
+  Route::get('coupons/{id}', [CouponController::class, 'apply']);
+
+  Route::post('logout', [AuthController::class, 'logout']);
+});
 
 // Offers
 Route::apiResource('offers', OfferController::class)->only(['index', 'show']);
 
-// Coupons
-Route::get('coupons/{id}', [CouponController::class, 'apply']);
-
 // Auth Routes
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
 Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
