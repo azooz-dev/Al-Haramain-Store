@@ -8,6 +8,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Offer\Offer;
+use App\Models\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -109,17 +110,43 @@ class OfferResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(3)
                             ->schema([
-                                Forms\Components\Select::make('product_id')
-                                    ->relationship('product', 'name', fn($query) => $query->with('translations'))
+                                Forms\Components\Select::make('products')
                                     ->label(__('app.forms.offer.product'))
+                                    ->relationship('products', 'id', fn($query) => $query->with('translations'))
+                                    ->multiple()
                                     ->required()
                                     ->searchable()
                                     ->preload()
                                     ->native(false)
-                                    ->optionsLimit(10)
+                                    ->optionsLimit(25)
                                     ->getOptionLabelFromRecordUsing(function ($record) {
                                         $service = app(ProductTranslationService::class);
                                         return $service->getTranslatedName($record);
+                                    })
+                                    ->getSearchResultsUsing(function (string $search) {
+                                        $service = app(ProductTranslationService::class);
+                                        return Product::query()
+                                            ->with('translations')
+                                            ->whereHas('translations', function (Builder $q) use ($search) {
+                                                $q->where('name', 'like', "%{$search}%");
+                                            })
+                                            ->limit(50)
+                                            ->get()
+                                            ->mapWithKeys(function ($product) use ($service) {
+                                                return [$product->id => $service->getTranslatedName($product)];
+                                            })
+                                            ->toArray();
+                                    })
+                                    ->getOptionLabelsUsing(function (array $values) {
+                                        $service = app(ProductTranslationService::class);
+                                        return Product::query()
+                                            ->with('translations')
+                                            ->whereIn('id', $values)
+                                            ->get()
+                                            ->mapWithKeys(function ($product) use ($service) {
+                                                return [$product->id => $service->getTranslatedName($product)];
+                                            })
+                                            ->toArray();
                                     })
                                     ->columnSpan(3),
 
@@ -283,10 +310,14 @@ class OfferResource extends Resource
                             ?? ('#' . $record->id);
                     }),
 
-                Tables\Columns\TextColumn::make('product.sku')
+                Tables\Columns\TextColumn::make('products_list')
                     ->label(__('app.columns.offer.product'))
-                    ->searchable()
-                    ->sortable()
+                    ->state(function (Offer $record) {
+                        $service = app(ProductTranslationService::class);
+                        return $record->products->map(fn($p) => $service->getTranslatedName($p))->join(', ');
+                    })
+                    ->limit(40)
+                    ->tooltip(fn($state) => $state)
                     ->badge()
                     ->icon('heroicon-o-cube'),
 
@@ -455,6 +486,6 @@ class OfferResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['translations', 'product.translations']);
+            ->with(['translations', 'products.translations']);
     }
 }

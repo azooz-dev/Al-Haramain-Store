@@ -30,7 +30,6 @@ class OfferFactory extends Factory
       'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
       'end_date' => fake()->dateTimeBetween('+1 month', '+3 months'),
       'status' => fake()->randomElement([Offer::ACTIVE, Offer::INACTIVE]),
-      'product_id' => Product::factory(),
     ];
   }
 

@@ -11,11 +11,11 @@ class OfferRepository implements OfferRepositoryInterface
 {
   public function getAllOffers(): Collection
   {
-    return Offer::with(['translations', 'product'])->get();
+    return Offer::with(['translations', 'products'])->get();
   }
 
   public function findOfferById(int $offerId)
   {
-    return Offer::with(['translations', 'product'])->findOrFail($offerId);
+    return Offer::with(['translations', 'products'])->find($offerId);
   }
 }

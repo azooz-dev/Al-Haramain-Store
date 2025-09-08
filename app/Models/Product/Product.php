@@ -37,6 +37,11 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function offers(): BelongsToMany
+    {
+        return $this->belongsToMany(Offer::class, 'products_offers');
+    }
+
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);
@@ -183,8 +188,5 @@ class Product extends Model
         return $this->colors->pluck('color_code')->unique()->values()->toArray();
     }
 
-    public function offer(): BelongsTo
-    {
-        return $this->belongsTo(Offer::class);
-    }
+    // Removed inverse belongsTo relation; offers are many-to-many via pivot
 }
