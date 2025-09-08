@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Http\Requests\BaseRequest;
+
 abstract class BaseOrderRequest extends BaseRequest
 {
     /**
