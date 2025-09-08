@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Product;
 
-use App\Http\Resources\Review\ReviewResource;
+use App\Http\Resources\Review\ReviewApiResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -57,7 +57,7 @@ class ProductApiResource extends JsonResource
                 ];
             })->values()->toArray(),
 
-            'reviews' => isset($this->reviews) ? new ReviewResource($this->reviews) : null,
+            'reviews' => isset($this->reviews) ? new ReviewApiResource($this->reviews) : null,
 
 
 
