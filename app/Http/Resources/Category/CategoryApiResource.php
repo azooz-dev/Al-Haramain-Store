@@ -18,17 +18,37 @@ class CategoryApiResource extends JsonResource
         $ar = $this->translations->where('local', 'ar')->first();
 
         return [
-            'identifier' => $this->id,
-            'slug' => $this->slug,
-            'image' => $this->image,
+            'identifier' => (int) $this->id,
+            'slug' => (string) $this->slug,
+            'image' => (string) $this->image,
             'en' => [
-                'title' => $en?->name ?? '',
-                'details' => $en?->description ?? '',
+                'title' => (string) $en?->name ?? '',
+                'details' => (string) $en?->description ?? '',
             ],
             'ar' => [
-                'title' => $ar?->name ?? '',
-                'details' => $ar?->description ?? '',
+                'title' => (string) $ar?->name ?? '',
+                'details' => (string) $ar?->description ?? '',
             ],
         ];
+    }
+
+
+    public static function transformAttribute($index)
+    {
+        $attribute = [
+            'identifier' => 'id',
+            'slug' => 'slug',
+            'image' => 'image',
+            'en' => [
+                'title' => 'name',
+                'details' => 'description',
+            ],
+            'ar' => [
+                'title' => 'name',
+                'details' => 'description',
+            ],
+        ];
+
+        return $attribute[$index] ?? null;
     }
 }
