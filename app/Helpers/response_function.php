@@ -55,7 +55,10 @@ if (!function_exists('showOne')) {
 if (!function_exists('showMessage')) {
   function showMessage($message, $status = 200): JsonResponse
   {
-    return successResponse($message, $status);
+    return response()->json([
+      'message' => $message,
+      'status' => 'success'
+    ], $status);
   }
 }
 
