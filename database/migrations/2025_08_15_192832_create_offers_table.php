@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('discount_amount', 10, 2);
             $table->date('start_date');
             $table->date('end_date');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->enum('status', [Offer::ACTIVE, Offer::INACTIVE])->default(Offer::ACTIVE);
             $table->timestamps();
         });

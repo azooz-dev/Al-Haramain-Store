@@ -27,7 +27,7 @@ class OfferApiResource extends JsonResource
             'startDate' => $this->start_date,
             'endDate' => $this->end_date,
             'status' => $this->status,
-            'product' => new ProductApiResource($this->product),
+            'products' => ProductApiResource::collection($this->products),
             'en' => [
                 'title' => $en->name,
                 'details' => $en->description

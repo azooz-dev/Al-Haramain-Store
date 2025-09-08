@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Product\Product;
 use App\Models\Order\Order;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Offer extends Model
 {
@@ -25,12 +25,11 @@ class Offer extends Model
         'start_date',
         'end_date',
         'status',
-        'product_id'
     ];
 
-    public function product(): BelongsTo
+    public function products(): BelongsToMany
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class, 'products_offers');
     }
 
     public function translations(): HasMany

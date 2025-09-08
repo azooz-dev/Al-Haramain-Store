@@ -45,14 +45,14 @@ class DatabaseSeeder extends Seeder
             ProductVariantSeeder::class,
             ProductColorImageSeeder::class,
             ProductTranslationSeeder::class,
+            OfferSeeder::class,
+            OfferTranslationSeeder::class,
             CouponSeeder::class,
             CouponUserSeeder::class,
             OrderSeeder::class,
             OrderItemSeeder::class,
             PaymentSeeder::class,
             ReviewSeeder::class,
-            OfferSeeder::class,
-            OfferTranslationSeeder::class,
             FavoriteSeeder::class,
         ]);
     }

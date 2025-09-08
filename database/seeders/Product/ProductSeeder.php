@@ -2,10 +2,11 @@
 
 namespace Database\Seeders\Product;
 
-use App\Models\Category\Category;
+use App\Models\Offer\Offer;
 use App\Models\Product\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Category\Category;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ProductSeeder extends Seeder
 {
@@ -19,6 +20,8 @@ class ProductSeeder extends Seeder
             // Attach random categories to each product
             $categoryIds = Category::inRandomOrder()->limit(fake()->numberBetween(1, 3))->pluck('id');
             $product->categories()->attach($categoryIds);
+            $offerIds = Offer::inRandomOrder()->limit(fake()->numberBetween(1, 3))->pluck('id');
+            $product->offers()->attach($offerIds);
         });
 
         // Create specific product for testing
