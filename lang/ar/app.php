@@ -1004,6 +1004,7 @@ return [
     'variant_quantity_exceeds_stock' => 'لا يمكن أن تتجاوز كمية المتغير (:variant_quantity) إجمالي كمية المخزون (:total_stock)',
     'invalid_variants_format' => 'تم توفير تنسيق متغيرات غير صحيح',
     'variants_total_must_equal_product_quantity' => 'يجب أن يساوي إجمالي كمية المتغيرات (:variants_total) إجمالي كمية المنتج (:product_total)',
+    'variant_quantity_must_equal_total' => 'يجب أن يساوي مجموع كميات المتغيرات (:variants_sum) إجمالي كمية المنتج (:total)',
   ],
 
   // Widgets

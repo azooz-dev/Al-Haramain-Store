@@ -56,7 +56,6 @@ class CreateOffer extends CreateRecord
     protected function afterCreate(): void
     {
         $this->saveTranslations($this->translationData);
-        $this->notifySuccess(__('app.messages.offer.created_success'), __('app.messages.offer.created_success_body', ['name' => $this->record->name]));
     }
 
     protected function getSavedNotification(): ?Notification

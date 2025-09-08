@@ -930,6 +930,7 @@ return [
     'variant_quantity_exceeds_stock' => 'Variant quantity (:variant_quantity) cannot exceed total stock quantity (:total_stock)',
     'invalid_variants_format' => 'Invalid variants format provided',
     'variants_total_must_equal_product_quantity' => 'Total variants quantity (:variants_total) must equal product total quantity (:product_total)',
+    'variant_quantity_must_equal_total' => 'Sum of all variant quantities (:variants_sum) must equal the product total quantity (:total)',
   ],
 
   // Widgets

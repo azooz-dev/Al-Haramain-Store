@@ -208,103 +208,101 @@ class ProductResource extends Resource
                                                     ->columnSpan(1),
                                             ]),
 
-                                        // Images for this color
-                                        Forms\Components\Repeater::make('images')
-                                            ->relationship('images') // ربط بعلاقة ProductColor->images
-                                            ->label(__('app.forms.product.color.images'))
+                                        // Images and Variants side-by-side for this color
+                                        Forms\Components\Grid::make(1)
                                             ->schema([
-                                                Forms\Components\Grid::make(2)
+                                                // Images for this color
+                                                Forms\Components\Repeater::make('images')
+                                                    ->relationship('images') // ربط بعلاقة ProductColor->images
+                                                    ->label(__('app.forms.product.color.images'))
                                                     ->schema([
-                                                        Forms\Components\FileUpload::make('image_url')
-                                                            ->label(__('app.forms.product.color.image'))
-                                                            ->image()
-                                                            ->imageEditor()
-                                                            ->imageCropAspectRatio('1:1')
-                                                            ->imageResizeTargetWidth('800')
-                                                            ->imageResizeTargetHeight('800')
-                                                            ->disk('public')
-                                                            ->directory('products/images')
-                                                            ->visibility('public')
-                                                            ->maxSize(2048)
-                                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                                                            // Key settings for proper preview
-                                                            ->imagePreviewHeight('200')
-                                                            ->panelAspectRatio('1:1')
-                                                            ->panelLayout('integrated')
-                                                            ->previewable(true)
-                                                            ->downloadable(true)
-                                                            ->columnSpan(1),
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\FileUpload::make('image_url')
+                                                                    ->label(__('app.forms.product.color.image'))
+                                                                    ->image()
+                                                                    ->imageEditor()
+                                                                    ->imageCropAspectRatio('1:1')
+                                                                    ->imageResizeTargetWidth('800')
+                                                                    ->imageResizeTargetHeight('800')
+                                                                    ->disk('public')
+                                                                    ->directory('products/images')
+                                                                    ->visibility('public')
+                                                                    ->maxSize(2048)
+                                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                                                                    // Key settings for proper preview
+                                                                    ->imagePreviewHeight('200')
+                                                                    ->panelAspectRatio('1:1')
+                                                                    ->panelLayout('integrated')
+                                                                    ->previewable(true)
+                                                                    ->downloadable(true)
+                                                                    ->columnSpan(1),
+                                                            ]),
 
-                                                        Forms\Components\TextInput::make('alt_text')
-                                                            ->label(__('app.forms.product.color.alt_text'))
-                                                            ->maxLength(255)
-                                                            ->placeholder(__('app.forms.product.color.enter_alt_text'))
-                                                            ->helperText(__('app.forms.product.color.alt_text_help'))
-                                                            ->columnSpan(1),
-                                                    ]),
-                                            ])
-                                            ->defaultItems(1)
-                                            ->collapsible()
-                                            ->itemLabel(fn(array $state) => $state['alt_text'] ?? __('app.forms.product.color.image'))
-                                            ->addActionLabel(__('app.forms.product.color.add_image'))
-                                            ->reorderableWithButtons()
-                                            ->cloneable()
-                                            ->columnSpanFull(),
+                                                    ])
+                                                    ->defaultItems(1)
+                                                    ->collapsible()
+                                                    ->itemLabel(fn(array $state) => $state['alt_text'] ?? __('app.forms.product.color.image'))
+                                                    ->addActionLabel(__('app.forms.product.color.add_image'))
+                                                    ->reorderableWithButtons()
+                                                    ->cloneable()
+                                                    ->columnSpan(1),
 
-                                        // Variants for this color (nested)
-                                        Forms\Components\Repeater::make('variants')
-                                            ->relationship('variants')
-                                            ->label(__('app.forms.product.variants'))
-                                            ->schema([
-                                                Forms\Components\Grid::make(2)
+                                                // Variants for this color (nested)
+                                                Forms\Components\Repeater::make('variants')
+                                                    ->relationship('variants')
+                                                    ->label(__('app.forms.product.variants'))
                                                     ->schema([
-                                                        Forms\Components\TextInput::make('size')
-                                                            ->label(__('app.forms.product.variant.size'))
-                                                            ->required()
-                                                            ->placeholder(__('app.forms.product.enter_size'))
-                                                            ->maxLength(50)
-                                                            ->columnSpan(1),
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                Forms\Components\TextInput::make('size')
+                                                                    ->label(__('app.forms.product.variant.size'))
+                                                                    ->required()
+                                                                    ->placeholder(__('app.forms.product.enter_size'))
+                                                                    ->maxLength(50)
+                                                                    ->columnSpan(1),
 
-                                                        Forms\Components\TextInput::make('quantity')
-                                                            ->label(__('app.forms.product.variant.available_quantity'))
-                                                            ->numeric()
-                                                            ->required()
-                                                            ->minValue(0)
-                                                            ->rules($perVariantRules)->placeholder(__('app.forms.product.enter_variant_available_quantity'))
-                                                            ->helperText(__('app.forms.product.variant.quantity_help'))
-                                                            ->columnSpan(1),
+                                                                Forms\Components\TextInput::make('quantity')
+                                                                    ->label(__('app.forms.product.variant.available_quantity'))
+                                                                    ->numeric()
+                                                                    ->required()
+                                                                    ->minValue(0)
+                                                                    ->rules($perVariantRules)->placeholder(__('app.forms.product.enter_variant_available_quantity'))
+                                                                    ->helperText(__('app.forms.product.variant.quantity_help'))
+                                                                    ->columnSpan(1),
 
-                                                        Forms\Components\TextInput::make('price')
-                                                            ->label(__('app.forms.product.variant.price'))
-                                                            ->numeric()
-                                                            ->required()
-                                                            ->minValue(0)
-                                                            ->step(0.01)
-                                                            ->prefix('$')
-                                                            ->placeholder(__('app.forms.product.enter_price'))
-                                                            ->prefixIcon('heroicon-o-currency-dollar')
-                                                            ->columnSpan(1),
+                                                                Forms\Components\TextInput::make('price')
+                                                                    ->label(__('app.forms.product.variant.price'))
+                                                                    ->numeric()
+                                                                    ->required()
+                                                                    ->minValue(0)
+                                                                    ->step(0.01)
+                                                                    ->prefix('$')
+                                                                    ->placeholder(__('app.forms.product.enter_price'))
+                                                                    ->prefixIcon('heroicon-o-currency-dollar')
+                                                                    ->columnSpan(1),
 
-                                                        Forms\Components\TextInput::make('amount_discount_price')
-                                                            ->label(__('app.forms.product.variant.discount_price'))
-                                                            ->numeric()
-                                                            ->minValue(0)
-                                                            ->step(0.01)
-                                                            ->prefix('$')
-                                                            ->placeholder(__('app.forms.product.enter_discount_price'))
-                                                            ->prefixIcon('heroicon-o-tag')
-                                                            ->helperText(__('app.forms.product.variant.discount_price_help'))
-                                                            ->columnSpan(1),
-                                                    ]),
-                                            ])
-                                            ->defaultItems(0)
-                                            ->collapsible()
-                                            ->itemLabel(fn(array $state) => ($state['size'] ?? __('app.forms.product.variant.new_variant')))
-                                            ->addActionLabel(__('app.forms.product.add_variant'))
-                                            ->reorderableWithButtons()
-                                            ->cloneable()
-                                            ->default([])
-                                            ->columnSpanFull(),
+                                                                Forms\Components\TextInput::make('amount_discount_price')
+                                                                    ->label(__('app.forms.product.variant.discount_price'))
+                                                                    ->numeric()
+                                                                    ->minValue(0)
+                                                                    ->step(0.01)
+                                                                    ->prefix('$')
+                                                                    ->placeholder(__('app.forms.product.enter_discount_price'))
+                                                                    ->prefixIcon('heroicon-o-tag')
+                                                                    ->helperText(__('app.forms.product.variant.discount_price_help'))
+                                                                    ->columnSpan(1),
+                                                            ]),
+                                                    ])
+                                                    ->defaultItems(0)
+                                                    ->collapsible()
+                                                    ->itemLabel(fn(array $state) => ($state['size'] ?? __('app.forms.product.variant.new_variant')))
+                                                    ->addActionLabel(__('app.forms.product.add_variant'))
+                                                    ->reorderableWithButtons()
+                                                    ->cloneable()
+                                                    ->default([])
+                                                    ->columnSpan(1),
+                                            ]),
                                     ])
                                     ->defaultItems(0)
                                     ->collapsible()
