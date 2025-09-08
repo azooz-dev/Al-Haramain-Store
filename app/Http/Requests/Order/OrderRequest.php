@@ -3,12 +3,10 @@
 namespace App\Http\Requests\Order;
 
 use App\Models\Order\Order;
-use App\Models\Product\ProductColor;
-use App\Models\Product\ProductVariant;
+use App\Http\Requests\Order\BaseOrderRequest;
 use App\Services\Product\Variant\ProductVariantService;
-use Illuminate\Foundation\Http\FormRequest;
 
-class OrderRequest extends FormRequest
+class OrderRequest extends BaseOrderRequest
 {
     public function __construct(private ProductVariantService $variantService) {}
     /**
