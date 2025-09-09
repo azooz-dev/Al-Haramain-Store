@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('total_amount', 10, 2);
             $table->enum('payment_method', ['cash', 'credit']);
             $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded']);
+            $table->index('user_id');
+            $table->index('status');
             $table->timestamps();
         });
     }
