@@ -5,7 +5,6 @@ namespace App\Http\Resources\Offer;
 use App\Http\Resources\Product\ProductApiResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Services\Product\ProductTranslationService;
 
 class OfferApiResource extends JsonResource
 {
@@ -37,5 +36,29 @@ class OfferApiResource extends JsonResource
                 'details' => $ar->description
             ],
         ];
+    }
+
+    public static function transformAttribute($index)
+    {
+        $attribute = [
+            'identifier' => 'id',
+            'picture' => 'image_path',
+            'discountType' => 'discount_type',
+            'discountAmount' => 'discount_amount',
+            'startDate' => "start_date",
+            'endDate' => "end_date",
+            'status' => "status",
+            'products' => "products",
+            'en' => [
+                'title' => "name",
+                'details' => "description",
+            ],
+            'ar' => [
+                'title' => "name",
+                'details' => "description",
+            ],
+        ];
+
+        return $attribute[$index] ?? null;
     }
 }
