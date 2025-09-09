@@ -3,7 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Exceptions\User\UserException;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserApiResource;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 
 use function App\Helpers\errorResponse;
@@ -18,7 +18,7 @@ class AuthService
     try {
       $user = $this->authRepository->register($data);
 
-      return new UserResource($user);
+      return new UserApiResource($user);
     } catch (UserException $e) {
       return errorResponse($e->getMessage(), $e->getCode());
     }
@@ -37,7 +37,7 @@ class AuthService
         return errorResponse(__("app.messages.auth.unverified"), 403);
       }
 
-      $user = new UserResource($user);
+      $user = new UserApiResource($user);
 
       $token = $user->createToken('personal_token')->plainTextToken;
       return ['user' => $user, 'token' => $token];
