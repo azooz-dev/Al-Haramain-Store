@@ -12,8 +12,18 @@ class OrderRepository implements OrderRepositoryInterface
     return Order::create($data);
   }
 
-  public function isDelivered(int $orderId): bool
+  public function countCouponUsage(int $couponId): int
   {
-    return Order::findOrFail($orderId)->status === Order::DELIVERED;
+    return Order::where('coupon_id', $couponId)
+      ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
+      ->count();
+  }
+
+  public function countUserCouponUsage(int $couponId, int $userId): int
+  {
+    return Order::where('coupon_id', $couponId)
+      ->where('user_id', $userId)
+      ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
+      ->count();
   }
 }
