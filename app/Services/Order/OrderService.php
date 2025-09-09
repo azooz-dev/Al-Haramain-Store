@@ -3,12 +3,13 @@
 namespace App\Services\Order;
 
 use App\Models\User\User;
+use App\Models\Coupon\Coupon;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 use App\Services\Product\Variant\ProductVariantService;
+use App\Repositories\Interface\Order\OrderRepositoryInterface;
+use App\Repositories\interface\Order\OrderItem\OrderItemRepositoryInterface;
 
 class OrderService
 {
@@ -24,8 +25,13 @@ class OrderService
   {
     try {
       $this->checkBuyerVerified($data['user_id']);
+
       $this->groupVariantQuantities($data['items']);
-      $data['total_amount'] = $this->variantService->calculateTotalOrderPrice($this->variantQuantities);
+      $totalAmount = $this->variantService->calculateTotalOrderPrice($this->variantQuantities);
+
+      if ($data['coupon_id']) {
+        $data['total_amount'] = $this->checkCouponValidation($data['coupon_id'], $totalAmount);
+      }
 
       $order = $this->orderRepository->store($data);
 
@@ -85,8 +91,38 @@ class OrderService
     return array_values($this->variantQuantities);
   }
 
-  public function isDelivered(int $orderId)
+  private function checkCouponValidation($couponId, $totalAmount)
   {
-    return $this->orderRepository->isDelivered($orderId);
+    $coupon = Coupon::find($couponId);
+    if (!$coupon) {
+      throw new OrderException(__('app.messages.order.coupon_not_found'), 404);
+    }
+
+    if ($coupon->status == Coupon::INACTIVE) {
+      throw new OrderException(__('app.messages.order.coupon_inactive'), 400);
+    }
+
+    if ($coupon->start_date > now()) {
+      throw new OrderException(__('app.messages.order.coupon_not_started'), 400);
+    }
+
+    if ($coupon->end_date < now()) {
+      throw new OrderException(__('app.messages.order.coupon_expired'), 400);
+    }
+
+    if ($coupon->usage_limit <= $coupon->usage_limit_per_user) {
+      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded'), 400);
+    }
+
+    if ($coupon->usage_limit_per_user <= $coupon->usage_limit) {
+      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded'), 400);
+    }
+
+    $discountType = $coupon->discount_type;
+    $discountAmount = $coupon->discount_amount;
+    $totalAmount = $totalAmount;
+    $discountAmount = $discountType === Coupon::FIXED ? $discountAmount : $totalAmount * $discountAmount / 100;
+    $totalAmount = $totalAmount - $discountAmount;
+    return $totalAmount;
   }
 }
