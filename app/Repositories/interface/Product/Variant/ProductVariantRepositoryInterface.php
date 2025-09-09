@@ -4,11 +4,11 @@ namespace App\Repositories\Interface\Product\Variant;
 
 interface ProductVariantRepositoryInterface
 {
-  public function getStockForVariant($variantId): int;
+  public function getStockForVariant(int $variantId): int;
 
-  public function calculateTotalVariant($variantId): float;
+  public function calculateTotalVariant(int $variantId): float;
 
-  public function decrementVariantStock($variantId, $quantity);
+  public function decrementVariantStock(int $variantId, int $quantity);
 
   public function getVariantsByIds(array $ids);
 

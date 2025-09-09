@@ -7,26 +7,23 @@ use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface
 
 class ProductVariantRepository implements ProductVariantRepositoryInterface
 {
-  public function getStockForVariant($variantId): int
+  public function getStockForVariant(int $variantId): int
   {
     return ProductVariant::findOrFail($variantId)->quantity;
   }
 
-  public function calculateTotalVariant($variantId): float
+  public function calculateTotalVariant(int $variantId): float
   {
     $variant = ProductVariant::findOrFail($variantId);
-    $price = $variant->amount_discount_price ?? $variant->price;
 
-    return $price;
+    return (float) ($variant->amount_discount_price ?? $variant->price);
   }
 
-  public function decrementVariantStock($variantId, $quantity)
+  public function decrementVariantStock(int $variantId, int $quantity)
   {
-    $variant = ProductVariant::findOrFail($variantId);
-
-    $variant->quantity -= $quantity;
-
-    $variant->save();
+    return ProductVariant::where('id', $variantId)
+      ->where('quantity', '>=', $quantity)
+      ->decrement('quantity', $quantity);
   }
 
   public function getVariantsByIds(array $ids)
