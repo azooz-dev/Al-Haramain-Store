@@ -21,6 +21,7 @@ use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Observers\Product\ProductColorImageObserver;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
+use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
@@ -31,6 +32,7 @@ use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
+use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 use App\Repositories\Eloquent\Order\OrderItem\OrderItemRepository;
 use App\Repositories\Interface\Product\ProductRepositoryInterface;
 use App\Repositories\Eloquent\Product\ProductTranslationRepository;
@@ -78,6 +80,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ResendEmailVerificationRepositoryInterface::class, ResendEmailVerificationRepository::class);
         $this->app->bind(ForgetPasswordRepositoryInterface::class, ForgetPasswordRepository::class);
         $this->app->bind(ResetPasswordRepositoryInterface::class, ResetPasswordRepository::class);
+
+        $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
     }
 
     /**
