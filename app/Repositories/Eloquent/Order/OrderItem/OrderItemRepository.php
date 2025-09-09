@@ -21,10 +21,12 @@ class OrderItemRepository implements OrderItemRepositoryInterface
       return true;
     }
 
+
     foreach ($itemsPayload as &$payload) {
       $payload['order_id'] = $orderId;
       $payload['created_at'] = now();
       $payload['updated_at'] = now();
+      unset($payload['variant_id']);
     }
     unset($payload);
 

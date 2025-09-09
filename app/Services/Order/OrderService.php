@@ -1,27 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Services\Order;
 
 use Throwable;
 use App\Models\User\User;
-use App\Models\Coupon\Coupon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\Coupon\CouponService;
-use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
-use App\Services\Coupon\CouponServiceInterface;
 use App\Services\Product\Variant\ProductVariantService;
-
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
+use function App\Helpers\errorResponse;
 
 class OrderService
 {
-  private array $variantQuantities = []; // [variant_id => ['variant_id' => x, 'quantity' => n, ...]]
+  private array $variantQuantities = [];
 
   public function __construct(
     private OrderRepositoryInterface $orderRepository,
@@ -93,13 +88,14 @@ class OrderService
 
         // Bulk create order items using repository
         $created = $this->orderItemRepository->createMany($itemsPayload, $order->id);
+
         if (!$created) {
           throw new OrderException(__('app.messages.order.order_error'), 500);
         }
 
         // Atomically decrement stock for each variant; check affected rows
         foreach ($this->variantQuantities as $variantId => $item) {
-          $affected = $this->variantService->decrementVariantStock((int) $variantId, (int) $item['quantity']);
+          $affected = $this->variantService->decrementVariantStock($this->variantQuantities);
           if ($affected === 0) {
             // Not enough stock / concurrent sale — rollback and return conflict
             throw new OrderException(__('app.messages.order.insufficient_stock_for_variant', ['id' => $variantId]), 409);
