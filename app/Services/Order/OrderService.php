@@ -4,6 +4,7 @@ namespace App\Services\Order;
 
 use App\Models\User\User;
 use App\Models\Coupon\Coupon;
+use Illuminate\Support\Facades\DB;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
@@ -24,26 +25,33 @@ class OrderService
   public function storeOrder(array $data)
   {
     try {
-      $this->checkBuyerVerified($data['user_id']);
+      $order = DB::transaction(function () use ($data) {
 
-      $this->groupVariantQuantities($data['items']);
-      $totalAmount = $this->variantService->calculateTotalOrderPrice($this->variantQuantities);
+        $this->checkBuyerVerified($data['user_id']);
 
-      if ($data['coupon_id']) {
-        $data['total_amount'] = $this->checkCouponValidation($data['coupon_id'], $totalAmount);
-      }
+        $this->groupVariantQuantities($data['items']);
+        $totalAmount = $this->variantService->calculateTotalOrderPrice($this->variantQuantities);
 
-      $order = $this->orderRepository->store($data);
+        if ($data['coupon_id']) {
+          $data['total_amount'] = $this->checkCouponValidation($data['coupon_id'], $totalAmount);
+        } else {
+          $data['total_amount'] = $totalAmount;
+        }
 
-      if (!$order) {
-        throw new OrderException(__('app.messages.order.order_error'));
-      }
+        $order = $this->orderRepository->store($data);
 
-      $orderItems = $this->storeOrderItems($this->variantQuantities, $order->id);
+        if (!$order) {
+          throw new OrderException(__('app.messages.order.order_error'));
+        }
 
-      if (!$orderItems) {
-        throw new OrderException(__('app.messages.order.order_error'));
-      }
+        $orderItems = $this->storeOrderItems($this->variantQuantities, $order->id);
+
+        if (!$orderItems) {
+          throw new OrderException(__('app.messages.order.order_error'));
+        }
+
+        return $order;
+      });
 
       return new OrderApiResource($order);
     } catch (OrderException $e) {
