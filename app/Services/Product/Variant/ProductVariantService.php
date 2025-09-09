@@ -3,7 +3,7 @@
 namespace App\Services\Product\Variant;
 
 use App\Exceptions\Product\Variant\OutOfStockException;
-use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
+use App\Repositories\interface\Product\Variant\ProductVariantRepositoryInterface;
 
 class ProductVariantService
 {
@@ -11,7 +11,7 @@ class ProductVariantService
 
   public function checkStock($items)
   {
-    $variants = $this->productVariantRepository->getVariantsByIds(array_keys($items));
+    $variants = $this->getVariantsByIds(array_keys($items));
 
     foreach ($items as $item) {
       $variant = $variants['variant_id'] ?? null;
@@ -19,6 +19,11 @@ class ProductVariantService
         throw new OutOfStockException(__('app.messages.order.validation.variant_quantity_exceeds_stock', ['variant_quantity' => $item['quantity'], 'total_stock' => $variant->quantity]));
       }
     }
+  }
+
+  public function getVariantsByIds($ids)
+  {
+    return $this->productVariantRepository->getVariantsByIds($ids);
   }
 
 
