@@ -526,6 +526,12 @@ return [
         'color_not_found' => 'The color not found!',
         'variant_quantity_exceeds_stock' => 'The variant quantity (:variant_quantity) cannot exceed the total stock quantity (:total_stock)',
       ],
+      "coupon_not_found" => "The coupon not found !",
+      "coupon_inactive" => 'The coupon is inactive !',
+      "coupon_not_started" => 'The coupon not started yet !',
+      "coupon_expired" => 'The coupon expired !',
+      "coupon_usage_limit_exceeded" => 'The coupon cannot be used more than (:usage_limit) times !',
+      "coupon_usage_limit_per_user_exceeded" => 'The coupon cannot be used more than (:usage_limit_per_user) times !',
     ],
     'admin' => [
       'created_success' => 'Admin user created successfully.',

@@ -641,6 +641,12 @@ return [
         'color_not_found' => 'اللون غير موجود !',
         'variant_quantity_exceeds_stock' => 'لا يمكن أن تتجاوز كمية المتغير (:variant_quantity) إجمالي كمية المخزون (:total_stock)',
       ],
+      "coupon_not_found" => "الكوبون غير موجود !",
+      "coupon_inactive" => 'الكوبون غير نشط !',
+      "coupon_not_started" => 'الكوبون لم يبدأ بعد !',
+      "coupon_expired" => 'الكوبون غير منتهي !',
+      "coupon_usage_limit_exceeded" => 'لا يمكن استخدام الكوبون أكثر من (:usage_limit) مرة !',
+      "coupon_usage_limit_per_user_exceeded" => 'لا يمكن استخدام الكوبون أكثر من (:usage_limit_per_user) مرة !',
     ],
     'admin' => [
       'created_success' => 'تم إنشاء مستخدم الإدارة بنجاح.',
