@@ -9,7 +9,7 @@ use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
 use App\Services\Product\Variant\ProductVariantService;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Repositories\interface\Order\OrderItem\OrderItemRepositoryInterface;
+use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 
 class OrderService
 {
@@ -111,11 +111,11 @@ class OrderService
     }
 
     if ($coupon->usage_limit <= $coupon->usage_limit_per_user) {
-      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded'), 400);
+      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded', ['usage_limit' => $coupon->usage_limit]), 400);
     }
 
     if ($coupon->usage_limit_per_user <= $coupon->usage_limit) {
-      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded'), 400);
+      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded', ['usage_limit_per_user' => $coupon->usage_limit_per_user]), 400);
     }
 
     $discountType = $coupon->discount_type;
