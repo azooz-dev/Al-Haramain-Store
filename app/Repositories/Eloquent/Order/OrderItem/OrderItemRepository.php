@@ -3,20 +3,32 @@
 namespace App\Repositories\Eloquent\Order\OrderItem;
 
 use App\Models\Order\OrderItem;
-use App\Models\Product\ProductVariant;
+use Illuminate\Support\Facades\DB;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 
 class OrderItemRepository implements OrderItemRepositoryInterface
 {
-  public function store(array $data, $orderId): OrderItem
+  /**
+   * Bulk insert order items (assumes $itemsPayload items contain 'order_id' or we will add it)
+   *
+   * @param array $itemsPayload  array of ['variant_id','product_id','quantity','total_price']
+   * @param int $orderId
+   * @return bool
+   */
+  public function createMany(array $itemsPayload, int $orderId): bool
   {
-    $variant = ProductVariant::find($data['variant_id']);
+    if (empty($itemsPayload)) {
+      return true;
+    }
 
-    return OrderItem::create([
-      'order_id' => $orderId,
-      'product_id' => $variant->product_id,
-      'quantity' => $data['quantity'],
-      'total_price' => isset($variant->amount_discount_price) ? $data['quantity'] * $variant->amount_discount_price : $data['quantity'] * $variant->price,
-    ]);
+    foreach ($itemsPayload as &$payload) {
+      $payload['order_id'] = $orderId;
+      $payload['created_at'] = now();
+      $payload['updated_at'] = now();
+    }
+    unset($payload);
+
+    // Use DB insert for performance
+    return DB::table((new OrderItem())->getTable())->insert($itemsPayload);
   }
 }
