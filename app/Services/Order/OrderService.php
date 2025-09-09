@@ -31,6 +31,8 @@ class OrderService
 
       if ($data['coupon_id']) {
         $data['total_amount'] = $this->checkCouponValidation($data['coupon_id'], $totalAmount);
+      } else {
+        $data['total_amount'] = $totalAmount;
       }
 
       $order = $this->orderRepository->store($data);
