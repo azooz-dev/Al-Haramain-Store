@@ -37,6 +37,8 @@ class AuthService
         return errorResponse(__("app.messages.auth.unverified"), 403);
       }
 
+      request()->session()->regenerate();
+
       $user = new UserApiResource($user);
 
       $token = $user->createToken('personal_token')->plainTextToken;
@@ -49,14 +51,12 @@ class AuthService
   public function logout()
   {
     if ($this->authRepository->logout()) {
+      request()->session()->invalidate();
+      request()->session()->regenerateToken();
+
       return showMessage(__("app.messages.auth.logged_out"), 200);
     }
 
     return showMessage(__("app.messages.auth.failed_logged_out"), 500);
-  }
-
-  private function handleAuth($userModel)
-  {
-    if (!$userModel) return;
   }
 }
