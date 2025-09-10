@@ -2,12 +2,13 @@
 
 namespace App\Services\Auth;
 
+use App\Models\User\User;
+use function App\Helpers\showMessage;
 use App\Exceptions\User\UserException;
-use App\Http\Resources\User\UserApiResource;
-use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 
 use function App\Helpers\errorResponse;
-use function App\Helpers\showMessage;
+use App\Http\Resources\User\UserApiResource;
+use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 
 class AuthService
 {
@@ -58,5 +59,20 @@ class AuthService
     }
 
     return showMessage(__("app.messages.auth.failed_logged_out"), 500);
+  }
+
+  public function user()
+  {
+    try {
+      $user = $this->authRepository->user();
+
+      if (!$user) {
+        return errorResponse(__("app.messages.auth.user_not_found"), 404);
+      }
+
+      return new UserApiResource($user);
+    } catch (UserException $e) {
+      return errorResponse($e->getMessage(), $e->getCode());
+    }
   }
 }

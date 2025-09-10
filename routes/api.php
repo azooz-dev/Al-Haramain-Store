@@ -12,16 +12,14 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
+use Illuminate\Session\Middleware\StartSession;
 
-
-Route::middleware('set.locale')->group(function () {
+Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Products
   Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 
   // Categories
   Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
-
-  Route::apiResource('offers', OfferController::class)->only(['index', 'show']);
 
   Route::middleware('auth:sanctum')->group(function () {
     // Orders
@@ -37,10 +35,12 @@ Route::middleware('set.locale')->group(function () {
   });
 
   // Offers
+  Route::apiResource('offers', OfferController::class)->only(['index', 'show']);
 
   // Auth Routes
   Route::post('login', [AuthController::class, 'login']);
   Route::post('register', [AuthController::class, 'register']);
+  Route::get('user', [AuthController::class, 'user']);
   Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
   Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
   Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
