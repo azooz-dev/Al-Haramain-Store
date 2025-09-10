@@ -38,4 +38,9 @@ class AuthRepository implements AuthRepositoryInterface
   {
     return Auth::guard('web')->logout;
   }
+
+  public function user()
+  {
+    return Auth::user();
+  }
 }
