@@ -3,8 +3,9 @@
 namespace App\Repositories\Eloquent\Auth;
 
 use App\Models\User\User;
-use App\Repositories\Interface\Auth\AuthRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 
 class AuthRepository implements AuthRepositoryInterface
 {
@@ -28,11 +29,13 @@ class AuthRepository implements AuthRepositoryInterface
       return null;
     }
 
+    Auth::login($user);
+
     return $user;
   }
 
   public function logout(): bool
   {
-    return request()->user()->currentAccessToken()->delete();
+    return Auth::guard('web')->logout;
   }
 }
