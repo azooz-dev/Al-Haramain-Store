@@ -18,15 +18,14 @@ class OfferFactory extends Factory
    */
   public function definition(): array
   {
-    $discountType = fake()->randomElement([Offer::FIXED, Offer::PERCENTAGE]);
-    $discountAmount = $discountType === Offer::FIXED
-      ? fake()->randomFloat(2, 5, 100)
-      : fake()->numberBetween(5, 50);
+    $products_total_price = fake()->randomFloat(2, 100, 1000);
+    $discount_amount = fake()->randomFloat(2, 10, 200);
+    $offer_price = $products_total_price - $discount_amount;
 
     return [
       'image_path' => fake()->imageUrl(640, 480, 'offer'),
-      'discount_type' => $discountType,
-      'discount_amount' => $discountAmount,
+      'products_total_price' => $products_total_price,
+      'offer_price' => $offer_price,
       'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
       'end_date' => fake()->dateTimeBetween('+1 month', '+3 months'),
       'status' => fake()->randomElement([Offer::ACTIVE, Offer::INACTIVE]),
@@ -52,28 +51,6 @@ class OfferFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'status' => Offer::INACTIVE,
-    ]);
-  }
-
-  /**
-   * Indicate a fixed discount type.
-   */
-  public function fixedDiscount(): static
-  {
-    return $this->state(fn(array $attributes) => [
-      'discount_type' => Offer::FIXED,
-      'discount_amount' => fake()->randomFloat(2, 5, 100),
-    ]);
-  }
-
-  /**
-   * Indicate a percentage discount type.
-   */
-  public function percentageDiscount(): static
-  {
-    return $this->state(fn(array $attributes) => [
-      'discount_type' => Offer::PERCENTAGE,
-      'discount_amount' => fake()->numberBetween(5, 50),
     ]);
   }
 }
