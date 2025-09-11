@@ -11,9 +11,9 @@ class ResendEmailVerificationService
   public function __construct(private ResendEmailVerificationRepositoryInterface $resendEmail) {}
 
 
-  public function resend(int $userId)
+  public function resend(string $userEmail)
   {
-    $user = $this->resendEmail->findUserById($userId);
+    $user = $this->resendEmail->findUserByEmail($userEmail);
 
     if ($user->isVerified()) {
       return errorResponse(__("app.messages.auth.already_verified"), 400);

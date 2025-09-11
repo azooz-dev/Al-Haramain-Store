@@ -7,8 +7,8 @@ use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 
 class ResendEmailVerificationRepository implements ResendEmailVerificationRepositoryInterface
 {
-  public function findUserById(int $userId)
+  public function findUserByEmail(string $userEmail)
   {
-    return User::findOrFail($userId);
+    return User::where('email', $userEmail)->first();
   }
 }

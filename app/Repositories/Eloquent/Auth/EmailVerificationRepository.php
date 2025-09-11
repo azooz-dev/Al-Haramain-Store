@@ -7,8 +7,8 @@ use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 
 class EmailVerificationRepository implements EmailVerificationRepositoryInterface
 {
-  public function findUserById(int $userId)
+  public function findUserByEmail(string $email)
   {
-    return User::findOrFail($userId);
+    return User::where('email', $email)->first();
   }
 }

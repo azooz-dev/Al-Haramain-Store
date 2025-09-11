@@ -41,8 +41,8 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::post('login', [AuthController::class, 'login']);
   Route::post('register', [AuthController::class, 'register']);
   Route::get('user', [AuthController::class, 'user']);
-  Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
-  Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
+  Route::post('users/email/verify-code', [EmailVerificationController::class, 'verify']);
+  Route::post('users/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
   Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
   Route::post("/reset-password", [ResetPasswordController::class, 'reset']);
 });

@@ -3,7 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Models\User\User;
-use App\Events\User\UserRegistered;
+use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
@@ -17,7 +17,7 @@ class EmailVerificationService
 
   public function verify(array $data)
   {
-    $user = $this->emailVerification->findUserById($data['user_id']);
+    $user = $this->emailVerification->findUserByEmail($data['email']);
 
     $cacheKey = "email_verification_code:user:{$user->id}";
     $hashed = Cache::get($cacheKey);
@@ -37,19 +37,5 @@ class EmailVerificationService
     $token = $user->createToken('personal_token')->plainTextToken;
 
     return ['user' => $user, 'token' => $token];
-  }
-
-
-  public function resend(int $userId)
-  {
-    $user = $this->emailVerification->findUserById($userId);
-
-    if ($user->isVerified()) {
-      return errorResponse(__("app.messages.auth.already_verified"), 400);
-    }
-
-    UserRegistered::dispatch($user);
-
-    return $user;
   }
 }
