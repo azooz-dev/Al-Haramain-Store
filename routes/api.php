@@ -31,7 +31,7 @@ Route::middleware('set.locale')->group(function () {
     Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
     // Coupons
-    Route::get('coupons/{id}', [CouponController::class, 'apply']);
+    Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
 
     Route::post('logout', [AuthController::class, 'logout']);
   });
