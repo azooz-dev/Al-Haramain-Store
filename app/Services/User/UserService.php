@@ -17,10 +17,10 @@ class UserService
   public function updateUser(int $userId, array $data)
   {
     try {
-      // $this->checkBuyerVerified($userId);
+      $this->checkBuyerVerified($userId);
       $user = $this->userRepository->update($userId, $data);
 
-      if ($user->isDirty('email')) {
+      if ($user->wasChanged('email')) {
         $user->verified = User::UNVERIFIED_USER;
         $user->save();
       }
