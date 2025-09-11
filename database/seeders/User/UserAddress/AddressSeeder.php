@@ -16,8 +16,8 @@ class AddressSeeder extends Seeder
         // Create specific address for testing
         Address::create([
             'user_id' => User::first()->id,
-            'full_name' => 'John Doe',
-            'phone' => '1234567890',
+            'label' => '456 Business District',
+            'address_type' => 'home',
             'street' => '123 Main St',
             'city' => 'Anytown',
             'state' => 'CA',

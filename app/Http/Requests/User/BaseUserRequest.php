@@ -31,6 +31,7 @@ abstract class BaseUserRequest extends BaseRequest
             'email'       => 'email',
             'phone'       => 'phone',
             'password'    => 'password',
+            "current_password" => 'currentPassword',
             'created_at'  => 'createdDate',
             'updated_at'  => 'lastChange',
         ];
@@ -46,6 +47,7 @@ abstract class BaseUserRequest extends BaseRequest
             'email'       => 'email',
             'phone'       => 'phone',
             'password'    => 'password',
+            'currentPassword' => "current_password",
             'createdDate' => 'created_at',
             'lastChange'  => 'updated_at',
         ];

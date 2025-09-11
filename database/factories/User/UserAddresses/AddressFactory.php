@@ -20,8 +20,8 @@ class AddressFactory extends Factory
   {
     return [
       'user_id' => User::factory(),
-      'full_name' => fake()->name(),
-      'phone' => fake()->phoneNumber(),
+      'label' => fake()->words(),
+      'address_type' => fake()->randomElements('Home', 'Work', 'other'),
       'street' => fake()->streetAddress(),
       'city' => fake()->city(),
       'state' => fake()->state(),

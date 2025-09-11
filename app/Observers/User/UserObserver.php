@@ -2,8 +2,8 @@
 
 namespace App\Observers\User;
 
-use App\Events\Auth\UserRegistered;
 use App\Models\User\User;
+use App\Events\Auth\UserRegistered;
 
 class UserObserver
 {
@@ -20,7 +20,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        if ($user->isDirty()) {
+        if ($user->isDirty('email')) {
             UserRegistered::dispatch($user);
         }
     }

@@ -12,11 +12,15 @@ class Address extends Model
 {
     use HasFactory;
 
+    const ADDRESS_TYPE_HOME = 'Home';
+    const ADDRESS_TYPE_WORK = 'Work';
+    const ADDRESS_TYPE_OTHER = "Other";
+
     protected $table = 'addresses';
     protected $fillable = [
         'user_id',
-        'full_name',
-        'phone',
+        'address_type',
+        'label',
         'street',
         'city',
         'state',

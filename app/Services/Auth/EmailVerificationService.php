@@ -3,12 +3,13 @@
 namespace App\Services\Auth;
 
 use App\Models\User\User;
-use App\Events\User\UserRegistered;
+use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
 
 use App\Exceptions\User\VerificationEmailFailedException;
+use App\Http\Resources\User\UserApiResource;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 
 class EmailVerificationService
@@ -36,6 +37,8 @@ class EmailVerificationService
 
     $token = $user->createToken('personal_token')->plainTextToken;
 
+    $user = new UserApiResource($user);
+
     return ['user' => $user, 'token' => $token];
   }
 
@@ -49,6 +52,8 @@ class EmailVerificationService
     }
 
     UserRegistered::dispatch($user);
+
+    $user = new UserApiResource($user);
 
     return $user;
   }

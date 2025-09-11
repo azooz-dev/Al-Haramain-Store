@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User;
 
+use App\Http\Resources\User\UserAddresses\AddressApiResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,9 @@ class UserApiResource extends JsonResource
             'email' => (string) $this->email,
             'phone' => (int) $this->phone,
             'isVerified'  => (bool) $this->isVerified() == 'true',
+            'addresses' => $this->addresses->map(function ($address) {
+                return new AddressApiResource($address);
+            }),
             'createdDate' => (string) $this->created_at,
             'lastChange'  => (string) $this->updated_at,
         ];
