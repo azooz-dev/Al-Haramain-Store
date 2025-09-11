@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Order\OrderController;
+use Illuminate\Session\Middleware\StartSession;
 use App\Http\Controllers\Coupon\CouponController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
@@ -12,7 +13,7 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
-use Illuminate\Session\Middleware\StartSession;
+use App\Http\Controllers\User\UserController;
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Products
@@ -32,6 +33,8 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
 
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
   });
 
   // Offers

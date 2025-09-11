@@ -16,6 +16,7 @@ use App\Events\Auth\ResendVerificationEmail;
 
 use App\Listeners\Auth\SendVerificationEmail;
 use App\Events\Auth\PasswordResetTokenCreated;
+use App\Events\Auth\UserEmailUpdated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Observers\Product\ProductColorImageObserver;
@@ -23,6 +24,7 @@ use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
+use App\Listeners\Auth\SendVerificationEmailUpdated;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
 use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
@@ -50,7 +52,9 @@ use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 use App\Repositories\Eloquent\User\Order\Product\Review\UserOrderProductReviewRepository;
+use App\Repositories\Eloquent\User\UserRepository;
 use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
+use App\Repositories\Interface\User\UserRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -82,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ResetPasswordRepositoryInterface::class, ResetPasswordRepository::class);
 
         $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**
@@ -97,5 +102,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(UserRegistered::class, SendVerificationEmail::class);
         Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
         Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
+        Event::listen(UserEmailUpdated::class, SendVerificationEmailUpdated::class);
     }
 }

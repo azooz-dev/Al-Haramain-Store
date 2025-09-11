@@ -524,6 +524,9 @@ return [
       "error_order_status" => 'Order status error occurred!',
       'order_undelivered' => "The order has not yet been delivered!",
       'buyer_not_verified' => "The buyer must be verified!",
+      "buyer_not_found" => "Buyer not found!",
+      'user_not_verified' => "The user must be verified!",
+      "user_not_found" => "User not found!",
       'validation' => [
         'variant_not_found' => 'The variant not found!',
         'color_not_found' => 'The color not found!',
@@ -607,7 +610,8 @@ return [
       'user_verified' => "Email Verified.",
       "already_verified" => "Your email is already verified.",
       "resend_verification_link" => "Verification link has been sent to your email address.",
-      'forgetPassword' => "If that email exists in our system, you will receive a password reset link shortly."
+      'forgetPassword' => "If that email exists in our system, you will receive a password reset link shortly.",
+      "user_undeleted" => "Unable to delete user."
     ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',
