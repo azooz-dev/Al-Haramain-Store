@@ -35,8 +35,6 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
-
-    Route::post('verify/new-email/{token}', [UserController::class, 'verifyNewEmail'])->name('user.verifyEmail');
   });
 
   // Offers
