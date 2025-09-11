@@ -28,8 +28,8 @@ class OfferSeeder extends Seeder
         // Create specific offer for testing
         $offer = Offer::create([
             'image_path' => 'https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=800&h=600&fit=crop',
-            'discount_type' => Offer::FIXED,
-            'discount_amount' => 100,
+            'products_total_price' => 100,
+            'offer_price' => 100,
             'start_date' => now(),
             'end_date' => now()->addDays(30),
             'status' => Offer::ACTIVE,

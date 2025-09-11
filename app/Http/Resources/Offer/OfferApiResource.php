@@ -21,19 +21,19 @@ class OfferApiResource extends JsonResource
         return [
             'identifier' => $this->id,
             'picture' => $this->image_path,
-            'discountType' => $this->discount_type,
-            'discountAmount' => $this->discount_amount,
+            'productsTotalPrice' => $this->products_total_price,
+            'offerPrice' => $this->offer_price,
             'startDate' => $this->start_date,
             'endDate' => $this->end_date,
             'status' => $this->status,
             'products' => ProductApiResource::collection($this->products),
             'en' => [
-                'title' => $en->name,
-                'details' => $en->description
+                'title' => $en->name ?? '',
+                'details' => $en->description ?? ''
             ],
             'ar' => [
-                'title' => $ar->name,
-                'details' => $ar->description
+                'title' => $ar->name ?? '',
+                'details' => $ar->description ?? ''
             ],
         ];
     }
@@ -43,8 +43,8 @@ class OfferApiResource extends JsonResource
         $attribute = [
             'identifier' => 'id',
             'picture' => 'image_path',
-            'discountType' => 'discount_type',
-            'discountAmount' => 'discount_amount',
+            'productsTotalPrice' => 'products_total_price',
+            'offerPrice' => 'offer_price',
             'startDate' => "start_date",
             'endDate' => "end_date",
             'status' => "status",
