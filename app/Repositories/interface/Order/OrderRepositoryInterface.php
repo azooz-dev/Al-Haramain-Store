@@ -8,6 +8,8 @@ interface OrderRepositoryInterface
 {
   public function store(array $data): Order;
 
+  public function isDelivered(int $orderId): bool;
+
   public function countCouponUsage(int $couponId): int;
 
   public function countUserCouponUsage(int $couponId, int $userId): int;
