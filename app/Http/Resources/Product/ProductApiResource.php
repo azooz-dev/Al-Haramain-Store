@@ -23,12 +23,12 @@ class ProductApiResource extends JsonResource
             'sku' => $this->sku,
             'stock' => $this->quantity,
             'en' => [
-                'title' => $en->name,
-                'details' => $en->description
+                'title' => $en->name ?? "",
+                'details' => $en->description ?? ""
             ],
             'ar' => [
-                'title' => $ar->name,
-                'details' => $ar->description
+                'title' => $ar->name ?? "",
+                'details' => $ar->description ?? ""
             ],
 
             // Colors with images
