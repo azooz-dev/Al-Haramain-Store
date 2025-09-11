@@ -4,7 +4,6 @@ namespace App\Services\Auth;
 
 use App\Models\User\User;
 use App\Events\Auth\UserRegistered;
-use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
