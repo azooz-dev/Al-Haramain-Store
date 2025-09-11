@@ -4,5 +4,5 @@ namespace App\Repositories\Interface\Auth;
 
 interface EmailVerificationRepositoryInterface
 {
-  public function findUserById(int $userId);
+  public function findUserByEmail(string $email);
 }
