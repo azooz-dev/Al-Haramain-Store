@@ -693,7 +693,8 @@ return [
     'review' => [
       'updated_success' => 'تم تحديث حالة التقييم بنجاح.',
       'updated_success_body' => 'تم تحديث حالة التقييم :name بنجاح.',
-      'review_error' => "حدث خطأ في التقييم!"
+      'review_error' => "حدث خطأ في التقييم!",
+      "product_not_in_order" => "المنتج غير موجود في الطلب!",
     ],
     'cash_on_delivery_note' => 'سيتم تحصيل الدفع عند التسليم.',
     'status_updated' => 'تم تحديث حالة التقييم',
