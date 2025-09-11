@@ -26,4 +26,11 @@ class OrderRepository implements OrderRepositoryInterface
       ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
       ->count();
   }
+
+  public function isDelivered(int $orderId): bool
+  {
+    return Order::where('id', $orderId)
+      ->where('status', Order::DELIVERED)
+      ->exists();
+  }
 }

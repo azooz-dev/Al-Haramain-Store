@@ -4,15 +4,16 @@ namespace App\Services\Order;
 
 use Throwable;
 use App\Models\User\User;
+use App\Models\Order\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\Coupon\CouponService;
+use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
 use App\Services\Product\Variant\ProductVariantService;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
-use function App\Helpers\errorResponse;
 
 class OrderService
 {
@@ -166,5 +167,10 @@ class OrderService
         throw new OrderException(__('app.messages.order.insufficient_stock_for_variant', ['id' => $variantId]), 409);
       }
     }
+  }
+
+  public function isDelivered(int $orderId): bool
+  {
+    return $this->orderRepository->isDelivered($orderId);
   }
 }
