@@ -703,7 +703,8 @@ return [
     'review' => [
       'updated_success' => 'تم تحديث حالة التقييم بنجاح.',
       'updated_success_body' => 'تم تحديث حالة التقييم :name بنجاح.',
-      'review_error' => "حدث خطأ في التقييم!"
+      'review_error' => "حدث خطأ في التقييم!",
+      "product_not_in_order" => "المنتج غير موجود في الطلب!",
     ],
     'exception' => [
       'not_found' => 'المورد :model غير موجود.',
