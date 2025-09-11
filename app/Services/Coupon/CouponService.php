@@ -25,6 +25,22 @@ class CouponService
    */
   public function applyCouponToOrder(int $couponId, float $totalAmount, int $userId): float
   {
+    $coupon = $this->applyCoupon($couponId, $userId);
+    // Compute discount
+    if ($coupon->discount_type === Coupon::FIXED) {
+      $discountAmount = (float)$coupon->discount_amount;
+    } else {
+      $discountAmount = ($coupon->discount_amount / 100.0) * $totalAmount;
+    }
+
+    // Ensure not negative, clamp
+    $newTotal = max(0.0, round($totalAmount - $discountAmount, 2));
+
+    return $newTotal;
+  }
+
+  public function applyCoupon(int $couponId, int $userId)
+  {
     $coupon = $this->couponRepository->findCoupon($couponId);
     if (!$coupon) {
       throw new OrderException(__('app.messages.order.coupon_not_found'), 404);
@@ -54,16 +70,6 @@ class CouponService
       throw new OrderException(__('app.messages.order.coupon_usage_limit_per_user_exceeded', ['limit' => $coupon->usage_limit_per_user]), 400);
     }
 
-    // Compute discount
-    if ($coupon->discount_type === Coupon::FIXED) {
-      $discountAmount = (float)$coupon->discount_amount;
-    } else {
-      $discountAmount = ($coupon->discount_amount / 100.0) * $totalAmount;
-    }
-
-    // Ensure not negative, clamp
-    $newTotal = max(0.0, round($totalAmount - $discountAmount, 2));
-
-    return $newTotal;
+    return $coupon;
   }
 }
