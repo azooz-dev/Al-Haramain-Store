@@ -3,6 +3,8 @@
 namespace App\Models\Favorite;
 
 use App\Models\Product\Product;
+use App\Models\Product\ProductColor;
+use App\Models\Product\ProductVariant;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +17,8 @@ class Favorite extends Model
     protected $fillable = [
         'user_id',
         'product_id',
+        'color_id',
+        'variant_id'
     ];
 
     public function user(): BelongsTo
@@ -25,5 +29,15 @@ class Favorite extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function productColor(): BelongsTo
+    {
+        return $this->belongsTo(ProductColor::class, 'color_id');
+    }
+
+    public function productVariant(): BelongsTo
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }

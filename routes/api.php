@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Order\OrderController;
 use Illuminate\Session\Middleware\StartSession;
@@ -12,8 +13,10 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
+use App\Http\Controllers\Favorite\FavoriteController;
+use App\Http\Controllers\User\Product\UserProductFavoriteController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserFavoriteController;
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Products
@@ -22,20 +25,26 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Categories
   Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
-  Route::middleware('auth:sanctum')->group(function () {
-    // Orders
-    Route::apiResource('orders', OrderController::class)->only('store');
+  // Route::middleware('auth:sanctum')->group(function () {
+  // Orders
+  Route::apiResource('orders', OrderController::class)->only('store');
 
-    // User Orders
-    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+  // User Orders
+  Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
-    // Coupons
-    Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
+  // Coupons
+  Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
 
-    Route::post('logout', [AuthController::class, 'logout']);
+  // User Products Favorite
+  Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
 
-    Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
-  });
+  // User Favorites
+  Route::apiResource('users.favorite', UserFavoriteController::class)->only(['index', 'destroy']);
+
+  Route::post('logout', [AuthController::class, 'logout']);
+
+  Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
+  // });
 
   // Offers
   Route::apiResource('offers', OfferController::class)->only(['index', 'show']);

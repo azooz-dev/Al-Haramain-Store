@@ -4,6 +4,8 @@ namespace Database\Factories\Favorite;
 
 use App\Models\Favorite\Favorite;
 use App\Models\Product\Product;
+use App\Models\Product\ProductColor;
+use App\Models\Product\ProductVariant;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,6 +24,8 @@ class FavoriteFactory extends Factory
     return [
       'user_id' => User::factory(),
       'product_id' => Product::factory(),
+      'color_id' => ProductColor::factory(),
+      'variant_id' => ProductVariant::factory()
     ];
   }
 }
