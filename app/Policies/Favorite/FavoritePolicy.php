@@ -2,6 +2,7 @@
 
 namespace App\Policies\Favorite;
 
+use App\Models\User\User;
 use App\Models\Admin\Admin;
 use App\Models\Favorite\Favorite;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -45,9 +46,9 @@ class FavoritePolicy
     /**
      * Determine whether the admin can delete the model.
      */
-    public function delete(Admin $admin, Favorite $favorite): bool
+    public function delete(User $user, Favorite $favorite): bool
     {
-        return $admin->can('delete_favorite');
+        return $user->id === $favorite->user_id;
     }
 
     /**
