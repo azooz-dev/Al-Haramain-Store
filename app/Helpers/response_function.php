@@ -10,6 +10,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 if (!function_exists('successResponse')) {
   function successResponse($data, $message = 'Success', $status = 200): JsonResponse
   {
+    // Avoid wrapping an existing JsonResponse (e.g., from errorResponse)
+    if ($data instanceof JsonResponse) {
+      return $data;
+    }
+
     return response()->json([
       'data' => $data,
       'message' => $message,
