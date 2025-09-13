@@ -600,7 +600,15 @@ return [
       'user_verified' => "Email Verified.",
       "already_verified" => "Your email is already verified.",
       "resend_verification_link" => "Verification link has been sent to your email address.",
-      'forgetPassword' => "If that email exists in our system, you will receive a password reset link shortly."
+      'forgetPassword' => "If that email exists in our system, you will receive a password reset link shortly.",
+      "user_not_found" => "المتستخدم غير موجود !",
+      "user_undeleted" => "Unable to delete user."
+    ],
+    "favorite" => [
+      "favorite_not_found" => "Favorite not found.",
+      "favorite_created" => "Product added to favorites successfully.",
+      "error_occurred" => "An error occurred!",
+      "favorite_deleted" => "Product removed from favorites successfully."
     ],
     'cash_on_delivery_note' => 'Payment will be collected upon delivery.',
     'status_updated' => 'Status updated',

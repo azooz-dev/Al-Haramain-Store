@@ -29,14 +29,15 @@ class AuthRepository implements AuthRepositoryInterface
       return null;
     }
 
-    Auth::login($user);
+    Auth::guard('web')->login($user);
 
     return $user;
   }
 
   public function logout(): bool
   {
-    return Auth::guard('web')->logout;
+    Auth::guard('web')->logout();
+    return true;
   }
 
   public function user()
