@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Events\Auth\UserRegistered;
 use App\Models\User\User;
 use function App\Helpers\showMessage;
 use App\Exceptions\User\UserException;
@@ -35,6 +36,7 @@ class AuthService
       }
 
       if (!$user->isVerified()) {
+        UserRegistered::dispatch($user);
         return errorResponse(__("app.messages.auth.unverified"), 403);
       }
 
