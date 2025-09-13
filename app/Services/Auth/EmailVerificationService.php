@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
 
 use App\Exceptions\User\VerificationEmailFailedException;
+use App\Http\Resources\User\UserApiResource;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 
 class EmailVerificationService
@@ -34,8 +35,10 @@ class EmailVerificationService
 
     Cache::forget($cacheKey);
 
-    $token = $user->createToken('personal_token')->plainTextToken;
+    request()->session()->regenerate();
 
-    return ['user' => $user, 'token' => $token];
+    $user = new UserApiResource($user);
+
+    return $user;
   }
 }
