@@ -611,6 +611,7 @@ return [
       "already_verified" => "Your email is already verified.",
       "resend_verification_link" => "Verification link has been sent to your email address.",
       'forgetPassword' => "If that email exists in our system, you will receive a password reset link shortly.",
+      "user_not_found" => "المتستخدم غير موجود !",
       "user_undeleted" => "Unable to delete user."
     ],
     "favorite" => [
