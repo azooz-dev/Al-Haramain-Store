@@ -35,10 +35,10 @@ class EmailVerificationService
 
     Cache::forget($cacheKey);
 
-    $token = $user->createToken('personal_token')->plainTextToken;
+    request()->session()->regenerate();
 
     $user = new UserApiResource($user);
 
-    return ['user' => $user, 'token' => $token];
+    return $user;
   }
 }
