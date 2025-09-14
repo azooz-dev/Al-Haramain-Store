@@ -7,12 +7,12 @@ use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
-use App\Events\Auth\UserEmailUpdated;
 use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Product\ProductColorImage;
+
 
 use App\Events\Auth\ResendVerificationEmail;
 use App\Listeners\Auth\SendVerificationEmail;
@@ -20,7 +20,6 @@ use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Repositories\Eloquent\User\UserRepository;
-use App\Listeners\Auth\SendVerificationEmailUpdated;
 use App\Observers\Product\ProductColorImageObserver;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
@@ -33,6 +32,7 @@ use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
 use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Interface\User\UserRepositoryInterface;
+use App\Repositories\Eloquent\User\Order\UserOrderRepository;
 use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
@@ -48,6 +48,7 @@ use App\Repositories\Eloquent\Category\CategoryTranslationRepository;
 use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
 use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
 use App\Repositories\Eloquent\Product\Variant\ProductVariantRepository;
+use App\Repositories\Interface\User\Order\UserOrderRepositoryInterface;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
@@ -91,6 +92,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(UserOrderRepositoryInterface::class, UserOrderRepository::class);
         $this->app->bind(UserProductFavoriteRepositoryInterface::class, UserProductFavoriteRepository::class);
         $this->app->bind(UserFavoriteRepositoryInterface::class, UserFavoriteRepository::class);
     }

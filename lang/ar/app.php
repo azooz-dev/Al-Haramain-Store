@@ -643,6 +643,7 @@ return [
       'order_undelivered' => 'الطلب مازال لم يتم تسليمه!',
       'user_not_verified' => 'يجب على المتستخدم أن يكون متحقق من الحساب !',
       "user_not_found" => "المتستخدم غير موجود !",
+      "order_not_found" => "الطلبات الخاصة بالمستخدم غير موجود !",
       'validation' => [
         'variant_not_found' => 'المتغير غير موجود !',
         'color_not_found' => 'اللون غير موجود !',
