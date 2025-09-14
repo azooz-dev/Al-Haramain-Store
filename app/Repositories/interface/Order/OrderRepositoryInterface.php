@@ -10,6 +10,8 @@ interface OrderRepositoryInterface
 
   public function isDelivered(int $orderId): bool;
 
+  public function show(int $orderId);
+
   public function countCouponUsage(int $couponId): int;
 
   public function countUserCouponUsage(int $couponId, int $userId): int;

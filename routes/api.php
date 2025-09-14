@@ -25,26 +25,24 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Categories
   Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
-  // Route::middleware('auth:sanctum')->group(function () {
-  // Orders
-  Route::apiResource('orders', OrderController::class)->only('store');
+  Route::middleware('auth:sanctum')->group(function () {
+    // Orders
+    Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 
-  // User Orders
-  Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+    // User Orders
+    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
-  // Coupons
-  Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
+    // Coupons
+    Route::get('coupons/{id}', [CouponController::class, 'apply']);
 
-  // User Products Favorite
-  Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
+    Route::post('logout', [AuthController::class, 'logout']);
 
-  // User Favorites
-  Route::apiResource('users.favorite', UserFavoriteController::class)->only(['index', 'destroy']);
+    // Users
+    Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
 
-  Route::post('logout', [AuthController::class, 'logout']);
-
-  Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
-  // });
+    // User Orders
+    Route::apiResource('users.orders', UserOrderProductReviewController::class)->only('index');
+  });
 
   // Offers
   Route::apiResource('offers', OfferController::class)->only(['index', 'show']);

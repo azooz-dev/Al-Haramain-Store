@@ -12,6 +12,11 @@ class OrderRepository implements OrderRepositoryInterface
     return Order::create($data);
   }
 
+  public function show(int $orderId): Order
+  {
+    return Order::findOrFail($orderId);
+  }
+
   public function countCouponUsage(int $couponId): int
   {
     return Order::where('coupon_id', $couponId)
