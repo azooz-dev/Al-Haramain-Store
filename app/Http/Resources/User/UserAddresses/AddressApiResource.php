@@ -17,7 +17,6 @@ class AddressApiResource extends JsonResource
     {
         return [
             'identifier' => (int) $this->id,
-            "user" => new UserApiResource($this->user),
             'addressType' => (string) $this->address_type,
             "label" => (string) $this->label,
             'street' => (string) $this->street,

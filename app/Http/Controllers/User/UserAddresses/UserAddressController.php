@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserAddress\UserAddressStoreRequest;
 use App\Http\Requests\User\UserAddress\UserAddressUpdateRequest;
 use App\Services\User\UserAddresses\UserAddressService;
-use Illuminate\Http\Request;
 
 use function App\Helpers\showAll;
 use function App\Helpers\showMessage;
@@ -29,9 +28,8 @@ class UserAddressController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, int $userId)
+    public function store(UserAddressStoreRequest $request, int $userId)
     {
-        dd("test");
         $data = $request->validated();
 
         $address = $this->userAddressService->storeUserAddress($data, $userId);
