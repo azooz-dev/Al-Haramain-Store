@@ -13,7 +13,6 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
-use App\Http\Controllers\Favorite\FavoriteController;
 use App\Http\Controllers\User\Product\UserProductFavoriteController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
 use App\Http\Controllers\User\UserFavoriteController;
@@ -28,13 +27,25 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
     // Orders
     Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
+    Route::apiResource('orders', OrderController::class)->only('store');
 
+    // User Orders
+    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
     // User Orders
     Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
     // Coupons
+    Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
+
+    // User Products Favorite
+    Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
+
+    // User Favorites
+    Route::apiResource('users.favorite', UserFavoriteController::class)->only(['index', 'destroy']);
+    // Coupons
     Route::get('coupons/{id}', [CouponController::class, 'apply']);
 
+    Route::post('logout', [AuthController::class, 'logout']);
     Route::post('logout', [AuthController::class, 'logout']);
 
     // Users
