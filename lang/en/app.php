@@ -540,6 +540,11 @@ return [
       "coupon_usage_limit_exceeded" => 'The coupon cannot be used more than (:usage_limit) times !',
       "coupon_usage_limit_per_user_exceeded" => 'The coupon cannot be used more than (:usage_limit_per_user) times !',
     ],
+    "user_address" => [
+      "user_address_error" => "User address error occurred!",
+      "user_address_deleted" => "User address deleted successfully.",
+      "user_address_not_deleted" => "User address not deleted.",
+    ],
     'admin' => [
       'created_success' => 'Admin user created successfully.',
       'created_success_body' => 'Admin user ":name" created successfully.',

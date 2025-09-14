@@ -656,6 +656,11 @@ return [
       "coupon_usage_limit_exceeded" => 'لا يمكن استخدام الكوبون أكثر من (:usage_limit) مرة !',
       "coupon_usage_limit_per_user_exceeded" => 'لا يمكن استخدام الكوبون أكثر من (:usage_limit_per_user) مرة !',
     ],
+    "user_address" => [
+      "user_address_error" => "حدث خطاء في عنوان المستخدم !",
+      "user_address_deleted" => "تم حذف عنوان المستخدم بنجاح.",
+      "user_address_not_deleted" => "تم حذف عنوان المستخدم بنجاح.",
+    ],
     'admin' => [
       'created_success' => 'تم إنشاء مستخدم الإدارة بنجاح.',
       'created_success_body' => 'تم إنشاء مستخدم :name الإدارة بنجاح.',

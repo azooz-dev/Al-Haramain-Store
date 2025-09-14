@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Services\User\UserAddresses;
+
+use App\Models\User\User;
+use App\Exceptions\Order\OrderException;
+use App\Exceptions\User\UserAddress\UserAddressException;
+use App\Http\Resources\User\UserAddresses\AddressApiResource;
+use App\Repositories\Interface\User\UserAddresses\UserAddressRepositoryInterface;
+
+use function App\Helpers\errorResponse;
+use function App\Helpers\showMessage;
+
+class UserAddressService
+{
+  public function __construct(private UserAddressRepositoryInterface $userAddressRepository) {}
+
+  public function getAllUserAddresses(int $userId)
+  {
+    try {
+      $this->checkUserVerified($userId);
+
+      $addresses = $this->userAddressRepository->getAllUserAddresses($userId);
+
+      return AddressApiResource::collection($addresses);
+    } catch (UserAddressException $e) {
+      return errorResponse($e->getMessage(), $e->getCode());
+    }
+  }
+
+  public function storeUserAddress(array $data, int $userId)
+  {
+    try {
+      $this->checkUserVerified($userId);
+      $address = $this->userAddressRepository->storeUserAddress($data, $userId);
+
+      return new AddressApiResource($address);
+    } catch (UserAddressException $e) {
+      return errorResponse($e->getMessage(), $e->getCode());
+    }
+  }
+
+  public function updateUserAddress(array $data, int $userId, int $addressId)
+  {
+    try {
+      $this->checkUserVerified($userId);
+
+      $updatedAddress = $this->userAddressRepository->updateUserAddress($data, $userId, $addressId);
+
+      return new AddressApiResource($updatedAddress);
+    } catch (UserAddressException $e) {
+      return errorResponse($e->getMessage(), $e->getCode());
+    }
+  }
+
+  public function deleteUserAddress(int $userId, int $addressId)
+  {
+    try {
+      $this->checkUserVerified($userId);
+
+      if ($this->userAddressRepository->deleteUserAddress($userId, $addressId)) {
+        return showMessage(__("app.messages.user_address.user_address_deleted"), 200);;
+      }
+
+      return showMessage(__("app.messages.user_address.user_address_not_deleted"), 500);
+    } catch (UserAddressException $e) {
+      return errorResponse($e->getMessage(), $e->getCode());
+    }
+  }
+
+  private function checkUserVerified(int $userId): void
+  {
+    $user = User::find($userId);
+    if (!$user) {
+      throw new OrderException(__('app.messages.order.user_not_found'), 404);
+    }
+    if (!$user->verified) {
+      throw new OrderException(__('app.messages.order.user_not_verified'), 403);
+    }
+  }
+}

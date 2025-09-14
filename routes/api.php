@@ -9,13 +9,15 @@ use Illuminate\Session\Middleware\StartSession;
 use App\Http\Controllers\Coupon\CouponController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\User\UserFavoriteController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\User\Order\UserOrderController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
+use App\Http\Controllers\User\UserAddresses\UserAddressController;
 use App\Http\Controllers\User\Product\UserProductFavoriteController;
 use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
-use App\Http\Controllers\User\UserFavoriteController;
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Products
@@ -48,7 +50,10 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
 
     // User Orders
-    Route::apiResource('users.orders', UserOrderProductReviewController::class)->only('index');
+    Route::apiResource('users.orders', UserOrderController::class)->only('index');
+
+    // User Addresses
+    Route::apiResource('users.addresses', UserAddressController::class)->only(['index', 'store', 'update', 'destroy']);
   });
 
   // Offers

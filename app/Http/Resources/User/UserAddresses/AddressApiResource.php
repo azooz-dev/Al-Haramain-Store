@@ -3,6 +3,7 @@
 namespace App\Http\Resources\User\UserAddresses;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\User\UserApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AddressApiResource extends JsonResource
@@ -16,6 +17,7 @@ class AddressApiResource extends JsonResource
     {
         return [
             'identifier' => (int) $this->id,
+            "user" => new UserApiResource($this->user),
             'addressType' => (string) $this->address_type,
             "label" => (string) $this->label,
             'street' => (string) $this->street,
