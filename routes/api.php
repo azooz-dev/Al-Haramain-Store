@@ -27,10 +27,7 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
     // Orders
     Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
-    Route::apiResource('orders', OrderController::class)->only('store');
 
-    // User Orders
-    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
     // User Orders
     Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
@@ -45,7 +42,6 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     // Coupons
     Route::get('coupons/{id}', [CouponController::class, 'apply']);
 
-    Route::post('logout', [AuthController::class, 'logout']);
     Route::post('logout', [AuthController::class, 'logout']);
 
     // Users
