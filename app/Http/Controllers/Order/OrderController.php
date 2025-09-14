@@ -20,4 +20,14 @@ class OrderController extends Controller
 
         return showOne($order, 'order', 201);
     }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function show(int $orderId)
+    {
+        $order = $this->orderService->findOrderById($orderId);
+
+        return showOne($order, 'Order', 200);
+    }
 }

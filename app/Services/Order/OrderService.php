@@ -115,6 +115,17 @@ class OrderService
     }
   }
 
+  public function findOrderById(int $orderId)
+  {
+    try {
+      $order = $this->orderRepository->show($orderId);
+
+      return new OrderApiResource($order);
+    } catch (OrderException $e) {
+      return errorResponse($e->getMessage(), $e->getCode());
+    }
+  }
+
   /**
    * Pure function: group items and return assoc array keyed by variant_id.
    */

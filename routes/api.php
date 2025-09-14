@@ -24,7 +24,7 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
 
   Route::middleware('auth:sanctum')->group(function () {
     // Orders
-    Route::apiResource('orders', OrderController::class)->only('store');
+    Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 
     // User Orders
     Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
@@ -34,7 +34,11 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout']);
 
+    // Users
     Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
+
+    // User Orders
+    Route::apiResource('users.orders', UserOrderProductReviewController::class)->only('index');
   });
 
   // Offers

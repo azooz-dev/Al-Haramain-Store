@@ -527,6 +527,7 @@ return [
       "buyer_not_found" => "Buyer not found!",
       'user_not_verified' => "The user must be verified!",
       "user_not_found" => "User not found!",
+      "order_not_found" => "User Orders not found!",
       'validation' => [
         'variant_not_found' => 'The variant not found!',
         'color_not_found' => 'The color not found!',
