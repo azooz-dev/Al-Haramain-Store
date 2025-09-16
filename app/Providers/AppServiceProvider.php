@@ -7,13 +7,15 @@ use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Policies\User\UserPolicy;
+
+
 use App\Models\Product\ProductColorImage;
-
-
 use App\Events\Auth\ResendVerificationEmail;
 use App\Listeners\Auth\SendVerificationEmail;
 use App\Events\Auth\PasswordResetTokenCreated;
@@ -113,5 +115,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(UserRegistered::class, SendVerificationEmail::class);
         Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
         Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
+
+        Gate::policy(User::class, UserPolicy::class);
     }
 }
