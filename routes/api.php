@@ -39,6 +39,8 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
 
     // User Orders
     Route::apiResource('users.orders', UserOrderProductReviewController::class)->only('index');
+
+    Route::get('user', [AuthController::class, 'user']);
   });
 
   // Offers
@@ -47,7 +49,6 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Auth Routes
   Route::post('login', [AuthController::class, 'login']);
   Route::post('register', [AuthController::class, 'register']);
-  Route::get('user', [AuthController::class, 'user']);
   Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
   Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
   Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
