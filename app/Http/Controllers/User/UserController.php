@@ -5,9 +5,12 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Services\User\UserService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(private UserService $userService) {}
 
     /**
@@ -15,9 +18,12 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, string $id)
     {
-        $data = $request->validated();
+        if ($this->authorize('update', $id)) {
 
-        return $this->userService->updateUser($id, $data);
+            $data = $request->validated();
+
+            return $this->userService->updateUser($id, $data);
+        }
     }
 
     /**
@@ -25,6 +31,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        return $this->userService->deleteUser($id);
+        if ($this->authorize('delete', $id)) {
+            return $this->userService->deleteUser($id);
+        }
     }
 }

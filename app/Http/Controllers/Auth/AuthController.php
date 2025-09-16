@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserLoginRequest;
-use App\Http\Requests\User\UserStoreRequest;
-use App\Services\Auth\AuthService;
 use function App\Helpers\showOne;
+use App\Services\Auth\AuthService;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\User\UserLoginRequest;
+
+use App\Http\Requests\User\UserStoreRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AuthController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(private AuthService $authService) {}
 
     public function register(UserStoreRequest $request)
@@ -37,6 +42,8 @@ class AuthController extends Controller
 
     public function user()
     {
-        return $this->authService->user();
+        if ($this->authorize('view', Auth::user()->id)) {
+            return $this->authService->user();
+        }
     }
 }

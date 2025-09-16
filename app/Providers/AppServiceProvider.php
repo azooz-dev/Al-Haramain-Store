@@ -7,20 +7,21 @@ use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
-use App\Events\Auth\UserEmailUpdated;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Product\ProductColorImage;
+use App\Policies\User\UserPolicy;
 
+
+use App\Models\Product\ProductColorImage;
 use App\Events\Auth\ResendVerificationEmail;
 use App\Listeners\Auth\SendVerificationEmail;
 use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Repositories\Eloquent\User\UserRepository;
-use App\Listeners\Auth\SendVerificationEmailUpdated;
 use App\Observers\Product\ProductColorImageObserver;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
@@ -105,6 +106,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(UserRegistered::class, SendVerificationEmail::class);
         Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
         Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
-        Event::listen(UserEmailUpdated::class, SendVerificationEmailUpdated::class);
+
+        Gate::policy(User::class, UserPolicy::class);
     }
 }
