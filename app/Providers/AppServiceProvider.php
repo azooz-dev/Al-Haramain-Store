@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
+
+
 use App\Policies\User\UserPolicy;
 
 
@@ -27,6 +29,8 @@ use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
+use App\Models\User\UserAddresses\Address;
+use App\Policies\User\Address\AddressPolicy;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
 use App\Repositories\Eloquent\User\UserFavoriteRepository;
@@ -107,15 +111,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register Observers
         Offer::observe(OfferObserver::class);
         Order::observe(OrderObserver::class);
         User::observe(UserObserver::class);
         ProductColorImage::observe(ProductColorImageObserver::class);
 
+        // Register Event Listeners
         Event::listen(UserRegistered::class, SendVerificationEmail::class);
         Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
         Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
 
+        // Register Policies
+        Gate::policy(Address::class, AddressPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
     }
 }

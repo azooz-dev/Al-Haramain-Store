@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\User\UserAddresses;
 
+use function App\Helpers\showAll;
+use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
+use function App\Helpers\showMessage;
+use App\Models\User\UserAddresses\Address;
+
+use App\Services\User\UserAddresses\UserAddressService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\User\UserAddress\UserAddressStoreRequest;
 use App\Http\Requests\User\UserAddress\UserAddressUpdateRequest;
-use App\Services\User\UserAddresses\UserAddressService;
-
-use function App\Helpers\showAll;
-use function App\Helpers\showMessage;
-use function App\Helpers\showOne;
 
 class UserAddressController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(private UserAddressService $userAddressService) {}
 
     /**
@@ -20,9 +24,11 @@ class UserAddressController extends Controller
      */
     public function index(int $userId)
     {
-        $addresses = $this->userAddressService->getAllUserAddresses($userId);
+        if ($this->authorize('view', Address::class)) {
+            $addresses = $this->userAddressService->getAllUserAddresses($userId);
 
-        return showAll($addresses, "User Addresses", 200);
+            return showAll($addresses, "User Addresses", 200);
+        }
     }
 
     /**
@@ -30,11 +36,13 @@ class UserAddressController extends Controller
      */
     public function store(UserAddressStoreRequest $request, int $userId)
     {
-        $data = $request->validated();
+        if ($this->authorize('create', Address::class)) {
+            $data = $request->validated();
 
-        $address = $this->userAddressService->storeUserAddress($data, $userId);
+            $address = $this->userAddressService->storeUserAddress($data, $userId);
 
-        return showOne($address, "User Address", 201);
+            return showOne($address, "User Address", 201);
+        }
     }
 
     /**
@@ -42,11 +50,13 @@ class UserAddressController extends Controller
      */
     public function update(UserAddressUpdateRequest $request, int $userId, int $addressId)
     {
-        $data = $request->validated();
+        if ($this->authorize('update', Address::class)) {
+            $data = $request->validated();
 
-        $updatedAddress = $this->userAddressService->updateUserAddress($data, $userId, $addressId);
+            $updatedAddress = $this->userAddressService->updateUserAddress($data, $userId, $addressId);
 
-        return showOne($updatedAddress, "User Address", 200);
+            return showOne($updatedAddress, "User Address", 200);
+        }
     }
 
     /**
@@ -54,6 +64,8 @@ class UserAddressController extends Controller
      */
     public function destroy(int $userId, int $addressId)
     {
-        return $this->userAddressService->deleteUserAddress($userId, $addressId);
+        if ($this->authorize('delete', Address::class)) {
+            return $this->userAddressService->deleteUserAddress($userId, $addressId);
+        }
     }
 }
