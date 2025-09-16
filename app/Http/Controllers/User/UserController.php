@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\User\User;
+use App\Services\User\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserUpdateRequest;
-use App\Services\User\UserService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
@@ -16,23 +17,21 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, string $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        if ($this->authorize('update', $id)) {
+        $this->authorize('update', $user);
 
-            $data = $request->validated();
+        $data = $request->validated();
 
-            return $this->userService->updateUser($id, $data);
-        }
+        return $this->userService->updateUser($user->id, $data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        if ($this->authorize('delete', $id)) {
-            return $this->userService->deleteUser($id);
-        }
+        $this->authorize('delete', $user);
+        return $this->userService->deleteUser($user->id);
     }
 }
