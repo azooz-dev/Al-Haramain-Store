@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\User\UserAddresses;
 
+use App\Models\User\User;
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
 use function App\Helpers\showMessage;
-use App\Models\User\UserAddresses\Address;
 
+use App\Models\User\UserAddresses\Address;
 use App\Services\User\UserAddresses\UserAddressService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\User\UserAddress\UserAddressStoreRequest;
@@ -24,11 +25,11 @@ class UserAddressController extends Controller
      */
     public function index(int $userId)
     {
-        if ($this->authorize('view', Address::class)) {
-            $addresses = $this->userAddressService->getAllUserAddresses($userId);
+        $this->authorize('view', Address::class);
 
-            return showAll($addresses, "User Addresses", 200);
-        }
+        $addresses = $this->userAddressService->getAllUserAddresses($userId);
+
+        return showAll($addresses, "User Addresses", 200);
     }
 
     /**
@@ -36,36 +37,36 @@ class UserAddressController extends Controller
      */
     public function store(UserAddressStoreRequest $request, int $userId)
     {
-        if ($this->authorize('create', Address::class)) {
-            $data = $request->validated();
+        $this->authorize('create', Address::class);
 
-            $address = $this->userAddressService->storeUserAddress($data, $userId);
+        $data = $request->validated();
 
-            return showOne($address, "User Address", 201);
-        }
+        $address = $this->userAddressService->storeUserAddress($data, $userId);
+
+        return showOne($address, "User Address", 201);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserAddressUpdateRequest $request, int $userId, int $addressId)
+    public function update(UserAddressUpdateRequest $request, User $user, Address $address)
     {
-        if ($this->authorize('update', Address::class)) {
-            $data = $request->validated();
+        $this->authorize('update', $address);
 
-            $updatedAddress = $this->userAddressService->updateUserAddress($data, $userId, $addressId);
+        $data = $request->validated();
 
-            return showOne($updatedAddress, "User Address", 200);
-        }
+        $updatedAddress = $this->userAddressService->updateUserAddress($data, $user->id, $address->id);
+
+        return showOne($updatedAddress, "User Address", 200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $userId, int $addressId)
+    public function destroy(int $userId, Address $address)
     {
-        if ($this->authorize('delete', Address::class)) {
-            return $this->userAddressService->deleteUserAddress($userId, $addressId);
-        }
+        $this->authorize('delete', $address);
+
+        return $this->userAddressService->deleteUserAddress($userId, $address->id);
     }
 }
