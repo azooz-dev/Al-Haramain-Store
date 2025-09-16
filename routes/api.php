@@ -50,9 +50,10 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
 
     // User Orders
-    Route::apiResource('users.orders', UserOrderProductReviewController::class)->only('index');
+    Route::apiResource('users.orders', UserOrderController::class)->only('index');
 
-    Route::get('user', [AuthController::class, 'user']);
+    // User Addresses
+    Route::apiResource('users.addresses', UserAddressController::class)->only(['index', 'store', 'update', 'destroy']);
   });
 
   // Offers
@@ -61,8 +62,9 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Auth Routes
   Route::post('login', [AuthController::class, 'login']);
   Route::post('register', [AuthController::class, 'register']);
-  Route::post('users/{id}/email/verify-code', [EmailVerificationController::class, 'verify']);
-  Route::post('users/{id}/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
+  Route::get('user', [AuthController::class, 'user']);
+  Route::post('users/email/verify-code', [EmailVerificationController::class, 'verify']);
+  Route::post('users/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
   Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
   Route::post("/reset-password", [ResetPasswordController::class, 'reset']);
 });
