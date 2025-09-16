@@ -28,4 +28,14 @@ class ResetPasswordRequest extends FormRequest
             'token' => "required"
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'email' => __('validation.attributes.email'),
+            'password' => __('validation.attributes.password'),
+            'password_confirmation' => __('validation.attributes.password_confirmation'),
+            'token' => 'token',
+        ];
+    }
 }

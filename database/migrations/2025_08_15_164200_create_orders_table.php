@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('coupon_id')->nullable()->constrained('coupons')->nullOnDelete();
             $table->string('order_number');
             $table->decimal('total_amount', 10, 2);
-            $table->enum('payment_method', ['cash', 'credit']);
+            $table->enum('payment_method', [Order::PAYMENT_METHOD_CASH_ON_DELIVERY, Order::PAYMENT_METHOD_CREDIT_CARD]);
             $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded']);
             $table->index('coupon_id');
             $table->index(['user_id', 'coupon_id']);

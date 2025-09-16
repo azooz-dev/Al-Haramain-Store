@@ -109,10 +109,7 @@ class OrderService
       // Dispatch events / jobs here if needed (outside transaction)
       return $orderResource;
     } catch (OrderException $e) {
-      return errorResponse($e->getMessage(), $e->getCode() ?: 400);
-    } catch (Throwable $e) {
-      Log::error('OrderService::storeOrder failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
-      return errorResponse(__('app.messages.order.order_error'), 500);
+      return errorResponse($e->getMessage(), $e->getCode());
     }
   }
 

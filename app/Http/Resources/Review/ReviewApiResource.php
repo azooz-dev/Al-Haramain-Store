@@ -16,14 +16,26 @@ class ReviewApiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $en = $this->product->translations()->where('local', 'en')->first();
+        $ar = $this->product->translations()->where('local', 'ar')->first();
+
         return [
             'identifier' => $this->id,
             'rating' => $this->rating,
             'locale' => $this->locale,
             'comment' => $this->comment,
             'status' => $this->status,
-            'customer' => new UserApiResource($this->user),
-            'product' => new ProductApiResource($this->product),
+            'product' => [
+                'identifier' => $this->product->id,
+                'en' => [
+                    'title' => $en->name,
+                    'description' => $en->description,
+                ],
+                'ar' => [
+                    'title' => $ar->name,
+                    'description' => $ar->description,
+                ],
+            ],
             'createdDate' => $this->created_at,
             'lastChange' => $this->updated_at,
         ];

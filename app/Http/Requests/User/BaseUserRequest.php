@@ -26,14 +26,14 @@ abstract class BaseUserRequest extends BaseRequest
     {
         return [
             'id'          => 'identifier',
-            'first_name'  => 'firstName',
-            'last_name'   => 'lastName',
-            'email'       => 'email',
-            'phone'       => 'phone',
-            'password'    => 'password',
-            "current_password" => 'currentPassword',
-            'created_at'  => 'createdDate',
-            'updated_at'  => 'lastChange',
+            'first_name'  => __("validation.attributes.first_name"),
+            'last_name'   => __("validation.attributes.last_name"),
+            'email'       => __('validation.attributes.email'),
+            'phone'       => __('validation.attributes.phone'),
+            'password'    => __('validation.attributes.password'),
+            "current_password" => __('validation.attributes.current_password'),
+            'created_at'  => __('validation.attributes.created_at'),
+            'updated_at'  => __('validation.attributes.updated_at'),
         ];
     }
 

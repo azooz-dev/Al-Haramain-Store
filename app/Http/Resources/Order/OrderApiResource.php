@@ -9,7 +9,8 @@ use App\Http\Resources\Order\OrderItem\OrderItemApiResource;
 use App\Http\Resources\Review\ReviewApiResource;
 use App\Http\Resources\User\UserAddresses\AddressApiResource;
 
-class OrderApiResource extends JsonResource
+class
+OrderApiResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -28,14 +29,14 @@ class OrderApiResource extends JsonResource
             'items' => OrderItemApiResource::collection($this->items),
             'address' => new AddressApiResource($this->address),
             'coupon' => $this->coupon,
-            'reviews' => ReviewApiResource::collection($this->reviews),
+            'reviews' => $this->reviews->map(fn($review) => new ReviewApiResource($review)),
             'createdDate' => $this->created_at,
             'lastChange' => $this->updated_at,
         ];
     }
 
 
-    public function transformAttributes($index)
+    public static function transformAttribute($index)
     {
         $attributes = [
             'identifier' => "id",

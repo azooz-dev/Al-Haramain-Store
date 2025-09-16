@@ -26,35 +26,35 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Categories
   Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
-  Route::middleware('auth:sanctum')->group(function () {
-    // Orders
-    Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
+  // Route::middleware('auth:sanctum')->group(function () {
+  // Orders
+  Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 
-    // User Orders
-    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+  // User Orders
+  Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
 
-    // Coupons
-    Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
+  // Coupons
+  Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
 
-    // User Products Favorite
-    Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
+  // User Products Favorite
+  Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
 
-    // User Favorites
-    Route::apiResource('users.favorite', UserFavoriteController::class)->only(['index', 'destroy']);
-    // Coupons
-    Route::get('coupons/{id}', [CouponController::class, 'apply']);
+  // User Favorites
+  Route::apiResource('users.favorite', UserFavoriteController::class)->only(['index', 'destroy']);
+  // Coupons
+  Route::get('coupons/{id}', [CouponController::class, 'apply']);
 
-    Route::post('logout', [AuthController::class, 'logout']);
+  Route::post('logout', [AuthController::class, 'logout']);
 
-    // Users
-    Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
+  // Users
+  Route::apiResource('users', UserController::class)->only(['update', 'destroy']);
 
-    // User Orders
-    Route::apiResource('users.orders', UserOrderController::class)->only('index');
+  // User Orders
+  Route::apiResource('users.orders', UserOrderController::class)->only('index');
 
-    // User Addresses
-    Route::apiResource('users.addresses', UserAddressController::class)->only(['index', 'store', 'update', 'destroy']);
-  });
+  // User Addresses
+  Route::apiResource('users.addresses', UserAddressController::class)->only(['index', 'store', 'update', 'destroy']);
+  // });
 
   // Offers
   Route::apiResource('offers', OfferController::class)->only(['index', 'show']);

@@ -26,16 +26,16 @@ abstract class BaseUserAddressRequest extends BaseRequest
     {
         return [
             "id" => "identifier",
-            "address_type" => "addressType",
-            "label" => "label",
-            "street" => "street",
-            "city" => "city",
-            "state" => "state",
-            "postal_code" => "postalCode",
-            "country" => "country",
-            "is_default" => "isDefault",
-            "created_at" => "createdDate",
-            "updated_at" => "lastChange"
+            "address_type" => __("validation.attributes.address_type"),
+            "label" => __("validation.attributes.label"),
+            "street" => __("validation.attributes.street"),
+            "city" => __("validation.attributes.city"),
+            "state" => __("validation.attributes.state"),
+            "postal_code" => __("validation.attributes.postal_code"),
+            "country" => __("validation.attributes.country"),
+            "is_default" => __("validation.attributes.is_default"),
+            "created_at" => __("validation.attributes.created_at"),
+            "updated_at" => __("validation.attributes.updated_at"),
         ];
     }
 

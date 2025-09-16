@@ -26,18 +26,18 @@ abstract class BaseOrderRequest extends BaseRequest
     {
         return [
             'id' => "identifier",
-            "order_number" => "orderNumber",
-            "total_amount" => "totalAmount",
-            "payment_method" => "paymentMethod",
-            "status" => "status",
-            "user_id" => "customer",
-            "items" => "items",
-            "address_id" => "address",
-            "coupon_id" => "coupon",
-            "reviews" => "reviews",
-            "payments" => "payments",
-            "created_at" => "createdDate",
-            "updated_at" => "lastChange",
+            "order_number" => __("validation.attributes.order_number"),
+            "total_amount" => __("validation.attributes.total_amount"),
+            "payment_method" => __("validation.attributes.payment_method"),
+            "status" => __("validation.attributes.status"),
+            "user_id" => __("validation.attributes.user"),
+            "items" => __("validation.attributes.items"),
+            "address_id" => __("validation.attributes.address"),
+            "coupon_id" => __("validation.attributes.coupon"),
+            "reviews" => __("validation.attributes.reviews"),
+            "payments" => __("validation.attributes.payments"),
+            "created_at" => __("validation.attributes.created_at"),
+            "updated_at" => __("validation.attributes.updated_at"),
         ];
     }
 
