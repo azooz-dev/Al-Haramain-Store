@@ -42,8 +42,7 @@ class AuthController extends Controller
 
     public function user()
     {
-        if ($this->authorize('view', Auth::user()->id)) {
-            return $this->authService->user();
-        }
+        $this->authorize('view', Auth::user());
+        return $this->authService->user();
     }
 }
