@@ -72,7 +72,7 @@ class ProductResource extends Resource
         return __('app.resources.product.plural_label');
     }
 
-    protected static ?string $recordTitleAttribute = 'slug';
+    protected static ?string $recordTitleAttribute = 'sku';
 
     public static function form(Form $form): Form
     {
@@ -216,28 +216,17 @@ class ProductResource extends Resource
                                                     ->relationship('images') // ربط بعلاقة ProductColor->images
                                                     ->label(__('app.forms.product.color.images'))
                                                     ->schema([
-                                                        Forms\Components\Grid::make(2)
-                                                            ->schema([
-                                                                Forms\Components\FileUpload::make('image_url')
-                                                                    ->label(__('app.forms.product.color.image'))
-                                                                    ->image()
-                                                                    ->imageEditor()
-                                                                    ->imageCropAspectRatio('1:1')
-                                                                    ->imageResizeTargetWidth('800')
-                                                                    ->imageResizeTargetHeight('800')
-                                                                    ->disk('public')
-                                                                    ->directory('products/images')
-                                                                    ->visibility('public')
-                                                                    ->maxSize(2048)
-                                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                                                                    // Key settings for proper preview
-                                                                    ->imagePreviewHeight('200')
-                                                                    ->panelAspectRatio('1:1')
-                                                                    ->panelLayout('integrated')
-                                                                    ->previewable(true)
-                                                                    ->downloadable(true)
-                                                                    ->columnSpan(1),
-                                                            ]),
+                                                        Forms\Components\FileUpload::make('image_url')
+                                                            ->label(__('app.forms.product.color.image'))
+                                                            ->image()
+                                                            ->imageEditor()
+                                                            ->disk('public')
+                                                            ->directory('products/images')
+                                                            ->visibility('public')
+                                                            ->maxSize(2048)
+                                                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                                                            ->downloadable(true)
+                                                            ->columnSpan(1),
 
                                                     ])
                                                     ->defaultItems(1)
