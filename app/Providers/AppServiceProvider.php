@@ -5,20 +5,23 @@ namespace App\Providers;
 use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
+use App\Models\Category\Category;
+use App\Policies\User\UserPolicy;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
+
+
 use App\Observers\Order\OrderObserver;
+
+
 use Illuminate\Support\ServiceProvider;
-
-
-use App\Policies\User\UserPolicy;
-
-
 use App\Models\Product\ProductColorImage;
+use App\Models\User\UserAddresses\Address;
 use App\Events\Auth\ResendVerificationEmail;
+use App\Policies\User\Address\AddressPolicy;
 use App\Listeners\Auth\SendVerificationEmail;
 use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
@@ -29,8 +32,7 @@ use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
-use App\Models\User\UserAddresses\Address;
-use App\Policies\User\Address\AddressPolicy;
+use App\Observers\Category\CategoryObserver;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
 use App\Repositories\Eloquent\User\UserFavoriteRepository;
@@ -116,6 +118,7 @@ class AppServiceProvider extends ServiceProvider
         Order::observe(OrderObserver::class);
         User::observe(UserObserver::class);
         ProductColorImage::observe(ProductColorImageObserver::class);
+        Category::observe(CategoryObserver::class);
 
         // Register Event Listeners
         Event::listen(UserRegistered::class, SendVerificationEmail::class);
