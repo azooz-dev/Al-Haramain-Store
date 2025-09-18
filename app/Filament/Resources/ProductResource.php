@@ -6,19 +6,15 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 use App\Models\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use App\Rules\VariantQuantityMaxRule;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Services\Product\ProductTranslationService;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Concerns\SendsFilamentNotifications;
-use App\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -363,9 +359,6 @@ class ProductResource extends Resource
                                             ->label(__('app.forms.category.image'))
                                             ->image()
                                             ->imageEditor()
-                                            ->imageCropAspectRatio('16:9')
-                                            ->imageResizeTargetWidth('800')
-                                            ->imageResizeTargetHeight('450')
                                             ->disk('public')
                                             ->directory('categories/images')
                                             ->visibility('public')
@@ -455,12 +448,10 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('images_count')
                     ->label(__('app.columns.product.images_count'))
-                    ->state(function (Product $record) {
-                        return $record->colors->sum(fn($color) => $color->images()->count());
-                    })
+                    ->counts('images')
                     ->badge()
                     ->color('purple')
-                    ->sortable(false)
+                    ->sortable()
                     ->icon('heroicon-o-photo')
                     ->alignCenter(),
 
@@ -476,20 +467,10 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price_range')
                     ->label(__('app.columns.product.price_range'))
                     ->state(function (Product $record) {
-                        $variants = $record->variants;
-
-                        if ($variants->isEmpty()) {
+                        if ($record->variants->isEmpty()) {
                             return __('app.columns.product.no_variants');
                         }
-
-                        $minPrice = $variants->min('price');
-                        $maxPrice = $variants->max('price');
-
-                        if ($minPrice === $maxPrice) {
-                            return '$' . number_format($minPrice, 2);
-                        }
-
-                        return '$' . number_format($minPrice, 2) . ' - $' . number_format($maxPrice, 2);
+                        return '$' . $record->price_range;
                     })
                     ->badge()
                     ->color('emerald')
@@ -543,11 +524,11 @@ class ProductResource extends Resource
                             ])
                     ])
                     ->query(function (Builder $query, array $data): Builder {
-                        return $query->when($data['stock'], function ($query, $stock) {
+                        return $query->when($data['stock'] ?? null, function ($query, $stock) {
                             match ($stock) {
-                                'in_stock' => $query->where('quantity', '>', 10),
-                                'low_stock' => $query->whereBetween('quantity', [1, 10]),
-                                'out_of_stock' => $query->where('quantity', 0),
+                                'in_stock' => $query->aboveQuantity(10),
+                                'low_stock' => $query->lowStockRange(1, 10),
+                                'out_of_stock' => $query->lowStockRange(0, 0),
                             };
                         });
                     }),
