@@ -78,27 +78,19 @@ class Product extends Model
     }
 
     /**
-     * Scope to filter products with low stock
+     * Scope to filter products with quantity strictly above a minimum
      */
-    public function scopeLowStock($query, $threshold = 10)
+    public function scopeAboveQuantity($query, int $minimum)
     {
-        return $query->where('quantity', '<=', $threshold);
+        return $query->where('quantity', '>', $minimum);
     }
 
     /**
-     * Scope to filter products out of stock
+     * Scope to filter products within a low stock range (inclusive)
      */
-    public function scopeOutOfStock($query)
+    public function scopeLowStockRange($query, int $min = 1, int $max = 10)
     {
-        return $query->where('quantity', 0);
-    }
-
-    /**
-     * Scope to filter products in stock
-     */
-    public function scopeInStock($query)
-    {
-        return $query->where('quantity', '>', 0);
+        return $query->whereBetween('quantity', [$min, $max]);
     }
 
     /**
