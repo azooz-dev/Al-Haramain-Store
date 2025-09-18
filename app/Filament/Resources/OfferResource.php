@@ -79,7 +79,7 @@ class OfferResource extends Resource
                                         Forms\Components\Textarea::make('en.description')
                                             ->label(__('app.forms.offer.description_en'))
                                             ->rows(4)
-                                            ->maxLength(65535)
+                                            ->maxLength(255)
                                             ->columnSpanFull(),
                                     ]),
                                 Forms\Components\Tabs\Tab::make(__('app.forms.offer.arabic'))
@@ -94,7 +94,7 @@ class OfferResource extends Resource
                                         Forms\Components\Textarea::make('ar.description')
                                             ->label(__('app.forms.offer.description_ar'))
                                             ->rows(4)
-                                            ->maxLength(65535)
+                                            ->maxLength(255)
                                             ->extraAttributes(['dir' => 'rtl'])
                                             ->columnSpanFull(),
                                     ]),
