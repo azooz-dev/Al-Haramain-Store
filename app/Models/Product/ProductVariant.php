@@ -95,17 +95,6 @@ class ProductVariant extends Model
         return $this->quantity > 0 && $this->quantity <= $threshold;
     }
 
-    /**
-     * Get formatted size-color combination
-     */
-    public function getDisplayNameAttribute(): string
-    {
-        $colorCode = $this->color?->color_code ?
-            strtoupper($this->color->color_code) : 'Unknown Color';
-
-        return "{$this->size} - {$colorCode}";
-    }
-
     protected static function booted()
     {
         static::creating(function ($variant) {

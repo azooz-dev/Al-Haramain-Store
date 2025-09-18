@@ -26,7 +26,28 @@ class OfferApiResource extends JsonResource
             'startDate' => $this->start_date,
             'endDate' => $this->end_date,
             'status' => $this->status,
-            'products' => ProductApiResource::collection($this->products),
+            'products' => $this->products->map(function ($product) {
+                $pivot = $product->pivot;
+                $variant = $product->variants->where('id', $pivot->product_variant_id)->first();
+                $color = $product->colors->where('id', $pivot->product_color_id)->first();
+
+                return [
+                    'identifier' => $product->id,
+                    'slug' => $product->slug,
+                    'sku' => $product->sku,
+                    'en' => [
+                        'title' => $product->translations->where('local', 'en')->first()->name,
+                        'details' => $product->translations->where('local', 'en')->first()->description,
+                    ],
+                    'ar' => [
+                        'title' => $product->translations->where('local', 'ar')->first()->name,
+                        'details' => $product->translations->where('local', 'ar')->first()->description,
+                    ],
+                    'variant' => $variant,
+                    'color' => $color,
+                    'quantity' => $pivot->quantity,
+                ];
+            }),
             'en' => [
                 'title' => $en->name ?? '',
                 'details' => $en->description ?? ''

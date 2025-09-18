@@ -37,15 +37,14 @@ class EditOffer extends EditRecord
             $formData = $this->getTranslationData();
             $formData['en'] = ['name' => $formData['en']['title'], 'description' => $formData['en']['details']];
             $formData['ar'] = ['name' => $formData['ar']['title'], 'description' => $formData['ar']['details']];
-            $formData['discount_type'] = $formData['discountType'];
-            $formData['discount_amount'] = $formData['discountAmount'];
+            $formData['products_total_price'] = $formData['productsTotalPrice'];
+            $formData['offer_price'] = $formData['offerPrice'];
             $formData['start_date'] = $formData['startDate'];
             $formData['end_date'] = $formData['endDate'];
             $formData['image_path'] = $formData['picture'];
-            $product = $formData['product'];
-            $formData['product'] = $product->translations->where('local', app()->getLocale())->first()->name;
+            $products = $formData['products'];
 
-            unset($formData['discountType'], $formData['discountAmount'], $formData['startDate'], $formData['endDate'], $formData['picture']);
+            unset($formData['startDate'], $formData['endDate'], $formData['picture'], $formData['productsTotalPrice'], $formData['offerPrice']);
             $this->form->fill($formData);
         }
     }

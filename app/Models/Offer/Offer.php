@@ -2,11 +2,16 @@
 
 namespace App\Models\Offer;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Product\Product;
+use App\Models\Product\ProductColor;
+use App\Models\Offer\OfferTranslation;
+use App\Models\Offer\OfferProduct;
+use App\Models\Product\ProductVariant;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
 
 class Offer extends Model
 {
@@ -26,7 +31,28 @@ class Offer extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'products_offers');
+        return $this->belongsToMany(Product::class, 'products_offers', 'offer_id', 'product_id')
+            ->withPivot(['product_variant_id', 'product_color_id', 'variant_price', 'quantity'])
+            ->withTimestamps();
+    }
+
+    public function productVariants(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductVariant::class, 'products_offers', 'offer_id', 'product_variant_id')
+            ->withPivot(['product_id', 'product_color_id', 'variant_price', 'quantity'])
+            ->withTimestamps();
+    }
+
+    public function productColors(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductColor::class, 'products_offers', 'offer_id', 'product_color_id')
+            ->withPivot(['product_id', 'product_variant_id', 'variant_price', 'quantity'])
+            ->withTimestamps();
+    }
+
+    public function offerProducts()
+    {
+        return $this->hasMany(OfferProduct::class);
     }
 
     public function translations(): HasMany
@@ -34,16 +60,24 @@ class Offer extends Model
         return $this->hasMany(OfferTranslation::class);
     }
 
-    protected static function boot()
-    {
-        parent::boot();
 
-        static::creating(function ($offer) {
-            $products_total_price = 0;
-            foreach ($offer->products as $product) {
-                $products_total_price += $product->price;
-            }
-            $offer->products_total_price = $products_total_price;
-        });
+    /**
+     * Recalculate the total price based on selected products with variants and colors
+     */
+    public function recalculateTotalPrice(): void
+    {
+        $totalPrice = 0;
+
+        // Get all related product variants with pivot data
+        $variants = $this->productVariants()->withPivot(['quantity'])->get();
+
+        foreach ($variants as $variant) {
+            // Use amount_discount_price if available, otherwise price
+            $price = $variant->amount_discount_price ?? $variant->price;
+            $quantity = $variant->pivot->quantity ?? 1;
+            $totalPrice += $price * $quantity;
+        }
+
+        $this->updateQuietly(['products_total_price' => $totalPrice]);
     }
 }
