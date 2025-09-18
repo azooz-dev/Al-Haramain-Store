@@ -40,7 +40,7 @@ class EditProduct extends EditRecord
             $formData['en'] = ['name' => $formData['en']['title'], 'description' => $formData['en']['details']];
             $formData['ar'] = ['name' => $formData['ar']['title'], 'description' => $formData['ar']['details']];
             $formData['quantity'] = $formData['stock'];
-            unset($formData['stock']);
+            unset($formData['stock'], $formData['reviews']);
 
             // Remove images from custom form data - let Filament handle the relationship
             unset($formData['stock'], $formData['images']);
