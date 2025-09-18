@@ -19,15 +19,6 @@ class OfferObserver
     }
 
     /**
-     * Handle the Offer "created" event.
-     */
-    public function created(Offer $offer): void
-    {
-        // Recalculate total price after offer is created
-        $offer->recalculateTotalPrice();
-    }
-
-    /**
      * Handle the Offer "updated" event.
      */
     public function updating(Offer $offer): void
@@ -38,23 +29,6 @@ class OfferObserver
                 Storage::disk('public')->delete($originalImagePath);
             }
         }
-    }
-
-    /**
-     * Handle the Offer "updated" event.
-     */
-    public function updated(Offer $offer): void
-    {
-        // Recalculate total price when offer is updated
-        $offer->recalculateTotalPrice();
-    }
-
-    /**
-     * Handle the Offer "saved" event.
-     */
-    public function saved(Offer $offer): void
-    {
-        // Recalculate total price when offer is saved
         $offer->recalculateTotalPrice();
     }
 

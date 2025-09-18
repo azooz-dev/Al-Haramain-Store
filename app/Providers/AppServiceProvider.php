@@ -6,12 +6,14 @@ use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Models\Category\Category;
+use App\Models\Offer\OfferProduct;
 use App\Policies\User\UserPolicy;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
+use App\Observers\Offer\OfferProductObserver;
 
 
 use App\Observers\Order\OrderObserver;
@@ -115,6 +117,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register Observers
         Offer::observe(OfferObserver::class);
+        OfferProduct::observe(OfferProductObserver::class);
         Order::observe(OrderObserver::class);
         User::observe(UserObserver::class);
         ProductColorImage::observe(ProductColorImageObserver::class);
