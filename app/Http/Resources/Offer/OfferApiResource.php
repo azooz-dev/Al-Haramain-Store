@@ -45,6 +45,7 @@ class OfferApiResource extends JsonResource
                     ],
                     'variant' => $variant,
                     'color' => $color,
+                    'image' => $color->images->first(),
                     'quantity' => $pivot->quantity,
                 ];
             }),
