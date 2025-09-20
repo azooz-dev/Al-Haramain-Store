@@ -6,25 +6,26 @@ use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Models\Category\Category;
-use App\Models\Offer\OfferProduct;
 use App\Policies\User\UserPolicy;
+use App\Models\Offer\OfferProduct;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 use App\Observers\Offer\OfferObserver;
-use App\Observers\Offer\OfferProductObserver;
-
-
 use App\Observers\Order\OrderObserver;
 
 
 use Illuminate\Support\ServiceProvider;
+
+
 use App\Models\Product\ProductColorImage;
 use App\Models\User\UserAddresses\Address;
 use App\Events\Auth\ResendVerificationEmail;
+use App\Observers\Category\CategoryObserver;
 use App\Policies\User\Address\AddressPolicy;
 use App\Listeners\Auth\SendVerificationEmail;
+use App\Observers\Offer\OfferProductObserver;
 use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
@@ -34,7 +35,6 @@ use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
-use App\Observers\Category\CategoryObserver;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
 use App\Repositories\Eloquent\User\UserFavoriteRepository;
@@ -50,6 +50,7 @@ use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 use App\Repositories\Eloquent\Order\OrderItem\OrderItemRepository;
 use App\Repositories\Interface\Product\ProductRepositoryInterface;
+use App\Repositories\Eloquent\Product\Color\ProductColorRepository;
 use App\Repositories\Eloquent\Product\ProductTranslationRepository;
 use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 use App\Repositories\Interface\User\UserFavoriteRepositoryInterface;
@@ -63,6 +64,7 @@ use App\Repositories\Interface\User\Order\UserOrderRepositoryInterface;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
+use App\Repositories\Interface\Product\Color\ProductColorRepositoryInterface;
 use App\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
 use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
@@ -108,6 +110,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserProductFavoriteRepositoryInterface::class, UserProductFavoriteRepository::class);
         $this->app->bind(UserFavoriteRepositoryInterface::class, UserFavoriteRepository::class);
         $this->app->bind(UserAddressRepositoryInterface::class, UserAddressRepository::class);
+        $this->app->bind(ProductColorRepositoryInterface::class, ProductColorRepository::class);
     }
 
     /**

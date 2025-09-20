@@ -13,4 +13,6 @@ interface ProductVariantRepositoryInterface
   public function getVariantsByIds(array $ids);
 
   public function fetchAllVariants($productIds, $colorIds, $variantIds);
+
+  public function variantBelongsToProductAndColor(int $productId, int $colorId, int $variantId): bool;
 }

@@ -38,4 +38,9 @@ class ProductVariantRepository implements ProductVariantRepositoryInterface
       ->whereIn('id', $variantIds)
       ->get();
   }
+
+  public function variantBelongsToProductAndColor(int $productId, int $colorId, int $variantId): bool
+  {
+    return ProductVariant::where('product_id', $productId)->where('color_id', $colorId)->where('id', $variantId)->exists();
+  }
 }

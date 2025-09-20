@@ -675,7 +675,6 @@ return [
       "user_not_found" => "المتستخدم غير موجود !",
       "order_not_found" => "الطلبات الخاصة بالمستخدم غير موجود !",
       'validation' => [
-        "offer_not_found" => "العرض غير موجود !",
         'product_not_found' => 'المنتج غير موجود !',
         'variant_not_found' => 'المتغير غير موجود !',
         'color_not_found' => 'اللون غير موجود !',
