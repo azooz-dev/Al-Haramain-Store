@@ -3,17 +3,16 @@
 namespace App\Models\Order;
 
 use App\Models\Order\Order;
-use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class OrderItem extends Model
 {
     use HasFactory;
     protected $fillable = [
         'order_id',
-        'product_id',
         'quantity',
         'total_price',
         'amount_discount_price',
@@ -30,9 +29,9 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function product(): BelongsTo
+    public function orderable(): MorphTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->morphTo();
     }
 
     /**
@@ -80,18 +79,17 @@ class OrderItem extends Model
     }
 
     /**
-     * Get formatted product name with translations
+     * Get formatted orderable name with translations
      */
-    public function getProductNameAttribute(): string
+    public function getOrderableNameAttribute(): string
     {
-        if (!$this->product) {
-            return 'Product Not Found';
+        if (!$this->orderable) {
+            return 'Orderable Not Found';
         }
 
-        return $this->product->translations
+        return $this->orderable->translations
             ->where('local', app()->getLocale())
             ->first()?->name ??
-            $this->product->translations->first()?->name ??
-            $this->product->sku;
+            $this->orderable->translations->first()?->name ?? '';
     }
 }
