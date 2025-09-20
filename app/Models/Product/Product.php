@@ -3,16 +3,17 @@
 namespace App\Models\Product;
 
 use App\Models\Offer\Offer;
+use App\Models\Review\Review;
+use App\Models\Order\OrderItem;
 use App\Models\Category\Category;
 use App\Models\Product\ProductColor;
 use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product\ProductColorImage;
 use App\Models\Product\ProductTranslation;
-use App\Models\Review\Review;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\hasManyThrough;
@@ -60,6 +61,11 @@ class Product extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function orderItems(): MorphMany
+    {
+        return $this->morphMany(OrderItem::class, 'orderable');
     }
 
     /**
@@ -179,6 +185,4 @@ class Product extends Model
     {
         return $this->colors->pluck('color_code')->unique()->values()->toArray();
     }
-
-    // Removed inverse belongsTo relation; offers are many-to-many via pivot
 }

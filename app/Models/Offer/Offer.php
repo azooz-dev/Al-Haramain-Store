@@ -2,16 +2,17 @@
 
 namespace App\Models\Offer;
 
+use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
+use App\Models\Offer\OfferProduct;
 use App\Models\Product\ProductColor;
 use App\Models\Offer\OfferTranslation;
-use App\Models\Offer\OfferProduct;
 use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\DB;
 
 class Offer extends Model
 {
@@ -58,6 +59,11 @@ class Offer extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(OfferTranslation::class);
+    }
+
+    public function orderItems(): MorphMany
+    {
+        return $this->morphMany(OrderItem::class, 'orderable');
     }
 
 

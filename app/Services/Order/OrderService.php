@@ -78,10 +78,12 @@ class OrderService
         $itemsPayload = [];
         foreach ($this->variantQuantities as $variantId => $item) {
           $variant = $variants->get($variantId);
-          $price = $variant->amount_discount_price ?? $variant->price;
+          $price = $variant->effective_price;
           $itemsPayload[] = [
             'variant_id' => $variantId,
-            'product_id' => $variant->product_id,
+            // 'product_id' => $variant->product_id,
+            'orderable_id' => $variant->id,
+            'orderable_type' => $variant->getMorphClass(),
             'quantity' => $item['quantity'],
             'total_price' => $price * $item['quantity'],
           ];
