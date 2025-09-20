@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Closure;
+use App\Models\Product\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -16,7 +17,7 @@ class ValidOrderItem implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($this->item['orderable_type'] === 'products') {
+        if ($this->item['orderable_type'] === Product::class) {
             $productId = $this->item['orderable_id'];
             $colorId = $this->item['color_id'] ?? null;
             $variantId = $this->item['variant_id'] ?? null;
