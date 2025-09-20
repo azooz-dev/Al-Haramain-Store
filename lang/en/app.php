@@ -558,6 +558,8 @@ return [
       "user_not_found" => "User not found!",
       "order_not_found" => "User Orders not found!",
       'validation' => [
+        "offer_not_found" => 'The offer not found!',
+        'product_not_found' => 'The product not found!',
         'variant_not_found' => 'The variant not found!',
         'color_not_found' => 'The color not found!',
         'variant_quantity_exceeds_stock' => 'The variant quantity (:variant_quantity) cannot exceed the total stock quantity (:total_stock)',

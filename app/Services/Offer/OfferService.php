@@ -26,11 +26,18 @@ class OfferService
   public function findOfferById(int $offerId)
   {
     try {
-      $offer = $this->offerRepository->findOfferById($offerId);
+      $offer = $this->retrieveOfferById($offerId);
 
       return new OfferApiResource($offer);
     } catch (OfferException $e) {
       return errorResponse($e->getMessage(), $e->getCode());
     }
+  }
+
+  public function retrieveOfferById(int $offerId)
+  {
+    $offer = $this->offerRepository->findOfferById($offerId);
+
+    return $offer;
   }
 }
