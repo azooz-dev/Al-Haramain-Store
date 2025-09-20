@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('product_id')->constrained('products');
+            $table->morphs('reviewable');
             $table->foreignId('order_id')->constrained('orders');
             $table->tinyInteger('rating');
             $table->enum('locale', ['en', 'ar'])->default('en');

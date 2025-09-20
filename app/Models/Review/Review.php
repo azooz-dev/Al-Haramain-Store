@@ -4,10 +4,10 @@ namespace App\Models\Review;
 
 use App\Models\User\User;
 use App\Models\Order\Order;
-use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Review extends Model
 {
@@ -19,7 +19,6 @@ class Review extends Model
 
     protected $fillable = [
         "user_id",
-        "product_id",
         "order_id",
         "rating",
         "comment",
@@ -32,9 +31,9 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function product(): BelongsTo
+    public function reviewable(): MorphTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->morphTo();
     }
 
     public function order(): BelongsTo
