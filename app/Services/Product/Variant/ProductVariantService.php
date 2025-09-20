@@ -32,7 +32,11 @@ class ProductVariantService
   {
     $itemTotal = 0;
     foreach ($items as $item) {
-      $itemTotal += $this->calculateTotalVariantPrice($item['variant_id'], $item['quantity']);
+      if ($item['orderable_type'] === 'offer') {
+        $itemTotal = $item['price'];
+      } else {
+        $itemTotal += $this->calculateTotalVariantPrice($item['variant_id'], $item['quantity']);
+      }
     }
 
     return $itemTotal;

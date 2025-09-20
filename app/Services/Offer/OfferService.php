@@ -40,4 +40,19 @@ class OfferService
 
     return $offer;
   }
+
+  public function getOfferProductForOrder(int $offerId)
+  {
+    $offerProducts = $this->offerRepository->getOfferProducts($offerId);
+
+    foreach ($offerProducts as $offerProduct) {
+      $offerProduct['variant_id'] = $offerProduct->product_variant_id;
+      $offerProduct['color_id'] = $offerProduct->product_color_id;
+      $offerProduct['orderable_type'] = 'offer';
+      $offerProduct['orderable_id'] = $offerProduct->product_id;
+      $offerProduct['price'] = $offerProduct->offer->offer_price;
+    }
+
+    return $offerProducts->toArray();
+  }
 }

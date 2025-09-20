@@ -2,14 +2,18 @@
 
 namespace App\Rules;
 
+use App\Services\Offer\OfferService;
 use Closure;
-use App\Models\Product\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class ValidOrderItem implements ValidationRule
 {
-    public function __construct(private ProductService $productService, private array $item) {}
+    public function __construct(
+        private ProductService $productService,
+        private OfferService $offerService,
+        private array $items
+    ) {}
     /**
      * Run the validation rule.
      *
@@ -17,24 +21,35 @@ class ValidOrderItem implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($this->item['orderable_type'] === Product::class) {
-            $productId = $this->item['orderable_id'];
-            $colorId = $this->item['color_id'] ?? null;
-            $variantId = $this->item['variant_id'] ?? null;
+        foreach ($this->items as $item) {
 
-            if ($productId && !$this->productService->getProductById($productId)) {
-                $fail(__('app.messages.order.validation.product_not_found'));
+            if ($item['orderable_type'] === 'product') {
+                $productId = $item['orderable_id'];
+                $colorId = $item['color_id'] ?? null;
+                $variantId = $item['variant_id'] ?? null;
+
+                if ($productId && !$this->productService->getProductById($productId)) {
+                    $fail(__('app.messages.order.validation.product_not_found'));
+                }
+
+                if ($colorId && !$this->productService->checkColorBelongsToProduct($productId, $colorId)) {
+                    $fail(__('app.messages.order.validation.color_not_found'));
+                }
+
+                if ($variantId && !$this->productService->checkVariantBelongsToProductAndColor($productId, $colorId, $variantId)) {
+                    $fail(__('app.messages.order.validation.variant_not_found'));
+                }
+
+                return;
+            } elseif ($item['orderable_type'] === 'offer') {
+                $offerId = $item['orderable_id'];
+
+                if (!$this->offerService->retrieveOfferById($offerId)) {
+                    $fail(__("app.messages.order.validation.offer_not_found"));
+                }
+
+                return;
             }
-
-            if ($colorId && !$this->productService->checkColorBelongsToProduct($productId, $colorId)) {
-                $fail(__('app.messages.order.validation.color_not_found'));
-            }
-
-            if ($variantId && !$this->productService->checkVariantBelongsToProductAndColor($productId, $colorId, $variantId)) {
-                $fail(__('app.messages.order.validation.variant_not_found'));
-            }
-
-            return;
         }
     }
 }

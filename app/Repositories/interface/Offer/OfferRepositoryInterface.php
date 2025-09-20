@@ -10,4 +10,6 @@ interface OfferRepositoryInterface
   public function getAllOffers(): Collection;
 
   public function findOfferById(int $offerId);
+
+  public function getOfferProducts(int $offerId);
 }
