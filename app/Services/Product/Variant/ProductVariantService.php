@@ -33,7 +33,7 @@ class ProductVariantService
     $itemTotal = 0;
     foreach ($items as $item) {
       if ($item['orderable_type'] === 'offer') {
-        $itemTotal = $item['price'];
+        $itemTotal += $item['total_price'];
       } else {
         $itemTotal += $this->calculateTotalVariantPrice($item['variant_id'], $item['quantity']);
       }
@@ -51,8 +51,8 @@ class ProductVariantService
 
   public function decrementVariantStock($items)
   {
-    foreach ($items as $item) {
-      return $this->productVariantRepository->decrementVariantStock($item['variant_id'], $item['quantity']);
+    foreach ($items as $itemId => $item) {
+      return $this->productVariantRepository->decrementVariantStock($itemId, $item['quantity']);
     }
   }
 

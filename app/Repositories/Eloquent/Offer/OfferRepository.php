@@ -24,4 +24,9 @@ class OfferRepository implements OfferRepositoryInterface
   {
     return OfferProduct::where("offer_id", $offerId)->get();
   }
+
+  public function findOffersByIds(array $offerIds)
+  {
+    return Offer::whereIn('id', $offerIds)->with('offerProducts')->get()->keyBy('id');
+  }
 }

@@ -34,25 +34,13 @@ class OfferService
     }
   }
 
-  public function retrieveOfferById(int $offerId)
+  public function getOffersByIds(array $offerIds)
   {
-    $offer = $this->offerRepository->findOfferById($offerId);
-
-    return $offer;
+    return $this->offerRepository->findOffersByIds($offerIds);
   }
 
-  public function getOfferProductForOrder(int $offerId)
+  public function retrieveOfferById(int $offerId)
   {
-    $offerProducts = $this->offerRepository->getOfferProducts($offerId);
-
-    foreach ($offerProducts as $offerProduct) {
-      $offerProduct['variant_id'] = $offerProduct->product_variant_id;
-      $offerProduct['color_id'] = $offerProduct->product_color_id;
-      $offerProduct['orderable_type'] = 'offer';
-      $offerProduct['orderable_id'] = $offerProduct->product_id;
-      $offerProduct['price'] = $offerProduct->offer->offer_price;
-    }
-
-    return $offerProducts->toArray();
+    return $this->offerRepository->findOfferById($offerId);
   }
 }

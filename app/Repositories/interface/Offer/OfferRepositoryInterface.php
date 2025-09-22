@@ -12,4 +12,6 @@ interface OfferRepositoryInterface
   public function findOfferById(int $offerId);
 
   public function getOfferProducts(int $offerId);
+
+  public function findOffersByIds(array $offerIds);
 }

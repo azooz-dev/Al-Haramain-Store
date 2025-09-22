@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Order;
 
 use App\Models\Order\Order;
-use App\Http\Requests\Order\BaseOrderRequest;
 use App\Rules\ValidOrderItem;
+use App\Services\Offer\OfferService;
 use App\Services\Product\ProductService;
+use App\Http\Requests\Order\BaseOrderRequest;
 use App\Services\Product\Variant\ProductVariantService;
 
 class OrderRequest extends BaseOrderRequest
@@ -31,7 +32,7 @@ class OrderRequest extends BaseOrderRequest
             'address_id' => 'required|exists:addresses,id',
             'coupon_id' => 'nullable|exists:coupons,id',
             'items' => 'required|array|min:1',
-            'items.*' => new ValidOrderItem(app(ProductService::class), $this->items ?? []),
+            'items.*' => new ValidOrderItem(app(ProductService::class), app(OfferService::class), $this->items),
             'items.*.orderable_type' => 'required|string|in:product,offer',
             'items.*.orderable_id' => 'required|integer',
             'items.*.quantity' => 'required|integer|min:1',

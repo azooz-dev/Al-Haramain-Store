@@ -3,10 +3,12 @@
 namespace App\Models\Order;
 
 use App\Models\Order\Order;
+use App\Models\Product\ProductColor;
+use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class OrderItem extends Model
 {
@@ -14,6 +16,10 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'quantity',
+        'orderable_id',
+        'orderable_type',
+        'variant_id',
+        'color_id',
         'total_price',
         'amount_discount_price',
     ];
@@ -32,6 +38,16 @@ class OrderItem extends Model
     public function orderable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function variant(): BelongsTo
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(ProductColor::class, 'color_id');
     }
 
     /**

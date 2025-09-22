@@ -2,6 +2,7 @@
 
 namespace App\Models\Product;
 
+use App\Models\Order\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,11 @@ class ProductColor extends Model
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class, 'color_id');
+    }
+
+    public function items(): BelongsTo
+    {
+        return $this->belongsTo(OrderItem::class, 'color_id');
     }
 
     /**

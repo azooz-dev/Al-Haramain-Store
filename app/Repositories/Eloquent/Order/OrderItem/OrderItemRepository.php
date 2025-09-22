@@ -17,16 +17,11 @@ class OrderItemRepository implements OrderItemRepositoryInterface
    */
   public function createMany(array $itemsPayload, int $orderId): bool
   {
-    if (empty($itemsPayload)) {
-      return true;
-    }
-
 
     foreach ($itemsPayload as &$payload) {
       $payload['order_id'] = $orderId;
       $payload['created_at'] = now();
       $payload['updated_at'] = now();
-      unset($payload['variant_id']);
     }
     unset($payload);
 

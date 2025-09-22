@@ -15,7 +15,9 @@ use App\Services\Offer\OfferService;
 
 class OrderService
 {
-  private array $variantQuantities = [];
+  private array $groupedOrderItems = [];
+  private $variants;
+  private $offers;
 
   public function __construct(
     private OrderRepositoryInterface $orderRepository,
@@ -43,137 +45,80 @@ class OrderService
       // Check buyer
       $this->checkBuyerVerified((int)$data['user_id']);
 
-      foreach ($data['items'] as $item) {
+      $this->groupedOrderItems = $this->groupOrderItemsByTypeAndId($data['items']);
 
-        if ($item['orderable_type'] === "product") {
 
-          // Group and reset
-          $this->variantQuantities = $this->groupVariantQuantities($item);
+      if (isset($this->groupedOrderItems['product'])) {
 
-          $this->variantQuantities['orderable_type'] = "product";
-          $this->variantQuantities['orderable_id'] = $this->variantQuantities['product_id'];
+        // Fetch all variants in one query (keyed by id)
+        $variantIds = array_keys($this->groupedOrderItems['product']);
+        $this->variants = $this->variantService->getVariantsByIds($variantIds);
 
-          // Fetch all variants in one query (keyed by id)
-          $variantIds = array_keys($this->variantQuantities);
-          $variants = $this->variantService->getVariantsByIds($variantIds);
-
-          // Check stock
-          $this->variantService->checkStock($this->variantQuantities);
-
-          // Calculate total price (variantService should accept grouped quantities + variants collection)
-          $totalAmount = $this->variantService->calculateTotalOrderPrice($this->variantQuantities);
-
-          // Apply coupon via CouponService (will validate usage counts)
-          if (!empty($data['coupon_id'])) {
-            $data['total_amount'] = $this->couponService->applyCouponToOrder((int)$data['coupon_id'], $totalAmount, (int)$data['user_id']);
-          } else {
-            $data['total_amount'] = $totalAmount;
-          }
-
-          // Use transaction and return resource from closure. Use retry for deadlocks (second param).
-          $orderResource = DB::transaction(function () use ($data, $variants) {
-            // create order
-            $order = $this->orderRepository->store($data);
-            if (!$order) {
-              throw new OrderException(__('app.messages.order.order_error'), 500);
-            }
-
-            // Prepare order items payload
-            $itemsPayload = [];
-            foreach ($this->variantQuantities as $variantId => $item) {
-              $variant = $variants->get($variantId);
-              $price = $variant->effective_price;
-              $itemsPayload[] = [
-                'variant_id' => $variantId,
-                'orderable_type' => $item['orderable_type'],
-                'orderable_id' => $item['orderable_id'],
-                'quantity' => $item['quantity'],
-                'total_price' => $price * $item['quantity'],
-              ];
-            }
-
-            // Bulk create order items using repository
-            $created = $this->orderItemRepository->createMany($itemsPayload, $order->id);
-
-            if (!$created) {
-              throw new OrderException(__('app.messages.order.order_error'), 500);
-            }
-
-            // Atomically decrement stock for each variant; check affected rows
-            foreach ($this->variantQuantities as $variantId => $item) {
-              $affected = $this->variantService->decrementVariantStock($this->variantQuantities);
-              if ($affected === 0) {
-                // Not enough stock / concurrent sale — rollback and return conflict
-                throw new OrderException(__('app.messages.order.insufficient_stock_for_variant', ['id' => $variantId]), 409);
-              }
-            }
-
-            return new OrderApiResource($order);
-          }, 5);
-        } elseif ($item['orderable_type'] === 'offer') {
-
-          $offerProducts = $this->offerService->getOfferProductForOrder($item['orderable_id']);
-
-          $offerProducts = $this->groupVariantQuantities($offerProducts);
-
-          $totalAmount = $this->variantService->calculateTotalOrderPrice($offerProducts);
-
-          // Check stock
-          $this->variantService->checkStock($offerProducts);
-
-          // Calculate total price (variantService should accept grouped quantities + variants collection)
-          $totalAmount = $this->variantService->calculateTotalOrderPrice($offerProducts);
-
-          // Apply coupon via CouponService (will validate usage counts)
-          if (!empty($data['coupon_id'])) {
-            $data['total_amount'] = $this->couponService->applyCouponToOrder((int)$data['coupon_id'], $totalAmount, (int)$data['user_id']);
-          } else {
-            $data['total_amount'] = $totalAmount;
-          }
-
-          dd($data, $offerProducts);
-          // Use transaction and return resource from closure. Use retry for deadlocks (second param).
-          $orderResource = DB::transaction(function () use ($data, $offerProducts) {
-            // create order
-            $order = $this->orderRepository->store($data);
-            if (!$order) {
-              throw new OrderException(__('app.messages.order.order_error'), 500);
-            }
-
-            // Prepare order items payload
-            $itemsPayload = [];
-            foreach ($offerProducts as $item) {
-              // $variant = $variants->get($variantId);
-              // $price = $variant->effective_price;
-              $itemsPayload[] = [
-                'variant_id' => $item['variant_id'],
-                'orderable_type' => $item['orderable_type'],
-                'orderable_id' => $item['orderable_id'],
-                'quantity' => $item['quantity'],
-                'total_price' => $data[''],
-              ];
-            }
-
-            // Bulk create order items using repository
-            $created = $this->orderItemRepository->createMany($itemsPayload, $order->id);
-
-            if (!$created) {
-              throw new OrderException(__('app.messages.order.order_error'), 500);
-            }
-
-            // Atomically decrement stock for each variant; check affected rows
-            foreach ($this->variantQuantities as $variantId => $item) {
-              $affected = $this->variantService->decrementVariantStock($this->variantQuantities);
-              if ($affected === 0) {
-                // Not enough stock / concurrent sale — rollback and return conflict
-                throw new OrderException(__('app.messages.order.insufficient_stock_for_variant', ['id' => $variantId]), 409);
-              }
-            }
-
-            return new OrderApiResource($order);
-          }, 5);
-        }
+        // Check stock
+        $this->variantService->checkStock($this->groupedOrderItems['product']);
       }
+
+      if (isset($this->groupedOrderItems['offer'])) {
+
+        $offerIds = array_keys($this->groupedOrderItems['offer']);
+        $this->offers = $this->offerService->getOffersByIds($offerIds);
+
+        // Check stock
+        $this->variantService->checkStock($this->groupedOrderItems['offer']);
+      }
+
+      $newItems = [];
+      foreach ($data['items'] as $item) {
+        if ($item['orderable_type'] === 'product') {
+          $variant = $this->variants->get($item['variant_id']);
+          $item['total_price'] = $variant->effective_price * $item['quantity'];
+        } else if ($item['orderable_type'] === 'offer') {
+          $offer = $this->offers->get($item['orderable_id']);
+          $item['total_price'] = $offer->offer_price;
+          // Ensure offer items have the same structure as product items
+          $item['variant_id'] = $item['variant_id'] ?? null;
+          $item['color_id'] = $item['color_id'] ?? null;
+        }
+        $newItems[] = $item;
+      }
+      $data['items'] = $newItems;
+
+      // // Calculate total price (variantService should accept grouped quantities + variants collection)
+      $totalAmount = $this->variantService->calculateTotalOrderPrice($data['items']);
+
+      // Apply coupon via CouponService (will validate usage counts)
+      if (!empty($data['coupon_id'])) {
+        $data['total_amount'] = $this->couponService->applyCouponToOrder((int)$data['coupon_id'], $totalAmount, (int)$data['user_id']);
+      } else {
+        $data['total_amount'] = $totalAmount;
+      }
+
+      // Use transaction and return resource from closure. Use retry for deadlocks (second param).
+      $orderResource = DB::transaction(function () use ($data) {
+        // create order
+        $order = $this->orderRepository->store($data);
+        if (!$order) {
+          throw new OrderException(__('app.messages.order.order_error'), 500);
+        }
+
+        // Bulk create order items using repository
+        $created = $this->orderItemRepository->createMany($data['items'], $order->id);
+
+        if (!$created) {
+          throw new OrderException(__('app.messages.order.order_error'), 500);
+        }
+
+        // Atomically decrement stock for each variant; check affected rows
+        $allOfferProducts = $this->offers->flatMap(function ($offer) {
+          return $offer->offerProducts;
+        });
+
+        $all = array_merge($this->variants->toArray(), $allOfferProducts->toArray());
+        $all = $this->groupVariantQuantities($all);
+        $this->variantService->decrementVariantStock($all);
+
+        return new OrderApiResource($order);
+      }, 5);
 
       return $orderResource;
     } catch (OrderException $e) {
@@ -199,7 +144,7 @@ class OrderService
   {
     $grouped = [];
     foreach ($items as $item) {
-      $variantId = (int)$item['variant_id'];
+      $variantId = (int) isset($item['product_variant_id']) ? (int) $item['product_variant_id'] : (int) $item['id'];
       $qty = (int)($item['quantity'] ?? 0);
       if ($qty <= 0) {
         continue;
@@ -210,6 +155,28 @@ class OrderService
       } else {
         $grouped[$variantId]['quantity'] += $qty;
       }
+    }
+    return $grouped;
+  }
+
+  /**
+   * Group order items by orderable_type and orderable_id for efficient access.
+   *
+   * @param array $items
+   * @return array
+   */
+  public static function groupOrderItemsByTypeAndId(array $items): array
+  {
+    $grouped = [];
+    foreach ($items as $item) {
+      if (!isset($item['orderable_type'], $item['orderable_id'])) {
+        // skip invalid items
+        continue;
+      }
+      $type = $item['orderable_type'];
+      $id = $item['orderable_id'];
+      // For products, preserve all keys (like color_id, variant_id, etc.)
+      $grouped[$type][$id] = $item;
     }
     return $grouped;
   }

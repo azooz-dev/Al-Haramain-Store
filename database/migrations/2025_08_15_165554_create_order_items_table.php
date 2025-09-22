@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->morphs('orderable');
+            $table->foreignId('variant_id')->nullable()->constrained('product_variants')->onDelete('cascade');
+            $table->foreignId('color_id')->nullable()->constrained('product_colors')->onDelete('cascade');
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
             $table->decimal('amount_discount_price', 10, 2)->nullable();
