@@ -52,7 +52,7 @@ class ProductVariantService
   public function decrementVariantStock($items)
   {
     foreach ($items as $itemId => $item) {
-      return $this->productVariantRepository->decrementVariantStock($itemId, $item['quantity']);
+      $this->productVariantRepository->decrementVariantStock($itemId, $item['quantity']);
     }
   }
 
