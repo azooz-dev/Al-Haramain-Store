@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources\Order\OrderItem;
 
-use App\Http\Resources\Offer\OfferApiResource;
 use Illuminate\Http\Request;
+use App\Models\Product\Product;
+use App\Http\Resources\Offer\OfferApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderItemApiResource extends JsonResource
@@ -20,7 +21,7 @@ class OrderItemApiResource extends JsonResource
             "quantity" => (int) $this->quantity,
             "total_price" => (float) $this->total_price,
             "amount_discount_price" => (float) $this->amount_discount_price,
-            "orderable" => $this->orderable_type === 'App\Models\Product\Product' ? [
+            "orderable" => $this->orderable_type === Product::class ? [
                 'identifier' => (int) $this->orderable_id,
                 'name' => $this->orderable->translations->where('local', app()->getLocale())->first()?->name ?? $this->orderable->translations->first()?->name ?? '',
                 'sku' => $this->orderable->sku,
