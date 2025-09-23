@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Order\OrderItem;
 
-use App\Http\Resources\Product\ProductApiResource;
+use App\Http\Resources\Offer\OfferApiResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,9 +20,20 @@ class OrderItemApiResource extends JsonResource
             "quantity" => (int) $this->quantity,
             "total_price" => (float) $this->total_price,
             "amount_discount_price" => (float) $this->amount_discount_price,
-            "product" => new ProductApiResource($this->product),
-            "createdDate" => $this->created_at,
-            "lastChange" => $this->updated_at
+            "orderable" => $this->orderable_type === 'App\Models\Product\Product' ? [
+                'identifier' => (int) $this->orderable_id,
+                'name' => $this->orderable->translations->where('local', app()->getLocale())->first()?->name ?? $this->orderable->translations->first()?->name ?? '',
+                'sku' => $this->orderable->sku,
+                'color' => $this->color->color_code,
+                'images' => $this->color->images,
+                'variant' => $this->variant->size,
+                'price' => (float) $this->variant->price,
+                'discount_price' => (float) $this->variant->amount_discount_price,
+                "createdDate" => $this->created_at,
+                "lastChange" => $this->updated_at
+            ] : new OfferApiResource($this->orderable),
+            'createdDate' => $this->created_at,
+            'lastChange' => $this->updated_at
         ];
     }
 }

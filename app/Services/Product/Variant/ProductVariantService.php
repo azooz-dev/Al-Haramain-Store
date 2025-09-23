@@ -2,6 +2,7 @@
 
 namespace App\Services\Product\Variant;
 
+use App\Models\Offer\Offer;
 use App\Exceptions\Product\Variant\OutOfStockException;
 use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 
@@ -32,10 +33,16 @@ class ProductVariantService
   {
     $itemTotal = 0;
     foreach ($items as $item) {
-      if ($item['orderable_type'] === 'offer') {
+      if ($item['orderable_type'] === Offer::class) {
         $itemTotal += $item['total_price'];
       } else {
-        $itemTotal += $this->calculateTotalVariantPrice($item['variant_id'], $item['quantity']);
+        // Only calculate variant price if variant_id is not null
+        if ($item['variant_id'] !== null) {
+          $itemTotal += $this->calculateTotalVariantPrice($item['variant_id'], $item['quantity']);
+        } else {
+          // If variant_id is null, use the total_price that was already calculated
+          $itemTotal += $item['total_price'];
+        }
       }
     }
 
@@ -44,6 +51,10 @@ class ProductVariantService
 
   public function calculateTotalVariantPrice($variantId, $quantity): float
   {
+    if ($variantId === null) {
+      return 0.0;
+    }
+
     $price = $this->productVariantRepository->calculateTotalVariant($variantId);
 
     return $price * $quantity;

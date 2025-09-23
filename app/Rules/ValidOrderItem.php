@@ -2,8 +2,10 @@
 
 namespace App\Rules;
 
-use App\Services\Offer\OfferService;
 use Closure;
+use App\Models\Offer\Offer;
+use App\Models\Product\Product;
+use App\Services\Offer\OfferService;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -23,7 +25,7 @@ class ValidOrderItem implements ValidationRule
     {
         foreach ($this->items as $item) {
 
-            if ($item['orderable_type'] === 'product') {
+            if ($item['orderable_type'] === Product::class) {
                 $productId = $item['orderable_id'];
                 $colorId = $item['color_id'] ?? null;
                 $variantId = $item['variant_id'] ?? null;
@@ -41,7 +43,7 @@ class ValidOrderItem implements ValidationRule
                 }
 
                 return;
-            } elseif ($item['orderable_type'] === 'offer') {
+            } elseif ($item['orderable_type'] === Offer::class) {
                 $offerId = $item['orderable_id'];
 
                 if (!$this->offerService->retrieveOfferById($offerId)) {

@@ -3,7 +3,10 @@
 namespace App\Services\Order;
 
 use App\Models\User\User;
+use App\Models\Offer\Offer;
+use App\Models\Product\Product;
 use Illuminate\Support\Facades\DB;
+use App\Services\Offer\OfferService;
 use App\Services\Coupon\CouponService;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
@@ -11,7 +14,6 @@ use App\Http\Resources\Order\OrderApiResource;
 use App\Services\Product\Variant\ProductVariantService;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
-use App\Services\Offer\OfferService;
 
 class OrderService
 {
@@ -36,7 +38,6 @@ class OrderService
     public function storeOrder(array $data)
     {
         try {
-            $this->validateOrderInput($data);
             $this->checkBuyerVerified((int)$data['user_id']);
             $this->groupedOrderItems = $this->groupOrderItemsByTypeAndId($data['items']);
 
@@ -70,28 +71,6 @@ class OrderService
     }
 
     /**
-     * Pure function: group items and return assoc array keyed by variant_id.
-     */
-    private function groupVariantQuantities(array $items): array
-    {
-        $grouped = [];
-        foreach ($items as $item) {
-            $variantId = (int) isset($item['product_variant_id']) ? (int) $item['product_variant_id'] : (int) $item['id'];
-            $qty = (int)($item['quantity'] ?? 0);
-            if ($qty <= 0) {
-                continue;
-            }
-            if (!isset($grouped[$variantId])) {
-                $grouped[$variantId] = $item;
-                $grouped[$variantId]['quantity'] = $qty;
-            } else {
-                $grouped[$variantId]['quantity'] += $qty;
-            }
-        }
-        return $grouped;
-    }
-
-    /**
      * Group order items by orderable_type and orderable_id for efficient access.
      * For products, groups by variant_id instead of orderable_id.
      *
@@ -110,7 +89,7 @@ class OrderService
             $type = $item['orderable_type'];
 
             // For products, use variant_id; for others, use orderable_id
-            if ($type === 'product') {
+            if ($type === Product::class) {
                 if (!isset($item['variant_id'])) {
                     // skip invalid product items without variant_id
                     continue;
@@ -131,33 +110,20 @@ class OrderService
     }
 
     /**
-     * Validate order input data
-     *
-     * @param array $data
-     * @throws OrderException
-     */
-    private function validateOrderInput(array $data): void
-    {
-        if (empty($data['items']) || !is_array($data['items'])) {
-            throw new OrderException(__('app.messages.order.invalid_items'), 422);
-        }
-    }
-
-    /**
      * Process product items - fetch variants and check stock
      */
     private function processProductItems(): void
     {
-        if (!isset($this->groupedOrderItems['product'])) {
+        if (!isset($this->groupedOrderItems[Product::class])) {
             return;
         }
 
         // Fetch all variants in one query (keyed by id)
-        $variantIds = array_keys($this->groupedOrderItems['product']);
+        $variantIds = array_keys($this->groupedOrderItems[Product::class]);
         $this->variants = $this->variantService->getVariantsByIds($variantIds);
 
         // Check stock
-        $this->variantService->checkStock($this->groupedOrderItems['product']);
+        $this->variantService->checkStock($this->groupedOrderItems[Product::class]);
     }
 
     /**
@@ -165,11 +131,11 @@ class OrderService
      */
     private function processOfferItems(): void
     {
-        if (!isset($this->groupedOrderItems['offer'])) {
+        if (!isset($this->groupedOrderItems[Offer::class])) {
             return;
         }
 
-        $offerIds = array_keys($this->groupedOrderItems['offer']);
+        $offerIds = array_keys($this->groupedOrderItems[Offer::class]);
         $this->offers = $this->offerService->getOffersByIds($offerIds);
 
         // Transform offer items to variant-based structure for stock validation
@@ -190,7 +156,7 @@ class OrderService
     {
         $offerVariantsForValidation = [];
 
-        foreach ($this->groupedOrderItems['offer'] as $offerId => $offerItem) {
+        foreach ($this->groupedOrderItems[Offer::class] as $offerId => $offerItem) {
             $offer = $this->offers->get($offerId);
             if (!$offer) {
                 continue;
@@ -224,10 +190,10 @@ class OrderService
         $newItems = [];
 
         foreach ($items as $item) {
-            if ($item['orderable_type'] === 'product') {
+            if ($item['orderable_type'] === Product::class) {
                 $variant = $this->variants->get($item['variant_id']);
                 $item['total_price'] = $variant->effective_price * $item['quantity'];
-            } else if ($item['orderable_type'] === 'offer') {
+            } else if ($item['orderable_type'] === Offer::class) {
                 $offer = $this->offers->get($item['orderable_id']);
                 $item['total_price'] = $offer->offer_price;
                 // Ensure offer items have the same structure as product items
@@ -293,10 +259,10 @@ class OrderService
         if (isset($this->offers)) {
             // Transform offer products to match expected structure
             $offerProductsArray = $this->buildOfferProductsForStockUpdate();
-            $all = ($this->groupedOrderItems['product'] ?? []) + $offerProductsArray;
+            $all = ($this->groupedOrderItems[Product::class] ?? []) + $offerProductsArray;
             $this->variantService->decrementVariantStock($all);
         } else {
-            $this->variantService->decrementVariantStock($this->groupedOrderItems['product'] ?? []);
+            $this->variantService->decrementVariantStock($this->groupedOrderItems[Product::class] ?? []);
         }
     }
 
