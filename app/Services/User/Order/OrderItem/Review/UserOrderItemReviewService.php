@@ -9,13 +9,15 @@ use App\Exceptions\Order\Review\ReviewException;
 
 use App\Http\Resources\Review\ReviewApiResource;
 use App\Exceptions\Order\CheckDeliveredOrderException;
+use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
 use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
 
 class UserOrderItemReviewService
 {
   public function __construct(
     private UserOrderItemReviewRepositoryInterface $userOrderItemReviewRepository,
-    private OrderService $orderService
+    private OrderService $orderService,
+    private OrderItemRepositoryInterface $orderItemRepository
   ) {}
 
   public function storeAllOrderReviews(array $data, int $userId, int $orderId, int $itemId)
@@ -31,6 +33,10 @@ class UserOrderItemReviewService
       ]);
 
       $review = $this->userOrderItemReviewRepository->store($data);
+
+      if ($review) {
+        $this->orderItemRepository->update($itemId, ['is_reviewed' => true]);
+      }
 
       return new ReviewApiResource($review);
     } catch (ReviewException $e) {
@@ -52,7 +58,7 @@ class UserOrderItemReviewService
     $isInOrder = $this->userOrderItemReviewRepository->checkItemIsInOrder($itemId, $orderId);
 
     if (!$isInOrder) {
-      throw new ReviewException(__('app.messages.review.product_not_in_order'), 409);
+      throw new ReviewException(__('app.messages.review.item_not_in_order'), 409);
     }
 
     return true;

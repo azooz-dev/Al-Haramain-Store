@@ -24,12 +24,14 @@ class OrderItem extends Model
         'color_id',
         'total_price',
         'amount_discount_price',
+        'is_reviewed',
     ];
 
     protected $casts = [
         'quantity' => 'integer',
         'total_price' => 'decimal:2',
         'amount_discount_price' => 'decimal:2',
+        'is_reviewed' => 'boolean',
     ];
 
     public function order(): BelongsTo

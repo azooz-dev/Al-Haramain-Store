@@ -58,6 +58,7 @@ class OrderItemApiResource extends JsonResource
                     'details' => $ar->description ?? ''
                 ],
             ],
+            'is_reviewed' => $this->is_reviewed,
             'createdDate' => $this->created_at,
             'lastChange' => $this->updated_at
         ];

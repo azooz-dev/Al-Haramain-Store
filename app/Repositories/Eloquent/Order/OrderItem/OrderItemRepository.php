@@ -28,4 +28,9 @@ class OrderItemRepository implements OrderItemRepositoryInterface
     // Use DB insert for performance
     return DB::table((new OrderItem())->getTable())->insert($itemsPayload);
   }
+
+  public function update(int $itemId, array $data): bool
+  {
+    return OrderItem::where('id', $itemId)->update($data);
+  }
 }
