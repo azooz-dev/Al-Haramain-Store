@@ -58,9 +58,16 @@ class Product extends Model
         return $this->hasMany(ProductTranslation::class);
     }
 
-    public function reviews(): MorphMany
+    public function reviews(): HasManyThrough
     {
-        return $this->morphMany(Review::class, 'reviewable');
+        return $this->hasManyThrough(
+            Review::class,
+            OrderItem::class,
+            'orderable_id', // Foreign key on OrderItem table
+            'order_item_id', // Foreign key on Review table
+            'id', // Local key on Product table
+            'id' // Local key on OrderItem table
+        )->where('orderable_type', static::class);
     }
 
     public function orderItems(): MorphMany

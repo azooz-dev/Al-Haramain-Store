@@ -3,9 +3,11 @@
 namespace App\Models\Order;
 
 use App\Models\Order\Order;
+use App\Models\Review\Review;
 use App\Models\Product\ProductColor;
 use App\Models\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,6 +40,11 @@ class OrderItem extends Model
     public function orderable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'order_item_id');
     }
 
     public function variant(): BelongsTo

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Offer extends Model
 {
@@ -67,11 +68,17 @@ class Offer extends Model
         return $this->morphMany(OrderItem::class, 'orderable');
     }
 
-    public function reviews(): MorphMany
+    public function reviews(): HasManyThrough
     {
-        return $this->morphMany(Review::class, 'reviewable');
+        return $this->hasManyThrough(
+            Review::class,
+            OrderItem::class,
+            'orderable_id', // Foreign key on OrderItem table
+            'order_item_id', // Foreign key on Review table
+            'id', // Local key on Product table
+            'id' // Local key on OrderItem table
+        )->where('orderable_type', static::class);
     }
-
 
     /**
      * Recalculate the total price based on selected products with variants and colors

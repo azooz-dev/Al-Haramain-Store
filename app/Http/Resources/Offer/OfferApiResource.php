@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Offer;
 
-use App\Http\Resources\Product\ProductApiResource;
 use Illuminate\Http\Request;
+use App\Http\Resources\Review\ReviewApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Product\ProductApiResource;
 
 class OfferApiResource extends JsonResource
 {
@@ -57,6 +58,7 @@ class OfferApiResource extends JsonResource
                 'title' => $ar->name ?? '',
                 'details' => $ar->description ?? ''
             ],
+            'reviews' => isset($this->reviews) ? ReviewApiResource::collection($this->reviews) : null,
         ];
     }
 

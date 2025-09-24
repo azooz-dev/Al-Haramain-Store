@@ -4,10 +4,11 @@ namespace App\Models\Review;
 
 use App\Models\User\User;
 use App\Models\Order\Order;
+use App\Models\Order\OrderItem;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Review extends Model
 {
@@ -33,15 +34,16 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function reviewable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function orderItem(): BelongsTo
+    {
+        return $this->belongsTo(OrderItem::class);
+    }
+
     public function getStatusLabelAttribute()
     {
         return __('app.status.' . $this->status);
