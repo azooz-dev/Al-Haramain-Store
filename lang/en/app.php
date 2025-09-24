@@ -629,6 +629,7 @@ return [
       'updated_success_body' => 'Review status updated :name successfully.',
       'review_error' => "Review error occurred!",
       "item_not_in_order" => "The item is not in the order!",
+      "item_already_reviewed" => "The item has already been reviewed!",
     ],
     'exception' => [
       'not_found' => 'The :model not found.',

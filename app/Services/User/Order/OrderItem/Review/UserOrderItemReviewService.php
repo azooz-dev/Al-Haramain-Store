@@ -23,6 +23,7 @@ class UserOrderItemReviewService
   public function storeAllOrderReviews(array $data, int $userId, int $orderId, int $itemId)
   {
     try {
+      $this->checkItemIsReviewed($itemId);
       $this->checkOrderDelivered($orderId);
       $this->checkItemIsInOrder($itemId, $orderId);
 
@@ -59,6 +60,17 @@ class UserOrderItemReviewService
 
     if (!$isInOrder) {
       throw new ReviewException(__('app.messages.review.item_not_in_order'), 409);
+    }
+
+    return true;
+  }
+
+  public function checkItemIsReviewed($itemId)
+  {
+    $isReviewed = $this->orderItemRepository->checkItemIsReviewed($itemId);
+
+    if ($isReviewed) {
+      throw new ReviewException(__('app.messages.review.item_already_reviewed'), 409);
     }
 
     return true;

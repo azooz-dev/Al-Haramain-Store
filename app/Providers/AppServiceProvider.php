@@ -5,20 +5,22 @@ namespace App\Providers;
 use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
+use App\Models\Review\Review;
 use App\Models\Category\Category;
 use App\Policies\User\UserPolicy;
 use App\Models\Offer\OfferProduct;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
 use Illuminate\Support\Facades\Gate;
+use App\Policies\Review\ReviewPolicy;
 use Illuminate\Support\Facades\Event;
+
+
 use App\Observers\Offer\OfferObserver;
+
+
 use App\Observers\Order\OrderObserver;
-
-
 use Illuminate\Support\ServiceProvider;
-
-
 use App\Models\Product\ProductColorImage;
 use App\Models\User\UserAddresses\Address;
 use App\Events\Auth\ResendVerificationEmail;
@@ -134,5 +136,6 @@ class AppServiceProvider extends ServiceProvider
         // Register Policies
         Gate::policy(Address::class, AddressPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Review::class, ReviewPolicy::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Policies\Review;
 
+use App\Models\User\User;
 use App\Models\Admin\Admin;
 use App\Models\Review\Review;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -29,9 +30,9 @@ class ReviewPolicy
     /**
      * Determine whether the admin can create models.
      */
-    public function create(Admin $admin): bool
+    public function create(User $authenticatedUser, User $user): bool
     {
-        return $admin->can('create_review');
+        return $authenticatedUser->id === $user->id;
     }
 
     /**

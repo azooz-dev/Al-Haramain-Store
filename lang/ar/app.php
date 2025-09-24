@@ -746,6 +746,7 @@ return [
       'updated_success_body' => 'تم تحديث حالة التقييم :name بنجاح.',
       'review_error' => "حدث خطأ في التقييم!",
       "item_not_in_order" => "العنصر غير موجود في الطلب!",
+      "item_already_reviewed" => "العنصر قد تم تقييمه بالفعل!",
     ],
     'exception' => [
       'not_found' => 'المورد :model غير موجود.',

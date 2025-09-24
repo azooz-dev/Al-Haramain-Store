@@ -33,4 +33,9 @@ class OrderItemRepository implements OrderItemRepositoryInterface
   {
     return OrderItem::where('id', $itemId)->update($data);
   }
+
+  public function checkItemIsReviewed($itemId): bool
+  {
+    return OrderItem::where('id', $itemId)->where('is_reviewed', true)->exists();
+  }
 }
