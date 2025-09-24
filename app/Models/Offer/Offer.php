@@ -2,6 +2,7 @@
 
 namespace App\Models\Offer;
 
+use App\Models\Review\Review;
 use App\Models\Order\OrderItem;
 use App\Models\Product\Product;
 use App\Models\Offer\OfferProduct;
@@ -64,6 +65,11 @@ class Offer extends Model
     public function orderItems(): MorphMany
     {
         return $this->morphMany(OrderItem::class, 'orderable');
+    }
+
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
     }
 
 

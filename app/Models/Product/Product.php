@@ -58,9 +58,9 @@ class Product extends Model
         return $this->hasMany(ProductTranslation::class);
     }
 
-    public function reviews(): HasMany
+    public function reviews(): MorphMany
     {
-        return $this->hasMany(Review::class);
+        return $this->morphMany(Review::class, 'reviewable');
     }
 
     public function orderItems(): MorphMany
