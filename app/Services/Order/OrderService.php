@@ -196,9 +196,6 @@ class OrderService
             } else if ($item['orderable_type'] === Offer::class) {
                 $offer = $this->offers->get($item['orderable_id']);
                 $item['total_price'] = $offer->offer_price;
-                // Ensure offer items have the same structure as product items
-                $item['variant_id'] = $item['variant_id'] ?? null;
-                $item['color_id'] = $item['color_id'] ?? null;
             }
             $newItems[] = $item;
         }

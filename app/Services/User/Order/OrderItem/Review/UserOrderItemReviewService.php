@@ -7,6 +7,7 @@ use App\Services\Order\OrderService;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Order\Review\ReviewException;
 
+use App\Http\Resources\Review\ReviewApiResource;
 use App\Exceptions\Order\CheckDeliveredOrderException;
 use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
 
@@ -17,19 +18,21 @@ class UserOrderItemReviewService
     private OrderService $orderService
   ) {}
 
-  public function storeAllOrderReviews(array $data, int $userId, int $orderId, OrderItem $item)
+  public function storeAllOrderReviews(array $data, int $userId, int $orderId, int $itemId)
   {
     try {
       $this->checkOrderDelivered($orderId);
-      $this->checkItemIsInOrder($item->id, $orderId);
+      $this->checkItemIsInOrder($itemId, $orderId);
 
       $data = array_merge($data, [
         'user_id' => $userId,
         'order_id' => $orderId,
-        'orderable_id' => $item->orderable_id,
-        'orderable_type' => $item->orderable_type
+        'order_item_id' => $itemId,
       ]);
-      return $this->userOrderItemReviewRepository->store($data);
+
+      $review = $this->userOrderItemReviewRepository->store($data);
+
+      return new ReviewApiResource($review);
     } catch (ReviewException $e) {
       return errorResponse($e->getMessage(), $e->getCode());
     }

@@ -4,7 +4,6 @@ namespace App\Http\Resources\Order\OrderItem;
 
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
-use App\Http\Resources\Offer\OfferApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderItemApiResource extends JsonResource
@@ -16,6 +15,9 @@ class OrderItemApiResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $en = $this->orderable->translations->where($this->orderable_type === Product::class ? 'local' : 'locale', 'en')->first();
+        $ar = $this->orderable->translations->where($this->orderable_type === Product::class ? 'local' : 'locale', 'ar')->first();
+
         return [
             "identifier" => (int) $this->id,
             "quantity" => (int) $this->quantity,
@@ -23,7 +25,14 @@ class OrderItemApiResource extends JsonResource
             "amount_discount_price" => (float) $this->amount_discount_price,
             "orderable" => $this->orderable_type === Product::class ? [
                 'identifier' => (int) $this->orderable_id,
-                'name' => $this->orderable->translations->where('local', app()->getLocale())->first()?->name ?? $this->orderable->translations->first()?->name ?? '',
+                'en' => [
+                    'title' => $en->name ?? '',
+                    'details' => $en->description ?? ''
+                ],
+                'ar' => [
+                    'title' => $ar->name ?? '',
+                    'details' => $ar->description ?? ''
+                ],
                 'sku' => $this->orderable->sku,
                 'color' => $this->color->color_code,
                 'images' => $this->color->images,
@@ -32,7 +41,23 @@ class OrderItemApiResource extends JsonResource
                 'discount_price' => (float) $this->variant->amount_discount_price,
                 "createdDate" => $this->created_at,
                 "lastChange" => $this->updated_at
-            ] : new OfferApiResource($this->orderable),
+            ] : [
+                'identifier' => (int) $this->orderable_id,
+                'picture' => $this->image_path,
+                'productsTotalPrice' => $this->products_total_price,
+                'offerPrice' => $this->offer_price,
+                'startDate' => $this->start_date,
+                'endDate' => $this->end_date,
+                'status' => $this->status,
+                'en' => [
+                    'title' => $en->name ?? '',
+                    'details' => $en->description ?? ''
+                ],
+                'ar' => [
+                    'title' => $ar->name ?? '',
+                    'details' => $ar->description ?? ''
+                ],
+            ],
             'createdDate' => $this->created_at,
             'lastChange' => $this->updated_at
         ];

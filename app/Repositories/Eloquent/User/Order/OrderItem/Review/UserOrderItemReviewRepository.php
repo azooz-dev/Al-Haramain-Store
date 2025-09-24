@@ -1,29 +1,22 @@
 <?php
 
-namespace App\Repositories\Eloquent\User\Order\Product\Review;
+namespace App\Repositories\Eloquent\User\Order\OrderItem\Review;
 
 use App\Models\Review\Review;
 use App\Models\Order\OrderItem;
-use App\Repositories\interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
+use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
 
-class UserOrderProductReviewRepository implements UserOrderProductReviewRepositoryInterface
+class UserOrderItemReviewRepository implements UserOrderItemReviewRepositoryInterface
 {
-  public function store(array $data, int $userId, int $orderId, int $productId): Review
+  public function store(array $data): Review
   {
-    return Review::create([
-      'order_id' => $orderId,
-      'user_id' => $userId,
-      'product_id' => $productId,
-      'rating' => $data['rating'],
-      'comment' => $data['comment'],
-      'locale' => $data['locale']
-    ]);
+    return Review::create($data);
   }
 
-  public function checkProductIsInOrder($productId, $orderId): bool
+  public function checkItemIsInOrder($itemId, $orderId): bool
   {
     return OrderItem::where('order_id', $orderId)
-      ->where('product_id', $productId)
+      ->where('id', $itemId)
       ->exists();
   }
 }

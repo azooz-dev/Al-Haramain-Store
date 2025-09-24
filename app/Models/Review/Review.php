@@ -6,7 +6,6 @@ use App\Models\User\User;
 use App\Models\Order\Order;
 use App\Models\Order\OrderItem;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,8 +20,7 @@ class Review extends Model
     protected $fillable = [
         "user_id",
         "order_id",
-        "orderable_id",
-        "orderable_type",
+        "order_item_id",
         "rating",
         "comment",
         "status",
