@@ -23,11 +23,11 @@ class UserAddressController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(int $userId)
+    public function index(User $user)
     {
-        $this->authorize('view', Address::class);
+        $this->authorize('view', [Address::class, $user]);
 
-        $addresses = $this->userAddressService->getAllUserAddresses($userId);
+        $addresses = $this->userAddressService->getAllUserAddresses($user->id);
 
         return showAll($addresses, "User Addresses", 200);
     }
@@ -35,13 +35,13 @@ class UserAddressController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserAddressStoreRequest $request, int $userId)
+    public function store(UserAddressStoreRequest $request, User $user)
     {
-        $this->authorize('create', Address::class);
+        $this->authorize('create', [Address::class, $user]);
 
         $data = $request->validated();
 
-        $address = $this->userAddressService->storeUserAddress($data, $userId);
+        $address = $this->userAddressService->storeUserAddress($data, $user->id);
 
         return showOne($address, "User Address", 201);
     }

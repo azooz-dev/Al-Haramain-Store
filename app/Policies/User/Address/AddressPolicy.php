@@ -18,9 +18,9 @@ class AddressPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, Address $address): bool
+    public function create(User $authenticatedUser, User $user): bool
     {
-        return $user->id === $address->user_id;
+        return $authenticatedUser->id === $user->id;
     }
 
     /**

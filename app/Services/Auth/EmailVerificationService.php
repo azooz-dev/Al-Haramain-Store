@@ -39,6 +39,8 @@ class EmailVerificationService
 
     $user = new UserApiResource($user);
 
-    return $user;
+    $token = $user->createToken('personal_token')->plainTextToken;
+
+    return ['user' => $user, 'token' => $token];
   }
 }
