@@ -20,6 +20,8 @@ class Review extends Model
     protected $fillable = [
         "user_id",
         "order_id",
+        "orderable_id",
+        "orderable_type",
         "rating",
         "comment",
         "status",

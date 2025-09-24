@@ -8,22 +8,15 @@ use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRe
 
 class UserOrderItemReviewRepository implements UserOrderItemReviewRepositoryInterface
 {
-  public function store(array $data, int $userId, int $orderId, int $productId): Review
+  public function store(array $data): Review
   {
-    return Review::create([
-      'order_id' => $orderId,
-      'user_id' => $userId,
-      'product_id' => $productId,
-      'rating' => $data['rating'],
-      'comment' => $data['comment'],
-      'locale' => $data['locale']
-    ]);
+    return Review::create($data);
   }
 
-  public function checkProductIsInOrder($productId, $orderId): bool
+  public function checkItemIsInOrder($itemId, $orderId): bool
   {
-    return OrderItem::where('order_id', $orderId)
-      ->where('product_id', $productId)
+    return OrderItem::where('id', $itemId)
+      ->where('order_id', $orderId)
       ->exists();
   }
 }
