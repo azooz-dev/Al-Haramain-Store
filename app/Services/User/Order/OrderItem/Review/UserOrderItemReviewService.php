@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Order\Product\Review;
+namespace App\Services\User\Order\OrderItem\Review;
 
 use App\Exceptions\Order\CheckDeliveredOrderException;
 use App\Exceptions\Order\Review\ReviewException;
@@ -9,7 +9,7 @@ use App\Services\Order\OrderService;
 
 use function App\Helpers\errorResponse;
 
-class UserOrderProductReviewService
+class UserOrderItemReviewService
 {
   public function __construct(
     private UserOrderProductReviewRepositoryInterface $userOrderProductReviewRepository,

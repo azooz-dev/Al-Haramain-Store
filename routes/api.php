@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\User\UserAddresses\UserAddressController;
 use App\Http\Controllers\User\Product\UserProductFavoriteController;
-use App\Http\Controllers\User\Order\Product\Review\UserOrderProductReviewController;
+use App\Http\Controllers\User\Order\OrderItem\Review\UserOrderItemReviewController;
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Products
@@ -31,7 +31,7 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
 
     // User Orders
-    Route::apiResource('users.orders.products.reviews', UserOrderProductReviewController::class)->only('store');
+    Route::apiResource('users.orders.items.reviews', UserOrderItemReviewController::class)->only('store');
 
     // Coupons
     Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);

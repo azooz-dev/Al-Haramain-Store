@@ -71,9 +71,9 @@ use App\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
 use App\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 use App\Repositories\Interface\User\UserAddresses\UserAddressRepositoryInterface;
 use App\Repositories\Eloquent\User\Product\Favorite\UserProductFavoriteRepository;
-use App\Repositories\Eloquent\User\Order\Product\Review\UserOrderProductReviewRepository;
+use App\Repositories\Eloquent\User\Order\OrderItem\Review\UserOrderItemReviewRepository;
 use App\Repositories\Interface\User\Product\Favorite\UserProductFavoriteRepositoryInterface;
-use App\Repositories\Interface\User\Order\Product\Review\UserOrderProductReviewRepositoryInterface;
+use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -94,7 +94,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
         $this->app->bind(ProductVariantRepositoryInterface::class, ProductVariantRepository::class);
-        $this->app->bind(UserOrderProductReviewRepositoryInterface::class, UserOrderProductReviewRepository::class);
+        $this->app->bind(UserOrderItemReviewRepositoryInterface::class, UserOrderItemReviewRepository::class);
 
         $this->app->bind(OfferRepositoryInterface::class, OfferRepository::class);
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
