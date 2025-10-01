@@ -23,6 +23,7 @@ class OrderItemApiResource extends JsonResource
             "quantity" => (int) $this->quantity,
             "total_price" => (float) $this->total_price,
             "amount_discount_price" => (float) $this->amount_discount_price,
+            "orderable_type" => $this->orderable_type,
             "orderable" => $this->orderable_type === Product::class ? [
                 'identifier' => (int) $this->orderable_id,
                 'en' => [
@@ -43,12 +44,12 @@ class OrderItemApiResource extends JsonResource
                 "lastChange" => $this->updated_at
             ] : [
                 'identifier' => (int) $this->orderable_id,
-                'picture' => $this->image_path,
-                'productsTotalPrice' => $this->products_total_price,
-                'offerPrice' => $this->offer_price,
-                'startDate' => $this->start_date,
-                'endDate' => $this->end_date,
-                'status' => $this->status,
+                'picture' => $this->orderable->image_path,
+                'productsTotalPrice' => $this->orderable->products_total_price,
+                'offerPrice' => $this->orderable->offer_price,
+                'startDate' => $this->orderable->start_date,
+                'endDate' => $this->orderable->end_date,
+                'status' => $this->orderable->status,
                 'en' => [
                     'title' => $en->name ?? '',
                     'details' => $en->description ?? ''

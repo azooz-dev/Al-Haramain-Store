@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources\Favorite;
 
-use App\Http\Resources\Product\ProductApiResource;
-use App\Http\Resources\User\UserApiResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +18,6 @@ class FavoriteApiResource extends JsonResource
         $ar = $this->product->translations->where('local', 'ar')->first();
         return [
             "identifier" => (int) $this->id,
-            "user" => new UserApiResource($this->user),
             "product" => [
                 "identifier" => $this->product->id,
                 "slug" => $this->product->slug,
@@ -33,7 +30,7 @@ class FavoriteApiResource extends JsonResource
                     "details" => $ar->description ?? ""
                 ],
                 "color" => $this->product->colors->where('id', $this->color_id),
-                "image" => $this->product->images->where('color_id', $this->color_id)->first(),
+                "image" => $this->product->images->where('product_color_id', $this->color_id)->first(),
                 "variant" => $this->product->variants->where("id", $this->variant_id)
             ],
             'createdDate' => $this->created_at,

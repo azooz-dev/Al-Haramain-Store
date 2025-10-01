@@ -44,10 +44,11 @@ class FavoritePolicy
     }
 
     /**
-     * Determine whether the admin can delete the model.
+     * Determine whether the user can delete the model.
      */
     public function delete(User $user, Favorite $favorite): bool
     {
+        dd("test");
         return $user->id === $favorite->user_id;
     }
 

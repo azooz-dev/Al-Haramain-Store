@@ -40,7 +40,7 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
 
     // User Favorites
-    Route::apiResource('users.favorite', UserFavoriteController::class)->only(['index', 'destroy']);
+    Route::apiResource('users.favorites', UserFavoriteController::class)->only(['index', 'destroy']);
     // Coupons
     Route::get('coupons/{id}', [CouponController::class, 'apply']);
 

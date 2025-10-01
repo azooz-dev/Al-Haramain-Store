@@ -7,21 +7,23 @@ use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Models\Review\Review;
 use App\Models\Category\Category;
+use App\Models\Favorite\Favorite;
 use App\Policies\User\UserPolicy;
 use App\Models\Offer\OfferProduct;
 use App\Events\Auth\UserRegistered;
 use App\Observers\User\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use App\Policies\Review\ReviewPolicy;
+
+
 use Illuminate\Support\Facades\Event;
 
 
 use App\Observers\Offer\OfferObserver;
-
-
 use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Product\ProductColorImage;
+use App\Policies\Favorite\FavoritePolicy;
 use App\Models\User\UserAddresses\Address;
 use App\Events\Auth\ResendVerificationEmail;
 use App\Observers\Category\CategoryObserver;
@@ -137,5 +139,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Address::class, AddressPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Review::class, ReviewPolicy::class);
+        Gate::policy(Favorite::class, FavoritePolicy::class);
     }
 }

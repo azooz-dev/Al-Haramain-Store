@@ -4,7 +4,7 @@ namespace App\Http\Controllers\User;
 
 use function App\Helpers\showAll;
 use App\Http\Controllers\Controller;
-
+use App\Models\Favorite\Favorite;
 use App\Services\User\UserFavoriteService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -27,10 +27,10 @@ class UserFavoriteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $userId, $favoriteId)
+    public function destroy(int $userId, Favorite $favorite)
     {
-        if ($this->authorize('delete', $favoriteId))
-            $response = $this->userFavoriteService->deleteFavorite(['userId' => $userId, 'id' => $favoriteId]);
+        // $this->authorize('delete', $favorite);
+        $response = $this->userFavoriteService->deleteFavorite(['user_id' => $userId, 'id' => $favorite->id]);
 
         return $response;
     }
