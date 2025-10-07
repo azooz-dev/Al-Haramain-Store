@@ -152,7 +152,7 @@ return [
       'code' => 'الكود',
       'name' => 'الاسم',
       'type' => 'نوع الخصم',
-      'sar' => 'ر.س',
+      'sar' => 'دولار',
       'type_options' => [
         'fixed' => 'مبلغ ثابت',
         'percentage' => 'نسبة مئوية',
@@ -570,6 +570,8 @@ return [
   ],
   'order_item' => [
     'product_name' => 'اسم المنتج',
+    'item_name' => 'اسم العنصر',
+    'item_type' => 'نوع العنصر',
     'sku' => 'رمز المنتج',
     'quantity' => 'الكمية',
     'unit_price' => 'سعر الوحدة',
@@ -802,6 +804,13 @@ return [
     'paypal' => 'باي بال',
     'cash_on_delivery' => 'الدفع عند الاستلام',
     'bank_transfer' => 'تحويل بنكي',
+  ],
+
+  // Item Types
+  'item_types' => [
+    'product' => 'منتج',
+    'offer' => 'عرض',
+    'unknown' => 'غير معروف',
   ],
 
   // Payment Status

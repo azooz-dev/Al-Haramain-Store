@@ -114,7 +114,7 @@ class CouponResource extends Resource
                                 ->required()
                                 ->step('0.01')
                                 ->suffix(function (callable $get) {
-                                    return $get('type') === Coupon::PERCENTAGE ? '%' : 'SAR';
+                                    return $get('type') === Coupon::PERCENTAGE ? '%' : 'US';
                                 })
                                 ->rule(function (callable $get) {
                                     return $get('type') === Coupon::PERCENTAGE

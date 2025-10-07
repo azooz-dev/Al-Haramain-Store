@@ -102,4 +102,9 @@ class User extends Authenticatable
     {
         return Str::random(60);
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }

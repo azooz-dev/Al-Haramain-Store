@@ -113,7 +113,12 @@ class OrderItem extends Model
         }
 
         return $this->orderable->translations
-            ->where('local', app()->getLocale())
+            ->where(
+                $this->orderable->translations->first()?->getAttributes()['local'] ?? null
+                    ? 'local'
+                    : 'locale',
+                app()->getLocale()
+            )
             ->first()?->name ??
             $this->orderable->translations->first()?->name ?? '';
     }

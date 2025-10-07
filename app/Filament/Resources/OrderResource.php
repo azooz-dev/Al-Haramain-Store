@@ -99,7 +99,7 @@ class OrderResource extends Resource
                     ->icon('heroicon-o-hashtag')
                     ->prefix('#'),
 
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('user.full_name')
                     ->label(__('app.columns.order.customer'))
                     ->searchable(['users.name', 'users.email'])
                     ->sortable()
@@ -217,7 +217,7 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('address.full_address')
                     ->label(__('app.columns.order.shipping_address'))
                     ->limit(30)
-                    ->tooltip(fn(Order $record): ?string => $record->address?->full_address)
+                    ->tooltip(fn(Order $record): ?string => $record->address?->getFullAddressAttribute())
                     ->icon('heroicon-o-map-pin')
                     ->color('gray')
                     ->wrap()
@@ -510,7 +510,7 @@ class OrderResource extends Resource
 
                 Infolists\Components\Section::make(__('app.sections.customer_information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('user.name')->label(__('app.fields.customer_name')),
+                        Infolists\Components\TextEntry::make('user.full_name')->label(__('app.fields.customer_name')),
                         Infolists\Components\TextEntry::make('user.email')->label(__('app.fields.customer_email'))->copyable(),
                         Infolists\Components\TextEntry::make('user.phone')->label(__('app.fields.customer_phone'))->copyable(),
                         Infolists\Components\TextEntry::make('address.full_address')->label(__('app.fields.shipping_address'))->columnSpanFull(),
@@ -520,7 +520,18 @@ class OrderResource extends Resource
 
                 Infolists\Components\Section::make(__('app.sections.payment_information'))
                     ->schema([
-                        Infolists\Components\TextEntry::make('payment_method')->label(__('app.fields.payment_method')),
+                        Infolists\Components\TextEntry::make('payment_method')
+                            ->label(__('app.fields.payment_method'))
+                            ->formatStateUsing(function ($state) {
+                                // Use translation keys for payment methods
+                                return match ($state) {
+                                    'cash_on_delivery' => __('app.payment.cash_on_delivery'),
+                                    'credit_card' => __('app.payment.credit_card'),
+                                    'paypal' => __('app.payment.paypal'),
+                                    'bank_transfer' => __('app.payment.bank_transfer'),
+                                    default => $state,
+                                };
+                            }),
                         Infolists\Components\RepeatableEntry::make('payments')
                             ->label(__('app.fields.payment_transactions'))
                             ->schema([
@@ -561,7 +572,9 @@ class OrderResource extends Resource
                 'user',
                 'address',
                 'coupon',
-                'items.product.translations',
+                'items.orderable.translations',
+                'items.variant',
+                'items.color',
                 'payments',
             ]);
     }

@@ -55,7 +55,10 @@ class TopProductsWidget extends BaseWidget
                         DB::raw('SUM(order_items.quantity * order_items.total_price) as total_revenue'),
                         DB::raw('COUNT(DISTINCT orders.id) as order_count')
                     ])
-                    ->join('order_items', 'products.id', '=', 'order_items.product_id')
+                    ->join('order_items', function ($join) {
+                        $join->on('products.id', '=', 'order_items.orderable_id')
+                            ->where('order_items.orderable_type', '=', 'App\\Models\\Product\\Product');
+                    })
                     ->join('orders', 'order_items.order_id', '=', 'orders.id')
                     ->where('orders.status', '!=', 'cancelled')
                     ->where('orders.status', '!=', 'refunded')

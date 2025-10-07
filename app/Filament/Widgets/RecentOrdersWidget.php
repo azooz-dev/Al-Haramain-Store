@@ -27,7 +27,7 @@ class RecentOrdersWidget extends BaseWidget
         return $table
             ->query(
                 Order::query()
-                    ->with(['user', 'items.product.translations', 'payments'])
+                    ->with(['user', 'items.orderable.translations', 'items.variant', 'items.color', 'payments'])
                     ->latest()
                     ->limit(15)
             )

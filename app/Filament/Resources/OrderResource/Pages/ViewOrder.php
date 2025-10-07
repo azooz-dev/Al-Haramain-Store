@@ -60,7 +60,7 @@ class ViewOrder extends ViewRecord
           $order = $this->record;
 
           $html = view('invoices.order', [
-            'order' => $order->loadMissing(['user', 'address', 'items.product', 'payments', 'coupon']),
+            'order' => $order->loadMissing(['user', 'address', 'items.orderable.translations', 'items.variant', 'items.color', 'payments', 'coupon']),
           ])->render();
 
           return response()->streamDownload(function () use ($html) {

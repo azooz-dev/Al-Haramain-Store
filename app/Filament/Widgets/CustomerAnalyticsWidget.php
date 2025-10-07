@@ -201,7 +201,10 @@ class CustomerAnalyticsWidget extends ChartWidget
 
         $topCategoryId = DB::table('categories')
             ->join('category_product', 'categories.id', '=', 'category_product.category_id')
-            ->join('order_items', 'category_product.product_id', '=', 'order_items.product_id')
+            ->join('order_items', function ($join) {
+                $join->on('category_product.product_id', '=', 'order_items.orderable_id')
+                    ->where('order_items.orderable_type', '=', 'App\\Models\\Product\\Product');
+            })
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->where('orders.status', '!=', Order::CANCELLED)
             ->where('orders.status', '!=', Order::REFUNDED)

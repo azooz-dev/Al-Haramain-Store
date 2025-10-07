@@ -151,7 +151,7 @@ return [
       'code' => 'Code',
       'name' => 'Name',
       'type' => 'Discount Type',
-      'sar' => 'SAR',
+      'sar' => 'US',
       'type_options' => [
         'fixed' => 'Fixed Amount',
         'percentage' => 'Percentage',
@@ -453,6 +453,8 @@ return [
     ],
     'order_item' => [
       'product_name' => 'Product Name',
+      'item_name' => 'Item Name',
+      'item_type' => 'Item Type',
       'sku' => 'SKU',
       'quantity' => 'Quantity',
       'unit_price' => 'Unit Price',
@@ -685,6 +687,13 @@ return [
     'paypal' => 'PayPal',
     'cash_on_delivery' => 'Cash on Delivery',
     'bank_transfer' => 'Bank Transfer',
+  ],
+
+  // Item Types
+  'item_types' => [
+    'product' => 'Product',
+    'offer' => 'Offer',
+    'unknown' => 'Unknown',
   ],
 
   // Payment Status
