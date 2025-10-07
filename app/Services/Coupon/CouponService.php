@@ -4,8 +4,9 @@ namespace App\Services\Coupon;
 
 use Carbon\Carbon;
 use App\Models\Coupon\Coupon;
-use function App\Helpers\errorResponse;
 
+use Illuminate\Support\Facades\DB;
+use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Exceptions\Coupon\CouponException;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
@@ -35,6 +36,11 @@ class CouponService
 
     // Ensure not negative, clamp
     $newTotal = max(0.0, round($totalAmount - $discountAmount, 2));
+
+    $coupon->couponUsers()->updateOrCreate(
+      ['user_id' => $userId],
+      ['times_used' => DB::raw('COALESCE(times_used,0) + 1')]
+    );
 
     return $newTotal;
   }

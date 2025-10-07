@@ -251,9 +251,11 @@ class CategoryResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
                         ->icon('heroicon-o-eye')
-                        ->url(fn($record) => static::getUrl('view', ['record' => $record])),
+                        ->url(fn($record) => static::getUrl('view', ['record' => $record]))
+                        ->color('info'),
                     Tables\Actions\EditAction::make()
-                        ->icon('heroicon-o-pencil'),
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning'),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
                         ->color('danger')

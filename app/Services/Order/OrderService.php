@@ -195,7 +195,7 @@ class OrderService
                 $item['total_price'] = $variant->effective_price * $item['quantity'];
             } else if ($item['orderable_type'] === Offer::class) {
                 $offer = $this->offers->get($item['orderable_id']);
-                $item['total_price'] = $offer->offer_price;
+                $item['total_price'] = $offer->offer_price * $item['quantity'];
             }
             $newItems[] = $item;
         }

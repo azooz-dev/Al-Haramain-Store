@@ -252,7 +252,7 @@ class ProductResource extends Resource
                                                                     ->numeric()
                                                                     ->required()
                                                                     ->minValue(0)
-                                                                    ->rules($perVariantRules)->placeholder(__('app.forms.product.enter_variant_available_quantity'))
+                                                                    ->rules(fn() => request()->routeIs('filament.admin.resources.products.create') ? $perVariantRules : [])
                                                                     ->helperText(__('app.forms.product.variant.quantity_help'))
                                                                     ->columnSpan(1),
 

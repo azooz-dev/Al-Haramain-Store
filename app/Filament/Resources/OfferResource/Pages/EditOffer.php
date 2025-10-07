@@ -35,17 +35,25 @@ class EditOffer extends EditRecord
 
         if ($record = $this->record) {
             $formData = $this->getTranslationData();
-            $formData['en'] = ['name' => $formData['en']['title'], 'description' => $formData['en']['details']];
-            $formData['ar'] = ['name' => $formData['ar']['title'], 'description' => $formData['ar']['details']];
-            $formData['products_total_price'] = $formData['productsTotalPrice'];
-            $formData['offer_price'] = $formData['offerPrice'];
-            $formData['start_date'] = $formData['startDate'];
-            $formData['end_date'] = $formData['endDate'];
-            $formData['image_path'] = $formData['picture'];
-            $products = $formData['products'];
 
-            unset($formData['startDate'], $formData['endDate'], $formData['picture'], $formData['productsTotalPrice'], $formData['offerPrice']);
-            $this->form->fill($formData);
+            $safeFormData = [
+                'en' => [
+                    'name' => $formData['en']['title'] ?? '',
+                    'description' => $formData['en']['details'] ?? ''
+                ],
+                'ar' => [
+                    'name' => $formData['ar']['title'] ?? '',
+                    'description' => $formData['ar']['details'] ?? ''
+                ],
+                'products_total_price' => $formData['productsTotalPrice'] ?? 0,
+                'offer_price' => $formData['offerPrice'] ?? 0,
+                'start_date' => $formData['startDate'] ?? null,
+                'end_date' => $formData['endDate'] ?? null,
+                'image_path' => $formData['picture'] ?? null,
+                'status' => $formData['status'] ?? null,
+            ];
+
+            $this->form->fill($safeFormData);
         }
     }
 
@@ -55,7 +63,7 @@ class EditOffer extends EditRecord
         $this->translationData = $extracted['translations'];
 
         $mainData = $extracted['main'];
-        $currentName = $this->translationService->getTranslatedName($this->record);
+        $this->translationService->getTranslatedName($this->record);
 
         return $mainData;
     }
