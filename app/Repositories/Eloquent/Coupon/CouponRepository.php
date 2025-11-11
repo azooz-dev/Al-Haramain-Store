@@ -7,8 +7,8 @@ use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 class CouponRepository implements CouponRepositoryInterface
 {
-  public function findCoupon(int $couponId)
+  public function findCoupon(string $couponCode)
   {
-    return Coupon::findOrFail($couponId);
+    return Coupon::where('code', $couponCode)->first();
   }
 }

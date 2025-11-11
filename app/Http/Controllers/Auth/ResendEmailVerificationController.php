@@ -19,6 +19,6 @@ class ResendEmailVerificationController extends Controller
 
         $user = $this->resendEmail->resend($data['email']);
 
-        return showOne($user, __("app.messages.auth.resend_verification_link"));
+        return showOne($user, __("app.messages.auth.resend_verification_code"));
     }
 }

@@ -24,9 +24,9 @@ class CouponService
    *
    * @throws OrderException
    */
-  public function applyCouponToOrder(int $couponId, float $totalAmount, int $userId): float
+  public function applyCouponToOrder(string $couponCode, float $totalAmount, int $userId): float
   {
-    $coupon = $this->applyCoupon($couponId, $userId);
+    $coupon = $this->applyCoupon($couponCode, $userId);
     // Compute discount
     if ($coupon->discount_type === Coupon::FIXED) {
       $discountAmount = (float)$coupon->discount_amount;
@@ -45,9 +45,9 @@ class CouponService
     return $newTotal;
   }
 
-  public function applyCoupon(int $couponId, int $userId)
+  public function applyCoupon(string $couponCode, int $userId)
   {
-    $coupon = $this->couponRepository->findCoupon($couponId);
+    $coupon = $this->couponRepository->findCoupon($couponCode);
     if (!$coupon) {
       throw new OrderException(__('app.messages.order.coupon_not_found'), 404);
     }

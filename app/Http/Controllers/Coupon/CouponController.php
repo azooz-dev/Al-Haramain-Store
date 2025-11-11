@@ -13,9 +13,9 @@ class CouponController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function apply(int $couponId, int $userId)
+    public function apply(string $couponCode, int $userId)
     {
-        $couponValidationResponse = $this->couponService->applyCoupon($couponId, $userId);
+        $couponValidationResponse = $this->couponService->applyCoupon($couponCode, $userId);
 
         return showOne($couponValidationResponse, 'coupon', 200);
     }

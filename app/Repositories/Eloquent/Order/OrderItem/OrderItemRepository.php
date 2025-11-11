@@ -17,7 +17,6 @@ class OrderItemRepository implements OrderItemRepositoryInterface
    */
   public function createMany(array $itemsPayload, int $orderId): bool
   {
-
     foreach ($itemsPayload as &$payload) {
       $payload['order_id'] = $orderId;
       $payload['created_at'] = now();

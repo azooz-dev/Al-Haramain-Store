@@ -3,7 +3,6 @@
 namespace App\Services\Auth;
 
 use App\Events\Auth\UserRegistered;
-use App\Models\User\User;
 use function App\Helpers\showMessage;
 use App\Exceptions\User\UserException;
 
@@ -54,10 +53,22 @@ class AuthService
   public function logout()
   {
     if ($this->authRepository->logout()) {
+      // Delete the Sanctum access token
+      request()->user()->currentAccessToken()->delete();
+
+      // Invalidate the session completely
       request()->session()->invalidate();
+
+      // Regenerate CSRF token
       request()->session()->regenerateToken();
 
-      return showMessage(__("app.messages.auth.logged_out"), 200);
+      $response = showMessage(__("app.messages.auth.logged_out"), 200);
+
+      // Remove cookies from browser
+      $response->headers->clearCookie('XSRF-TOKEN');
+      $response->headers->clearCookie('laravel-session', '/', request()->getHost(), false, true);
+
+      return $response;
     }
 
     return showMessage(__("app.messages.auth.failed_logged_out"), 500);

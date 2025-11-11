@@ -29,7 +29,7 @@ class UserFavoriteController extends Controller
      */
     public function destroy(int $userId, Favorite $favorite)
     {
-        // $this->authorize('delete', $favorite);
+        $this->authorize('delete', $favorite);
         $response = $this->userFavoriteService->deleteFavorite(['user_id' => $userId, 'id' => $favorite->id]);
 
         return $response;

@@ -49,7 +49,6 @@ OrderApiResource extends JsonResource
             'address' => "address",
             'coupon' => "coupon",
             'reviews' => "reviews",
-            'payments' => "payments",
             'createdDate' => "created_at",
             'lastChange' => "updated_at",
         ];

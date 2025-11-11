@@ -34,15 +34,13 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
     Route::apiResource('users.orders.items.reviews', UserOrderItemReviewController::class)->only('store');
 
     // Coupons
-    Route::get('coupons/{id}/{userId}', [CouponController::class, 'apply']);
+    Route::get('coupons/{code}/{userId}', [CouponController::class, 'apply']);
 
     // User Products Favorite
-    Route::apiResource('users.products.colors.variants.favorite', UserProductFavoriteController::class)->only('store');
+    Route::apiResource('users.products.colors.variants.favorites', UserProductFavoriteController::class)->only('store');
 
     // User Favorites
     Route::apiResource('users.favorites', UserFavoriteController::class)->only(['index', 'destroy']);
-    // Coupons
-    Route::get('coupons/{id}', [CouponController::class, 'apply']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 

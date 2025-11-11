@@ -24,7 +24,7 @@ class AddressApiResource extends JsonResource
             "state" => (string) $this->state,
             "postalCode" => (string) $this->postal_code,
             "country" => (string) $this->country,
-            "is_default" => (bool) $this->is_default,
+            "isDefault" => (bool) $this->is_default,
             "createdDate" => (string) $this->created_at,
             "lastChange" => (string) $this->updated_at
         ];

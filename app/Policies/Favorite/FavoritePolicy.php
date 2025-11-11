@@ -48,7 +48,6 @@ class FavoritePolicy
      */
     public function delete(User $user, Favorite $favorite): bool
     {
-        dd("test");
         return $user->id === $favorite->user_id;
     }
 

@@ -7,10 +7,10 @@ use App\Repositories\Interface\User\Product\Favorite\UserProductFavoriteReposito
 
 class UserProductFavoriteRepository implements UserProductFavoriteRepositoryInterface
 {
-  public function store(array $data): bool
+  public function store(array $data): Favorite
   {
     $favorite = Favorite::create($data);
 
-    return $favorite->wasRecentlyCreated;
+    return $favorite;
   }
 }

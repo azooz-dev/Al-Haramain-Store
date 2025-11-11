@@ -214,8 +214,8 @@ class OrderService
         $totalAmount = $this->variantService->calculateTotalOrderPrice($data['items']);
 
         // Apply coupon via CouponService (will validate usage counts)
-        if (!empty($data['coupon_id'])) {
-            return $this->couponService->applyCouponToOrder((int)$data['coupon_id'], $totalAmount, (int)$data['user_id']);
+        if (!empty($data['coupon_code'])) {
+            return $this->couponService->applyCouponToOrder($data['coupon_code'], $totalAmount, (int)$data['user_id']);
         }
 
         return $totalAmount;

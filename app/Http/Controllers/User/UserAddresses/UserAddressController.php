@@ -25,7 +25,7 @@ class UserAddressController extends Controller
      */
     public function index(User $user)
     {
-        $this->authorize('view', [Address::class, $user]);
+        $this->authorize('view', [$user, Address::class]);
 
         $addresses = $this->userAddressService->getAllUserAddresses($user->id);
 

@@ -32,7 +32,7 @@ class OrderRequest extends BaseOrderRequest
         return [
             'user_id' => 'required|exists:users,id',
             'address_id' => 'required|exists:addresses,id',
-            'coupon_id' => 'nullable|exists:coupons,id',
+            'coupon_code' => 'nullable|exists:coupons,code',
             'items' => 'required|array|min:1',
             'items.*' => new ValidOrderItem(app(ProductService::class), app(OfferService::class), $this->items),
             'items.*.orderable_type' => 'required|string|in:' . Product::class . ',' . Offer::class,
