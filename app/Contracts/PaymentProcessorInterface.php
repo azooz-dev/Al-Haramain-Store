@@ -2,13 +2,15 @@
 
 namespace App\Contracts;
 
+use App\DTOs\PaymentResult;
+
 interface PaymentProcessorInterface
 {
   public function requiresPaymentIntent(): bool;
 
   public function createPaymentIntent(array $orderData): ?string;
 
-  public function processPayment(array $orderData);
+  public function processPayment(array $orderData): PaymentResult;
 
-  public function verifyPayment(string $paymentIntentId);
+  public function verifyPayment(string $paymentIntentId): PaymentResult;
 }
