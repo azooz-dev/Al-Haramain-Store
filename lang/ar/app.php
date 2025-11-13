@@ -689,6 +689,17 @@ return [
       "coupon_usage_limit_exceeded" => 'لا يمكن استخدام الكوبون أكثر من (:usage_limit) مرة !',
       "coupon_usage_limit_per_user_exceeded" => 'لا يمكن استخدام الكوبون أكثر من (:usage_limit_per_user) مرة !',
     ],
+    'payment' => [
+      'verify_payment_error' => 'فشل التحقق من الدفع.',
+      'cash_on_delivery_not_supported' => 'لا يمكن التحقق من الدفع بالدفع عند الاستلام!',
+      'create_payment_intent_error' => 'فشل إنشاء نية الدفع.',
+      'process_payment_error' => 'فشل معالجة الدفع.',
+      'payment_intent_id_required' => 'معرف نية الدفع مطلوب.',
+      'payment_intent_not_succeeded' => 'فشلت نية الدفع.',
+      'invalid_payment_method' => 'طريقة الدفع غير صالحة.',
+      'create_payment_error' => 'فشل إنشاء الدفع.',
+      'webhook_processed' => 'تم معالجة الوبك بنجاح.',
+    ],
     "user_address" => [
       "user_address_error" => "حدث خطاء في عنوان المستخدم !",
       "user_address_deleted" => "تم حذف عنوان المستخدم بنجاح.",

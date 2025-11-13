@@ -572,6 +572,17 @@ return [
       "coupon_usage_limit_exceeded" => 'The coupon cannot be used more than (:usage_limit) times !',
       "coupon_usage_limit_per_user_exceeded" => 'The coupon cannot be used more than (:usage_limit_per_user) times !',
     ],
+    'payment' => [
+      'verify_payment_error' => 'Payment verification failed!',
+      'cash_on_delivery_not_supported' => 'Cash on delivery payments cannot be verified!',
+      'create_payment_intent_error' => 'Failed to create payment intent.',
+      'process_payment_error' => 'Failed to process payment.',
+      'payment_intent_id_required' => 'Payment intent ID is required.',
+      'payment_intent_not_succeeded' => 'Payment intent did not succeed.',
+      'invalid_payment_method' => 'Invalid payment method.',
+      'create_payment_error' => 'Failed to create payment.',
+      'webhook_processed' => 'Webhook processed successfully.',
+    ],
     "user_address" => [
       "user_address_error" => "User address error occurred!",
       "user_address_deleted" => "User address deleted successfully.",

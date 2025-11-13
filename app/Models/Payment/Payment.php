@@ -10,10 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Payment extends Model
 {
     use HasFactory;
-    const PENDING = 'pending';
-    const PAID = 'paid';
+    const SUCCESS = 'success';
     const FAILED = 'failed';
-    const REFUNDED = 'refunded';
 
     protected $fillable = [
         'order_id',
@@ -42,11 +40,8 @@ class Payment extends Model
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
-            self::PENDING => 'warning',
-            self::PAID => 'success',
+            self::SUCCESS => 'success',
             self::FAILED => 'danger',
-            self::REFUNDED => 'gray',
-            default => 'gray',
         };
     }
 
@@ -56,11 +51,8 @@ class Payment extends Model
     public function getStatusIconAttribute(): string
     {
         return match ($this->status) {
-            self::PENDING => 'heroicon-o-clock',
-            self::PAID => 'heroicon-o-check-circle',
+            self::SUCCESS => 'heroicon-o-check-circle',
             self::FAILED => 'heroicon-o-x-circle',
-            self::REFUNDED => 'heroicon-o-arrow-path',
-            default => 'heroicon-o-question-mark-circle',
         };
     }
 
@@ -69,22 +61,14 @@ class Payment extends Model
      */
     public function isSuccessful(): bool
     {
-        return $this->status === self::PAID;
+        return $this->status === self::SUCCESS;
     }
 
     /**
-     * Check if payment is pending
+     * Check if payment is successful
      */
     public function isPending(): bool
     {
-        return $this->status === self::PENDING;
-    }
-
-    /**
-     * Check if payment failed
-     */
-    public function hasFailed(): bool
-    {
-        return $this->status === self::FAILED;
+        return $this->status === self::SUCCESS;
     }
 }

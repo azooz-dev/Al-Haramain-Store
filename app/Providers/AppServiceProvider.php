@@ -39,6 +39,7 @@ use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Order\OrderRepository;
 use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
+use App\Repositories\Eloquent\Payment\PaymentRepository;
 use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
 use App\Repositories\Eloquent\User\UserFavoriteRepository;
@@ -53,6 +54,7 @@ use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 use App\Repositories\Eloquent\Order\OrderItem\OrderItemRepository;
+use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
 use App\Repositories\Interface\Product\ProductRepositoryInterface;
 use App\Repositories\Eloquent\Product\Color\ProductColorRepository;
 use App\Repositories\Eloquent\Product\ProductTranslationRepository;
@@ -115,6 +117,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserFavoriteRepositoryInterface::class, UserFavoriteRepository::class);
         $this->app->bind(UserAddressRepositoryInterface::class, UserAddressRepository::class);
         $this->app->bind(ProductColorRepositoryInterface::class, ProductColorRepository::class);
+
+        $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
     }
 
     /**
