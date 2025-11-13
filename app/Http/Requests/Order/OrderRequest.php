@@ -41,6 +41,7 @@ class OrderRequest extends BaseOrderRequest
             'items.*.color_id' => 'nullable|integer',
             'items.*.variant_id' => 'nullable|integer',
             'payment_method' => 'required|in:' . Order::PAYMENT_METHOD_CASH_ON_DELIVERY . ',' . Order::PAYMENT_METHOD_CREDIT_CARD,
+            'payment_intent_id' => 'required_if:payment_method,' . Order::PAYMENT_METHOD_CREDIT_CARD . '|nullable|string',
         ];
     }
 

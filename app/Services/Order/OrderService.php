@@ -14,6 +14,7 @@ use App\Http\Resources\Order\OrderApiResource;
 use App\Services\Product\Variant\ProductVariantService;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
+use App\Services\Payment\PaymentService;
 
 class OrderService
 {
@@ -26,7 +27,8 @@ class OrderService
         private OrderItemRepositoryInterface $orderItemRepository,
         private ProductVariantService $variantService,
         private CouponService $couponService,
-        private OfferService $offerService
+        private OfferService $offerService,
+        private PaymentService $paymentService
     ) {}
 
     /**
@@ -50,7 +52,13 @@ class OrderService
 
             // Use transaction and return resource from closure. Use retry for deadlocks (second param).
             $orderResource = DB::transaction(function () use ($data) {
-                return $this->createOrderAndItems($data);
+                // Process payment
+                $paymentResult = $this->paymentService->processPayment($data);
+                // Create order and items
+                $order = $this->createOrderAndItems($data);
+                // Create payment record
+                $this->paymentService->createPayment($order->id, $paymentResult);
+                return $order;
             }, 5);
 
             return $orderResource;

@@ -7,17 +7,23 @@ use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Order\OrderController;
 use Illuminate\Session\Middleware\StartSession;
 use App\Http\Controllers\Coupon\CouponController;
+use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\User\UserFavoriteController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\User\Order\UserOrderController;
+use App\Http\Controllers\Payment\StripeWebhookController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
 use App\Http\Controllers\User\UserAddresses\UserAddressController;
 use App\Http\Controllers\User\Product\UserProductFavoriteController;
 use App\Http\Controllers\User\Order\OrderItem\Review\UserOrderItemReviewController;
+
+
+// Stripe Webhook
+Route::post('stripe/webhook', [StripeWebhookController::class, 'handle']);
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   // Products
@@ -29,6 +35,9 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
     // Orders
     Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
+
+    // Payments
+    Route::post('payments/create-intent', [PaymentController::class, 'createPaymentIntent']);
 
     // User Orders
     Route::apiResource('users.orders.items.reviews', UserOrderItemReviewController::class)->only('store');
