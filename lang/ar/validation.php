@@ -233,6 +233,7 @@ return [
         'coupon'                => 'كوبون',
         'reviews'               => 'التقييمات',
         'payments'              => 'الدفعات',
+        'payment_intent_id'     => 'رقم الدفع الإلكتروني',
     ],
 
 ];

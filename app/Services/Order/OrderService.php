@@ -4,17 +4,18 @@ namespace App\Services\Order;
 
 use App\Models\User\User;
 use App\Models\Offer\Offer;
+use App\Models\Order\Order;
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\DB;
 use App\Services\Offer\OfferService;
 use App\Services\Coupon\CouponService;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
+use App\Services\Payment\PaymentService;
 use App\Http\Resources\Order\OrderApiResource;
 use App\Services\Product\Variant\ProductVariantService;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
-use App\Services\Payment\PaymentService;
 
 class OrderService
 {
@@ -54,12 +55,16 @@ class OrderService
             $orderResource = DB::transaction(function () use ($data) {
                 // Process payment
                 $paymentResult = $this->paymentService->processPayment($data);
+
                 // Create order and items
                 $order = $this->createOrderAndItems($data);
-                // Create payment record
-                $this->paymentService->createPayment($order->id, $paymentResult);
+                if ($data['payment_method'] === Order::PAYMENT_METHOD_CREDIT_CARD && $paymentResult->transactionId) {
+                    // Create payment record
+                    $this->paymentService->createPayment($order->id, $paymentResult);
+                }
                 return $order;
             }, 5);
+
 
             return $orderResource;
         } catch (OrderException $e) {

@@ -6,7 +6,6 @@ use App\DTOs\PaymentResult;
 use App\Models\Order\Order;
 
 use function App\Helpers\errorResponse;
-use function App\Helpers\showOne;
 use App\Contracts\PaymentProcessorInterface;
 use App\Exceptions\Payment\InvalidPaymentMethodException;
 use App\Services\Payment\Processors\StripePaymentProcessor;
@@ -39,9 +38,7 @@ class PaymentService
       return null;
     }
 
-    $paymentIntent = $processor->createPaymentIntent($orderData);
-
-    return showOne($paymentIntent);
+    return $processor->createPaymentIntent($orderData);
   }
 
   public function processPayment(array $orderData): ?PaymentResult

@@ -247,6 +247,7 @@ return [
         'coupon'                => 'Coupon',
         'reviews'               => 'Reviews',
         'payments'              => 'Payments',
+        'payment_intent_id'     => 'Payment Intent ID',
     ],
 
 ];
