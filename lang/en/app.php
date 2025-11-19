@@ -563,7 +563,7 @@ return [
         'product_not_found' => 'The product not found!',
         'variant_not_found' => 'The variant not found!',
         'color_not_found' => 'The color not found!',
-        'variant_quantity_exceeds_stock' => 'The variant quantity (:variant_quantity) cannot exceed the total stock quantity (:total_stock)',
+        'variant_quantity_exceeds_stock' => 'The quantity of the variant is exceeded the stock!',
       ],
       "coupon_not_found" => "The coupon not found !",
       "coupon_inactive" => 'The coupon is inactive !',

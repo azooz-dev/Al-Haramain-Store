@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests\Order;
 
-use App\Models\Order\Order;
-use App\Models\Product\Product;
 use App\Models\Offer\Offer;
+use App\Models\Order\Order;
 use App\Rules\ValidOrderItem;
+use App\Models\Product\Product;
+use App\Http\Requests\BaseRequest;
 use App\Services\Offer\OfferService;
 use App\Services\Product\ProductService;
-use App\Http\Requests\BaseRequest;
+use App\Services\Product\Variant\ProductVariantService;
 
 abstract class BaseOrderRequest extends BaseRequest
 {
@@ -39,7 +40,7 @@ abstract class BaseOrderRequest extends BaseRequest
             'address_id' => 'required|exists:addresses,id',
             'coupon_code' => 'nullable|exists:coupons,code',
             'items' => 'required|array|min:1',
-            'items.*' => new ValidOrderItem(app(ProductService::class), app(OfferService::class), $this->items),
+            'items.*' => new ValidOrderItem(app(ProductService::class), app(OfferService::class), app(ProductVariantService::class), $this->items),
             'items.*.orderable_type' => 'required|string|in:' . Product::class . ',' . Offer::class,
             'items.*.orderable_id' => 'required|integer',
             'items.*.quantity' => 'required|integer|min:1',

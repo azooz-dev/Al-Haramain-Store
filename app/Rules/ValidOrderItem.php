@@ -8,12 +8,15 @@ use App\Models\Product\Product;
 use App\Services\Offer\OfferService;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
+use App\Exceptions\Product\Variant\OutOfStockException;
+use App\Services\Product\Variant\ProductVariantService;
 
 class ValidOrderItem implements ValidationRule
 {
     public function __construct(
         private ProductService $productService,
         private OfferService $offerService,
+        private ProductVariantService $productVariantService,
         private array $items
     ) {}
     /**
@@ -42,7 +45,12 @@ class ValidOrderItem implements ValidationRule
                     $fail(__('app.messages.order.validation.variant_not_found'));
                 }
 
-                return;
+                if ($variantId) {
+                    $productItems[$variantId] = [
+                        'quantity' => $item['quantity'],
+                        'orderable_type' => Product::class,
+                    ];
+                }
             } elseif ($item['orderable_type'] === Offer::class) {
                 $offerId = $item['orderable_id'];
 
@@ -50,6 +58,16 @@ class ValidOrderItem implements ValidationRule
                     $fail(__("app.messages.order.validation.offer_not_found"));
                 }
 
+                return;
+            }
+        }
+
+        // Check stock availability for all product variants at once
+        if (!empty($productItems)) {
+            try {
+                $this->productVariantService->checkStock($productItems);
+            } catch (OutOfStockException $e) {
+                $fail($e->getMessage());
                 return;
             }
         }
