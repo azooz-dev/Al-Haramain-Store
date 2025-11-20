@@ -9,7 +9,6 @@ use App\Models\Admin\Admin;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\IconColumn;
@@ -20,6 +19,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Validation\Rules\Password;
+use App\Services\Admin\AdminService;
 use App\Filament\Resources\AdminResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -44,7 +44,7 @@ class AdminResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return app(AdminService::class)->getAdminsCount();
     }
 
     public static function getNavigationLabel(): string
@@ -319,13 +319,11 @@ class AdminResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()
-            ->with(['roles'])
-            ->withCount(['roles']);
+        return app(AdminService::class)->getQueryBuilder();
     }
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return static::getModel()::count() > 0 ? 'success' : 'danger';
+        return app(AdminService::class)->getAdminsCount() > 0 ? 'success' : 'danger';
     }
 }
