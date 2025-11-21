@@ -4,9 +4,8 @@ namespace App\Services\Coupon;
 
 use Carbon\Carbon;
 use App\Models\Coupon\Coupon;
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
 use App\Exceptions\Coupon\CouponException;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
@@ -77,5 +76,106 @@ class CouponService
     }
 
     return $coupon;
+  }
+
+  public function createCoupon(array $data): Coupon
+  {
+    // Validate code uniqueness
+    if ($this->couponRepository->codeExists($data['code'])) {
+      throw new CouponException(__('app.messages.coupon.code_exists'), 422);
+    }
+
+    // Create coupon via repository
+    $coupon = $this->couponRepository->create($data);
+
+    // Return coupon with relationships loaded
+    return $coupon->fresh(['couponUsers']);
+  }
+
+  public function updateCoupon(int $id, array $data): Coupon
+  {
+    $coupon = $this->couponRepository->findById($id);
+
+    // Validate code uniqueness if code changed
+    if (isset($data['code']) && $data['code'] !== $coupon->code) {
+      if ($this->couponRepository->codeExists($data['code'], $id)) {
+        throw new CouponException(__('app.messages.coupon.code_exists'), 422);
+      }
+    }
+
+    // Update coupon via repository
+    $coupon = $this->couponRepository->update($id, $data);
+
+    // Return updated coupon with relationships loaded
+    return $coupon;
+  }
+
+  public function deleteCoupon(int $id): bool
+  {
+    $coupon = $this->couponRepository->findById($id);
+
+    // Check if coupon can be deleted (no usage)
+    if (!$this->canDeleteCoupon($coupon)) {
+      throw new CouponException(__('app.messages.coupon.must_be_empty'), 422);
+    }
+
+    return $this->couponRepository->delete($id);
+  }
+
+  public function toggleCouponStatus(int $id): Coupon
+  {
+    $coupon = $this->couponRepository->findById($id);
+
+    $newStatus = $coupon->status === Coupon::ACTIVE ? Coupon::INACTIVE : Coupon::ACTIVE;
+
+    return $this->couponRepository->update($id, ['status' => $newStatus]);
+  }
+
+  public function activateCoupons(array $ids): int
+  {
+    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::ACTIVE]);
+  }
+
+  public function deactivateCoupons(array $ids): int
+  {
+    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::INACTIVE]);
+  }
+
+  public function getCouponsCount(): int
+  {
+    return $this->couponRepository->count();
+  }
+
+  public function getQueryBuilder(): Builder
+  {
+    return $this->couponRepository->getQueryBuilder();
+  }
+
+  public function getRemainingUses(Coupon $coupon): int|string
+  {
+    $limit = $coupon->usage_limit;
+
+    if ($limit === null) {
+      return __('app.common.unlimited');
+    }
+
+    $used = $this->getTotalUsage($coupon);
+
+    return max($limit - $used, 0);
+  }
+
+  public function canDeleteCoupon(Coupon $coupon): bool
+  {
+    return $coupon->couponUsers->count() === 0;
+  }
+
+  public function getTotalUsage(Coupon $coupon): int
+  {
+    // Use withSum result if available, otherwise calculate from relationship
+    if (isset($coupon->coupon_users_sum_times_used)) {
+      return (int) ($coupon->coupon_users_sum_times_used ?? 0);
+    }
+
+    return (int) $coupon->couponUsers()->sum('times_used');
   }
 }

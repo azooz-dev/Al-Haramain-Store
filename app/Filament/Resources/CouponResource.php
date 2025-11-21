@@ -2,18 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Coupon\Coupon;
-use Illuminate\Validation\Rule;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
@@ -21,6 +18,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CouponResource\Pages;
+use App\Services\Coupon\CouponService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Filament\Support\Exceptions\Halt;
 
@@ -42,6 +40,14 @@ class CouponResource extends Resource
     protected static ?string $pluralModelLabel = 'Coupons';
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
+    /**
+     * Get navigation badge with coupon count
+     */
+    public static function getNavigationBadge(): ?string
+    {
+        return app(CouponService::class)->getCouponsCount();
+    }
 
 
     /**
@@ -162,10 +168,9 @@ class CouponResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $couponService = app(CouponService::class);
+
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                $query->withSum('couponUsers', 'times_used');
-            })
             ->columns([
                 TextColumn::make('code')
                     ->label(__('app.columns.coupon.code'))
@@ -207,13 +212,8 @@ class CouponResource extends Resource
                     ->alignCenter(),
                 TextColumn::make('remaining_uses')
                     ->label(__('app.columns.coupon.remaining_uses'))
-                    ->state(function (Coupon $record) {
-                        $limit = $record->usage_limit;
-                        if ($limit === null) {
-                            return __('app.common.unlimited');
-                        }
-                        $used = (int) ($record->coupon_users_sum_times_used ?? 0);
-                        return max($limit - $used, 0);
+                    ->state(function (Coupon $record) use ($couponService) {
+                        return $couponService->getRemainingUses($record);
                     })
                     ->sortable()
                     ->alignCenter()
@@ -286,8 +286,10 @@ class CouponResource extends Resource
                     Tables\Actions\Action::make('toggle_status')
                         ->label(__('app.actions.toggle_status'))
                         ->action(function (Coupon $record) {
-                            $record->status = $record->status === Coupon::ACTIVE ? Coupon::INACTIVE : Coupon::ACTIVE;
-                            $record->save();
+                            $couponService = app(CouponService::class);
+                            $couponService->toggleCouponStatus($record->id);
+                            // Refresh the record to get updated status
+                            $record->refresh();
                         })
                         ->requiresConfirmation()
                         ->icon('heroicon-o-power')
@@ -306,7 +308,8 @@ class CouponResource extends Resource
                         ->modalDescription(__('app.messages.coupon.confirm_delete_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->before(function (Coupon $record) {
-                            if ($record->couponUsers->count() > 0) {
+                            $couponService = app(CouponService::class);
+                            if (!$couponService->canDeleteCoupon($record)) {
                                 self::buildErrorNotification(
                                     __('app.messages.coupon.must_be_empty'),
                                     __('app.messages.coupon.must_be_empty_description')
@@ -328,7 +331,11 @@ class CouponResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('activate')
                         ->label(__('app.actions.activate'))
-                        ->action(fn(\Illuminate\Support\Collection $records) => $records->each->update(['status' => Coupon::ACTIVE]))
+                        ->action(function (\Illuminate\Support\Collection $records) {
+                            $couponService = app(CouponService::class);
+                            $ids = $records->pluck('id')->toArray();
+                            $couponService->activateCoupons($ids);
+                        })
                         ->color('success')
                         ->icon('heroicon-o-bolt')
                         ->successNotification(
@@ -339,7 +346,11 @@ class CouponResource extends Resource
                         ),
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label(__('app.actions.deactivate'))
-                        ->action(fn(\Illuminate\Support\Collection $records) => $records->each->update(['status' => Coupon::INACTIVE]))
+                        ->action(function (\Illuminate\Support\Collection $records) {
+                            $couponService = app(CouponService::class);
+                            $ids = $records->pluck('id')->toArray();
+                            $couponService->deactivateCoupons($ids);
+                        })
                         ->color('danger')
                         ->icon('heroicon-o-power')
                         ->successNotification(
@@ -354,8 +365,9 @@ class CouponResource extends Resource
                         ->modalDescription(__('app.messages.coupon.confirm_delete_bulk_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->before(function (\Illuminate\Support\Collection $records) {
+                            $couponService = app(CouponService::class);
                             foreach ($records as $record) {
-                                if ($record->couponUsers->count() > 0) {
+                                if (!$couponService->canDeleteCoupon($record)) {
                                     return self::buildErrorNotification(
                                         __('app.messages.coupon.must_be_empty'),
                                         __('app.messages.coupon.must_be_empty_description')
@@ -390,5 +402,14 @@ class CouponResource extends Resource
             'view' => Pages\ViewCoupon::route('/{record}'),
             'edit' => Pages\EditCoupon::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * Get the Eloquent query for the resource
+     * Uses service layer for query building
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return app(CouponService::class)->getQueryBuilder();
     }
 }
