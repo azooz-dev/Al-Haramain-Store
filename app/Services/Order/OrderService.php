@@ -6,7 +6,9 @@ use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Services\Offer\OfferService;
 use App\Services\Coupon\CouponService;
 use function App\Helpers\errorResponse;
@@ -16,6 +18,7 @@ use App\Http\Resources\Order\OrderApiResource;
 use App\Services\Product\Variant\ProductVariantService;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
@@ -313,5 +316,168 @@ class OrderService
     public function isDelivered(int $orderId): bool
     {
         return $this->orderRepository->isDelivered($orderId);
+    }
+
+    public function updateOrder(int $id, array $data): Order
+    {
+        // If status is being updated, use updateOrderStatus for logging
+        if (isset($data['status'])) {
+            return $this->updateOrderStatus($id, $data['status']);
+        }
+
+        // Otherwise, update normally
+        return $this->orderRepository->update($id, $data);
+    }
+
+    public function updateOrderStatus(int $id, string $status): Order
+    {
+        $order = $this->orderRepository->findById($id);
+
+        // Validate status transition
+        if (!$this->canUpdateStatus($order, $status)) {
+            throw new OrderException(__('app.messages.order.invalid_status_transition'), 422);
+        }
+
+        $oldStatus = $order->status;
+
+        // Update order status via repository
+        $updatedOrder = $this->orderRepository->updateStatus($id, $status);
+
+        // Log status change
+        Log::info('Order status changed', [
+            'order_id' => $id,
+            'order_number' => $order->order_number,
+            'old_status' => $oldStatus,
+            'new_status' => $status,
+            'user_id' => Auth::id(),
+        ]);
+
+        return $updatedOrder;
+    }
+
+    public function deleteOrder(int $id): bool
+    {
+        $order = $this->orderRepository->findById($id);
+
+        // Check if order can be deleted
+        if (!$this->canDeleteOrder($order)) {
+            throw new OrderException(__('app.messages.order.cannot_delete'), 422);
+        }
+
+        return $this->orderRepository->delete($id);
+    }
+
+    public function markOrdersAsProcessing(array $ids): int
+    {
+        return Order::whereIn('id', $ids)->update(['status' => Order::PROCESSING]);
+    }
+
+    public function markOrdersAsShipped(array $ids): int
+    {
+        return Order::whereIn('id', $ids)->update(['status' => Order::SHIPPED]);
+    }
+
+    public function getOrdersCount(): int
+    {
+        return $this->orderRepository->count();
+    }
+
+    public function getOrdersCountByStatus(string $status): int
+    {
+        return $this->orderRepository->countByStatus($status);
+    }
+
+    public function getQueryBuilder(): Builder
+    {
+        return $this->orderRepository->getQueryBuilder();
+    }
+
+    public function getPaymentStatus(Order $order): string
+    {
+        // Use model accessor
+        return $order->payment_status;
+    }
+
+    public function canDeleteOrder(Order $order): bool
+    {
+        // Only cancelled or refunded orders can be deleted
+        return in_array($order->status, [Order::CANCELLED, Order::REFUNDED]);
+    }
+
+    protected function getStatusTransitions(): array
+    {
+        return [
+            Order::PENDING => [
+                Order::PROCESSING,
+                Order::SHIPPED,
+                Order::CANCELLED,
+            ],
+            Order::PROCESSING => [
+                Order::SHIPPED,
+                Order::CANCELLED,
+            ],
+            Order::SHIPPED => [
+                Order::DELIVERED,
+                Order::CANCELLED,
+            ],
+            Order::DELIVERED => [
+                Order::REFUNDED,
+            ],
+            Order::CANCELLED => [
+                // Terminal state - no transitions allowed
+            ],
+            Order::REFUNDED => [
+                // Terminal state - no transitions allowed
+            ],
+        ];
+    }
+
+    public function canUpdateStatus(Order $order, string $newStatus): bool
+    {
+        // Check if new status is valid
+        if (!in_array($newStatus, Order::getStatuses())) {
+            return false;
+        }
+
+        // If status hasn't changed, allow it
+        if ($order->status === $newStatus) {
+            return true;
+        }
+
+        $transitions = $this->getStatusTransitions();
+        $currentStatus = $order->status;
+
+        if (!isset($transitions[$currentStatus])) {
+            return false;
+        }
+
+        return in_array($newStatus, $transitions[$currentStatus]);
+    }
+
+    public function getAvailableStatuses(Order $order): array
+    {
+        $currentStatus = $order->status;
+        $transitions = $this->getStatusTransitions();
+        $availableStatuses = $transitions[$currentStatus] ?? [];
+
+        // Always include current status (user can keep it the same)
+        $availableStatuses[] = $currentStatus;
+        $availableStatuses = array_unique($availableStatuses);
+
+        // Build options array with translations
+        $options = [];
+        foreach ($availableStatuses as $status) {
+            $options[$status] = match ($status) {
+                Order::PENDING => __('app.status.pending'),
+                Order::PROCESSING => __('app.status.processing'),
+                Order::SHIPPED => __('app.status.shipped'),
+                Order::DELIVERED => __('app.status.delivered'),
+                Order::CANCELLED => __('app.status.cancelled'),
+                Order::REFUNDED => __('app.status.refunded'),
+                default => $status,
+            };
+        }
+
+        return $options;
     }
 }

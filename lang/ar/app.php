@@ -280,6 +280,8 @@ return [
         'cancelled' => 'ملغي',
         'refunded' => 'مسترد',
       ],
+      'status_terminal_state' => 'هذه حالة نهائية، لا يمكنك تغيير الحالة مرة أخرى.',
+      'status_available_transitions' => 'يمكنك تغيير الحالة إلى التالي:',
       'admin_notes' => 'ملاحظات الإدارة',
       'admin_notes_placeholder' => 'أضف ملاحظات داخلية حول هذا الطلب...',
     ],

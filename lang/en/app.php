@@ -272,6 +272,8 @@ return [
       ],
       'admin_notes' => 'Admin Notes',
       'admin_notes_placeholder' => 'Add internal notes about this order...',
+      'status_terminal_state' => 'This is a terminal state, you cannot change the status again.',
+      'status_available_transitions' => 'You can change the status to the following:',
     ],
     'review' => [
       'status_management' => 'Status Management',
