@@ -52,6 +52,10 @@ trait HasCategoryTranslations
 
   /**
    * Generate slug from translation data
+   * 
+   * Note: Slug generation is now primarily handled by CategoryService.
+   * This method is kept for backward compatibility and can be used
+   * if needed in other contexts.
    */
   protected function generateSlugFromName(string $categoryName): string
   {
