@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Closure;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -13,6 +12,7 @@ use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OfferResource\Pages;
+use App\Services\Offer\OfferService;
 use App\Services\Product\ProductTranslationService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -36,6 +36,14 @@ class OfferResource extends Resource
     protected static ?string $pluralModelLabel = 'Offers';
 
     protected static ?string $recordTitleAttribute = 'id';
+
+    /**
+     * Get navigation badge with offer count
+     */
+    public static function getNavigationBadge(): ?string
+    {
+        return app(OfferService::class)->getOffersCount();
+    }
 
     public static function getNavigationGroup(): ?string
     {
@@ -354,6 +362,8 @@ class OfferResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $offerService = app(OfferService::class);
+
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
@@ -374,17 +384,14 @@ class OfferResource extends Resource
                     ->weight('bold')
                     ->color('primary')
                     ->icon('heroicon-o-tag')
-                    ->state(function (Offer $record) {
-                        $locale = app()->getLocale();
-                        return $record->translations->firstWhere('locale', $locale)?->name
-                            ?? $record->translations->first()?->name
-                            ?? ('#' . $record->id);
+                    ->state(function (Offer $record) use ($offerService) {
+                        return $offerService->getTranslatedName($record) ?: ('#' . $record->id);
                     }),
 
                 Tables\Columns\TextColumn::make('products_count')
                     ->label(__('app.columns.offer.products_count'))
-                    ->state(function (Offer $record) {
-                        return $record->offerProducts()->count();
+                    ->state(function (Offer $record) use ($offerService) {
+                        return $offerService->getProductsCount($record);
                     })
                     ->badge()
                     ->color('info')
@@ -404,9 +411,8 @@ class OfferResource extends Resource
 
                 Tables\Columns\TextColumn::make('discount_amount')
                     ->label(__('app.columns.offer.discount'))
-                    ->state(function (Offer $record) {
-                        $discount = $record->products_total_price - $record->offer_price;
-                        return $discount > 0 ? '$' . number_format($discount, 2) : '$0.00';
+                    ->state(function (Offer $record) use ($offerService) {
+                        return $offerService->getDiscountAmount($record);
                     })
                     ->color('success')
                     ->icon('heroicon-o-arrow-trending-down'),
@@ -553,9 +559,12 @@ class OfferResource extends Resource
         ];
     }
 
+    /**
+     * Get the Eloquent query for the resource
+     * Uses service layer for query building
+     */
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->with(['translations', 'offerProducts.product.translations', 'offerProducts.productVariant', 'offerProducts.productColor']);
+        return app(OfferService::class)->getQueryBuilder();
     }
 }

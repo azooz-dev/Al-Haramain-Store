@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\OfferResource\Pages;
 
-use Filament\Actions;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\OfferResource;
+use App\Services\Offer\OfferService;
 use App\Traits\Offer\HasOfferTranslations;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
@@ -15,7 +16,6 @@ class CreateOffer extends CreateRecord
 
     protected static string $resource = OfferResource::class;
 
-
     private array $translationData = [];
 
     protected function getRedirectUrl(): string
@@ -24,45 +24,47 @@ class CreateOffer extends CreateRecord
     }
 
     /**
-     * Process form data before creating the offer
-     * 
-     * This method is called by Filament before creating the offer record.
-     * It performs two main tasks:
-     * 1. Extracts translation data from the form and stores it for later use
-     * 2. Generates a unique slug from the English name for the offer
+     * Extract translation data before creating the offer
      * 
      * @param array $data - Raw form data from Filament
      * @return array - Cleaned data for offer creation (without translations)
      */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Extract translation data and store for later saving
+        // Extract translation data and store for later use in service
         $extracted = $this->extractTranslationData($data);
         $this->translationData = $extracted['translations'];
 
+        // Return main data without translations (translation saving handled by service)
         return $extracted['main'];
     }
 
     /**
-     * Save translations after offer creation
+     * Handle record creation using OfferService
      * 
-     * This method is called by Filament after the offer record is created.
-     * It saves the translation data that was extracted earlier to the
-     * offer_translations table.
+     * This method uses OfferService to create the offer and handle
+     * translations. The service handles translation saving.
      * 
-     * The translations are saved separately because they belong to a different
-     * table and need the offer ID to establish the relationship.
+     * @param array $data - Cleaned form data (without translations)
+     * @return Model
      */
-    protected function afterCreate(): void
+    protected function handleRecordCreation(array $data): Model
     {
-        $this->saveTranslations($this->translationData);
+        $offerService = app(OfferService::class);
+
+        // Create offer with translations via service
+        // Service handles translation saving
+        $offer = $offerService->createOffer($data, $this->translationData);
+
+        return $offer;
     }
 
     protected function getSavedNotification(): ?Notification
     {
+        $offerService = app(OfferService::class);
         return self::buildSuccessNotification(
             __('app.messages.offer.created_success'),
-            __('app.messages.offer.created_success_body', ['name' => $this->record->name])
+            __('app.messages.offer.created_success_body', ['name' => $offerService->getTranslatedName($this->record)])
         );
     }
 }
