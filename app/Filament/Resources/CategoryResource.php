@@ -11,8 +11,8 @@ use Filament\Resources\Resource;
 use App\Models\Category\Category;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CategoryResource\Pages;
+use App\Services\Category\CategoryService;
 use App\Filament\Concerns\SendsFilamentNotifications;
-use App\Services\Category\CategoryTranslationService;
 
 class CategoryResource extends Resource
 {
@@ -66,6 +66,14 @@ class CategoryResource extends Resource
     }
 
     protected static ?string $recordTitleAttribute = 'slug';
+
+    /**
+     * Get navigation badge with category count
+     */
+    public static function getNavigationBadge(): ?string
+    {
+        return app(CategoryService::class)->getCategoriesCount();
+    }
 
     public static function form(Form $form): Form
     {
@@ -149,7 +157,7 @@ class CategoryResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $translationService = app(CategoryTranslationService::class);
+        $categoryService = app(CategoryService::class);
 
         return $table
             ->columns([
@@ -172,7 +180,9 @@ class CategoryResource extends Resource
                     ->weight('bold')
                     ->color('primary')
                     ->icon('heroicon-o-tag')
-                    ->state(function (Category $record) use ($translationService) {
+                    ->state(function (Category $record) use ($categoryService) {
+                        // Access translation service through category service
+                        $translationService = app(\App\Services\Category\CategoryTranslationService::class);
                         return $translationService->getTranslatedName($record);
                     }),
 
@@ -196,15 +206,17 @@ class CategoryResource extends Resource
                         });
                     })
                     ->sortable()
-                    ->state(function (Category $record) use ($translationService) {
+                    ->state(function (Category $record) use ($categoryService) {
+                        // Access translation service through category service
+                        $translationService = app(\App\Services\Category\CategoryTranslationService::class);
                         return $translationService->getTranslatedDescription($record);
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('product_count')
                     ->label(__('app.columns.category.product_count'))
-                    ->state(function (Category $record) {
-                        return $record->products->count();
+                    ->state(function (Category $record) use ($categoryService) {
+                        return $categoryService->getProductCount($record);
                     })
                     ->badge()
                     ->color('success')
@@ -261,7 +273,8 @@ class CategoryResource extends Resource
                         ->color('danger')
                         ->requiresConfirmation()
                         ->modalHeading(__('app.messages.category.confirm_delete_heading'))
-                        ->modalDescription(function (Category $record) use ($translationService) {
+                        ->modalDescription(function (Category $record) {
+                            $translationService = app(\App\Services\Category\CategoryTranslationService::class);
                             $translatedName = $translationService->getTranslatedName($record);
                             return __('app.messages.category.confirm_delete_description', ['name' => $translatedName]);
                         })
@@ -290,6 +303,15 @@ class CategoryResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->striped()
             ->paginated([10, 25, 50, 100]);
+    }
+
+    /**
+     * Get the Eloquent query for the resource
+     * Uses service layer for query building
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        return app(CategoryService::class)->getQueryBuilder();
     }
 
     public static function getRelations(): array

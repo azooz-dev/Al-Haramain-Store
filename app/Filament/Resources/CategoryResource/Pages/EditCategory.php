@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\CategoryResource\Pages;
 
 use Filament\Actions;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use App\Services\Category\CategoryService;
 use App\Filament\Resources\CategoryResource;
 use App\Traits\Category\HasCategoryTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
@@ -16,17 +18,13 @@ use App\Filament\Concerns\SendsFilamentNotifications;
  * 
  * This page handles:
  * - Form population with existing category and translation data
- * - Form data processing for category updates
- * - Conditional slug regeneration when names change
- * - Translation data extraction and saving
- * - Integration with the HasCategoryTranslations trait
+ * - Delegates business logic to CategoryService
  * 
  * Workflow:
  * 1. fillForm() loads existing category and translation data
  * 2. User modifies form data
- * 3. mutateFormDataBeforeSave() processes changes and regenerates slug if needed
- * 4. Category is updated
- * 5. afterSave() saves the updated translations
+ * 3. mutateFormDataBeforeSave() extracts translations
+ * 4. handleRecordUpdate() uses CategoryService to update category and translations
  * 
  * @package App\Filament\Resources\CategoryResource\Pages
  */
@@ -40,8 +38,7 @@ class EditCategory extends EditRecord
      * Holds EN/AR translation data across the save lifecycle.
      * 
      * This property stores the extracted translation data between
-     * mutateFormDataBeforeSave() and afterSave() methods.
-     * It ensures translations are saved after the main category is updated.
+     * mutateFormDataBeforeSave() and handleRecordUpdate() methods.
      */
     private array $translationData = [];
 
@@ -85,46 +82,41 @@ class EditCategory extends EditRecord
     /**
      * Process form data before saving the category
      * 
-     * This method is called by Filament before updating the category record.
-     * It performs several tasks:
-     * 1. Extracts translation data from the form and stores it for later use
-     * 2. Checks if the English name has changed
-     * 3. Regenerates the slug if the name has changed (to maintain URL consistency)
+     * This method extracts translation data from the form and stores it
+     * for use in handleRecordUpdate(). Slug regeneration is handled by service.
      * 
      * @param array $data - Raw form data from Filament
      * @return array - Cleaned data for category update (without translations)
      */
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // Extract translation data and store for later saving
+        // Extract translation data and store for later use in service
         $extracted = $this->extractTranslationData($data);
         $this->translationData = $extracted['translations'];
 
-        // Check if name changed and regenerate slug if needed
-        $mainData = $extracted['main'];
-        $currentName = $this->translationService->getTranslatedName($this->record);
-
-        // If name changed, regenerate slug
-        if ($this->translationData['en']['name'] !== $currentName) {
-            $mainData['slug'] = $this->generateSlugFromName($this->translationData['en']['name']);
-        }
-
-        return $mainData;
+        // Return main data without translations (slug regeneration handled by service)
+        return $extracted['main'];
     }
 
     /**
-     * Save translations after category update
+     * Handle record update using CategoryService
      * 
-     * This method is called by Filament after the category record is updated.
-     * It saves the translation data that was extracted earlier to the
-     * category_translations table.
+     * This method uses CategoryService to update the category and handle
+     * translations. The service handles slug regeneration if name changed.
      * 
-     * The translations are saved separately because they belong to a different
-     * table and need the category ID to establish the relationship.
+     * @param Model $record - The category record
+     * @param array $data - Cleaned form data (without translations)
+     * @return Model
      */
-    protected function afterSave(): void
+    protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $this->saveTranslations($this->translationData);
+        $categoryService = app(CategoryService::class);
+
+        // Update category with translations via service
+        // Service handles slug regeneration if name changed and translation saving
+        $category = $categoryService->updateCategory($record->id, $data, $this->translationData);
+
+        return $category;
     }
 
     protected function getSavedNotification(): ?Notification
