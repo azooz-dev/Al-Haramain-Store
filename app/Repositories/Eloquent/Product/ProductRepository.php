@@ -3,6 +3,8 @@
 namespace App\Repositories\Eloquent\Product;
 
 use App\Models\Product\Product;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Repositories\Interface\Product\ProductRepositoryInterface;
 use Illuminate\Support\Collection;
 
@@ -33,5 +35,36 @@ class ProductRepository implements ProductRepositoryInterface
   public function slugExists(string $slug): bool
   {
     return Product::where('slug', $slug)->exists();
+  }
+
+  public function create(array $data): Product
+  {
+    return Product::create($data);
+  }
+
+  public function update(int $id, array $data): Product
+  {
+    $product = Product::findOrFail($id);
+    $product->update($data);
+    return $product->fresh(['translations', 'colors.images', 'variants', 'categories.translations']);
+  }
+
+  public function delete(int $id): bool
+  {
+    $product = Product::findOrFail($id);
+    return $product->delete();
+  }
+
+  public function count(): int
+  {
+    return Product::count();
+  }
+
+  public function getQueryBuilder(): Builder
+  {
+    return Product::query()
+      ->withoutGlobalScopes([SoftDeletingScope::class])
+      ->with(['translations', 'colors.images', 'variants', 'categories.translations'])
+      ->withCount(['colors', 'variants', 'images', 'categories']);
   }
 }
