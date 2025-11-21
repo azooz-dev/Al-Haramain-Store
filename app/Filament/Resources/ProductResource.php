@@ -12,8 +12,7 @@ use Filament\Resources\Resource;
 use App\Rules\VariantQuantityMaxRule;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
-use App\Services\Product\ProductTranslationService;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Services\Product\ProductService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class ProductResource extends Resource
@@ -69,6 +68,14 @@ class ProductResource extends Resource
     }
 
     protected static ?string $recordTitleAttribute = 'sku';
+
+    /**
+     * Get navigation badge with product count
+     */
+    public static function getNavigationBadge(): ?string
+    {
+        return app(ProductService::class)->getProductsCount();
+    }
 
     public static function form(Form $form): Form
     {
@@ -386,7 +393,7 @@ class ProductResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $translationService = app(ProductTranslationService::class);
+        $productService = app(ProductService::class);
 
         return $table
             ->columns([
@@ -412,7 +419,9 @@ class ProductResource extends Resource
                     ->color('primary')
                     ->icon('heroicon-o-cube')
                     ->wrap()
-                    ->state(function (Product $record) use ($translationService) {
+                    ->state(function (Product $record) use ($productService) {
+                        // Access translation service through product service
+                        $translationService = app(\App\Services\Product\ProductTranslationService::class);
                         return $translationService->getTranslatedName($record);
                     }),
 
@@ -466,11 +475,11 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('price_range')
                     ->label(__('app.columns.product.price_range'))
-                    ->state(function (Product $record) {
+                    ->state(function (Product $record) use ($productService) {
                         if ($record->variants->isEmpty()) {
                             return __('app.columns.product.no_variants');
                         }
-                        return '$' . $record->price_range;
+                        return '$' . $productService->getPriceRange($record);
                     })
                     ->badge()
                     ->color('emerald')
@@ -611,13 +620,13 @@ class ProductResource extends Resource
         ];
     }
 
+    /**
+     * Get the Eloquent query for the resource
+     * Uses service layer for query building
+     */
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ])
-            ->with(['translations', 'colors.images', 'variants', 'categories.translations']);
+        return app(ProductService::class)->getQueryBuilder();
     }
 
     /**

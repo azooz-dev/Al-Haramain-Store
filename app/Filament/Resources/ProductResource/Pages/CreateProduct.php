@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources\ProductResource\Pages;
 
-use Filament\Actions;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductResource;
+use App\Services\Product\ProductService;
 use App\Traits\Product\HasProductTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -16,6 +17,7 @@ class CreateProduct extends CreateRecord
     protected static string $resource = ProductResource::class;
 
     private array $translationData = [];
+    private ?array $categoryIds = null;
 
     protected function getRedirectUrl(): string
     {
@@ -24,21 +26,38 @@ class CreateProduct extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        //Extract translation data and store for later saving
-        $extracted = $this->extractTranslationData($data);
+        // Extract category IDs if present (before translation extraction)
+        $this->categoryIds = $data['categories'] ?? null;
 
+        // Extract translation data and store for later use in service
+        $extracted = $this->extractTranslationData($data);
         $this->translationData = $extracted['translations'];
 
-        //Generate slug from English name 
-        $mainData = $extracted['main'];
-        $mainData['slug'] = $this->generateSlugFromName($extracted['translations']['en']['name']);
+        // Remove categories from main data (will be synced by service)
+        unset($extracted['main']['categories']);
 
-        return $mainData;
+        // Return main data without translations and categories (slug generation handled by service)
+        return $extracted['main'];
     }
 
-    protected function afterCreate(): void
+    /**
+     * Handle record creation using ProductService
+     * 
+     * This method uses ProductService to create the product and handle
+     * translations and categories. The service handles slug generation.
+     * 
+     * @param array $data - Cleaned form data (without translations and categories)
+     * @return Model
+     */
+    protected function handleRecordCreation(array $data): Model
     {
-        $this->saveTranslations($this->translationData);
+        $productService = app(ProductService::class);
+
+        // Create product with translations and categories via service
+        // Service handles slug generation, translation saving, and category sync
+        $product = $productService->createProduct($data, $this->translationData, $this->categoryIds);
+
+        return $product;
     }
 
     protected function getSavedNotification(): ?Notification

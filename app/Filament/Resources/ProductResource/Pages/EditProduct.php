@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\ProductResource\Pages;
 
 use Filament\Actions;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\ProductResource;
+use App\Services\Product\ProductService;
 use App\Traits\Product\HasProductTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -15,6 +17,7 @@ class EditProduct extends EditRecord
     protected static string $resource = ProductResource::class;
 
     private array $translationData = [];
+    private ?array $categoryIds = null;
 
     protected function getHeaderActions(): array
     {
@@ -52,25 +55,39 @@ class EditProduct extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        //Extract Translation data if we have a record
+        // Extract category IDs if present (before translation extraction)
+        $this->categoryIds = $data['categories'] ?? null;
+
+        // Extract translation data and store for later use in service
         $extracted = $this->extractTranslationData($data);
         $this->translationData = $extracted['translations'];
 
-        //Check if name changed, regenerated slug if needed
-        $mainData = $extracted['main'];
-        $currentName = $this->translationService->getTranslatedName($this->record);
+        // Remove categories from main data (will be synced by service)
+        unset($extracted['main']['categories']);
 
-        //If name changed, regenerated slug
-        if ($this->translationData['en']['name'] !== $currentName) {
-            $mainData['slug'] = $this->generateSlugFromName($this->translationData['en']['name']);
-        }
-
-        return $mainData;
+        // Return main data without translations and categories (slug regeneration handled by service)
+        return $extracted['main'];
     }
 
-    protected function afterSave(): void
+    /**
+     * Handle record update using ProductService
+     * 
+     * This method uses ProductService to update the product and handle
+     * translations and categories. The service handles slug regeneration if name changed.
+     * 
+     * @param Model $record - The product record
+     * @param array $data - Cleaned form data (without translations and categories)
+     * @return Model
+     */
+    protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $this->saveTranslations($this->translationData);
+        $productService = app(ProductService::class);
+
+        // Update product with translations and categories via service
+        // Service handles slug regeneration if name changed, translation saving, and category sync
+        $product = $productService->updateProduct($record->id, $data, $this->translationData, $this->categoryIds);
+
+        return $product;
     }
 
     protected function getSavedNotification(): ?Notification
