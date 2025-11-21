@@ -22,16 +22,6 @@ trait HasOfferTranslations
     return $this->translationService->getFormData($this->record);
   }
 
-  protected function saveTranslations(array $translationData): void
-  {
-    if (!$this->record) {
-      return;
-    }
-
-
-    $this->translationService->saveTranslation($this->record, $translationData);
-  }
-
   protected function extractTranslationData(array $data): array
   {
     $translationData = [
