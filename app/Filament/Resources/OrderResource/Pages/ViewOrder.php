@@ -2,14 +2,12 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use Filament\Actions;
 use App\Models\Order\Order;
 use Illuminate\Support\Str;
 use Filament\Actions\Action;
-use App\Models\Payment\Payment;
-use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\OrderResource;
+use App\Services\Order\OrderService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -28,25 +26,42 @@ class ViewOrder extends ViewRecord
         ->form([
           \Filament\Forms\Components\Select::make('status')
             ->label(__('app.fields.new_status'))
-            ->options([
-              Order::PENDING => __('app.status.pending'),
-              Order::PROCESSING => __('app.status.processing'),
-              Order::SHIPPED => __('app.status.shipped'),
-              Order::DELIVERED => __('app.status.delivered'),
-              Order::CANCELLED => __('app.status.cancelled'),
-              Order::REFUNDED => __('app.status.refunded'),
-            ])
+            ->options(function () {
+              /** @var Order $order */
+              $order = $this->record;
+              $orderService = app(OrderService::class);
+              return $orderService->getAvailableStatuses($order);
+            })
             ->required()
-            ->native(false),
+            ->native(false)
+            ->default(fn() => $this->record->status)
+            ->helperText(function () {
+              /** @var Order $order */
+              $order = $this->record;
+              $orderService = app(OrderService::class);
+              $availableStatuses = $orderService->getAvailableStatuses($order);
+
+              if (count($availableStatuses) === 1) {
+                return __('app.forms.order.status_terminal_state');
+              }
+
+              return __('app.forms.order.status_available_transitions');
+            }),
         ])
         ->action(function (array $data) {
           /** @var Order $order */
           $order = $this->record;
-          $order->update(['status' => $data['status']]);
+          $orderService = app(OrderService::class);
+
+          // Update status via service (includes validation and logging)
+          $updatedOrder = $orderService->updateOrderStatus($order->id, $data['status']);
+
+          // Refresh record to get updated status
+          $order->refresh();
 
           return self::buildSuccessNotification(
             __('app.messages.order.status_updated'),
-            __('app.messages.order.order_status_updated', ['num' => $order->order_number, 'status' => Str::headline($order->status)])
+            __('app.messages.order.order_status_updated', ['num' => $order->order_number, 'status' => Str::headline($updatedOrder->status)])
           );
         })
         ->requiresConfirmation(),

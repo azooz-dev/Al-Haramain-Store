@@ -4,9 +4,11 @@ namespace App\Filament\Resources\OrderResource\Pages;
 
 use Filament\Actions;
 use App\Models\Order\Order;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\OrderResource;
+use App\Services\Order\OrderService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditOrder extends EditRecord
@@ -36,28 +38,24 @@ class EditOrder extends EditRecord
         return $this->getResource()::getUrl('index');
     }
 
-    protected function beforeSave(): void
+    /**
+     * Handle record update using OrderService
+     * 
+     * @param Model $record
+     * @param array $data
+     * @return Model
+     */
+    protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        // Track status changes
-        if ($this->record->isDirty('status')) {
-            $oldStatus = $this->record->getOriginal('status');
-            $newStatus = $this->record->status;
-
-            // Log status change
-            \Illuminate\Support\Facades\Log::info('Order status changed', [
-                'order_id' => $this->record->id,
-                'old_status' => $oldStatus,
-                'new_status' => $newStatus,
-                'user_id' => auth()->id(),
-            ]);
-        }
+        $orderService = app(OrderService::class);
+        return $orderService->updateOrder($record->id, $data);
     }
 
     public function getSavedNotification(): ?Notification
     {
         return self::buildSuccessNotification(
             __('app.messages.order.status_updated'),
-            __('app.messages.order.order_status_updated', ['num' => $this->record->order_number, 'status' => $newStatus])
+            __('app.messages.order.order_status_updated', ['num' => $this->record->order_number, 'status' => $this->record->status])
         );
     }
     public static function getRelations(): array
