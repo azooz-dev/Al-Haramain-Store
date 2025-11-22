@@ -44,6 +44,7 @@ use App\Repositories\Eloquent\Product\ProductRepository;
 use App\Repositories\Eloquent\Category\CategoryRepository;
 use App\Repositories\Eloquent\Admin\AdminRepository;
 use App\Repositories\Eloquent\Favorite\FavoriteRepository;
+use App\Repositories\Eloquent\Review\ReviewRepository;
 use App\Repositories\Eloquent\User\UserFavoriteRepository;
 use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
 use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
@@ -63,6 +64,7 @@ use App\Repositories\Eloquent\Product\ProductTranslationRepository;
 use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 use App\Repositories\Interface\Admin\AdminRepositoryInterface;
 use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
+use App\Repositories\Interface\Review\ReviewRepositoryInterface;
 use App\Repositories\Interface\User\UserFavoriteRepositoryInterface;
 use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Eloquent\Category\CategoryTranslationRepository;
@@ -117,6 +119,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
         $this->app->bind(FavoriteRepositoryInterface::class, FavoriteRepository::class);
+        $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(UserOrderRepositoryInterface::class, UserOrderRepository::class);
         $this->app->bind(UserProductFavoriteRepositoryInterface::class, UserProductFavoriteRepository::class);

@@ -8,14 +8,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Review\Review;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use Illuminate\Support\Collection;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
+use App\Services\Review\ReviewService;
 
 class ReviewResource extends Resource
 {
@@ -155,6 +154,9 @@ class ReviewResource extends Resource
 
         Tables\Columns\TextColumn::make('product.sku')
           ->label(__('app.columns.review.product'))
+          ->getStateUsing(function (Review $record) {
+            return app(ReviewService::class)->getOrderableIdentifier($record);
+          })
           ->searchable()
           ->sortable()
           ->icon('heroicon-o-cube')
@@ -278,7 +280,7 @@ class ReviewResource extends Resource
                 ->native(false),
             ])
             ->action(function (array $data, $record) {
-              $record->update(['status' => $data['status']]);
+              app(ReviewService::class)->updateReviewStatus($record->id, $data['status']);
 
               return self::buildSuccessNotification(
                 __('app.messages.review.status_updated'),
@@ -297,9 +299,8 @@ class ReviewResource extends Resource
             ->modalHeading(__('app.actions.review.approve_selected_modal_heading'))
             ->modalDescription(__('app.actions.review.approve_selected_modal_description'))
             ->action(function (Collection $records): void {
-              $records->each(function ($record) {
-                $record->update(['status' => Review::APPROVED]);
-              });
+              $ids = $records->pluck('id')->toArray();
+              app(ReviewService::class)->bulkApproveReviews($ids);
             })
             ->modalIcon('heroicon-o-check-circle'),
 
@@ -311,9 +312,8 @@ class ReviewResource extends Resource
             ->modalHeading(__('app.actions.review.reject_selected_modal_heading'))
             ->modalDescription(__('app.actions.review.reject_selected_modal_description'))
             ->action(function (Collection $records): void {
-              $records->each(function ($record) {
-                $record->update(['status' => Review::REJECTED]);
-              });
+              $ids = $records->pluck('id')->toArray();
+              app(ReviewService::class)->bulkRejectReviews($ids);
             }),
 
           Tables\Actions\DeleteBulkAction::make()
@@ -343,8 +343,11 @@ class ReviewResource extends Resource
 
   public static function getEloquentQuery(): Builder
   {
-    return parent::getEloquentQuery()
-      ->with(['user', 'product', 'order'])
-      ->orderBy('created_at', 'desc');
+    return app(ReviewService::class)->getQueryBuilder();
+  }
+
+  public static function getNavigationBadge(): ?string
+  {
+    return (string) app(ReviewService::class)->getReviewsCountByStatus(Review::PENDING);
   }
 }
