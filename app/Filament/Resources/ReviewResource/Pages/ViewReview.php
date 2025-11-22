@@ -6,6 +6,7 @@ use App\Models\Review\Review;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\ReviewResource;
 use App\Filament\Concerns\SendsFilamentNotifications;
+use App\Services\Review\ReviewService;
 
 class ViewReview extends ViewRecord
 {
@@ -32,7 +33,7 @@ class ViewReview extends ViewRecord
             ->native(false),
         ])
         ->action(function (array $data, $record) {
-          $record->update(['status' => $data['status']]);
+          app(ReviewService::class)->updateReviewStatus($record->id, $data['status']);
 
           return self::buildSuccessNotification(
             __('app.messages.review.status_updated'),
@@ -48,10 +49,11 @@ class ViewReview extends ViewRecord
 
   protected function mutateFormDataBeforeFill(array $data): array
   {
-    $review = $this->record->load(['user', 'product', 'order']);
+    $reviewService = app(ReviewService::class);
+    $review = $reviewService->getReviewById($this->record->id);
 
     $data['user_name'] = $review->user ? $review->user->first_name . ' ' . $review->user->last_name : '';
-    $data['product_name'] = $review->product ? $review->product->name : '';
+    $data['product_name'] = $reviewService->getTranslatedOrderableName($review);
     $data['order_number'] = $review->order ? $review->order->order_number : '';
     $data['status_display'] = $review->status_label;
 
