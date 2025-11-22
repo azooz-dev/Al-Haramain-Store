@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\FavoriteResource\Pages;
 use App\Models\Favorite\Favorite;
-use App\Services\Product\ProductTranslationService;
+use App\Services\Favorite\FavoriteService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -126,8 +126,7 @@ class FavoriteResource extends Resource
                 Tables\Columns\TextColumn::make('product.translations')
                     ->label(__('app.columns.favorite.product_name'))
                     ->getStateUsing(function (Favorite $record) {
-                        $service = app(ProductTranslationService::class);
-                        return $service->getTranslatedName($record->product);
+                        return app(FavoriteService::class)->getTranslatedProductName($record);
                     })
                     ->searchable()
                     ->sortable()
@@ -216,7 +215,11 @@ class FavoriteResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->with(['user', 'product.translations']);
+        return app(FavoriteService::class)->getQueryBuilder();
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) app(FavoriteService::class)->getFavoritesCount();
     }
 }

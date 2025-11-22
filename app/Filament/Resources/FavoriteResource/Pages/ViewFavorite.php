@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources\FavoriteResource\Pages;
 
-use Filament\Actions;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use App\Models\Favorite\Favorite;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\FavoriteResource;
-use App\Services\Product\ProductTranslationService;
+use App\Services\Favorite\FavoriteService;
 
 class ViewFavorite extends ViewRecord
 {
@@ -56,8 +55,7 @@ class ViewFavorite extends ViewRecord
                 Infolists\Components\TextEntry::make('product.translations')
                   ->label(__('app.columns.favorite.product_name'))
                   ->getStateUsing(function (Favorite $record) {
-                    $service = app(ProductTranslationService::class);
-                    return $service->getTranslatedName($record->product);
+                    return app(FavoriteService::class)->getTranslatedProductName($record);
                   })
                   ->icon('heroicon-o-cube'),
 

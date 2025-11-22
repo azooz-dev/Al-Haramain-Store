@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\FavoriteResource\Pages;
 
 use App\Filament\Resources\FavoriteResource;
+use App\Services\Favorite\FavoriteService;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
@@ -31,15 +32,17 @@ class ListFavorites extends ListRecords
 
     public function getTabs(): array
     {
+        $favoriteService = app(FavoriteService::class);
+
         return [
             'all' => Tab::make(__('app.tabs.all'))
                 ->icon('heroicon-o-heart')
-                ->badge(FavoriteResource::getEloquentQuery()->count()),
+                ->badge($favoriteService->getFavoritesCount()),
 
             'recent' => Tab::make(__('app.tabs.recent'))
                 ->icon('heroicon-o-clock')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('created_at', '>=', now()->subDays(7)))
-                ->badge(FavoriteResource::getEloquentQuery()->where('created_at', '>=', now()->subDays(7))->count()),
+                ->badge($favoriteService->getRecentFavoritesCount(7)),
         ];
     }
 }
