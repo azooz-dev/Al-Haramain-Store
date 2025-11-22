@@ -13,7 +13,7 @@ class OfferRepository implements OfferRepositoryInterface
 {
   public function getAllOffers(): Collection
   {
-    return Offer::with(['translations', 'products'])->get();
+    return Offer::with(['translations', 'products'])->where('status', Offer::ACTIVE)->get();
   }
 
   public function findOfferById(int $offerId)
