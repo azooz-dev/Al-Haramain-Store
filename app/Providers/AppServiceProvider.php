@@ -7,6 +7,7 @@ use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Models\Review\Review;
 use App\Models\Category\Category;
+use App\Models\Product\Product;
 use App\Models\Favorite\Favorite;
 use App\Policies\User\UserPolicy;
 use App\Models\Offer\OfferProduct;
@@ -27,6 +28,8 @@ use App\Policies\Favorite\FavoritePolicy;
 use App\Models\User\UserAddresses\Address;
 use App\Events\Auth\ResendVerificationEmail;
 use App\Observers\Category\CategoryObserver;
+use App\Observers\Product\ProductObserver;
+use App\Observers\Review\ReviewObserver;
 use App\Policies\User\Address\AddressPolicy;
 use App\Listeners\Auth\SendVerificationEmail;
 use App\Observers\Offer\OfferProductObserver;
@@ -140,8 +143,10 @@ class AppServiceProvider extends ServiceProvider
         OfferProduct::observe(OfferProductObserver::class);
         Order::observe(OrderObserver::class);
         User::observe(UserObserver::class);
+        Product::observe(ProductObserver::class);
         ProductColorImage::observe(ProductColorImageObserver::class);
         Category::observe(CategoryObserver::class);
+        Review::observe(ReviewObserver::class);
 
         // Register Event Listeners
         Event::listen(UserRegistered::class, SendVerificationEmail::class);

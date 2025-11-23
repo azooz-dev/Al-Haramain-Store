@@ -4,6 +4,7 @@ namespace App\Observers\Order;
 
 use App\Models\Admin\Admin;
 use App\Models\Order\Order;
+use App\Services\Dashboard\DashboardCacheHelper;
 use Filament\Notifications\Notification;
 
 class OrderObserver
@@ -25,6 +26,9 @@ class OrderObserver
                         ->url(route('filament.admin.resources.orders.view', $order->id)),
                 ])->sendToDatabase($admin, isEventDispatched: true);
         }
+
+        // Invalidate dashboard widget cache
+        DashboardCacheHelper::flushAll();
     }
 
     /**
@@ -32,6 +36,9 @@ class OrderObserver
      */
     public function updated(Order $order): void
     {
-        //
+        // Invalidate cache when order status or total amount changes
+        if ($order->isDirty(['status', 'total_amount'])) {
+            DashboardCacheHelper::flushAll();
+        }
     }
 }
