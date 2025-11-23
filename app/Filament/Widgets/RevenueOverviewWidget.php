@@ -2,17 +2,19 @@
 
 namespace App\Filament\Widgets;
 
-use Carbon\Carbon;
-use App\Models\Order\Order;
+use App\Filament\Concerns\ResolvesServices;
+use App\Services\Dashboard\OrderAnalyticsService;
 use Filament\Widgets\ChartWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RevenueOverviewWidget extends ChartWidget
 {
-    use HasWidgetShield;
+    use HasWidgetShield, ResolvesServices;
+
     protected static ?string $heading = 'Chart';
     protected static ?int $sort = 6;
     protected static ?string $maxHeight = '350px';
+    protected static bool $isLazy = true;
     protected int | string | array $columnSpan = 'full';
 
     public ?string $filter = 'last_30_days';
@@ -63,35 +65,6 @@ class RevenueOverviewWidget extends ChartWidget
         };
     }
 
-    private function getTotalRevenue(): float
-    {
-        $period = $this->getPeriodDates();
-        return Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
-            ->whereBetween('created_at', [$period['start'], $period['end']])
-            ->sum('total_amount');
-    }
-
-    private function getGrowthPercentage(): float
-    {
-        $period = $this->getPeriodDates();
-        $periodLength = $period['start']->diffInDays($period['end']) + 1;
-
-        $currentRevenue = $this->getTotalRevenue();
-
-        $perviousStart = $period['start']->copy()->subDays($periodLength);
-        $perviousEnd = $period['start']->copy()->subDays();
-
-        $perviousRevenue = Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
-            ->whereBetween('created_at', [$perviousStart, $perviousEnd])
-            ->sum('total_amount');
-
-        if ($perviousRevenue == 0) {
-            return $currentRevenue > 0 ? 100 : 0;
-        }
-        return (($currentRevenue - $perviousRevenue) / $perviousRevenue) * 100;
-    }
 
     protected function getOptions(): array
     {
@@ -142,8 +115,10 @@ class RevenueOverviewWidget extends ChartWidget
 
     public function getDescription(): string
     {
-        $totalRevenue = $this->getTotalRevenue();
-        $growth = $this->getGrowthPercentage();
+        $service = $this->resolveService(OrderAnalyticsService::class);
+        $period = $this->getPeriodDates();
+        $totalRevenue = $service->getTotalRevenue($period['start'], $period['end']);
+        $growth = $service->getRevenueGrowthPercentage($period['start'], $period['end']);
 
         return __('app.widgets.revenue.description', [
             'total' => '$' . number_format($totalRevenue, 2),
@@ -153,39 +128,9 @@ class RevenueOverviewWidget extends ChartWidget
 
     protected function getData(): array
     {
+        $service = $this->resolveService(OrderAnalyticsService::class);
         $period = $this->getPeriodDates();
-
-        $data = Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
-            ->whereBetween('created_at', [$period['start'], $period['end']])
-            ->selectRaw('DATE(created_at) as date, SUM(total_amount) as revenue, COUNT(*) as orders')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-
-        return [
-            'datasets' => [
-                [
-                    'label' => __('app.widgets.revenue.revenue_label'),
-                    'data' => $data->pluck('revenue')->toArray(),
-                    'borderColor' => 'rgb(59, 130, 246)',
-                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
-                    'fill' => true,
-                    'tension' => 0.4,
-                    'yAxisID' => 'y'
-                ],
-                [
-                    'label' => __('app.widgets.revenue.orders_label'),
-                    'data' => $data->pluck('orders')->toArray(),
-                    'borderColor' => 'rgb(16, 185, 129)',
-                    'backgroundColor' => 'rgba(16, 185, 129, 0.1)',
-                    'fill' => true,
-                    'tension' => 0.4,
-                    'yAxisID' => 'y1'
-                ],
-            ],
-            'labels' => $data->pluck('date')->map(fn($date) => Carbon::parse($date)->format('M j'))->toArray(),
-        ];
+        return $service->getRevenueOverview($period['start'], $period['end']);
     }
 
     protected function getType(): string

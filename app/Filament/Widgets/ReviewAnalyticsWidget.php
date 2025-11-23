@@ -2,17 +2,19 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Review\Review;
+use App\Filament\Concerns\ResolvesServices;
+use App\Services\Dashboard\ReviewAnalyticsService;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Facades\DB;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class ReviewAnalyticsWidget extends ChartWidget
 {
-    use HasWidgetShield;
+    use HasWidgetShield, ResolvesServices;
+
     protected static ?string $heading = null;
     protected static ?int $sort = 2;
     protected static ?string $maxHeight = '300px';
+    protected static bool $isLazy = true;
     protected int | string | array $columnSpan = [
         'md' => 2,
         'xl' => 1,
@@ -37,9 +39,17 @@ class ReviewAnalyticsWidget extends ChartWidget
 
     public function getDescription(): ?string
     {
-        $averageRating = $this->getAverageRating();
-        $totalReviews = $this->getTotalReviews();
-        $pendingReviews = $this->getPendingReviews();
+        $service = $this->resolveService(ReviewAnalyticsService::class);
+        $period = $this->getPeriodDates();
+        $averageRating = $service->getAverageRating(
+            $period['start'],
+            $period['end']
+        );
+        $totalReviews = $service->getTotalReviews(
+            $period['start'],
+            $period['end']
+        );
+        $pendingReviews = $service->getPendingReviewsCount();
 
         return __('app.widgets.reviews.description', [
             'average' => number_format($averageRating, 1),
@@ -50,38 +60,12 @@ class ReviewAnalyticsWidget extends ChartWidget
 
     protected function getData(): array
     {
+        $service = $this->resolveService(ReviewAnalyticsService::class);
         $period = $this->getPeriodDates();
-
-        $ratingData = Review::whereBetween('created_at', [$period['start'], $period['end']])
-            ->select('rating', DB::raw('COUNT(*) as count'))
-            ->groupBy('rating')
-            ->orderBy('rating')
-            ->get()
-            ->pluck('count', 'rating');
-
-        $labels = [];
-        $data = [];
-        $colors = [];
-
-        for ($rating = 1; $rating <= 5; $rating++) {
-            $count = $ratingData->get($rating, 0);
-            $labels[] = str_repeat('⭐', $rating) . ' (' . $rating . ' Star)';
-            $data[] = $count;
-            $colors[] = $this->getRatingColor($rating);
-        }
-
-        return [
-            'datasets' => [
-                [
-                    'data' => $data,
-                    'backgroundColor' => $colors,
-                    'borderColor' => array_map(fn($color) => $this->darkenColor($color), $colors),
-                    'borderWidth' => 2,
-                    'hoverOffset' => 4,
-                ],
-            ],
-            'labels' => $labels,
-        ];
+        return $service->getRatingDistribution(
+            $period['start'],
+            $period['end']
+        );
     }
 
     protected function getType(): string
@@ -146,44 +130,5 @@ class ReviewAnalyticsWidget extends ChartWidget
                 'end' => now()->endOfDay(),
             ],
         };
-    }
-
-    private function getAverageRating(): float
-    {
-        $period = $this->getPeriodDates();
-
-        return Review::whereBetween('created_at', [$period['start'], $period['end']])
-            ->where('status', Review::APPROVED)
-            ->avg('rating') ?? 0;
-    }
-
-    private function getTotalReviews(): int
-    {
-        $period = $this->getPeriodDates();
-
-        return Review::whereBetween('created_at', [$period['start'], $period['end']])
-            ->count();
-    }
-
-    private function getPendingReviews(): int
-    {
-        return Review::where('status', Review::PENDING)->count();
-    }
-
-    private function getRatingColor(int $rating): string
-    {
-        return match ($rating) {
-            1 => 'rgba(239, 68, 68, 0.8)',    // red - very bad
-            2 => 'rgba(245, 158, 11, 0.8)',   // orange - bad
-            3 => 'rgba(251, 191, 36, 0.8)',   // yellow - okay
-            4 => 'rgba(34, 197, 94, 0.8)',    // light green - good
-            5 => 'rgba(16, 185, 129, 0.8)',   // green - excellent
-            default => 'rgba(107, 114, 128, 0.8)', // gray
-        };
-    }
-
-    private function darkenColor(string $color): string
-    {
-        return str_replace('0.8)', '1)', $color);
     }
 }

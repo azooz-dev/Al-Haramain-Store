@@ -5,16 +5,19 @@ namespace App\Filament\Widgets;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Models\Order\Order;
-use App\Models\Product\Product;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\Order\OrderService;
+use App\Filament\Concerns\ResolvesServices;
 use Filament\Widgets\TableWidget as BaseWidget;
+use App\Services\Dashboard\OrderAnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RecentOrdersWidget extends BaseWidget
 {
-    use HasWidgetShield;
+    use HasWidgetShield, ResolvesServices;
+
     protected static ?string $heading = null;
     protected static ?int $sort = 6;
+    protected static bool $isLazy = true;
     protected int | string | array $columnSpan = 'full';
 
     public function getHeading(): ?string
@@ -24,13 +27,39 @@ class RecentOrdersWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
+        $orderAnalyticsService = $this->resolveService(OrderAnalyticsService::class);
+        $orderService = $this->resolveService(OrderService::class);
+
+        // Get recent orders from service (already has proper eager loading with morphWith)
+        $recentOrders = $orderAnalyticsService->getRecentOrders(15);
+        $orderIds = $recentOrders->pluck('id')->toArray();
+
         return $table
-            ->query(
-                Order::query()
-                    ->with(['user', 'items.orderable.translations', 'items.variant', 'items.color', 'payments'])
-                    ->latest()
-                    ->limit(15)
-            )
+            ->query(function () use ($orderIds) {
+                $query = Order::query()
+                    ->with([
+                        'user',
+                        'items.orderable' => function ($morphTo) {
+                            $morphTo->morphWith([
+                                \App\Models\Product\Product::class => ['translations'],
+                                \App\Models\Offer\Offer::class => ['translations'],
+                            ]);
+                        },
+                        'items.variant',
+                        'items.color',
+                        'payments',
+                    ]);
+
+                if (!empty($orderIds)) {
+                    $query->whereIn('id', $orderIds)
+                        ->orderByRaw('FIELD(id, ' . implode(',', $orderIds) . ')');
+                } else {
+                    // Return empty query if no orders
+                    $query->whereRaw('1 = 0');
+                }
+
+                return $query;
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')
                     ->label(__('app.widgets.orders.order_number'))
@@ -54,24 +83,27 @@ class RecentOrdersWidget extends BaseWidget
                     ->sortable()
                     ->icon('heroicon-m-user'),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label(__('app.widgets.orders.status'))
-                    ->colors([
-                        'warning' => Order::PENDING,
-                        'info' => Order::PROCESSING,
-                        'primary' => Order::SHIPPED,
-                        'success' => Order::DELIVERED,
-                        'danger' => Order::CANCELLED,
-                        'gray' => Order::REFUNDED,
-                    ])
-                    ->icons([
-                        'heroicon-m-clock' => Order::PENDING,
-                        'heroicon-m-cog-6-tooth' => Order::PROCESSING,
-                        'heroicon-m-truck' => Order::SHIPPED,
-                        'heroicon-m-check-circle' => Order::DELIVERED,
-                        'heroicon-m-x-circle' => Order::CANCELLED,
-                        'heroicon-m-arrow-path' => Order::REFUNDED,
-                    ])
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        Order::PENDING => 'warning',
+                        Order::PROCESSING => 'info',
+                        Order::SHIPPED => 'primary',
+                        Order::DELIVERED => 'success',
+                        Order::CANCELLED => 'danger',
+                        Order::REFUNDED => 'gray',
+                        default => 'gray',
+                    })
+                    ->icon(fn(string $state): string => match ($state) {
+                        Order::PENDING => 'heroicon-m-clock',
+                        Order::PROCESSING => 'heroicon-m-cog-6-tooth',
+                        Order::SHIPPED => 'heroicon-m-truck',
+                        Order::DELIVERED => 'heroicon-m-check-circle',
+                        Order::CANCELLED => 'heroicon-m-x-circle',
+                        Order::REFUNDED => 'heroicon-m-arrow-path',
+                        default => 'heroicon-m-question-mark-circle',
+                    })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
                         Order::PENDING => __('app.status.pending'),
                         Order::PROCESSING => __('app.status.processing'),
@@ -99,8 +131,9 @@ class RecentOrdersWidget extends BaseWidget
                     ->alignEnd()
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('payment_status')
+                Tables\Columns\TextColumn::make('payment_status')
                     ->label(__('app.widgets.orders.payment'))
+                    ->badge()
                     ->state(function (Order $record) {
                         if ($record->payment_method === 'cash_on_delivery') {
                             return $record->status === Order::DELIVERED ? 'paid' : 'pending';
@@ -109,18 +142,20 @@ class RecentOrdersWidget extends BaseWidget
                         $payment = $record->payments()->latest()->first();
                         return $payment?->status ?? 'unknown';
                     })
-                    ->colors([
-                        'success' => 'paid',
-                        'warning' => 'pending',
-                        'danger' => 'failed',
-                        'gray' => 'unknown',
-                    ])
-                    ->icons([
-                        'heroicon-m-check-circle' => 'paid',
-                        'heroicon-m-clock' => 'pending',
-                        'heroicon-m-x-circle' => 'failed',
-                        'heroicon-m-question-mark-circle' => 'unknown',
-                    ])
+                    ->color(fn(string $state): string => match ($state) {
+                        'paid' => 'success',
+                        'pending' => 'warning',
+                        'failed' => 'danger',
+                        'unknown' => 'gray',
+                        default => 'gray',
+                    })
+                    ->icon(fn(string $state): string => match ($state) {
+                        'paid' => 'heroicon-m-check-circle',
+                        'pending' => 'heroicon-m-clock',
+                        'failed' => 'heroicon-m-x-circle',
+                        'unknown' => 'heroicon-m-question-mark-circle',
+                        default => 'heroicon-m-question-mark-circle',
+                    })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
                         'paid' => __('app.payment_status.paid'),
                         'pending' => __('app.payment_status.pending'),
@@ -160,19 +195,17 @@ class RecentOrdersWidget extends BaseWidget
                         ->form([
                             \Filament\Forms\Components\Select::make('status')
                                 ->label(__('app.widgets.orders.new_status'))
-                                ->options([
-                                    Order::PENDING => __('app.status.pending'),
-                                    Order::PROCESSING => __('app.status.processing'),
-                                    Order::SHIPPED => __('app.status.shipped'),
-                                    Order::DELIVERED => __('app.status.delivered'),
-                                    Order::CANCELLED => __('app.status.cancelled'),
-                                ])
+                                ->options(function (Order $record) use ($orderService) {
+                                    return collect($orderService->getAvailableStatuses($record))
+                                        ->mapWithKeys(fn($status) => [$status => __('app.status.' . $status)])
+                                        ->toArray();
+                                })
                                 ->required()
                                 ->native(false)
                                 ->default(fn(Order $record) => $record->status),
                         ])
-                        ->action(function (array $data, Order $record) {
-                            $record->update(['status' => $data['status']]);
+                        ->action(function (array $data, Order $record) use ($orderService) {
+                            $orderService->updateOrderStatus($record->id, $data['status']);
 
                             \Filament\Notifications\Notification::make()
                                 ->title(__('app.widgets.orders.status_updated'))
@@ -183,31 +216,14 @@ class RecentOrdersWidget extends BaseWidget
                                 ->success()
                                 ->send();
                         })
-                        ->visible(fn(Order $record): bool => $record->canBeEdited()),
+                        ->visible(function (Order $record) use ($orderService): bool {
+                            return $orderService->canUpdateStatus($record, $record->status);
+                        }),
                 ])
             ])
             ->paginated([10, 15, 20])
             ->defaultSort('created_at', 'desc')
-            ->poll('30s') // Auto-refresh every 30 seconds
+            ->poll('60s') // Auto-refresh every 60 seconds (reduced from 30s)
             ->striped();
-    }
-
-    private function getStockQuery(): Builder
-    {
-        return match ($this->filter) {
-            'out_of_stock' => Product::where('quantity', 0)
-                ->with(['translations', 'variants', 'colors']),
-
-            'low_stock' => Product::where('quantity', '>', 0)
-                ->where('quantity', '<=', 10)
-                ->with(['translations', 'variants', 'colors']),
-
-            'critical_stock' => Product::where('quantity', '>', 0)
-                ->where('quantity', '<=', 5)
-                ->with(['translations', 'variants', 'colors']),
-
-            default => Product::where('quantity', '<=', 10)
-                ->with(['translations', 'variants', 'colors']),
-        };
     }
 }

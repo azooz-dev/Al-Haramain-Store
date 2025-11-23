@@ -2,22 +2,22 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Concerns\ResolvesServices;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Models\Product\Product;
-use Illuminate\Support\Facades\DB;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget as BaseWidget;
-use App\Services\Product\ProductTranslationService;
-use Filament\Tables\Columns\TextColumn\TextColumnSize;
+use App\Services\Dashboard\ProductAnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class TopProductsWidget extends BaseWidget
 {
-    use HasWidgetShield;
+    use HasWidgetShield, ResolvesServices;
+
     protected static ?string $heading = null;
     protected static ?int $sort = 4;
     protected static ?string $maxHeight = '350px';
+    protected static bool $isLazy = true;
     protected int | string | array $columnSpan = [
         'md' => 2,
         'xl' => 1,
@@ -42,42 +42,54 @@ class TopProductsWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
+        $service = $this->resolveService(ProductAnalyticsService::class);
         $period = $this->getPeriodDates();
-        $translationService = app(ProductTranslationService::class);
+        $topProducts = $service->getTopSellingProducts(
+            $period['start'],
+            $period['end'],
+            3
+        );
 
         return $table
             ->heading(__('app.widgets.products.top_selling_heading'))
-            ->query(
-                Product::query()
-                    ->select([
-                        'products.*',
-                        DB::raw('SUM(order_items.quantity) as total_sold'),
-                        DB::raw('SUM(order_items.quantity * order_items.total_price) as total_revenue'),
-                        DB::raw('COUNT(DISTINCT orders.id) as order_count')
-                    ])
-                    ->join('order_items', function ($join) {
-                        $join->on('products.id', '=', 'order_items.orderable_id')
-                            ->where('order_items.orderable_type', '=', 'App\\Models\\Product\\Product');
-                    })
-                    ->join('orders', 'order_items.order_id', '=', 'orders.id')
-                    ->where('orders.status', '!=', 'cancelled')
-                    ->where('orders.status', '!=', 'refunded')
-                    ->whereBetween('orders.created_at', [$period['start'], $period['end']])
-                    ->groupBy('products.id')
-                    ->orderByDesc('total_sold')
-                    ->limit(3)
-                    ->with(['translations', 'colors', 'variants'])
-            )
+            ->query(function () use ($topProducts) {
+                $productIds = $topProducts->pluck('id')->toArray();
+
+                if (empty($productIds)) {
+                    return Product::query()->whereRaw('1 = 0');
+                }
+
+                // Preserve the order from the service (already sorted by total_sold desc)
+                // Since productIds are integers from the database, it's safe to use them directly
+                $idsString = implode(',', array_map('intval', $productIds));
+
+                return Product::query()
+                    ->whereIn('id', $productIds)
+                    ->orderByRaw("FIELD(id, {$idsString})")
+                    ->with(['translations', 'colors', 'variants']);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('rank')
                     ->label('#')
-                    ->state(fn($livewire, $rowLoop) => $rowLoop->iteration)
+                    ->state(function ($livewire, $rowLoop, Product $record) use ($topProducts) {
+                        // Find the rank based on total_sold from the service result
+                        $product = $topProducts->firstWhere('id', $record->id);
+                        if (!$product) {
+                            return '-';
+                        }
+                        $rank = $topProducts->search(function ($item) use ($product) {
+                            return $item->id === $product->id;
+                        });
+                        return $rank !== false ? $rank + 1 : '-';
+                    })
                     ->alignCenter()
                     ->size(Tables\Columns\TextColumn\TextColumnSize::Small),
 
                 Tables\Columns\TextColumn::make('translated_name')
                     ->label(__('app.widgets.products.product_name'))
-                    ->state(fn(Product $record) => $translationService->getTranslatedName($record))
+                    ->state(function (Product $record) use ($service) {
+                        return $service->getTranslatedProductName($record);
+                    })
                     ->searchable(false)
                     ->sortable(false)
                     ->weight('medium')
@@ -92,6 +104,10 @@ class TopProductsWidget extends BaseWidget
 
                 Tables\Columns\TextColumn::make('total_sold')
                     ->label(__('app.widgets.products.sold'))
+                    ->state(function (Product $record) use ($topProducts) {
+                        $product = $topProducts->firstWhere('id', $record->id);
+                        return $product->total_sold ?? 0;
+                    })
                     ->badge()
                     ->color('success')
                     ->alignCenter()
@@ -99,6 +115,10 @@ class TopProductsWidget extends BaseWidget
 
                 Tables\Columns\TextColumn::make('total_revenue')
                     ->label(__('app.widgets.products.revenue'))
+                    ->state(function (Product $record) use ($topProducts) {
+                        $product = $topProducts->firstWhere('id', $record->id);
+                        return $product->total_revenue ?? 0;
+                    })
                     ->money('USD')
                     ->color('primary')
                     ->weight('bold')
@@ -124,8 +144,7 @@ class TopProductsWidget extends BaseWidget
             ])
             ->emptyStateHeading(__('app.resources.product.plural_label'))
             ->emptyStateDescription(__('app.widgets.products.no_products_found'))
-            ->paginated(false)
-            ->defaultSort('total_sold', 'desc');
+            ->paginated(false);
     }
 
     private function getPeriodDates(): array
