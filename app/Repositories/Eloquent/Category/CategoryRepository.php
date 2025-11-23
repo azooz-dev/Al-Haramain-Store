@@ -3,7 +3,10 @@
 namespace App\Repositories\Eloquent\Category;
 
 use App\Models\Category\Category;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
+use App\Models\Order\Order;
 use App\Repositories\Interface\Category\CategoryRepositoryInterface;
 use Illuminate\Support\Collection;
 
@@ -64,5 +67,30 @@ class CategoryRepository implements CategoryRepositoryInterface
     return Category::query()
       ->with(['translations', 'products'])
       ->withCount(['products']);
+  }
+
+  // Widget-specific methods
+  public function getTopCategoryByRevenue(Carbon $start, Carbon $end): ?Category
+  {
+    $topCategoryId = DB::table('categories')
+      ->join('category_product', 'categories.id', '=', 'category_product.category_id')
+      ->join('order_items', function ($join) {
+        $join->on('category_product.product_id', '=', 'order_items.orderable_id')
+          ->where('order_items.orderable_type', '=', \App\Models\Product\Product::class);
+      })
+      ->join('orders', 'order_items.order_id', '=', 'orders.id')
+      ->where('orders.status', '!=', Order::CANCELLED)
+      ->where('orders.status', '!=', Order::REFUNDED)
+      ->whereBetween('orders.created_at', [$start, $end])
+      ->select('categories.id', DB::raw('SUM(order_items.quantity * order_items.total_price) as revenue'))
+      ->groupBy('categories.id')
+      ->orderByDesc('revenue')
+      ->value('categories.id');
+
+    if (!$topCategoryId) {
+      return null;
+    }
+
+    return Category::with('translations')->find($topCategoryId);
   }
 }
