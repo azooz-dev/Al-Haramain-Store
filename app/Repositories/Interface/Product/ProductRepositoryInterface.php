@@ -3,6 +3,7 @@
 namespace App\Repositories\Interface\Product;
 
 use App\Models\Product\Product;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -27,4 +28,9 @@ interface ProductRepositoryInterface
   public function count(): int;
 
   public function getQueryBuilder(): Builder;
+
+  // Widget-specific methods
+  public function getLowStockProductsCount(int $threshold = 10): int;
+
+  public function getTopSellingProducts(Carbon $start, Carbon $end, int $limit = 3): Collection;
 }

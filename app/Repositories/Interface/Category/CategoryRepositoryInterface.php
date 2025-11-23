@@ -3,6 +3,7 @@
 namespace App\Repositories\Interface\Category;
 
 use App\Models\Category\Category;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -27,4 +28,7 @@ interface CategoryRepositoryInterface
   public function count(): int;
 
   public function getQueryBuilder(): Builder;
+
+  // Widget-specific methods
+  public function getTopCategoryByRevenue(Carbon $start, Carbon $end): ?Category;
 }

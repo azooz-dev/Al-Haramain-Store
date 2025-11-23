@@ -3,6 +3,7 @@
 namespace App\Repositories\Interface\Review;
 
 use App\Models\Review\Review;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -25,4 +26,11 @@ interface ReviewRepositoryInterface
   public function updateStatus(int $id, string $status): Review;
 
   public function bulkUpdateStatus(array $ids, string $status): int;
+
+  // Widget-specific methods
+  public function getReviewsCountByDateRange(Carbon $start, Carbon $end): int;
+
+  public function getAverageRating(Carbon $start, Carbon $end): float;
+
+  public function getRatingDistribution(Carbon $start, Carbon $end): Collection;
 }
