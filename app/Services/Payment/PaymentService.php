@@ -7,27 +7,22 @@ use App\Models\Order\Order;
 
 use function App\Helpers\errorResponse;
 use App\Contracts\PaymentProcessorInterface;
-use App\Exceptions\Payment\InvalidPaymentMethodException;
-use App\Services\Payment\Processors\StripePaymentProcessor;
-
-use App\Services\Payment\Processors\CashOnDeliveryProcessor;
+use App\Services\Payment\PaymentProcessorFactory;
 use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
 use App\Exceptions\Payment\CreatePaymentException;
 
 class PaymentService
 {
-  public function __construct(private PaymentRepositoryInterface $paymentRepository)
-  {
+  public function __construct(
+    private PaymentRepositoryInterface $paymentRepository,
+    private PaymentProcessorFactory $processorFactory
+  ) {
     $this->paymentRepository = $paymentRepository;
   }
 
   private function getProcessor(string $paymentMethod): PaymentProcessorInterface
   {
-    return match ($paymentMethod) {
-      Order::PAYMENT_METHOD_CASH_ON_DELIVERY => new CashOnDeliveryProcessor(),
-      Order::PAYMENT_METHOD_CREDIT_CARD => new StripePaymentProcessor(),
-      default => throw new InvalidPaymentMethodException(__('app.messages.payment.invalid_payment_method'), 400),
-    };
+    return $this->processorFactory->make($paymentMethod);
   }
 
   public function createPaymentIntent(array $orderData): ?string

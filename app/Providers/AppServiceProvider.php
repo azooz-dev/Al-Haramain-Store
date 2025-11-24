@@ -99,7 +99,8 @@ use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
-
+use App\Services\Payment\Processors\CashOnDeliveryProcessor;
+use App\Services\Payment\Processors\StripePaymentProcessor;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -149,6 +150,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductAnalyticsRepositoryInterface::class, ProductAnalyticsRepository::class);
         $this->app->bind(ReviewAnalyticsRepositoryInterface::class, ReviewAnalyticsRepository::class);
         $this->app->bind(CategoryAnalyticsRepositoryInterface::class, CategoryAnalyticsRepository::class);
+
+        // Register Payment Processors as Singletons
+        $this->app->singleton(CashOnDeliveryProcessor::class);
+        $this->app->singleton(StripePaymentProcessor::class);
     }
 
     /**
