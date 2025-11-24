@@ -4,10 +4,13 @@ namespace App\Observers\User;
 
 use App\Models\User\User;
 use App\Services\Dashboard\DashboardCacheHelper;
+use App\Services\Cache\CacheService;
 use App\Events\Auth\UserRegistered;
 
 class UserObserver
 {
+    public function __construct(private CacheService $cacheService) {}
+
     /**
      * Handle the User "created" event.
      */
@@ -17,6 +20,7 @@ class UserObserver
 
         // Invalidate dashboard widget cache
         DashboardCacheHelper::flushAll();
+        $this->cacheService->flush(['dashboard', 'customers']);
     }
 
     /**

@@ -4,9 +4,12 @@ namespace App\Observers\Review;
 
 use App\Models\Review\Review;
 use App\Services\Dashboard\DashboardCacheHelper;
+use App\Services\Cache\CacheService;
 
 class ReviewObserver
 {
+    public function __construct(private CacheService $cacheService) {}
+
     /**
      * Handle the Review "created" event.
      */
@@ -14,6 +17,7 @@ class ReviewObserver
     {
         // Invalidate dashboard widget cache
         DashboardCacheHelper::flushAll();
+        $this->cacheService->flush(['dashboard', 'reviews']);
     }
 
     /**
@@ -24,6 +28,7 @@ class ReviewObserver
         // Invalidate cache when review status or rating changes
         if ($review->isDirty(['status', 'rating'])) {
             DashboardCacheHelper::flushAll();
+            $this->cacheService->flush(['dashboard', 'reviews']);
         }
     }
 }
