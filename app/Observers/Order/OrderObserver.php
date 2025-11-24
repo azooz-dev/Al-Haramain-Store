@@ -5,10 +5,13 @@ namespace App\Observers\Order;
 use App\Models\Admin\Admin;
 use App\Models\Order\Order;
 use App\Services\Dashboard\DashboardCacheHelper;
+use App\Services\Cache\CacheService;
 use Filament\Notifications\Notification;
 
 class OrderObserver
 {
+    public function __construct(private CacheService $cacheService) {}
+
     /**
      * Handle the order "created" event.
      */
@@ -29,6 +32,9 @@ class OrderObserver
 
         // Invalidate dashboard widget cache
         DashboardCacheHelper::flushAll();
+        
+        // Invalidate analytics cache
+        $this->cacheService->flush(['dashboard', 'revenue', 'orders']);
     }
 
     /**
@@ -39,6 +45,7 @@ class OrderObserver
         // Invalidate cache when order status or total amount changes
         if ($order->isDirty(['status', 'total_amount'])) {
             DashboardCacheHelper::flushAll();
+            $this->cacheService->flush(['dashboard', 'revenue', 'orders']);
         }
     }
 }

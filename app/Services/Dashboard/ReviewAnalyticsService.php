@@ -4,12 +4,14 @@ namespace App\Services\Dashboard;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Review\ReviewRepositoryInterface;
 use App\Models\Review\Review;
 
 class ReviewAnalyticsService
 {
     public function __construct(
+        private ReviewAnalyticsRepositoryInterface $reviewAnalyticsRepository,
         private ReviewRepositoryInterface $reviewRepository
     ) {}
 
@@ -18,7 +20,7 @@ class ReviewAnalyticsService
         $cacheKey = 'dashboard_widget_avg_rating_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-                return $this->reviewRepository->getAverageRating($start, $end);
+                return $this->reviewAnalyticsRepository->getAverageRating($start, $end);
             });
     }
 
@@ -27,7 +29,7 @@ class ReviewAnalyticsService
         $cacheKey = 'dashboard_widget_total_reviews_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-                return $this->reviewRepository->getReviewsCountByDateRange($start, $end);
+                return $this->reviewAnalyticsRepository->getReviewsCountByDateRange($start, $end);
             });
     }
 
@@ -45,7 +47,7 @@ class ReviewAnalyticsService
         $cacheKey = 'dashboard_widget_rating_distribution_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($start, $end) {
-                $ratingData = $this->reviewRepository->getRatingDistribution($start, $end)
+                $ratingData = $this->reviewAnalyticsRepository->getRatingDistribution($start, $end)
                     ->pluck('count', 'rating');
 
                 $labels = [];

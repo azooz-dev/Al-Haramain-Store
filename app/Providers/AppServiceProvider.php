@@ -89,6 +89,17 @@ use App\Repositories\Eloquent\User\Product\Favorite\UserProductFavoriteRepositor
 use App\Repositories\Eloquent\User\Order\OrderItem\Review\UserOrderItemReviewRepository;
 use App\Repositories\Interface\User\Product\Favorite\UserProductFavoriteRepositoryInterface;
 use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
+use App\Repositories\Eloquent\Analytics\UserAnalyticsRepository;
+use App\Repositories\Eloquent\Analytics\OrderAnalyticsRepository;
+use App\Repositories\Eloquent\Analytics\ProductAnalyticsRepository;
+use App\Repositories\Eloquent\Analytics\ReviewAnalyticsRepository;
+use App\Repositories\Eloquent\Analytics\CategoryAnalyticsRepository;
+use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -131,6 +142,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductColorRepositoryInterface::class, ProductColorRepository::class);
 
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
+
+        // Register Analytics Repository Bindings
+        $this->app->bind(UserAnalyticsRepositoryInterface::class, UserAnalyticsRepository::class);
+        $this->app->bind(OrderAnalyticsRepositoryInterface::class, OrderAnalyticsRepository::class);
+        $this->app->bind(ProductAnalyticsRepositoryInterface::class, ProductAnalyticsRepository::class);
+        $this->app->bind(ReviewAnalyticsRepositoryInterface::class, ReviewAnalyticsRepository::class);
+        $this->app->bind(CategoryAnalyticsRepositoryInterface::class, CategoryAnalyticsRepository::class);
     }
 
     /**

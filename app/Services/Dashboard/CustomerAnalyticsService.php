@@ -5,14 +5,14 @@ namespace App\Services\Dashboard;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Category\CategoryTranslationService;
-use App\Repositories\Interface\User\UserRepositoryInterface;
-use App\Repositories\Interface\Category\CategoryRepositoryInterface;
+use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
 
 class CustomerAnalyticsService
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository,
-        private CategoryRepositoryInterface $categoryRepository,
+        private UserAnalyticsRepositoryInterface $userAnalyticsRepository,
+        private CategoryAnalyticsRepositoryInterface $categoryAnalyticsRepository,
         private CategoryTranslationService $categoryTranslationService
     ) {}
 
@@ -21,7 +21,7 @@ class CustomerAnalyticsService
         $cacheKey = 'dashboard_widget_new_customers_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
 
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-            return $this->userRepository->getUsersCountByDateRange($start, $end);
+            return $this->userAnalyticsRepository->getUsersCountByDateRange($start, $end);
         });
     }
 
@@ -30,7 +30,7 @@ class CustomerAnalyticsService
         $cacheKey = 'dashboard_widget_returning_customers_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
 
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-            return $this->userRepository->getReturningCustomersCount($start, $end);
+            return $this->userAnalyticsRepository->getReturningCustomersCount($start, $end);
         });
     }
 
@@ -39,9 +39,9 @@ class CustomerAnalyticsService
         $cacheKey = 'dashboard_widget_customer_acquisition_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
 
         return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($start, $end) {
-            $newCustomersData = $this->userRepository->getUsersCountByDateRangeGrouped($start, $end)
+            $newCustomersData = $this->userAnalyticsRepository->getUsersCountByDateRangeGrouped($start, $end)
                 ->pluck('count', 'date');
-            $returningCustomersData = $this->userRepository->getReturningCustomersByDateGrouped($start, $end)
+            $returningCustomersData = $this->userAnalyticsRepository->getReturningCustomersByDateGrouped($start, $end)
                 ->pluck('count', 'date');
 
             // Get all unique dates
@@ -86,7 +86,7 @@ class CustomerAnalyticsService
         $cacheKey = 'dashboard_widget_top_category_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
 
         return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($start, $end) {
-            $category = $this->categoryRepository->getTopCategoryByRevenue($start, $end);
+            $category = $this->categoryAnalyticsRepository->getTopCategoryByRevenue($start, $end);
 
             if (!$category) {
                 return null;

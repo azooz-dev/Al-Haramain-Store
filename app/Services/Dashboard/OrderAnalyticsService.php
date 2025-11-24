@@ -4,13 +4,13 @@ namespace App\Services\Dashboard;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
+use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
 use App\Models\Order\Order;
 
 class OrderAnalyticsService
 {
     public function __construct(
-        private OrderRepositoryInterface $orderRepository
+        private OrderAnalyticsRepositoryInterface $orderAnalyticsRepository
     ) {}
 
     public function getRevenueOverview(Carbon $start, Carbon $end): array
@@ -18,8 +18,8 @@ class OrderAnalyticsService
         $cacheKey = 'dashboard_widget_revenue_overview_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($start, $end) {
-                $revenueData = $this->orderRepository->getRevenueByDateRangeGrouped($start, $end);
-                $ordersData = $this->orderRepository->getOrdersCountByDateRangeGrouped($start, $end);
+                $revenueData = $this->orderAnalyticsRepository->getRevenueByDateRangeGrouped($start, $end);
+                $ordersData = $this->orderAnalyticsRepository->getOrdersCountByDateRangeGrouped($start, $end);
 
                 // Merge data by date
                 $dates = collect();
@@ -71,11 +71,11 @@ class OrderAnalyticsService
         
         return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($start, $end) {
                 $periodLength = $start->diffInDays($end) + 1;
-                $currentRevenue = $this->orderRepository->getRevenueByDateRange($start, $end);
+                $currentRevenue = $this->orderAnalyticsRepository->getRevenueByDateRange($start, $end);
 
                 $previousStart = $start->copy()->subDays($periodLength);
                 $previousEnd = $start->copy()->subDays(1);
-                $previousRevenue = $this->orderRepository->getRevenueByDateRange($previousStart, $previousEnd);
+                $previousRevenue = $this->orderAnalyticsRepository->getRevenueByDateRange($previousStart, $previousEnd);
 
                 if ($previousRevenue == 0) {
                     return $currentRevenue > 0 ? 100 : 0;
@@ -90,7 +90,7 @@ class OrderAnalyticsService
         $cacheKey = 'dashboard_widget_order_status_distribution_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($start, $end) {
-                $statusData = $this->orderRepository->getOrdersCountByStatusGrouped($start, $end)
+                $statusData = $this->orderAnalyticsRepository->getOrdersCountByStatusGrouped($start, $end)
                     ->pluck('count', 'status');
 
                 $statuses = [
@@ -134,7 +134,7 @@ class OrderAnalyticsService
         $cacheKey = 'dashboard_widget_recent_orders_' . $limit;
         
         return Cache::remember($cacheKey, now()->addMinutes(2), function () use ($limit) {
-                return $this->orderRepository->getRecentOrders($limit);
+                return $this->orderAnalyticsRepository->getRecentOrders($limit);
             });
     }
 
@@ -143,7 +143,7 @@ class OrderAnalyticsService
         $cacheKey = 'dashboard_widget_total_orders_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-                return $this->orderRepository->getOrdersCountByDateRange($start, $end);
+                return $this->orderAnalyticsRepository->getOrdersCountByDateRange($start, $end);
             });
     }
 
@@ -152,7 +152,7 @@ class OrderAnalyticsService
         $cacheKey = 'dashboard_widget_total_revenue_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-                return $this->orderRepository->getRevenueByDateRange($start, $end);
+                return $this->orderAnalyticsRepository->getRevenueByDateRange($start, $end);
             });
     }
 
