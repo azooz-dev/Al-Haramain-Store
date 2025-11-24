@@ -4,17 +4,19 @@ namespace App\Services\Dashboard;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
+use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Repositories\Interface\User\UserRepositoryInterface;
-use App\Repositories\Interface\Product\ProductRepositoryInterface;
 use App\Models\Order\Order;
 
 class DashboardWidgetService
 {
     public function __construct(
-        private OrderRepositoryInterface $orderRepository,
-        private UserRepositoryInterface $userRepository,
-        private ProductRepositoryInterface $productRepository
+        private OrderAnalyticsRepositoryInterface $orderAnalyticsRepository,
+        private UserAnalyticsRepositoryInterface $userAnalyticsRepository,
+        private ProductAnalyticsRepositoryInterface $productAnalyticsRepository,
+        private OrderRepositoryInterface $orderRepository
     ) {}
 
     public function getTodaysRevenue(): float
@@ -22,7 +24,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_todays_revenue_' . today()->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
-                return $this->orderRepository->getRevenueByDateRange(
+                return $this->orderAnalyticsRepository->getRevenueByDateRange(
                     today()->startOfDay(),
                     today()->endOfDay()
                 );
@@ -35,7 +37,7 @@ class DashboardWidgetService
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
                 $today = $this->getTodaysRevenue();
-                $yesterday = $this->orderRepository->getRevenueByDateRange(
+                $yesterday = $this->orderAnalyticsRepository->getRevenueByDateRange(
                     now()->subDay()->startOfDay(),
                     now()->subDay()->endOfDay()
                 );
@@ -54,7 +56,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_total_orders_today_' . today()->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
-                return $this->orderRepository->getOrdersCountByDateRange(
+                return $this->orderAnalyticsRepository->getOrdersCountByDateRange(
                     today()->startOfDay(),
                     today()->endOfDay()
                 );
@@ -67,7 +69,7 @@ class DashboardWidgetService
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
                 $today = $this->getTotalOrdersToday();
-                $yesterday = $this->orderRepository->getOrdersCountByDateRange(
+                $yesterday = $this->orderAnalyticsRepository->getOrdersCountByDateRange(
                     now()->subDay()->startOfDay(),
                     now()->subDay()->endOfDay()
                 );
@@ -86,7 +88,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_aov_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($start, $end) {
-                return $this->orderRepository->getAverageOrderValue($start, $end);
+                return $this->orderAnalyticsRepository->getAverageOrderValue($start, $end);
             });
     }
 
@@ -100,7 +102,7 @@ class DashboardWidgetService
                     now()->endOfDay()
                 );
 
-                $previousAOV = $this->orderRepository->getAverageOrderValue(
+                $previousAOV = $this->orderAnalyticsRepository->getAverageOrderValue(
                     now()->subDays(60)->startOfDay(),
                     now()->subDays(30)->endOfDay()
                 );
@@ -119,7 +121,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_new_customers_today_' . today()->format('Y-m-d');
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
-                return $this->userRepository->getUsersCountByDateRange(
+                return $this->userAnalyticsRepository->getUsersCountByDateRange(
                     today()->startOfDay(),
                     today()->endOfDay()
                 );
@@ -132,7 +134,7 @@ class DashboardWidgetService
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
                 $today = $this->getNewCustomersToday();
-                $yesterday = $this->userRepository->getUsersCountByDateRange(
+                $yesterday = $this->userAnalyticsRepository->getUsersCountByDateRange(
                     now()->subDay()->startOfDay(),
                     now()->subDay()->endOfDay()
                 );
@@ -151,7 +153,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_pending_orders';
         
         return Cache::remember($cacheKey, now()->addMinutes(2), function () {
-                return $this->orderRepository->getOrdersCountByStatus(Order::PENDING);
+                return $this->orderAnalyticsRepository->getOrdersCountByStatus(Order::PENDING);
             });
     }
 
@@ -160,7 +162,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_low_stock_products';
         
         return Cache::remember($cacheKey, now()->addMinutes(5), function () {
-                return $this->productRepository->getLowStockProductsCount(10);
+                return $this->productAnalyticsRepository->getLowStockProductsCount(10);
             });
     }
 
@@ -172,7 +174,7 @@ class DashboardWidgetService
                 $dates = collect(range(0, 6))
                     ->map(fn($i) => now()->subDays(6 - $i)->format('Y-m-d'));
 
-                $revenueData = $this->orderRepository->getRevenueByDateRangeGrouped(
+                $revenueData = $this->orderAnalyticsRepository->getRevenueByDateRangeGrouped(
                     now()->subDays(6)->startOfDay(),
                     now()->endOfDay()
                 )->pluck('revenue', 'date');
@@ -189,7 +191,7 @@ class DashboardWidgetService
                 $dates = collect(range(0, 6))
                     ->map(fn($i) => now()->subDays(6 - $i)->format('Y-m-d'));
 
-                $ordersData = $this->orderRepository->getOrdersCountByDateRangeGrouped(
+                $ordersData = $this->orderAnalyticsRepository->getOrdersCountByDateRangeGrouped(
                     now()->subDays(6)->startOfDay(),
                     now()->endOfDay()
                 )->pluck('count', 'date');
@@ -206,7 +208,7 @@ class DashboardWidgetService
                 $dates = collect(range(0, 6))
                     ->map(fn($i) => now()->subDays(6 - $i)->format('Y-m-d'));
 
-                $aovData = $this->orderRepository->getAverageOrderValueGrouped(
+                $aovData = $this->orderAnalyticsRepository->getAverageOrderValueGrouped(
                     now()->subDays(6)->startOfDay(),
                     now()->endOfDay()
                 )->pluck('avg_value', 'date');
@@ -225,7 +227,7 @@ class DashboardWidgetService
                     $dates->push(now()->subDays($i)->format('Y-m-d'));
                 }
 
-                $customersData = $this->userRepository->getUsersCountByDateRangeGrouped(
+                $customersData = $this->userAnalyticsRepository->getUsersCountByDateRangeGrouped(
                     now()->subDays(6)->startOfDay(),
                     now()->endOfDay()
                 )->pluck('count', 'date');
