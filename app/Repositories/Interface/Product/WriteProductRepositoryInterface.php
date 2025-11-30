@@ -11,6 +11,8 @@ interface WriteProductRepositoryInterface
     public function update(int $id, array $data): Product;
 
     public function delete(int $id): bool;
+
+    public function decrementProductStock(int $productId, int $quantity): bool;
 }
 
 

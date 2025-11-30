@@ -67,4 +67,11 @@ class ProductRepository implements ProductRepositoryInterface
       ->with(['translations', 'colors.images', 'variants', 'categories.translations'])
       ->withCount(['colors', 'variants', 'images', 'categories']);
   }
+
+  public function decrementProductStock(int $productId, int $quantity): bool
+  {
+    return Product::where('id', $productId)
+      ->where('quantity', '>=', $quantity)
+      ->decrement('quantity', $quantity) > 0;
+  }
 }
