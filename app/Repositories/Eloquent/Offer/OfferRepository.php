@@ -16,19 +16,19 @@ class OfferRepository implements OfferRepositoryInterface
     return Offer::with(['translations', 'products'])->where('status', Offer::ACTIVE)->get();
   }
 
-  public function findOfferById(int $offerId)
+  public function findOfferById(int $offerId): ?Offer
   {
     return Offer::with(['translations', 'products'])->find($offerId);
   }
 
-  public function getOfferProducts(int $offerId)
+  public function getOfferProducts(int $offerId): Collection
   {
     return OfferProduct::where("offer_id", $offerId)->get();
   }
 
-  public function findOffersByIds(array $offerIds)
+  public function findOffersByIds(array $offerIds): Collection
   {
-    return Offer::whereIn('id', $offerIds)->with('offerProducts')->get()->keyBy('id');
+    return Offer::whereIn('id', $offerIds)->with('offerProducts')->get();
   }
 
   public function create(array $data): Offer

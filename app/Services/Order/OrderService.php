@@ -17,6 +17,9 @@ use App\Services\Order\Pipeline\CalculatePricesStep;
 use App\Services\Order\Pipeline\ApplyCouponStep;
 use App\Services\Order\Pipeline\ProcessPaymentStep;
 use App\Services\Order\Pipeline\CreateOrderStep;
+use App\Services\Order\Pipeline\CreateOrderItemsStep;
+use App\Services\Order\Pipeline\UpdateStockStep;
+use App\Services\Order\Pipeline\RecordPaymentStep;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService
@@ -28,7 +31,10 @@ class OrderService
         private CalculatePricesStep $calculatePricesStep,
         private ApplyCouponStep $applyCouponStep,
         private ProcessPaymentStep $processPaymentStep,
-        private CreateOrderStep $createOrderStep
+        private CreateOrderStep $createOrderStep,
+        private CreateOrderItemsStep $createOrderItemsStep,
+        private UpdateStockStep $updateStockStep,
+        private RecordPaymentStep $recordPaymentStep
     ) {}
 
     /**
@@ -51,6 +57,9 @@ class OrderService
                         $this->applyCouponStep,
                         $this->processPaymentStep,
                         $this->createOrderStep,
+                        $this->createOrderItemsStep,
+                        $this->updateStockStep,
+                        $this->recordPaymentStep,
                     ])
                     ->thenReturn();
                 
