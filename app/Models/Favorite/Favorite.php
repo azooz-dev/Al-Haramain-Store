@@ -2,9 +2,9 @@
 
 namespace App\Models\Favorite;
 
-use App\Models\Product\Product;
-use App\Models\Product\ProductColor;
-use App\Models\Product\ProductVariant;
+use Modules\Catalog\Entities\Product\Product;
+use Modules\Catalog\Entities\Product\ProductColor;
+use Modules\Catalog\Entities\Product\ProductVariant;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

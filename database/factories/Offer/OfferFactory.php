@@ -3,7 +3,7 @@
 namespace Database\Factories\Offer;
 
 use App\Models\Offer\Offer;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

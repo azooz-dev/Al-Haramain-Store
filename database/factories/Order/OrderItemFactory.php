@@ -4,7 +4,7 @@ namespace Database\Factories\Order;
 
 use App\Models\Order\Order;
 use App\Models\Order\OrderItem;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

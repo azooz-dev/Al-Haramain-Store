@@ -4,7 +4,7 @@ namespace Database\Factories\Review;
 
 use App\Models\Review\Review;
 use App\Models\User\User;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Models\Order\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Database\Factories\User\UserFactory;
