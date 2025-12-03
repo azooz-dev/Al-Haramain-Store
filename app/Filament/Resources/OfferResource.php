@@ -7,13 +7,13 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Offer\Offer;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OfferResource\Pages;
 use App\Services\Offer\OfferService;
-use App\Services\Product\ProductTranslationService;
+use Modules\Catalog\Services\Product\ProductTranslationService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class OfferResource extends Resource
@@ -240,7 +240,7 @@ class OfferResource extends Resource
                                             ->live()
                                             ->afterStateUpdated(function (callable $set, $state) {
                                                 if ($state) {
-                                                    $variant = \App\Models\Product\ProductVariant::find($state);
+                                                    $variant = \Modules\Catalog\Entities\Product\ProductVariant::find($state);
                                                     if ($variant) {
                                                         $set('variant_price', $variant->effective_price);
                                                     }
@@ -278,7 +278,7 @@ class OfferResource extends Resource
                                 fn(array $state): ?string =>
                                 $state['product_id'] ?
                                     (function () use ($state) {
-                                        $product = app(\App\Services\Product\ProductService::class)->findProductById($state['product_id']);
+                                        $product = app(\Modules\Catalog\Services\Product\ProductService::class)->findProductById($state['product_id']);
                                         return $product->translations->where('local', app()->getLocale())->first()?->name ?? 'Product';
                                     })()
                                     : null

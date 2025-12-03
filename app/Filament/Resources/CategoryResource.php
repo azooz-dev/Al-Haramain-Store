@@ -8,11 +8,12 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
-use App\Models\Category\Category;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Catalog\Entities\Category\Category;
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Services\Category\CategoryService;
 use App\Filament\Concerns\SendsFilamentNotifications;
+use Modules\Catalog\Services\Category\CategoryService;
+use Modules\Catalog\Services\Category\CategoryTranslationService;
 
 class CategoryResource extends Resource
 {
@@ -182,7 +183,7 @@ class CategoryResource extends Resource
                     ->icon('heroicon-o-tag')
                     ->state(function (Category $record) use ($categoryService) {
                         // Access translation service through category service
-                        $translationService = app(\App\Services\Category\CategoryTranslationService::class);
+                        $translationService = app(CategoryTranslationService::class);
                         return $translationService->getTranslatedName($record);
                     }),
 
@@ -208,7 +209,7 @@ class CategoryResource extends Resource
                     ->sortable()
                     ->state(function (Category $record) use ($categoryService) {
                         // Access translation service through category service
-                        $translationService = app(\App\Services\Category\CategoryTranslationService::class);
+                        $translationService = app(CategoryTranslationService::class);
                         return $translationService->getTranslatedDescription($record);
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -274,7 +275,7 @@ class CategoryResource extends Resource
                         ->requiresConfirmation()
                         ->modalHeading(__('app.messages.category.confirm_delete_heading'))
                         ->modalDescription(function (Category $record) {
-                            $translationService = app(\App\Services\Category\CategoryTranslationService::class);
+                            $translationService = app(CategoryTranslationService::class);
                             $translatedName = $translationService->getTranslatedName($record);
                             return __('app.messages.category.confirm_delete_description', ['name' => $translatedName]);
                         })

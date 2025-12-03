@@ -6,7 +6,7 @@ use Filament\Actions;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Services\Category\CategoryService;
+use Modules\Catalog\Services\Category\CategoryService;
 use App\Filament\Resources\CategoryResource;
 use App\Traits\Category\HasCategoryTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;

@@ -5,7 +5,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Concerns\ResolvesServices;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use Filament\Widgets\TableWidget as BaseWidget;
 use App\Services\Dashboard\ProductAnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;

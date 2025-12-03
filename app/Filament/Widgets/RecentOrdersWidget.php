@@ -41,7 +41,7 @@ class RecentOrdersWidget extends BaseWidget
                         'user',
                         'items.orderable' => function ($morphTo) {
                             $morphTo->morphWith([
-                                \App\Models\Product\Product::class => ['translations'],
+                                \Modules\Catalog\Entities\Product\Product::class => ['translations'],
                                 \App\Models\Offer\Offer::class => ['translations'],
                             ]);
                         },

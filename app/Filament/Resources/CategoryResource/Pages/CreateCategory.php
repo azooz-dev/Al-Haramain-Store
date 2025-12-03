@@ -4,7 +4,7 @@ namespace App\Filament\Resources\CategoryResource\Pages;
 
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
-use App\Services\Category\CategoryService;
+use Modules\Catalog\Services\Category\CategoryService;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\CategoryResource;
 use App\Traits\Category\HasCategoryTranslations;

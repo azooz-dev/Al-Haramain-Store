@@ -6,13 +6,13 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use App\Rules\VariantQuantityMaxRule;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
-use App\Services\Product\ProductService;
+use Modules\Catalog\Services\Product\ProductService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class ProductResource extends Resource
@@ -421,7 +421,7 @@ class ProductResource extends Resource
                     ->wrap()
                     ->state(function (Product $record) use ($productService) {
                         // Access translation service through product service
-                        $translationService = app(\App\Services\Product\ProductTranslationService::class);
+                        $translationService = app(\Modules\Catalog\Services\Product\ProductTranslationService::class);
                         return $translationService->getTranslatedName($record);
                     }),
 

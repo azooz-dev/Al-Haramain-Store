@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\ProductResource;
-use App\Services\Product\ProductService;
+use Modules\Catalog\Services\Product\ProductService;
 use App\Traits\Product\HasProductTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
