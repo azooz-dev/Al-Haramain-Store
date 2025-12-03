@@ -3,24 +3,25 @@
 namespace App\Services\Order;
 
 use App\Models\Order\Order;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\Auth;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Order\OrderException;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Order\OrderApiResource;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Services\Order\Pipeline\ValidateBuyerStep;
-use App\Services\Order\Pipeline\ValidateStockStep;
-use App\Services\Order\Pipeline\CalculatePricesStep;
 use App\Services\Order\Pipeline\ApplyCouponStep;
-use App\Services\Order\Pipeline\ProcessPaymentStep;
 use App\Services\Order\Pipeline\CreateOrderStep;
-use App\Services\Order\Pipeline\CreateOrderItemsStep;
 use App\Services\Order\Pipeline\UpdateStockStep;
 use App\Services\Order\Pipeline\RecordPaymentStep;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Order\Pipeline\ValidateBuyerStep;
+use App\Services\Order\Pipeline\ValidateStockStep;
+use App\Services\Order\Pipeline\ProcessPaymentStep;
+use App\Services\Order\Pipeline\CalculatePricesStep;
+use App\Services\Order\Pipeline\CreateOrderItemsStep;
+use App\Exceptions\Product\Variant\OutOfStockException;
+use App\Repositories\Interface\Order\OrderRepositoryInterface;
 
 class OrderService
 {
@@ -62,13 +63,15 @@ class OrderService
                         $this->recordPaymentStep,
                     ])
                     ->thenReturn();
-                
+
                 // Return the order resource
                 return new OrderApiResource($result['_order']);
             }, 5);
-            
+
             return $orderResource;
         } catch (OrderException $e) {
+            return errorResponse($e->getMessage(), $e->getCode());
+        } catch (OutOfStockException $e) {
             return errorResponse($e->getMessage(), $e->getCode());
         }
     }

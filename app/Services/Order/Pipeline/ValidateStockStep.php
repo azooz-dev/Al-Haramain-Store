@@ -23,7 +23,7 @@ class ValidateStockStep implements OrderProcessingStep
             $variantIds = array_keys($groupedItems[Product::class]);
             $variants = $this->variantService->getVariantsByIds($variantIds);
             $this->variantService->checkStock($groupedItems[Product::class]);
-            
+
             // Attach variants to data for later use
             $data['_variants'] = $variants;
         }
@@ -31,14 +31,14 @@ class ValidateStockStep implements OrderProcessingStep
         // Validate offer stock
         if (isset($groupedItems[Offer::class])) {
             $offerIds = array_keys($groupedItems[Offer::class]);
-            $offers = $this->offerService->getOffersByIds($offerIds);
-            
+            $offers = $this->offerService->getOffersByIds($offerIds)->keyBy('id');
+
             // Build offer variants for validation
             $offerVariants = $this->buildOfferVariantsForValidation($offers, $groupedItems[Offer::class]);
             if (!empty($offerVariants)) {
                 $this->variantService->checkStock($offerVariants);
             }
-            
+
             // Attach offers to data for later use
             $data['_offers'] = $offers;
         }
@@ -102,5 +102,3 @@ class ValidateStockStep implements OrderProcessingStep
         return $offerVariants;
     }
 }
-
-
