@@ -15,6 +15,6 @@ class OutOfStockException extends Exception
      */
     public function render(Request $request): JsonResponse
     {
-        return errorResponse($this->getMessage() ?: __('app.messages.product.product_error') . $this->getCode() ?: 500);
+        return errorResponse($this->getMessage() ?: __('app.messages.product.product_error'), $this->getCode() ?: 500);
     }
 }

@@ -17,7 +17,7 @@ class ProductVariantService
     foreach ($items as $variantId => $item) {
       $variant = $variants[$variantId] ?? null;
       if (!$variant || $variant->quantity < $item['quantity']) {
-        throw new OutOfStockException(__('app.messages.order.validation.variant_quantity_exceeds_stock', ['variant_quantity' => $item['quantity'], 'total_stock' => $variant->quantity]));
+        throw new OutOfStockException(__('app.messages.order.validation.variant_quantity_exceeds_stock', ['variant_quantity' => $item['quantity'], 'total_stock' => $variant->quantity]), 422);
       }
     }
   }
