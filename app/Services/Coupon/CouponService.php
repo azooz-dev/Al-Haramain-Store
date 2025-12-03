@@ -27,7 +27,7 @@ class CouponService
   {
     $coupon = $this->applyCoupon($couponCode, $userId);
     // Compute discount
-    if ($coupon->discount_type === Coupon::FIXED) {
+    if ($coupon->type === Coupon::FIXED) {
       $discountAmount = (float)$coupon->discount_amount;
     } else {
       $discountAmount = ($coupon->discount_amount / 100.0) * $totalAmount;

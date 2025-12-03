@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CouponFactory extends Factory
 {
+  // Static counter to ensure uniqueness across all factory calls
+  private static $counter = 0;
+
   /**
    * Define the model's default state.
    *
@@ -22,8 +25,12 @@ class CouponFactory extends Factory
       ? fake()->randomFloat(2, 5, 100)
       : fake()->numberBetween(5, 50);
 
+    // Generate unique code only if not provided
+    self::$counter++;
+    $uniqueCode = 'TEST-' . str_pad((string)self::$counter, 8, '0', STR_PAD_LEFT) . '-' . bin2hex(random_bytes(8));
+
     return [
-      'code' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+      'code' => $uniqueCode,
       'name' => fake()->words(2, true),
       'type' => $type,
       'discount_amount' => $discountAmount,
