@@ -12,7 +12,6 @@ use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
 class WebhookService
 {
   public function __construct(
-    private PaymentService $paymentService,
     private OrderService $orderService,
     private PaymentRepositoryInterface $paymentRepository
   ) {}
