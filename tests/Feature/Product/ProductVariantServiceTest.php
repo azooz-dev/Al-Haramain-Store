@@ -4,7 +4,7 @@ namespace Tests\Feature\Product;
 
 use Tests\TestCase;
 use Tests\Fixtures\OrderFixtures;
-use App\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 use App\Exceptions\Product\Variant\OutOfStockException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -93,9 +93,9 @@ class ProductVariantServiceTest extends TestCase
     public function test_total_order_price_calculation(): void
     {
         // Arrange
-        $product1 = \App\Models\Product\Product::factory()->create();
-        $color1 = \App\Models\Product\ProductColor::factory()->create(['product_id' => $product1->id]);
-        $variant1 = \App\Models\Product\ProductVariant::factory()->create([
+        $product1 = \Modules\Catalog\Entities\Product\Product::factory()->create();
+        $color1 = \Modules\Catalog\Entities\Product\ProductColor::factory()->create(['product_id' => $product1->id]);
+        $variant1 = \Modules\Catalog\Entities\Product\ProductVariant::factory()->create([
             'product_id' => $product1->id,
             'color_id' => $color1->id,
             'quantity' => 100,
@@ -103,9 +103,9 @@ class ProductVariantServiceTest extends TestCase
             'amount_discount_price' => null // Explicitly no discount
         ]);
 
-        $product2 = \App\Models\Product\Product::factory()->create();
-        $color2 = \App\Models\Product\ProductColor::factory()->create(['product_id' => $product2->id]);
-        $variant2 = \App\Models\Product\ProductVariant::factory()->create([
+        $product2 = \Modules\Catalog\Entities\Product\Product::factory()->create();
+        $color2 = \Modules\Catalog\Entities\Product\ProductColor::factory()->create(['product_id' => $product2->id]);
+        $variant2 = \Modules\Catalog\Entities\Product\ProductVariant::factory()->create([
             'product_id' => $product2->id,
             'color_id' => $color2->id,
             'quantity' => 50,
@@ -115,12 +115,12 @@ class ProductVariantServiceTest extends TestCase
 
         $items = [
             [
-                'orderable_type' => \App\Models\Product\Product::class,
+                'orderable_type' => \Modules\Catalog\Entities\Product\Product::class,
                 'variant_id' => $variant1->id,
                 'quantity' => 2,
             ],
             [
-                'orderable_type' => \App\Models\Product\Product::class,
+                'orderable_type' => \Modules\Catalog\Entities\Product\Product::class,
                 'variant_id' => $variant2->id,
                 'quantity' => 3,
             ],

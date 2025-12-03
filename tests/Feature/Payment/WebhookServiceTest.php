@@ -48,9 +48,9 @@ class WebhookServiceTest extends TestCase
         $address = Address::factory()->create(['user_id' => $user->id]);
 
         // Create a real product to ensure valid items (with no discount)
-        $product = \App\Models\Product\Product::factory()->create();
-        $color = \App\Models\Product\ProductColor::factory()->create(['product_id' => $product->id]);
-        $variant = \App\Models\Product\ProductVariant::factory()->create([
+        $product = \Modules\Catalog\Entities\Product\Product::factory()->create();
+        $color = \Modules\Catalog\Entities\Product\ProductColor::factory()->create(['product_id' => $product->id]);
+        $variant = \Modules\Catalog\Entities\Product\ProductVariant::factory()->create([
             'product_id' => $product->id,
             'color_id' => $color->id,
             'quantity' => 10,
@@ -60,7 +60,7 @@ class WebhookServiceTest extends TestCase
         $productData = ['product' => $product, 'color' => $color, 'variant' => $variant];
         $items = [
             [
-                'orderable_type' => \App\Models\Product\Product::class,
+                'orderable_type' => \Modules\Catalog\Entities\Product\Product::class,
                 'orderable_id' => $productData['product']->id,
                 'variant_id' => $productData['variant']->id,
                 'color_id' => $productData['color']->id,

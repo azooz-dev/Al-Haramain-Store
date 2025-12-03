@@ -4,7 +4,7 @@ namespace Tests\Feature\Order;
 
 use Tests\TestCase;
 use App\Models\Order\Order;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use Tests\Fixtures\OrderFixtures;
 use App\Services\Order\OrderService;
 use Tests\Support\Builders\OrderTestDataBuilder;
