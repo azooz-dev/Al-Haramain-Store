@@ -12,18 +12,12 @@ use Database\Seeders\Coupon\CouponSeeder;
 use Database\Seeders\Review\ReviewSeeder;
 use Database\Seeders\Order\OrderItemSeeder;
 use Database\Seeders\Payment\PaymentSeeder;
-use Database\Seeders\Product\ProductSeeder;
-use Database\Seeders\Category\CategorySeeder;
 use Database\Seeders\Coupon\CouponUserSeeder;
 use Database\Seeders\Favorite\FavoriteSeeder;
-use Database\Seeders\Product\ProductColorSeeder;
 use Database\Seeders\Permission\PermissionSeeder;
 use Database\Seeders\Offer\OfferTranslationSeeder;
-use Database\Seeders\Product\ProductVariantSeeder;
 use Database\Seeders\User\UserAddress\AddressSeeder;
-use Database\Seeders\Product\ProductColorImageSeeder;
-use Database\Seeders\Product\ProductTranslationSeeder;
-use Database\Seeders\Category\CategoryTranslationSeeder;
+use Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,13 +32,7 @@ class DatabaseSeeder extends Seeder
             // PermissionSeeder::class,
             // RoleSeeder::class,
             // AdminSeeder::class,
-            // CategorySeeder::class,
-            // CategoryTranslationSeeder::class,
-            // ProductSeeder::class,
-            // ProductColorSeeder::class,
-            // ProductVariantSeeder::class,
-            // ProductColorImageSeeder::class,
-            // ProductTranslationSeeder::class,
+            // CatalogDatabaseSeeder::class, // Catalog module seeders (Category, Product, etc.)
             OfferSeeder::class,
             OfferTranslationSeeder::class,
             // CouponSeeder::class,
