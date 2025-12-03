@@ -4,9 +4,9 @@ namespace App\Services\Dashboard;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
-use App\Services\Product\ProductTranslationService;
+use Modules\Catalog\Services\Product\ProductTranslationService;
 
 class ProductAnalyticsService
 {

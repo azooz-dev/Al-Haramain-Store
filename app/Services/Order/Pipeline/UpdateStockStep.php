@@ -2,8 +2,8 @@
 
 namespace App\Services\Order\Pipeline;
 
-use App\Services\Product\Variant\ProductVariantService;
-use App\Services\Product\ProductStockService;
+use Modules\Catalog\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Services\Product\ProductStockService;
 
 class UpdateStockStep implements OrderProcessingStep
 {
@@ -19,9 +19,9 @@ class UpdateStockStep implements OrderProcessingStep
 
         if ($offers->isNotEmpty()) {
             $offerProducts = $this->buildOfferProductsForStockUpdate($offers);
-            $allItems = ($groupedItems[\App\Models\Product\Product::class] ?? []) + $offerProducts;
+            $allItems = ($groupedItems[\Modules\Catalog\Entities\Product\Product::class] ?? []) + $offerProducts;
         } else {
-            $allItems = $groupedItems[\App\Models\Product\Product::class] ?? [];
+            $allItems = $groupedItems[\Modules\Catalog\Entities\Product\Product::class] ?? [];
         }
 
         if (empty($allItems)) {

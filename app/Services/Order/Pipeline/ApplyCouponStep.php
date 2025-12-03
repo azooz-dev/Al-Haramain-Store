@@ -3,7 +3,7 @@
 namespace App\Services\Order\Pipeline;
 
 use App\Services\Coupon\CouponService;
-use App\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class ApplyCouponStep implements OrderProcessingStep
 {

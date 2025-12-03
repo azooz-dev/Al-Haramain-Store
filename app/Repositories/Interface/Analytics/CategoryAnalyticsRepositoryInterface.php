@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Interface\Analytics;
 
-use App\Models\Category\Category;
+use Modules\Catalog\Entities\Category\Category;
 use Carbon\Carbon;
 
 interface CategoryAnalyticsRepositoryInterface

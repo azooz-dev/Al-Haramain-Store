@@ -16,7 +16,7 @@ class ReviewRepository implements ReviewRepositoryInterface
       'order',
       'orderItem.orderable' => function ($morphTo) {
         $morphTo->morphWith([
-          \App\Models\Product\Product::class => ['translations'],
+          \Modules\Catalog\Entities\Product\Product::class => ['translations'],
           \App\Models\Offer\Offer::class => ['translations'],
         ]);
       },
@@ -30,7 +30,7 @@ class ReviewRepository implements ReviewRepositoryInterface
       'order',
       'orderItem.orderable' => function ($morphTo) {
         $morphTo->morphWith([
-          \App\Models\Product\Product::class => ['translations'],
+          \Modules\Catalog\Entities\Product\Product::class => ['translations'],
           \App\Models\Offer\Offer::class => ['translations'],
         ]);
       },
@@ -48,7 +48,7 @@ class ReviewRepository implements ReviewRepositoryInterface
       'order',
       'orderItem.orderable' => function ($morphTo) {
         $morphTo->morphWith([
-          \App\Models\Product\Product::class => ['translations'],
+          \Modules\Catalog\Entities\Product\Product::class => ['translations'],
           \App\Models\Offer\Offer::class => ['translations'],
         ]);
       },
@@ -79,7 +79,7 @@ class ReviewRepository implements ReviewRepositoryInterface
         'order',
         'orderItem.orderable' => function ($morphTo) {
           $morphTo->morphWith([
-            \App\Models\Product\Product::class => ['translations'],
+            \Modules\Catalog\Entities\Product\Product::class => ['translations'],
             \App\Models\Offer\Offer::class => ['translations'],
           ]);
         },

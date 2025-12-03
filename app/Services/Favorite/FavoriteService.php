@@ -6,7 +6,7 @@ use App\Models\Favorite\Favorite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
-use App\Services\Product\ProductTranslationService;
+use Modules\Catalog\Services\Product\ProductTranslationService;
 
 class FavoriteService
 {

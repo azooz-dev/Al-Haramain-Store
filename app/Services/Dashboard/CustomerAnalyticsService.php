@@ -4,7 +4,7 @@ namespace App\Services\Dashboard;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Services\Category\CategoryTranslationService;
+use Modules\Catalog\Services\Category\CategoryTranslationService;
 use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
 

@@ -2,7 +2,7 @@
 
 namespace App\Services\Order\Pipeline;
 
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Models\Offer\Offer;
 
 class CalculatePricesStep implements OrderProcessingStep

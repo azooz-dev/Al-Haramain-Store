@@ -6,7 +6,7 @@ use App\Models\Review\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use App\Repositories\Interface\Review\ReviewRepositoryInterface;
-use App\Services\Product\ProductTranslationService;
+use Modules\Catalog\Services\Product\ProductTranslationService;
 use App\Services\Offer\OfferService;
 
 class ReviewService
@@ -90,7 +90,7 @@ class ReviewService
     $orderable = $review->orderItem->orderable;
 
     // Handle Product
-    if ($orderable instanceof \App\Models\Product\Product) {
+    if ($orderable instanceof \Modules\Catalog\Entities\Product\Product) {
       return $this->productTranslationService->getTranslatedName($orderable);
     }
 
@@ -111,7 +111,7 @@ class ReviewService
     $orderable = $review->orderItem->orderable;
 
     // Handle Product - return SKU
-    if ($orderable instanceof \App\Models\Product\Product) {
+    if ($orderable instanceof \Modules\Catalog\Entities\Product\Product) {
       return $orderable->sku ?? 'N/A';
     }
 

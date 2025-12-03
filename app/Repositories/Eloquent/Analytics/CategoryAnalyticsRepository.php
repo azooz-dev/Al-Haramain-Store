@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent\Analytics;
 
-use App\Models\Category\Category;
+use Modules\Catalog\Entities\Category\Category;
 use App\Models\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class CategoryAnalyticsRepository implements CategoryAnalyticsRepositoryInterfac
             ->join('category_product', 'categories.id', '=', 'category_product.category_id')
             ->join('order_items', function ($join) {
                 $join->on('category_product.product_id', '=', 'order_items.orderable_id')
-                    ->where('order_items.orderable_type', '=', \App\Models\Product\Product::class);
+                    ->where('order_items.orderable_type', '=', \Modules\Catalog\Entities\Product\Product::class);
             })
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->where('orders.status', '!=', Order::CANCELLED)
