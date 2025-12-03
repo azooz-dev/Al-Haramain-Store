@@ -2,7 +2,7 @@
 
 namespace App\Traits\Category;
 
-use App\Services\Category\CategoryTranslationService;
+use Modules\Catalog\Services\Category\CategoryTranslationService;
 
 trait HasCategoryTranslations
 {

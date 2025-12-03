@@ -3,7 +3,7 @@
 namespace App\Policies\Product;
 
 use App\Models\Admin\Admin;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProductPolicy

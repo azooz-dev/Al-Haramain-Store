@@ -2,7 +2,7 @@
 
 namespace App\Traits\Product;
 
-use App\Services\Product\ProductTranslationService;
+use Modules\Catalog\Services\Product\ProductTranslationService;
 
 trait HasProductTranslations
 {
