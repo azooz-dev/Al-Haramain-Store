@@ -94,7 +94,9 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user) {
-            $user->verified = self::UNVERIFIED_USER;
+            if (!$user->verified) {
+                $user->verified = self::UNVERIFIED_USER;
+            }
         });
     }
 
