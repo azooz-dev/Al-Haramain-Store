@@ -5,11 +5,11 @@ namespace App\Http\Requests\Order;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Rules\ValidOrderItem;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Http\Requests\BaseRequest;
 use App\Services\Offer\OfferService;
-use App\Services\Product\ProductService;
-use App\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Services\Product\ProductService;
+use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 abstract class BaseOrderRequest extends BaseRequest
 {

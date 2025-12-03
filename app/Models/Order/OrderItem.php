@@ -4,8 +4,8 @@ namespace App\Models\Order;
 
 use App\Models\Order\Order;
 use App\Models\Review\Review;
-use App\Models\Product\ProductColor;
-use App\Models\Product\ProductVariant;
+use Modules\Catalog\Entities\Product\ProductColor;
+use Modules\Catalog\Entities\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;

@@ -4,12 +4,12 @@ namespace App\Rules;
 
 use Closure;
 use App\Models\Offer\Offer;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use App\Services\Offer\OfferService;
-use App\Services\Product\ProductService;
+use Modules\Catalog\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use App\Exceptions\Product\Variant\OutOfStockException;
-use App\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class ValidOrderItem implements ValidationRule
 {

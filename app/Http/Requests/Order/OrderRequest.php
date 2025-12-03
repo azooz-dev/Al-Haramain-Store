@@ -4,7 +4,7 @@ namespace App\Http\Requests\Order;
 
 use App\Models\Order\Order;
 use App\Http\Requests\Order\BaseOrderRequest;
-use App\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class OrderRequest extends BaseOrderRequest
 {

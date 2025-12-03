@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Order\OrderItem;
 
 use Illuminate\Http\Request;
-use App\Models\Product\Product;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderItemApiResource extends JsonResource
