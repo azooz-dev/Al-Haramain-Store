@@ -2,9 +2,10 @@
 
 namespace Database\Factories\User;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User\User>
@@ -41,7 +42,19 @@ class UserFactory extends Factory
     public function unverified(): static
     {
         return $this->state(fn(array $attributes) => [
+            'verified' => User::UNVERIFIED_USER,
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is verified.
+     */
+    public function verified(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'verified' => User::VERIFIED_USER,
+            'email_verified_at' => now(),
         ]);
     }
 }
