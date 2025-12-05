@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Policies\Category;
+namespace Modules\Catalog\Policies\Product;
 
 use App\Models\Admin\Admin;
-use Modules\Catalog\Entities\Category\Category;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CategoryPolicy
+class ProductPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class CategoryPolicy
      */
     public function viewAny(Admin $admin): bool
     {
-        return $admin->can('view_any_category');
+        return $admin->can('view_any_product');
     }
 
     /**
      * Determine whether the admin can view the model.
      */
-    public function view(Admin $admin, Category $category): bool
+    public function view(Admin $admin, Product $product): bool
     {
-        return $admin->can('view_category');
+        return $admin->can('view_product');
     }
 
     /**
@@ -31,23 +31,23 @@ class CategoryPolicy
      */
     public function create(Admin $admin): bool
     {
-        return $admin->can('create_category');
+        return $admin->can('create_product');
     }
 
     /**
      * Determine whether the admin can update the model.
      */
-    public function update(Admin $admin, Category $category): bool
+    public function update(Admin $admin, Product $product): bool
     {
-        return $admin->can('update_category');
+        return $admin->can('update_product');
     }
 
     /**
      * Determine whether the admin can delete the model.
      */
-    public function delete(Admin $admin, Category $category): bool
+    public function delete(Admin $admin, Product $product): bool
     {
-        return $admin->can('delete_category');
+        return $admin->can('delete_product');
     }
 
     /**
@@ -55,15 +55,15 @@ class CategoryPolicy
      */
     public function deleteAny(Admin $admin): bool
     {
-        return $admin->can('delete_any_category');
+        return $admin->can('delete_any_product');
     }
 
     /**
      * Determine whether the admin can permanently delete.
      */
-    public function forceDelete(Admin $admin, Category $category): bool
+    public function forceDelete(Admin $admin, Product $product): bool
     {
-        return $admin->can('force_delete_category');
+        return $admin->can('force_delete_product');
     }
 
     /**
@@ -71,15 +71,15 @@ class CategoryPolicy
      */
     public function forceDeleteAny(Admin $admin): bool
     {
-        return $admin->can('force_delete_any_category');
+        return $admin->can('force_delete_any_product');
     }
 
     /**
      * Determine whether the admin can restore.
      */
-    public function restore(Admin $admin, Category $category): bool
+    public function restore(Admin $admin, Product $product): bool
     {
-        return $admin->can('restore_category');
+        return $admin->can('restore_product');
     }
 
     /**
@@ -87,15 +87,15 @@ class CategoryPolicy
      */
     public function restoreAny(Admin $admin): bool
     {
-        return $admin->can('restore_any_category');
+        return $admin->can('restore_any_product');
     }
 
     /**
      * Determine whether the admin can replicate.
      */
-    public function replicate(Admin $admin, Category $category): bool
+    public function replicate(Admin $admin, Product $product): bool
     {
-        return $admin->can('replicate_category');
+        return $admin->can('replicate_product');
     }
 
     /**
@@ -103,6 +103,6 @@ class CategoryPolicy
      */
     public function reorder(Admin $admin): bool
     {
-        return $admin->can('reorder_category');
+        return $admin->can('reorder_product');
     }
 }
