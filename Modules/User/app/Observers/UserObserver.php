@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Observers\User;
+namespace Modules\User\Observers;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Services\Dashboard\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 use App\Events\Auth\UserRegistered;

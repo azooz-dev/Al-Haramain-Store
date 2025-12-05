@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\User\User;
 use App\Models\Offer\Offer;
 use App\Models\Order\Order;
 use App\Models\Review\Review;
@@ -12,7 +11,6 @@ use App\Models\Favorite\Favorite;
 use App\Policies\User\UserPolicy;
 use App\Models\Offer\OfferProduct;
 use App\Events\Auth\UserRegistered;
-use App\Observers\User\UserObserver;
 use Illuminate\Support\Facades\Gate;
 use App\Policies\Review\ReviewPolicy;
 
@@ -143,7 +141,6 @@ class AppServiceProvider extends ServiceProvider
         Offer::observe(OfferObserver::class);
         OfferProduct::observe(OfferProductObserver::class);
         Order::observe(OrderObserver::class);
-        User::observe(UserObserver::class);
         Review::observe(ReviewObserver::class);
 
         // Register Event Listeners
