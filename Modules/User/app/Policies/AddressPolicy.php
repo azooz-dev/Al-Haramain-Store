@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies\User\Address;
+namespace Modules\User\Policies;
 
-use App\Models\User\User;
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\User;
+use Modules\User\Entities\Address;
 
 class AddressPolicy
 {

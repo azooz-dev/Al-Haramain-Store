@@ -8,7 +8,6 @@ use App\Models\Review\Review;
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Favorite\Favorite;
-use App\Policies\User\UserPolicy;
 use App\Models\Offer\OfferProduct;
 use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Gate;
@@ -23,10 +22,8 @@ use App\Observers\Order\OrderObserver;
 use Illuminate\Support\ServiceProvider;
 use Modules\Catalog\Entities\Product\ProductColorImage;
 use App\Policies\Favorite\FavoritePolicy;
-use App\Models\User\UserAddresses\Address;
 use App\Events\Auth\ResendVerificationEmail;
 use App\Observers\Review\ReviewObserver;
-use App\Policies\User\Address\AddressPolicy;
 use App\Listeners\Auth\SendVerificationEmail;
 use App\Observers\Offer\OfferProductObserver;
 use App\Events\Auth\PasswordResetTokenCreated;
@@ -149,8 +146,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
 
         // Register Policies
-        Gate::policy(Address::class, AddressPolicy::class);
-        Gate::policy(User::class, UserPolicy::class);
         Gate::policy(Review::class, ReviewPolicy::class);
         Gate::policy(Favorite::class, FavoritePolicy::class);
     }
