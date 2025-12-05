@@ -2,7 +2,7 @@
 
 namespace App\Services\Order\Pipeline;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Exceptions\Order\OrderException;
 
 class ValidateBuyerStep implements OrderProcessingStep

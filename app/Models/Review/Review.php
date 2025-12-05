@@ -2,7 +2,7 @@
 
 namespace App\Models\Review;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Order\Order;
 use App\Models\Order\OrderItem;
 use Illuminate\Database\Eloquent\Model;

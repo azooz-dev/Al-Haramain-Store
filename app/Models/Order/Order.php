@@ -2,13 +2,13 @@
 
 namespace App\Models\Order;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Coupon\Coupon;
 use App\Models\Review\Review;
 use App\Models\Order\OrderItem;
 use App\Models\Payment\Payment;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

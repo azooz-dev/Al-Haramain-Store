@@ -2,7 +2,7 @@
 
 namespace App\Models\Coupon;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
