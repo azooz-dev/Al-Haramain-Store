@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\User\UserAddress;
 
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\Address;
 use App\Http\Requests\User\UserAddress\BaseUserAddressRequest;
 
 

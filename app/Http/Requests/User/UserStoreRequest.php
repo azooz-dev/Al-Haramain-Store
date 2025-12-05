@@ -3,7 +3,7 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\User\BaseUserRequest;
-use App\Models\User\User;
+use Modules\User\Entities\User;
 
 class UserStoreRequest extends BaseUserRequest
 {
