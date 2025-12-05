@@ -4,7 +4,7 @@ namespace App\Services\Auth;
 
 use App\Events\Auth\UserRegistered;
 use function App\Helpers\showMessage;
-use App\Exceptions\User\UserException;
+use Modules\User\Exceptions\UserException;
 
 use function App\Helpers\errorResponse;
 use App\Http\Resources\User\UserApiResource;
