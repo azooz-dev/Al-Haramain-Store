@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use $MODULE_NAMESPACE$\$STUDLY_NAME$\Http\Controllers\$STUDLY_NAME$Controller;
 
 // Add your API routes here
 // Example:
