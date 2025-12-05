@@ -2,7 +2,7 @@
 
 namespace App\Policies\Favorite;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Admin\Admin;
 use App\Models\Favorite\Favorite;
 use Illuminate\Auth\Access\HandlesAuthorization;

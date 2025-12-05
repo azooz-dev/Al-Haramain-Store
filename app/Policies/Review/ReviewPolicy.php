@@ -2,7 +2,7 @@
 
 namespace App\Policies\Review;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Admin\Admin;
 use App\Models\Review\Review;
 use Illuminate\Auth\Access\HandlesAuthorization;
