@@ -7,7 +7,7 @@ use Modules\User\Entities\User;
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Order\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Database\Factories\User\UserFactory;
+use Modules\User\Database\Factories\UserFactory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Review\Review>
