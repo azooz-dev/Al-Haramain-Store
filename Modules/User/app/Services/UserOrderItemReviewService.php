@@ -10,7 +10,7 @@ use App\Exceptions\Order\Review\ReviewException;
 use App\Http\Resources\Review\ReviewApiResource;
 use App\Exceptions\Order\CheckDeliveredOrderException;
 use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
-use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
+use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
 
 class UserOrderItemReviewService
 {

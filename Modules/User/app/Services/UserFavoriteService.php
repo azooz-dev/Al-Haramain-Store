@@ -4,7 +4,7 @@ namespace Modules\User\Services;
 
 use App\Exceptions\Favorite\FavoriteException;
 use App\Http\Resources\Favorite\FavoriteApiResource;
-use App\Repositories\Interface\User\UserFavoriteRepositoryInterface;
+use Modules\User\Repositories\Interface\UserFavoriteRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 use function App\Helpers\showMessage;

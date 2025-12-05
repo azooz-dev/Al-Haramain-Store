@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\Auth\ResendVerificationEmail;
 use App\Notifications\VerificationCodeNotification;
-use App\Exceptions\User\VerificationEmailFailedException;
+use Modules\User\Exceptions\VerificationEmailFailedException;
 
 class ResendVerificationEmailListener implements ShouldQueue
 {

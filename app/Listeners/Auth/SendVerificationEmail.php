@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Notifications\VerificationCodeNotification;
-use App\Exceptions\User\VerificationEmailFailedException;
+use Modules\User\Exceptions\VerificationEmailFailedException;
 
 class SendVerificationEmail implements ShouldQueue
 {

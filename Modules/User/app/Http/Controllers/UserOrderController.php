@@ -3,7 +3,7 @@
 namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\User\Order\UserOrderService;
+use Modules\User\Services\UserOrderService;
 
 use function App\Helpers\showAll;
 

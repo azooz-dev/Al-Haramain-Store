@@ -2,7 +2,7 @@
 
 namespace Modules\User\Http\Controllers;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Order\Order;
 use App\Models\Review\Review;
 
@@ -11,7 +11,7 @@ use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Review\ReviewRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Services\User\Order\OrderItem\Review\UserOrderItemReviewService;
+use Modules\User\Services\UserOrderItemReviewService;
 
 class UserOrderItemReviewController extends Controller
 {

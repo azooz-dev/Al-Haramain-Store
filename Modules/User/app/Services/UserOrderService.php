@@ -2,10 +2,10 @@
 
 namespace Modules\User\Services;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Exceptions\Order\OrderException;
 use App\Http\Resources\Order\OrderApiResource;
-use App\Repositories\Interface\User\Order\UserOrderRepositoryInterface;
+use Modules\User\Repositories\Interface\UserOrderRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 
