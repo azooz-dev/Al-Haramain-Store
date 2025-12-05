@@ -1,16 +1,23 @@
 <?php
 
-namespace App\Models\User\UserAddresses;
+namespace Modules\User\Entities;
 
-use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\User\Database\Factories\AddressFactory;
 
 class Address extends Model
 {
     use HasFactory;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return AddressFactory::new();
+    }
 
     const ADDRESS_TYPE_HOME = 'Home';
     const ADDRESS_TYPE_WORK = 'Work';

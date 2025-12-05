@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\User;
+namespace Modules\User\Entities;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Order\Order;
@@ -9,15 +9,23 @@ use App\Models\Coupon\CouponUser;
 use App\Models\Favorite\Favorite;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use App\Models\User\UserAddresses\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\User\Database\Factories\UserFactory;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<\Modules\User\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 
     const VERIFIED_USER = '1';
     const UNVERIFIED_USER = '0';
