@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Order\OrderItem\Review;
+namespace Modules\User\Services;
 
 use App\Models\Order\OrderItem;
 use App\Services\Order\OrderService;

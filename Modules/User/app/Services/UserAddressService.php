@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\UserAddresses;
+namespace Modules\User\Services;
 
 use App\Models\User\User;
 use App\Exceptions\Order\OrderException;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\User;
+namespace Modules\User\Services;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Exceptions\Order\OrderException;
-use App\Exceptions\User\UserException;
+use Modules\User\Exceptions\UserException;
 use App\Http\Resources\User\UserApiResource;
-use App\Repositories\Interface\User\UserRepositoryInterface;
+use Modules\User\Repositories\Interface\UserRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User\Product\Favorite;
+namespace Modules\User\Services;
 
 use App\Exceptions\Favorite\FavoriteException;
 use App\Http\Resources\Favorite\FavoriteApiResource;
