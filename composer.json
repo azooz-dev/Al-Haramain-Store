@@ -39,6 +39,9 @@
             "Modules\\Catalog\\": "Modules/Catalog/app/",
             "Modules\\Catalog\\Database\\Factories\\": "Modules/Catalog/database/factories/",
             "Modules\\Catalog\\Database\\Seeders\\": "Modules/Catalog/database/seeders/",
+            "Modules\\User\\": "Modules/User/app/",
+            "Modules\\User\\Database\\Factories\\": "Modules/User/database/factories/",
+            "Modules\\User\\Database\\Seeders\\": "Modules/User/database/seeders/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"

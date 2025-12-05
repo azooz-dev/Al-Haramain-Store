@@ -62,6 +62,7 @@ return [
             'views/index' => ['LOWER_NAME'],
             'views/master' => ['LOWER_NAME', 'STUDLY_NAME', 'KEBAB_NAME'],
             'scaffold/config' => ['STUDLY_NAME'],
+            'scaffold/provider' => ['NAMESPACE', 'CLASS', 'MODULE', 'LOWER_NAME', 'STUDLY_NAME', 'MIGRATIONS_PATH', 'PATH_LANG', 'PATH_VIEWS'],
             'composer' => [
                 'LOWER_NAME',
                 'STUDLY_NAME',
