@@ -8,7 +8,7 @@ use Modules\Catalog\Entities\Product\Product;
 use App\Services\Offer\OfferService;
 use Modules\Catalog\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Exceptions\Product\Variant\OutOfStockException;
+use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class ValidOrderItem implements ValidationRule
@@ -34,15 +34,15 @@ class ValidOrderItem implements ValidationRule
                 $variantId = $item['variant_id'] ?? null;
 
                 if ($productId && !$this->productService->getProductById($productId)) {
-                    $fail(__('app.messages.order.validation.product_not_found'));
+                    $fail(__('app.messages.order.validation.product_not_found'), null);
                 }
 
                 if ($colorId && !$this->productService->checkColorBelongsToProduct($productId, $colorId)) {
-                    $fail(__('app.messages.order.validation.color_not_found'));
+                    $fail(__('app.messages.order.validation.color_not_found'), null);
                 }
 
                 if ($variantId && !$this->productService->checkVariantBelongsToProductAndColor($productId, $colorId, $variantId)) {
-                    $fail(__('app.messages.order.validation.variant_not_found'));
+                    $fail(__('app.messages.order.validation.variant_not_found'), null);
                 }
 
                 if ($variantId) {
@@ -55,7 +55,7 @@ class ValidOrderItem implements ValidationRule
                 $offerId = $item['orderable_id'];
 
                 if (!$this->offerService->retrieveOfferById($offerId)) {
-                    $fail(__("app.messages.order.validation.offer_not_found"));
+                    $fail(__("app.messages.order.validation.offer_not_found"), null);
                 }
 
                 return;
@@ -67,7 +67,7 @@ class ValidOrderItem implements ValidationRule
             try {
                 $this->productVariantService->checkStock($productItems);
             } catch (OutOfStockException $e) {
-                $fail($e->getMessage());
+                $fail($e->getMessage(), null);
                 return;
             }
         }

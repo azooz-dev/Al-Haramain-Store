@@ -20,7 +20,7 @@ use App\Services\Order\Pipeline\ValidateStockStep;
 use App\Services\Order\Pipeline\ProcessPaymentStep;
 use App\Services\Order\Pipeline\CalculatePricesStep;
 use App\Services\Order\Pipeline\CreateOrderItemsStep;
-use App\Exceptions\Product\Variant\OutOfStockException;
+use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use App\Repositories\Interface\Order\OrderRepositoryInterface;
 
 class OrderService

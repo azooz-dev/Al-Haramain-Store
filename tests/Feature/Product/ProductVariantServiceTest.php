@@ -5,7 +5,7 @@ namespace Tests\Feature\Product;
 use Tests\TestCase;
 use Tests\Fixtures\OrderFixtures;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
-use App\Exceptions\Product\Variant\OutOfStockException;
+use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**

@@ -3,7 +3,7 @@
 namespace Modules\Catalog\Services\Product\Variant;
 
 use App\Models\Offer\Offer;
-use App\Exceptions\Product\Variant\OutOfStockException;
+use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Catalog\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 
 class ProductVariantService
@@ -72,5 +72,3 @@ class ProductVariantService
     return $this->productVariantRepository->fetchAllVariants($productIds, $colorIds, $variantIds);
   }
 }
-
-
