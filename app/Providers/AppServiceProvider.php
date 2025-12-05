@@ -84,7 +84,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(OrderItemRepositoryInterface::class, OrderItemRepository::class);
-        $this->app->bind(UserOrderItemReviewRepositoryInterface::class, UserOrderItemReviewRepository::class);
 
         $this->app->bind(OfferRepositoryInterface::class, OfferRepository::class);
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
