@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Order;
+namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\User\Order\UserOrderService;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\User\Product;
+namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\User\Product\Favorite\UserProductFavoriteService;
+use Modules\User\Services\UserProductFavoriteService;
 
 use function App\Helpers\showOne;
 

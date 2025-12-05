@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Order\OrderItem\Review;
+namespace Modules\User\Http\Controllers;
 
 use App\Models\User\User;
 use App\Models\Order\Order;

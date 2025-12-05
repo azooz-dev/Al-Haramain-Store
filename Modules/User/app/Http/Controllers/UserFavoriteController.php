@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace Modules\User\Http\Controllers;
 
 use function App\Helpers\showAll;
 use App\Http\Controllers\Controller;

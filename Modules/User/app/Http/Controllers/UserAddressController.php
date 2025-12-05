@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\UserAddresses;
+namespace Modules\User\Http\Controllers;
 
 use App\Models\User\User;
 use function App\Helpers\showAll;

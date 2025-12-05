@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace Modules\User\Http\Controllers;
 
-use App\Models\User\User;
-use App\Services\User\UserService;
+use Modules\User\Entities\User;
+use Modules\User\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserUpdateRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
