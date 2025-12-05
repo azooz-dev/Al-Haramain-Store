@@ -2,11 +2,11 @@
 
 namespace Modules\User\Services;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Exceptions\Order\OrderException;
-use App\Exceptions\User\UserAddress\UserAddressException;
+use Modules\User\Exceptions\UserAddressException;
 use App\Http\Resources\User\UserAddresses\AddressApiResource;
-use App\Repositories\Interface\User\UserAddresses\UserAddressRepositoryInterface;
+use Modules\User\Repositories\Interface\UserAddressRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 use function App\Helpers\showMessage;

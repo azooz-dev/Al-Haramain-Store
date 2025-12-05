@@ -2,14 +2,14 @@
 
 namespace Modules\User\Http\Controllers;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
 use function App\Helpers\showMessage;
 
-use App\Models\User\UserAddresses\Address;
-use App\Services\User\UserAddresses\UserAddressService;
+use Modules\User\Entities\Address;
+use Modules\User\Services\UserAddressService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Requests\User\UserAddress\UserAddressStoreRequest;
 use App\Http\Requests\User\UserAddress\UserAddressUpdateRequest;
