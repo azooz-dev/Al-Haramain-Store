@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories\User\UserAddresses;
+namespace Modules\User\Database\Factories;
 
-use App\Models\User\User;
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\User;
+use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User\UserAddresses\Address>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\User\Entities\Address>
  */
 class AddressFactory extends Factory
 {
