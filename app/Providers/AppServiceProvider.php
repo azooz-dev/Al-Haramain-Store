@@ -109,11 +109,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
         $this->app->bind(FavoriteRepositoryInterface::class, FavoriteRepository::class);
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(UserOrderRepositoryInterface::class, UserOrderRepository::class);
-        $this->app->bind(UserProductFavoriteRepositoryInterface::class, UserProductFavoriteRepository::class);
-        $this->app->bind(UserFavoriteRepositoryInterface::class, UserFavoriteRepository::class);
-        $this->app->bind(UserAddressRepositoryInterface::class, UserAddressRepository::class);
 
         $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
 

@@ -45,12 +45,30 @@ class UserServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
-        // Example:
-        // $this->app->bind(
-        //     \Modules\User\Repositories\Interface\YourRepositoryInterface::class,
-        //     \Modules\User\Repositories\Eloquent\YourRepository::class
-        // );
+        $this->app->bind(
+            \Modules\User\Repositories\Interface\UserRepositoryInterface::class,
+            \Modules\User\Repositories\Eloquent\UserRepository::class
+        );
+        $this->app->bind(
+            \Modules\User\Repositories\Interface\UserOrderRepositoryInterface::class,
+            \Modules\User\Repositories\Eloquent\UserOrderRepository::class
+        );
+        $this->app->bind(
+            \Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface::class,
+            \Modules\User\Repositories\Eloquent\UserOrderItemReviewRepository::class
+        );
+        $this->app->bind(
+            \Modules\User\Repositories\Interface\UserProductFavoriteRepositoryInterface::class,
+            \Modules\User\Repositories\Eloquent\UserProductFavoriteRepository::class
+        );
+        $this->app->bind(
+            \Modules\User\Repositories\Interface\UserFavoriteRepositoryInterface::class,
+            \Modules\User\Repositories\Eloquent\UserFavoriteRepository::class
+        );
+        $this->app->bind(
+            \Modules\User\Repositories\Interface\UserAddressRepositoryInterface::class,
+            \Modules\User\Repositories\Eloquent\UserAddressRepository::class
+        );
     }
 
     /**
