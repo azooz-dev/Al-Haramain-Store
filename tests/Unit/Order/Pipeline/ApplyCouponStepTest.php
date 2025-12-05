@@ -31,7 +31,7 @@ class ApplyCouponStepTest extends TestCase
     public function test_fixed_discount_coupon_is_applied_correctly(): void
     {
         // Arrange
-        $user = \App\Models\User\User::factory()->create(); // Create a real user
+        $user = \Modules\User\Entities\User::factory()->create(); // Create a real user
 
         $product = Product::factory()->create();
         $color = ProductColor::factory()->create(['product_id' => $product->id]);
@@ -75,7 +75,7 @@ class ApplyCouponStepTest extends TestCase
     public function test_percentage_discount_coupon_is_applied_correctly(): void
     {
         // Arrange
-        $user = \App\Models\User\User::factory()->create(); // Add this line
+        $user = \Modules\User\Entities\User::factory()->create(); // Add this line
 
         $product = Product::factory()->create();
         $color = ProductColor::factory()->create(['product_id' => $product->id]);
@@ -118,7 +118,7 @@ class ApplyCouponStepTest extends TestCase
     public function test_order_without_coupon_code(): void
     {
         // Arrange
-        $user = \App\Models\User\User::factory()->create(); // Add this line
+        $user = \Modules\User\Entities\User::factory()->create(); // Add this line
 
         $product = Product::factory()->create();
         $color = ProductColor::factory()->create(['product_id' => $product->id]);

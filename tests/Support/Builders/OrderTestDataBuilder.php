@@ -2,14 +2,14 @@
 
 namespace Tests\Support\Builders;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Order\Order;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use App\Models\Coupon\Coupon;
 use App\Models\Offer\Offer;
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\Address;
 
 /**
  * Builder Pattern for creating test data

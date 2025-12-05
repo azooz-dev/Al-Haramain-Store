@@ -3,7 +3,7 @@
 namespace Tests\Unit\Order\Pipeline;
 
 use Tests\TestCase;
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Services\Order\Pipeline\ValidateBuyerStep;
 use App\Exceptions\Order\OrderException;
 use Illuminate\Foundation\Testing\RefreshDatabase;

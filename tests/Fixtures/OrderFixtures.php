@@ -2,12 +2,12 @@
 
 namespace Tests\Fixtures;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use App\Models\Coupon\Coupon;
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\Address;
 
 /**
  * Test Fixtures - Reusable test data creation

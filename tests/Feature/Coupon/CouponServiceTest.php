@@ -31,7 +31,7 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = OrderFixtures::createActiveCouponWithFixedDiscount(50.00);
-        $user = \App\Models\User\User::factory()->verified()->create();
+        $user = \Modules\User\Entities\User::factory()->verified()->create();
         $totalAmount = 200.00;
 
         // Act
@@ -52,7 +52,7 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = OrderFixtures::createActiveCouponWithPercentageDiscount(20); // 20%
-        $user = \App\Models\User\User::factory()->verified()->create();
+        $user = \Modules\User\Entities\User::factory()->verified()->create();
         $totalAmount = 200.00;
 
         // Act
@@ -72,7 +72,7 @@ class CouponServiceTest extends TestCase
     public function test_coupon_application_fails_with_invalid_coupon_code(): void
     {
         // Arrange
-        $user = \App\Models\User\User::factory()->verified()->create();
+        $user = \Modules\User\Entities\User::factory()->verified()->create();
         $totalAmount = 200.00;
 
         // Act & Assert
@@ -87,7 +87,7 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = Coupon::factory()->inactive()->create();
-        $user = \App\Models\User\User::factory()->verified()->create();
+        $user = \Modules\User\Entities\User::factory()->verified()->create();
         $totalAmount = 200.00;
 
         // Act & Assert
@@ -102,7 +102,7 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = OrderFixtures::createActiveCouponWithFixedDiscount(500.00); // More than total
-        $user = \App\Models\User\User::factory()->verified()->create();
+        $user = \Modules\User\Entities\User::factory()->verified()->create();
         $totalAmount = 200.00;
 
         // Act

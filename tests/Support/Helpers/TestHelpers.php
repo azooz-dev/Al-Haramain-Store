@@ -2,7 +2,7 @@
 
 namespace Tests\Support\Helpers;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use Laravel\Sanctum\Sanctum;
 
 /**

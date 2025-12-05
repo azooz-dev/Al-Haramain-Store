@@ -3,7 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Services\Auth\ResetPasswordService;
 use App\Services\Auth\ForgetPasswordService;
 use Illuminate\Foundation\Testing\RefreshDatabase;

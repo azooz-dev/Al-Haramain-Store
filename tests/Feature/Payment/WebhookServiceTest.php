@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Mockery;
 use Stripe\PaymentIntent;
 use Tests\Fixtures\OrderFixtures;
-use App\Models\User\User;
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\User;
+use Modules\User\Entities\Address;
 
 /**
  * Webhook Service Tests
