@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Seeders\User\UserAddress;
+namespace Modules\User\Database\Seeders;
 
-use App\Models\User\UserAddresses\Address;
-use App\Models\User\User;  // Add this import
+use Modules\User\Entities\Address;
+use Modules\User\Entities\User;
 use Illuminate\Database\Seeder;
 
 class AddressSeeder extends Seeder

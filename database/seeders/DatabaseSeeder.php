@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\Role\RoleSeeder;
-use Database\Seeders\User\UserSeeder;
 use Database\Seeders\Admin\AdminSeeder;
 use Database\Seeders\Offer\OfferSeeder;
 use Database\Seeders\Order\OrderSeeder;
@@ -16,8 +15,8 @@ use Database\Seeders\Coupon\CouponUserSeeder;
 use Database\Seeders\Favorite\FavoriteSeeder;
 use Database\Seeders\Permission\PermissionSeeder;
 use Database\Seeders\Offer\OfferTranslationSeeder;
-use Database\Seeders\User\UserAddress\AddressSeeder;
 use Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder;
+use Modules\User\Database\Seeders\UserDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,8 +26,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            // UserSeeder::class,
-            // AddressSeeder::class,
+            // UserDatabaseSeeder::class, // User module seeders
             // PermissionSeeder::class,
             // RoleSeeder::class,
             // AdminSeeder::class,
