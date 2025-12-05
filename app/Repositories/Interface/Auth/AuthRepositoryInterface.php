@@ -3,7 +3,7 @@
 
 namespace App\Repositories\Interface\Auth;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 
 
 interface AuthRepositoryInterface

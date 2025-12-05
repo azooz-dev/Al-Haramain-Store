@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent\Analytics;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Models\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;

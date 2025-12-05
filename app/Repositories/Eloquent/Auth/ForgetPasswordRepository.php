@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent\Auth;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
 
 class ForgetPasswordRepository implements ForgetPasswordRepositoryInterface

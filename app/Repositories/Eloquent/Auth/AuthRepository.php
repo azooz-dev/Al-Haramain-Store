@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent\Auth;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
