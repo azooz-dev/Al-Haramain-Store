@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interface\User;
+namespace Modules\User\Repositories\Interface;
 
-use App\Models\User\User;
+use Modules\User\Entities\User;
 
 interface WriteUserRepositoryInterface
 {

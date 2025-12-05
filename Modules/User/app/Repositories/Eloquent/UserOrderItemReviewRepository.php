@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Eloquent\User\Order\OrderItem\Review;
+namespace Modules\User\Repositories\Eloquent;
 
 use App\Models\Review\Review;
 use App\Models\Order\OrderItem;
-use App\Repositories\Interface\User\Order\OrderItem\Review\UserOrderItemReviewRepositoryInterface;
+use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
 
 class UserOrderItemReviewRepository implements UserOrderItemReviewRepositoryInterface
 {

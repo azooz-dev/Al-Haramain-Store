@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Eloquent\User\Order;
+namespace Modules\User\Repositories\Eloquent;
 
 use App\Models\Order\Order;
-use App\Repositories\Interface\User\Order\UserOrderRepositoryInterface;
+use Modules\User\Repositories\Interface\UserOrderRepositoryInterface;
 
 class UserOrderRepository implements UserOrderRepositoryInterface
 {

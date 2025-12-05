@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\User\UserAddresses;
+namespace Modules\User\Repositories\Interface;
 
 interface UserAddressRepositoryInterface
 {

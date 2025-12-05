@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Eloquent\User;
+namespace Modules\User\Repositories\Eloquent;
 
 use App\Models\Favorite\Favorite;
-use App\Repositories\Interface\User\UserFavoriteRepositoryInterface;
+use Modules\User\Repositories\Interface\UserFavoriteRepositoryInterface;
 
 class UserFavoriteRepository implements UserFavoriteRepositoryInterface
 {

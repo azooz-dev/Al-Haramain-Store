@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Eloquent\User\UserAddresses;
+namespace Modules\User\Repositories\Eloquent;
 
-use App\Models\User\UserAddresses\Address;
+use Modules\User\Entities\Address;
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Interface\User\UserAddresses\UserAddressRepositoryInterface;
+use Modules\User\Repositories\Interface\UserAddressRepositoryInterface;
 
 class UserAddressRepository implements UserAddressRepositoryInterface
 {

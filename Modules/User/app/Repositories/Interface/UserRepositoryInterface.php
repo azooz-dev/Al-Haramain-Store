@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\User;
+namespace Modules\User\Repositories\Interface;
 
 interface UserRepositoryInterface extends 
     ReadUserRepositoryInterface, 
