@@ -4,7 +4,7 @@ namespace Database\Factories\Coupon;
 
 use App\Models\Coupon\Coupon;
 use App\Models\Coupon\CouponUser;
-use App\Models\User\User;
+use Modules\User\Entities\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
