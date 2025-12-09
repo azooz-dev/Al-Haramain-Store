@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User\UserAddress;
+namespace Modules\User\app\Http\Requests\UserAddress;
 
 use Modules\User\Entities\Address;
-use App\Http\Requests\User\UserAddress\BaseUserAddressRequest;
 
-
-class UserAddressUpdateRequest extends BaseUserAddressRequest
+class UserAddressStoreRequest extends BaseUserAddressRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +22,13 @@ class UserAddressUpdateRequest extends BaseUserAddressRequest
     public function rules(): array
     {
         return [
-            "address_type" => "nullable|in:" . Address::ADDRESS_TYPE_HOME . "," . Address::ADDRESS_TYPE_WORK,
+            "address_type" => "required|in:" . Address::ADDRESS_TYPE_HOME . "," . Address::ADDRESS_TYPE_WORK,
             "label" => "nullable|string|max:255",
-            "street" => "nullable|string|max:255",
-            "city" => "nullable|string|max:255",
-            "state" => "nullable|string|max:255",
-            "postal_code" => "nullable|numeric|digits:5",
-            "country" => "nullable|string|max:255",
+            "street" => "required|string|max:255",
+            "city" => "required|string|max:255",
+            "state" => "required|string|max:255",
+            "postal_code" => "required|numeric|digits:5",
+            "country" => "required|string|max:255",
             "is_default" => "nullable|boolean"
         ];
     }

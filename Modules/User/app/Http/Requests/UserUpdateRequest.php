@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
-
-use App\Http\Requests\User\BaseUserRequest;
+namespace Modules\User\app\Http\Requests;
 
 class UserUpdateRequest extends BaseUserRequest
 {

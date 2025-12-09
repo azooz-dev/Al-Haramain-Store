@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User\UserAddress;
+namespace Modules\User\app\Http\Requests\UserAddress;
 
 use App\Http\Requests\BaseRequest;
 

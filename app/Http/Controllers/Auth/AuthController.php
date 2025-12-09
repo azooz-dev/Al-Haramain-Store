@@ -6,9 +6,9 @@ use function App\Helpers\showOne;
 use App\Services\Auth\AuthService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\User\UserLoginRequest;
 
-use App\Http\Requests\User\UserStoreRequest;
+use Modules\User\app\Http\Requests\UserLoginRequest;
+use Modules\User\app\Http\Requests\UserStoreRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AuthController extends Controller

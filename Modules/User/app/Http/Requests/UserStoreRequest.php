@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace Modules\User\app\Http\Requests;
 
-class UserLoginRequest extends BaseUserRequest
+class UserStoreRequest extends BaseUserRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,8 +20,11 @@ class UserLoginRequest extends BaseUserRequest
     public function rules(): array
     {
         return [
-            'email'    => 'required|email|exists:users,email',
-            'password' => 'required|min:8'
+            'first_name'  => 'required|string',
+            'last_name'   => 'required|string',
+            'email'       => 'required|email|unique:users',
+            'phone'       => 'required|numeric',
+            'password'    => 'required|min:8|confirmed',
         ];
     }
 }
