@@ -7,7 +7,7 @@ use function App\Helpers\showMessage;
 use Modules\User\Exceptions\UserException;
 
 use function App\Helpers\errorResponse;
-use App\Http\Resources\User\UserApiResource;
+use Modules\User\app\Http\Resources\UserApiResource;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 
 class AuthService

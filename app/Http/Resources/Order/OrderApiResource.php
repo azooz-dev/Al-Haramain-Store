@@ -3,11 +3,11 @@
 namespace App\Http\Resources\Order;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\User\UserApiResource;
+use Modules\User\app\Http\Resources\UserApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Order\OrderItem\OrderItemApiResource;
 use App\Http\Resources\Review\ReviewApiResource;
-use App\Http\Resources\User\UserAddresses\AddressApiResource;
+use Modules\User\app\Http\Resources\UserAddresses\AddressApiResource;
 
 class
 OrderApiResource extends JsonResource

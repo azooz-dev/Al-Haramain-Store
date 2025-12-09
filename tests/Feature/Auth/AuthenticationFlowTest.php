@@ -50,7 +50,7 @@ class AuthenticationFlowTest extends TestCase
 
         // Assert
         $this->assertNotInstanceOf(\Illuminate\Http\JsonResponse::class, $result);
-        $this->assertInstanceOf(\App\Http\Resources\User\UserApiResource::class, $result);
+        $this->assertInstanceOf(\Modules\User\app\Http\Resources\UserApiResource::class, $result);
 
         $this->assertDatabaseHas('users', [
             'email' => 'john.doe@example.com',
@@ -87,7 +87,7 @@ class AuthenticationFlowTest extends TestCase
         $this->assertArrayHasKey('user', $result);
         $this->assertArrayHasKey('token', $result);
         $this->assertNotEmpty($result['token']);
-        $this->assertInstanceOf(\App\Http\Resources\User\UserApiResource::class, $result['user']);
+        $this->assertInstanceOf(\Modules\User\app\Http\Resources\UserApiResource::class, $result['user']);
     }
 
     /**

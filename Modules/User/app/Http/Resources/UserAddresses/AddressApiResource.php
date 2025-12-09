@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Resources\User\UserAddresses;
+namespace Modules\User\app\Http\Resources\UserAddresses;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\User\UserApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AddressApiResource extends JsonResource

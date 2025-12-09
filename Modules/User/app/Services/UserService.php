@@ -5,7 +5,7 @@ namespace Modules\User\Services;
 use Modules\User\Entities\User;
 use App\Exceptions\Order\OrderException;
 use Modules\User\Exceptions\UserException;
-use App\Http\Resources\User\UserApiResource;
+use Modules\User\app\Http\Resources\UserApiResource;
 use Modules\User\Repositories\Interface\UserRepositoryInterface;
 
 use function App\Helpers\errorResponse;

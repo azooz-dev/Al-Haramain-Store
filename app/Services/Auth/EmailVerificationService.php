@@ -3,13 +3,12 @@
 namespace App\Services\Auth;
 
 use Modules\User\Entities\User;
-use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
 
 use Modules\User\Exceptions\VerificationEmailFailedException;
-use App\Http\Resources\User\UserApiResource;
+use Modules\User\app\Http\Resources\UserApiResource;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
 
 class EmailVerificationService
