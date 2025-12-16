@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders\Order;
+namespace Modules\Order\Database\Seeders;
 
-use App\Models\Order\Order;
-use App\Models\Order\OrderItem;
-use App\Models\Product\Product;
+use Modules\Order\Entities\Order\Order;
+use Modules\Order\Entities\OrderItem\OrderItem;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Seeders\Order;
+namespace Modules\Order\Database\Seeders;
 
 use App\Models\Coupon\Coupon;
-use App\Models\Order\Order;
-use App\Models\User\User;
-use App\Models\User\UserAddresses\Address;
+use Modules\Order\Entities\Order\Order;
+use Modules\User\Entities\User;
+use Modules\User\Entities\Address;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace Database\Factories\Order;
+namespace Modules\Order\Database\Factories\Order;
 
 use Modules\User\Entities\User;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Models\Coupon\Coupon;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order\Order>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Order\Entities\Order\Order>
  */
 class OrderFactory extends Factory
 {
