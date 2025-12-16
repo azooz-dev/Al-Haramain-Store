@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Models\Order;
+namespace Modules\Order\Entities\Order;
 
 use Modules\User\Entities\User;
 use App\Models\Coupon\Coupon;
 use Modules\Review\Entities\Review\Review;
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use App\Models\Payment\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Order\Database\Factories\Order\OrderFactory;
 
 class Order extends Model
 {
@@ -267,5 +268,13 @@ class Order extends Model
                 $order->status = self::PENDING;
             }
         });
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return OrderFactory::new();
     }
 }

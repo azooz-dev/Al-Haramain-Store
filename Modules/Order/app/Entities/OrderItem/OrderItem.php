@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Order;
+namespace Modules\Order\Entities\OrderItem;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Modules\Review\Entities\Review\Review;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Order\Database\Factories\OrderItem\OrderItemFactory;
 
 class OrderItem extends Model
 {
@@ -121,5 +122,13 @@ class OrderItem extends Model
             )
             ->first()?->name ??
             $this->orderable->translations->first()?->name ?? '';
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return OrderItemFactory::new();
     }
 }
