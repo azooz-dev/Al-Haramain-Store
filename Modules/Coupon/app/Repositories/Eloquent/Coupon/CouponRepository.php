@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent\Coupon;
+namespace Modules\Coupon\Repositories\Eloquent\Coupon;
 
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
+use Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 class CouponRepository implements CouponRepositoryInterface
 {
