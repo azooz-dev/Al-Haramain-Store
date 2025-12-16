@@ -4,8 +4,8 @@ namespace Tests\Feature\Coupon;
 
 use Tests\TestCase;
 use Tests\Fixtures\OrderFixtures;
-use App\Models\Coupon\Coupon;
-use App\Services\Coupon\CouponService;
+use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Services\Coupon\CouponService;
 use Modules\Order\Exceptions\Order\OrderException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Order\Services\Order\Pipeline\ApplyCouponStep;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
