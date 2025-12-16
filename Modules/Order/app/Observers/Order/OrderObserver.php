@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Observers\Order;
+namespace Modules\Order\Observers\Order;
 
 use App\Models\Admin\Admin;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Services\Dashboard\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 use Filament\Notifications\Notification;

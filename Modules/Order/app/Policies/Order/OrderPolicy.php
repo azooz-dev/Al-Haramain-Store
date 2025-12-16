@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies\Order;
+namespace Modules\Order\Policies\Order;
 
 use App\Models\Admin\Admin;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OrderPolicy
