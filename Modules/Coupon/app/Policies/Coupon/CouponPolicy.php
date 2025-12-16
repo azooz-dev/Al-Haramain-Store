@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies\Coupon;
+namespace Modules\Coupon\Policies\Coupon;
 
 use App\Models\Admin\Admin;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CouponPolicy
