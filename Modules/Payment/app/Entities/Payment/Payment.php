@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Models\Payment;
+namespace Modules\Payment\Entities\Payment;
 
 use Modules\Order\Entities\Order\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Payment\Database\Factories\Payment\PaymentFactory;
 
 class Payment extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return PaymentFactory::new();
+    }
     const SUCCESS = 'success';
     const FAILED = 'failed';
 
