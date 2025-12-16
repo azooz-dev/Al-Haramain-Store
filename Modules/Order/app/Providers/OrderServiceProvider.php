@@ -45,12 +45,14 @@ class OrderServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
-        // Example:
-        // $this->app->bind(
-        //     \Modules\Order\Repositories\Interface\YourRepositoryInterface::class,
-        //     \Modules\Order\Repositories\Eloquent\YourRepository::class
-        // );
+        $this->app->bind(
+            \Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface::class,
+            \Modules\Order\Repositories\Eloquent\Order\OrderRepository::class
+        );
+        $this->app->bind(
+            \Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface::class,
+            \Modules\Order\Repositories\Eloquent\OrderItem\OrderItemRepository::class
+        );
     }
 
     /**
@@ -58,11 +60,9 @@ class OrderServiceProvider extends ServiceProvider
      */
     protected function registerObservers(): void
     {
-        // Register your model observers here
-        // Example:
-        // \Modules\Order\Entities\YourModel::observe(
-        //     \Modules\Order\Observers\YourObserver::class
-        // );
+        \Modules\Order\Entities\Order\Order::observe(
+            \Modules\Order\Observers\Order\OrderObserver::class
+        );
     }
 
     /**
