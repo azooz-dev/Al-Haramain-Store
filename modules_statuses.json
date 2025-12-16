@@ -3,5 +3,6 @@
     "User": true,
     "Review": true,
     "Order": true,
-    "Payment": true
+    "Payment": true,
+    "Coupon": true
 }
