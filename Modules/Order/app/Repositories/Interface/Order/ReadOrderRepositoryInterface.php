@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interface\Order;
+namespace Modules\Order\Repositories\Interface\Order;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Collection;
 
 interface ReadOrderRepositoryInterface

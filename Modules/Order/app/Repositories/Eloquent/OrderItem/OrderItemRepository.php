@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Eloquent\Order\OrderItem;
+namespace Modules\Order\Repositories\Eloquent\OrderItem;
 
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
+use Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface;
 
 class OrderItemRepository implements OrderItemRepositoryInterface
 {

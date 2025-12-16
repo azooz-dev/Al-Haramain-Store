@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\Order;
+namespace Modules\Order\Repositories\Interface\Order;
 
 interface OrderRepositoryInterface extends 
     ReadOrderRepositoryInterface, 

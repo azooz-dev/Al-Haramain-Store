@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\Order;
+namespace Modules\Order\Repositories\Interface\Order;
 
 use Illuminate\Database\Eloquent\Builder;
 

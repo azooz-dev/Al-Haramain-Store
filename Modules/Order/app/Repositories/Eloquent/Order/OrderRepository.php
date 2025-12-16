@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Eloquent\Order;
+namespace Modules\Order\Repositories\Eloquent\Order;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 
 class OrderRepository implements OrderRepositoryInterface
 {
