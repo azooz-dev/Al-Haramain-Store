@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories\Review;
+namespace Modules\Review\Database\Factories\Review;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Modules\User\Entities\User;
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Order\Order;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\User\Database\Factories\UserFactory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Review\Review>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Review\Entities\Review\Review>
  */
 class ReviewFactory extends Factory
 {

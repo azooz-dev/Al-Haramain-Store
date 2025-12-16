@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders\Review;
+namespace Modules\Review\Database\Seeders\Review;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use App\Models\User\User;
 use App\Models\Product\Product;
 use App\Models\Order\Order;
