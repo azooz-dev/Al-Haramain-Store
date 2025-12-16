@@ -30,7 +30,6 @@ use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
-use App\Repositories\Eloquent\Payment\PaymentRepository;
 use App\Repositories\Eloquent\Admin\AdminRepository;
 use App\Repositories\Eloquent\Favorite\FavoriteRepository;
 
@@ -41,7 +40,6 @@ use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
-use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
 use App\Repositories\Interface\Admin\AdminRepositoryInterface;
 use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 
@@ -61,8 +59,6 @@ use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
 
 use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
-use App\Services\Payment\Processors\CashOnDeliveryProcessor;
-use App\Services\Payment\Processors\StripePaymentProcessor;
 
 class AppServiceProvider extends ServiceProvider
 {

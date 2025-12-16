@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories\Payment;
+namespace Modules\Payment\Database\Factories\Payment;
 
 use Modules\Order\Entities\Order\Order;
-use App\Models\Payment\Payment;
+use Modules\Payment\Entities\Payment\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Payment\Payment>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Payment\Entities\Payment\Payment>
  */
 class PaymentFactory extends Factory
 {
@@ -18,8 +18,8 @@ class PaymentFactory extends Factory
    */
   public function definition(): array
   {
-    $status = fake()->randomElement([Payment::PENDING, Payment::PAID, Payment::FAILED, Payment::REFUNDED]);
-    $paidAt = $status === Payment::PAID ? fake()->dateTimeBetween('-1 year', 'now') : null;
+    $status = fake()->randomElement([Payment::SUCCESS, Payment::FAILED]);
+    $paidAt = $status === Payment::SUCCESS ? fake()->dateTimeBetween('-1 year', 'now') : null;
 
     return [
       'order_id' => Order::factory(),
@@ -32,23 +32,12 @@ class PaymentFactory extends Factory
   }
 
   /**
-   * Indicate that the payment is pending.
+   * Indicate that the payment is successful.
    */
-  public function pending(): static
+  public function successful(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Payment::PENDING,
-      'paid_at' => null,
-    ]);
-  }
-
-  /**
-   * Indicate that the payment is paid.
-   */
-  public function paid(): static
-  {
-    return $this->state(fn(array $attributes) => [
-      'status' => Payment::PAID,
+      'status' => Payment::SUCCESS,
       'paid_at' => fake()->dateTimeBetween('-1 year', 'now'),
     ]);
   }
@@ -61,17 +50,6 @@ class PaymentFactory extends Factory
     return $this->state(fn(array $attributes) => [
       'status' => Payment::FAILED,
       'paid_at' => null,
-    ]);
-  }
-
-  /**
-   * Indicate that the payment was refunded.
-   */
-  public function refunded(): static
-  {
-    return $this->state(fn(array $attributes) => [
-      'status' => Payment::REFUNDED,
-      'paid_at' => fake()->dateTimeBetween('-1 year', '-1 month'),
     ]);
   }
 }
