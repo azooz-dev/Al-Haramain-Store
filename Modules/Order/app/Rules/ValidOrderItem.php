@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Rules;
+namespace Modules\Order\Rules;
 
 use Closure;
 use App\Models\Offer\Offer;
