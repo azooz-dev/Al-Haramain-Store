@@ -117,7 +117,7 @@ class WebhookServiceTest extends TestCase
         ]);
 
         // Verify order exists
-        $order = \App\Models\Order\Order::where('user_id', $user->id)->first();
+        $order = \Modules\Order\Entities\Order\Order::where('user_id', $user->id)->first();
         $this->assertNotNull($order);
         $this->assertEquals(100.00, (float)$order->total_amount);
     }

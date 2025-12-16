@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
-use App\Services\Order\Pipeline\ValidateStockStep;
+use Modules\Order\Services\Order\Pipeline\ValidateStockStep;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

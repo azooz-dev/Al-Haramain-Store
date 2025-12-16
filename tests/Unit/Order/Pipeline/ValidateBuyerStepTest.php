@@ -4,8 +4,8 @@ namespace Tests\Unit\Order\Pipeline;
 
 use Tests\TestCase;
 use Modules\User\Entities\User;
-use App\Services\Order\Pipeline\ValidateBuyerStep;
-use App\Exceptions\Order\OrderException;
+use Modules\Order\Services\Order\Pipeline\ValidateBuyerStep;
+use Modules\Order\Exceptions\Order\OrderException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**

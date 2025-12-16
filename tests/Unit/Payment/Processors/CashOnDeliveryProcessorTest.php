@@ -3,7 +3,7 @@
 namespace Tests\Unit\Payment\Processors;
 
 use Tests\TestCase;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Services\Payment\Processors\CashOnDeliveryProcessor;
 use App\Exceptions\Payment\VerifyPaymentException;
 

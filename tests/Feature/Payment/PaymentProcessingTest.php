@@ -3,7 +3,7 @@
 namespace Tests\Feature\Payment;
 
 use Tests\TestCase;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Services\Payment\PaymentService;
 use App\Services\Payment\Processors\CashOnDeliveryProcessor;
 use App\Services\Payment\Processors\StripePaymentProcessor;

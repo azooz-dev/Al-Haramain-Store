@@ -3,10 +3,10 @@
 namespace Tests\Feature\Order;
 
 use Tests\TestCase;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Modules\Catalog\Entities\Product\Product;
 use Tests\Fixtures\OrderFixtures;
-use App\Services\Order\OrderService;
+use Modules\Order\Services\Order\OrderService;
 use Tests\Support\Builders\OrderTestDataBuilder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -51,7 +51,7 @@ class OrderCreationTest extends TestCase
 
         // Assert
         $this->assertNotInstanceOf(\Illuminate\Http\JsonResponse::class, $result);
-        $this->assertInstanceOf(\App\Http\Resources\Order\OrderApiResource::class, $result);
+        $this->assertInstanceOf(\Modules\Order\Http\Resources\Order\OrderApiResource::class, $result);
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $orderData['user_id'],

@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Tests\Fixtures\OrderFixtures;
 use App\Models\Coupon\Coupon;
 use App\Services\Coupon\CouponService;
-use App\Exceptions\Order\OrderException;
+use Modules\Order\Exceptions\Order\OrderException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**

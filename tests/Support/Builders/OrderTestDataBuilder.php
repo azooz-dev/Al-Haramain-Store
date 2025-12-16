@@ -3,7 +3,7 @@
 namespace Tests\Support\Builders;
 
 use Modules\User\Entities\User;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
