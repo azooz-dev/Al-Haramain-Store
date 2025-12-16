@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Order\OrderItem;
+namespace Modules\Order\Http\Resources\Order\OrderItem;
 
 use Illuminate\Http\Request;
 use Modules\Catalog\Entities\Product\Product;

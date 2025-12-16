@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Order;
+namespace Modules\Order\Http\Resources\Order;
 
 use Illuminate\Http\Request;
 use Modules\User\app\Http\Resources\UserApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Order\OrderItem\OrderItemApiResource;
+use Modules\Order\Http\Resources\Order\OrderItem\OrderItemApiResource;
 use App\Http\Resources\Review\ReviewApiResource;
 use Modules\User\app\Http\Resources\UserAddresses\AddressApiResource;
 
