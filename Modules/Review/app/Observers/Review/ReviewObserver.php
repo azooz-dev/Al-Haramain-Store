@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Observers\Review;
+namespace Modules\Review\Observers\Review;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use App\Services\Dashboard\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 

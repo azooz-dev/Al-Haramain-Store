@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Policies\Review;
+namespace Modules\Review\Policies\Review;
 
 use Modules\User\Entities\User;
 use App\Models\Admin\Admin;
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ReviewPolicy
