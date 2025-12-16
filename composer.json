@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -42,6 +45,9 @@
             "Modules\\User\\": "Modules/User/app/",
             "Modules\\User\\Database\\Factories\\": "Modules/User/database/factories/",
             "Modules\\User\\Database\\Seeders\\": "Modules/User/database/seeders/",
+            "Modules\\Review\\": "Modules/Review/app/",
+            "Modules\\Review\\Database\\Factories\\": "Modules/Review/database/factories/",
+            "Modules\\Review\\Database\\Seeders\\": "Modules/Review/database/seeders/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
