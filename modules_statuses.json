@@ -2,5 +2,6 @@
     "Catalog": true,
     "User": true,
     "Review": true,
-    "Order": true
+    "Order": true,
+    "Payment": true
 }
