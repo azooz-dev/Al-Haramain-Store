@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Review;
+namespace Modules\Review\Entities\Review;
 
 use Modules\User\Entities\User;
 use App\Models\Order\Order;
@@ -8,10 +8,19 @@ use App\Models\Order\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Review\Database\Factories\Review\ReviewFactory;
 
 class Review extends Model
 {
     use HasFactory;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return ReviewFactory::new();
+    }
 
     const PENDING = 'pending';
     const APPROVED = 'approved';
