@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Payment;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Models\Payment\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
