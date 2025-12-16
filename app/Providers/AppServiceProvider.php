@@ -28,7 +28,6 @@ use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Repositories\Eloquent\Offer\OfferRepository;
-use App\Repositories\Eloquent\Coupon\CouponRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
 use App\Repositories\Eloquent\Admin\AdminRepository;
 use App\Repositories\Eloquent\Favorite\FavoriteRepository;
@@ -39,7 +38,6 @@ use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
-use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 use App\Repositories\Interface\Admin\AdminRepositoryInterface;
 use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 
@@ -81,7 +79,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ForgetPasswordRepositoryInterface::class, ForgetPasswordRepository::class);
         $this->app->bind(ResetPasswordRepositoryInterface::class, ResetPasswordRepository::class);
 
-        $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
         $this->app->bind(FavoriteRepositoryInterface::class, FavoriteRepository::class);
 
 
