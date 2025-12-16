@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Payment;
+namespace Modules\Payment\Http\Requests\Payment;
 
 use Modules\Order\Http\Requests\Order\BaseOrderRequest;
 
