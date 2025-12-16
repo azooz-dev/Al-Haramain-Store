@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts;
+namespace Modules\Payment\Contracts;
 
-use App\DTOs\PaymentResult;
+use Modules\Payment\DTOs\PaymentResult;
 
 interface PaymentProcessorInterface
 {

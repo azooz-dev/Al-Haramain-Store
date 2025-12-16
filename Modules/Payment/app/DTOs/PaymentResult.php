@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTOs;
+namespace Modules\Payment\DTOs;
 
 use Carbon\Carbon;
 
