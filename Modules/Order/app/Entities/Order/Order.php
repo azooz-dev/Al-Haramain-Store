@@ -3,7 +3,7 @@
 namespace Modules\Order\Entities\Order;
 
 use Modules\User\Entities\User;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Payment\Entities\Payment\Payment;

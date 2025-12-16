@@ -4,7 +4,7 @@ namespace Modules\Order\Database\Factories\Order;
 
 use Modules\User\Entities\User;
 use Modules\Order\Entities\Order\Order;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

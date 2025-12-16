@@ -2,7 +2,7 @@
 
 namespace Modules\Order\Database\Seeders;
 
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Order\Entities\Order\Order;
 use Modules\User\Entities\User;
 use Modules\User\Entities\Address;

@@ -2,7 +2,7 @@
 
 namespace Modules\Order\Services\Order\Pipeline;
 
-use App\Services\Coupon\CouponService;
+use Modules\Coupon\Services\Coupon\CouponService;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class ApplyCouponStep implements OrderProcessingStep
