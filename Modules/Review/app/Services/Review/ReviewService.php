@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Review;
+namespace Modules\Review\Services\Review;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Review\ReviewRepositoryInterface;
+use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
 use Modules\Catalog\Services\Product\ProductTranslationService;
 use App\Services\Offer\OfferService;
 
