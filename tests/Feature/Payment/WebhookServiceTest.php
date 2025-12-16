@@ -3,8 +3,8 @@
 namespace Tests\Feature\Payment;
 
 use Tests\TestCase;
-use App\Services\Payment\WebhookService;
-use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
+use Modules\Payment\Services\Payment\WebhookService;
+use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Mockery;
@@ -69,7 +69,7 @@ class WebhookServiceTest extends TestCase
         ];
 
         // Mock PaymentService to avoid real Stripe calls
-        $paymentResult = new \App\DTOs\PaymentResult(
+        $paymentResult = new \Modules\Payment\DTOs\PaymentResult(
             true,
             'pi_test_123',
             'card',
@@ -77,13 +77,13 @@ class WebhookServiceTest extends TestCase
             now()
         );
 
-        $paymentService = Mockery::mock(\App\Services\Payment\PaymentService::class);
+        $paymentService = Mockery::mock(\Modules\Payment\Services\Payment\PaymentService::class);
         $paymentService->shouldReceive('processPayment')
             ->andReturn($paymentResult);
         $paymentService->shouldReceive('createPayment')
             ->andReturn(null);
 
-        $this->app->instance(\App\Services\Payment\PaymentService::class, $paymentService);
+        $this->app->instance(\Modules\Payment\Services\Payment\PaymentService::class, $paymentService);
 
         // Create a REAL PaymentIntent object manually
         $paymentIntent = new PaymentIntent('pi_test_123');

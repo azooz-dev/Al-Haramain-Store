@@ -4,8 +4,8 @@ namespace Tests\Unit\Payment\Processors;
 
 use Tests\TestCase;
 use Modules\Order\Entities\Order\Order;
-use App\Services\Payment\Processors\CashOnDeliveryProcessor;
-use App\Exceptions\Payment\VerifyPaymentException;
+use Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor;
+use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
 
 /**
  * Unit tests for CashOnDeliveryProcessor
@@ -35,7 +35,7 @@ class CashOnDeliveryProcessorTest extends TestCase
         $result = $this->processor->processPayment($orderData);
 
         // Assert
-        $this->assertInstanceOf(\App\DTOs\PaymentResult::class, $result);
+        $this->assertInstanceOf(\Modules\Payment\DTOs\PaymentResult::class, $result);
         $this->assertTrue($result->success);
         $this->assertEquals(Order::PAYMENT_METHOD_CASH_ON_DELIVERY, $result->paymentMethod);
         $this->assertEquals(150.00, $result->amount);

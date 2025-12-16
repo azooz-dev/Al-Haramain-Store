@@ -4,10 +4,10 @@ namespace Tests\Feature\Payment;
 
 use Tests\TestCase;
 use Modules\Order\Entities\Order\Order;
-use App\Services\Payment\PaymentService;
-use App\Services\Payment\Processors\CashOnDeliveryProcessor;
-use App\Services\Payment\Processors\StripePaymentProcessor;
-use App\Exceptions\Payment\ProcessPaymentException;
+use Modules\Payment\Services\Payment\PaymentService;
+use Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor;
+use Modules\Payment\Services\Payment\Processors\StripePaymentProcessor;
+use Modules\Payment\Exceptions\Payment\ProcessPaymentException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -43,7 +43,7 @@ class PaymentProcessingTest extends TestCase
         $result = $this->paymentService->processPayment($orderData);
 
         // Assert
-        $this->assertInstanceOf(\App\DTOs\PaymentResult::class, $result);
+        $this->assertInstanceOf(\Modules\Payment\DTOs\PaymentResult::class, $result);
         $this->assertTrue($result->success);
         $this->assertEquals(Order::PAYMENT_METHOD_CASH_ON_DELIVERY, $result->paymentMethod);
         $this->assertEquals(250.75, $result->amount);

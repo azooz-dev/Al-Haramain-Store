@@ -3,10 +3,10 @@
 namespace Tests\Unit\Payment\Processors;
 
 use Tests\TestCase;
-use App\Services\Payment\Processors\StripePaymentProcessor;
-use App\Exceptions\Payment\CreatePaymentIntentException;
-use App\Exceptions\Payment\ProcessPaymentException;
-use App\Exceptions\Payment\VerifyPaymentException;
+use Modules\Payment\Services\Payment\Processors\StripePaymentProcessor;
+use Modules\Payment\Exceptions\Payment\CreatePaymentIntentException;
+use Modules\Payment\Exceptions\Payment\ProcessPaymentException;
+use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
 use Mockery;
 
 /**
