@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Review;
+namespace Modules\Review\Http\Requests\Review;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReviewRequest extends FormRequest
