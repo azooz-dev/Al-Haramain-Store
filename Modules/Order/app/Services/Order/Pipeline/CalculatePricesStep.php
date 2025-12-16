@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Order\Pipeline;
+namespace Modules\Order\Services\Order\Pipeline;
 
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Offer\Offer;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Order\Pipeline;
+namespace Modules\Order\Services\Order\Pipeline;
 
 use App\Services\Coupon\CouponService;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;

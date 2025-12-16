@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Services\Order;
+namespace Modules\Order\Services\Order;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\errorResponse;
-use App\Exceptions\Order\OrderException;
+use Modules\Order\Exceptions\Order\OrderException;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\Order\OrderApiResource;
-use App\Services\Order\Pipeline\ApplyCouponStep;
-use App\Services\Order\Pipeline\CreateOrderStep;
-use App\Services\Order\Pipeline\UpdateStockStep;
-use App\Services\Order\Pipeline\RecordPaymentStep;
-use App\Services\Order\Pipeline\ValidateBuyerStep;
-use App\Services\Order\Pipeline\ValidateStockStep;
-use App\Services\Order\Pipeline\ProcessPaymentStep;
-use App\Services\Order\Pipeline\CalculatePricesStep;
-use App\Services\Order\Pipeline\CreateOrderItemsStep;
+use Modules\Order\Http\Resources\Order\OrderApiResource;
+use Modules\Order\Services\Order\Pipeline\ApplyCouponStep;
+use Modules\Order\Services\Order\Pipeline\CreateOrderStep;
+use Modules\Order\Services\Order\Pipeline\UpdateStockStep;
+use Modules\Order\Services\Order\Pipeline\RecordPaymentStep;
+use Modules\Order\Services\Order\Pipeline\ValidateBuyerStep;
+use Modules\Order\Services\Order\Pipeline\ValidateStockStep;
+use Modules\Order\Services\Order\Pipeline\ProcessPaymentStep;
+use Modules\Order\Services\Order\Pipeline\CalculatePricesStep;
+use Modules\Order\Services\Order\Pipeline\CreateOrderItemsStep;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 
 class OrderService
 {

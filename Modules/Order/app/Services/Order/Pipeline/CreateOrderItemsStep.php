@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Order\Pipeline;
+namespace Modules\Order\Services\Order\Pipeline;
 
-use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
-use App\Exceptions\Order\OrderException;
+use Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface;
+use Modules\Order\Exceptions\Order\OrderException;
 
 class CreateOrderItemsStep implements OrderProcessingStep
 {

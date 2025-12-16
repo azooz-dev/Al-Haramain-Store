@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Order\Pipeline;
+namespace Modules\Order\Services\Order\Pipeline;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Services\Payment\PaymentService;
 
 class RecordPaymentStep implements OrderProcessingStep
