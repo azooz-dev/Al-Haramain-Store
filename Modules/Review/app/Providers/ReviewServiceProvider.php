@@ -45,12 +45,26 @@ class ReviewServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
-        // Example:
-        // $this->app->bind(
-        //     \Modules\Review\Repositories\Interface\YourRepositoryInterface::class,
-        //     \Modules\Review\Repositories\Eloquent\YourRepository::class
-        // );
+        $this->app->bind(
+            \Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface::class,
+            \Modules\Review\Repositories\Eloquent\Review\ReviewRepository::class
+        );
+        $this->app->bind(
+            \Modules\Review\Repositories\Interface\Review\ReadReviewRepositoryInterface::class,
+            \Modules\Review\Repositories\Eloquent\Review\ReviewRepository::class
+        );
+        $this->app->bind(
+            \Modules\Review\Repositories\Interface\Review\WriteReviewRepositoryInterface::class,
+            \Modules\Review\Repositories\Eloquent\Review\ReviewRepository::class
+        );
+        $this->app->bind(
+            \Modules\Review\Repositories\Interface\Review\QueryableReviewRepositoryInterface::class,
+            \Modules\Review\Repositories\Eloquent\Review\ReviewRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface::class,
+            \Modules\Review\Repositories\Eloquent\Analytics\ReviewAnalyticsRepository::class
+        );
     }
 
     /**
@@ -58,11 +72,9 @@ class ReviewServiceProvider extends ServiceProvider
      */
     protected function registerObservers(): void
     {
-        // Register your model observers here
-        // Example:
-        // \Modules\Review\Entities\YourModel::observe(
-        //     \Modules\Review\Observers\YourObserver::class
-        // );
+        \Modules\Review\Entities\Review\Review::observe(
+            \Modules\Review\Observers\Review\ReviewObserver::class
+        );
     }
 
     /**
