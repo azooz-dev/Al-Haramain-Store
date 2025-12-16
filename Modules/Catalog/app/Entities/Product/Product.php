@@ -8,7 +8,7 @@ use Modules\Catalog\Entities\Product\ProductColorImage;
 use Modules\Catalog\Entities\Product\ProductTranslation;
 use App\Models\Offer\Offer;
 use App\Models\Review\Review;
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Catalog\Entities\Category\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

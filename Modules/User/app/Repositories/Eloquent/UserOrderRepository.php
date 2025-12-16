@@ -2,7 +2,7 @@
 
 namespace Modules\User\Repositories\Eloquent;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Modules\User\Repositories\Interface\UserOrderRepositoryInterface;
 
 class UserOrderRepository implements UserOrderRepositoryInterface

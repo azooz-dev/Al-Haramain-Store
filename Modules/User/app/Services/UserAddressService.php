@@ -3,7 +3,7 @@
 namespace Modules\User\Services;
 
 use Modules\User\Entities\User;
-use App\Exceptions\Order\OrderException;
+use Modules\Order\Exceptions\Order\OrderException;
 use Modules\User\Exceptions\UserAddressException;
 use Modules\User\app\Http\Resources\UserAddresses\AddressApiResource;
 use Modules\User\Repositories\Interface\UserAddressRepositoryInterface;

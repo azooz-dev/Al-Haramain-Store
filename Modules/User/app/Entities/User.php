@@ -3,7 +3,7 @@
 namespace Modules\User\Entities;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Str;
 use App\Models\Coupon\CouponUser;
 use App\Models\Favorite\Favorite;

@@ -2,7 +2,7 @@
 
 namespace Modules\Catalog\Entities\Product;
 
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

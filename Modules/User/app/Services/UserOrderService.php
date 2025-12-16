@@ -3,8 +3,8 @@
 namespace Modules\User\Services;
 
 use Modules\User\Entities\User;
-use App\Exceptions\Order\OrderException;
-use App\Http\Resources\Order\OrderApiResource;
+use Modules\Order\Exceptions\Order\OrderException;
+use Modules\Order\Http\Resources\Order\OrderApiResource;
 use Modules\User\Repositories\Interface\UserOrderRepositoryInterface;
 
 use function App\Helpers\errorResponse;

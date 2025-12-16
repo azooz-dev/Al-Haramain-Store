@@ -3,8 +3,8 @@
 namespace Modules\Review\Entities\Review;
 
 use Modules\User\Entities\User;
-use App\Models\Order\Order;
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\Order\Order;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

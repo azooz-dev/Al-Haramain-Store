@@ -3,10 +3,10 @@
 namespace Modules\User\Http\Controllers;
 
 use Modules\User\Entities\User;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Modules\Review\Entities\Review\Review;
 
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
 use Modules\Review\Http\Requests\Review\ReviewRequest;

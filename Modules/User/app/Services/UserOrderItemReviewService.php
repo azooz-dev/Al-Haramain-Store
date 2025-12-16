@@ -2,14 +2,14 @@
 
 namespace Modules\User\Services;
 
-use App\Models\Order\OrderItem;
-use App\Services\Order\OrderService;
+use Modules\Order\Entities\OrderItem\OrderItem;
+use Modules\Order\Services\Order\OrderService;
 use function App\Helpers\errorResponse;
-use App\Exceptions\Order\Review\ReviewException;
+use Modules\Order\Exceptions\Order\Review\ReviewException;
 
 use App\Http\Resources\Review\ReviewApiResource;
-use App\Exceptions\Order\CheckDeliveredOrderException;
-use App\Repositories\Interface\Order\OrderItem\OrderItemRepositoryInterface;
+use Modules\Order\Exceptions\Order\CheckDeliveredOrderException;
+use Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface;
 use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
 
 class UserOrderItemReviewService

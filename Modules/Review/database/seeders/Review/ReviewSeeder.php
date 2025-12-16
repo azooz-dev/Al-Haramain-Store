@@ -5,7 +5,7 @@ namespace Modules\Review\Database\Seeders\Review;
 use Modules\Review\Entities\Review\Review;
 use App\Models\User\User;
 use App\Models\Product\Product;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
