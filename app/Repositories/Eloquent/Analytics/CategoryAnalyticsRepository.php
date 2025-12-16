@@ -3,7 +3,7 @@
 namespace App\Repositories\Eloquent\Analytics;
 
 use Modules\Catalog\Entities\Category\Category;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;

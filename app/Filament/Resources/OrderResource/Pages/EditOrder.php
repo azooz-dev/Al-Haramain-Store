@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\OrderResource\Pages;
 
 use Filament\Actions;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\OrderResource;
-use App\Services\Order\OrderService;
+use Modules\Order\Services\Order\OrderService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditOrder extends EditRecord

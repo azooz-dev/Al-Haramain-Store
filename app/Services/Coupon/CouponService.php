@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use App\Models\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\Order\OrderException;
+use Modules\Order\Exceptions\Order\OrderException;
 use App\Exceptions\Coupon\CouponException;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 class CouponService

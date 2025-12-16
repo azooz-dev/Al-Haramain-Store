@@ -3,7 +3,7 @@
 namespace App\Services\Payment\Processors;
 
 use App\DTOs\PaymentResult;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Contracts\PaymentProcessorInterface;
 use App\Exceptions\Payment\VerifyPaymentException;
 

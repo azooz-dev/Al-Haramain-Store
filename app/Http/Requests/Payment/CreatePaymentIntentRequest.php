@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Payment;
 
-use App\Http\Requests\Order\BaseOrderRequest;
+use Modules\Order\Http\Requests\Order\BaseOrderRequest;
 
 class CreatePaymentIntentRequest extends BaseOrderRequest
 {

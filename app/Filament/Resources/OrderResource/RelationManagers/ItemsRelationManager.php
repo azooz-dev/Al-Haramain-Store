@@ -4,7 +4,7 @@ namespace App\Filament\Resources\OrderResource\RelationManagers;
 
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\RelationManagers\RelationManager;

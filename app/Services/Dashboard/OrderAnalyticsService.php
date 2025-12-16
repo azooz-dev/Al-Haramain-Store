@@ -5,7 +5,7 @@ namespace App\Services\Dashboard;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 
 class OrderAnalyticsService
 {

@@ -4,8 +4,8 @@ namespace App\Filament\Widgets;
 
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Models\Order\Order;
-use App\Services\Order\OrderService;
+use Modules\Order\Entities\Order\Order;
+use Modules\Order\Services\Order\OrderService;
 use App\Filament\Concerns\ResolvesServices;
 use Filament\Widgets\TableWidget as BaseWidget;
 use App\Services\Dashboard\OrderAnalyticsService;

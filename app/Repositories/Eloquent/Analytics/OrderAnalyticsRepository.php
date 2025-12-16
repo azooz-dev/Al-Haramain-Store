@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Eloquent\Analytics;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;

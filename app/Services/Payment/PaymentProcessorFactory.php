@@ -2,7 +2,7 @@
 
 namespace App\Services\Payment;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Contracts\PaymentProcessorInterface;
 use App\Services\Payment\Processors\CashOnDeliveryProcessor;
 use App\Services\Payment\Processors\StripePaymentProcessor;

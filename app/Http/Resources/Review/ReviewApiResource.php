@@ -4,7 +4,7 @@ namespace App\Http\Resources\Review;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Order\OrderItem\OrderItemApiResource;
+use Modules\Order\Http\Resources\Order\OrderItem\OrderItemApiResource;
 
 class ReviewApiResource extends JsonResource
 {

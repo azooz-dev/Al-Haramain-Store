@@ -3,7 +3,7 @@
 namespace App\Models\Offer;
 
 use Modules\Review\Entities\Review\Review;
-use App\Models\Order\OrderItem;
+use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Offer\OfferProduct;
 use Modules\Catalog\Entities\Product\ProductColor;

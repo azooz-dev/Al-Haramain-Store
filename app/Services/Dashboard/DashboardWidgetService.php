@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Cache;
 use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
-use App\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Models\Order\Order;
+use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Order\Entities\Order\Order;
 
 class DashboardWidgetService
 {

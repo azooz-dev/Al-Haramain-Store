@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use App\Services\Dashboard\DashboardWidgetService;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;

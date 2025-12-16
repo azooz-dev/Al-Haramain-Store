@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
-use App\Models\Order\Order;
-use App\Services\Order\OrderService;
+use Modules\Order\Entities\Order\Order;
+use Modules\Order\Services\Order\OrderService;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;

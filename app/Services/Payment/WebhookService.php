@@ -3,10 +3,10 @@
 namespace App\Services\Payment;
 
 use Stripe\PaymentIntent;
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\Order\OrderService;
+use Modules\Order\Services\Order\OrderService;
 use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
 
 class WebhookService

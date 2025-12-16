@@ -2,7 +2,7 @@
 
 namespace App\Models\Coupon;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

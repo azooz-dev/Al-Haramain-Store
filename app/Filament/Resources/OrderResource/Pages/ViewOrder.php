@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
-use App\Models\Order\Order;
+use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Str;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\OrderResource;
-use App\Services\Order\OrderService;
+use Modules\Order\Services\Order\OrderService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
