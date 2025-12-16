@@ -4,7 +4,7 @@ namespace App\Models\Order;
 
 use Modules\User\Entities\User;
 use App\Models\Coupon\Coupon;
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use App\Models\Order\OrderItem;
 use App\Models\Payment\Payment;
 use Illuminate\Database\Eloquent\Model;

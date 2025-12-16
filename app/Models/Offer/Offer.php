@@ -2,7 +2,7 @@
 
 namespace App\Models\Offer;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use App\Models\Order\OrderItem;
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Offer\OfferProduct;

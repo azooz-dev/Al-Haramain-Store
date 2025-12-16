@@ -3,7 +3,7 @@
 namespace App\Models\Order;
 
 use App\Models\Order\Order;
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;

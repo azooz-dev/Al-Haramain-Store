@@ -6,7 +6,7 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Filament\Tables\Filters\Filter;
@@ -14,7 +14,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
-use App\Services\Review\ReviewService;
+use Modules\Review\Services\Review\ReviewService;
 
 class ReviewResource extends Resource
 {

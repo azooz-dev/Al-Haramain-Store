@@ -5,8 +5,8 @@ namespace App\Services\Dashboard;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface;
-use App\Repositories\Interface\Review\ReviewRepositoryInterface;
-use App\Models\Review\Review;
+use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
+use Modules\Review\Entities\Review\Review;
 
 class ReviewAnalyticsService
 {
