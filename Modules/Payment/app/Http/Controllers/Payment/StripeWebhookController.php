@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Payment;
+namespace Modules\Payment\Http\Controllers\Payment;
 
 use Stripe\Webhook;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use function App\Helpers\errorResponse;
 use function App\Helpers\successResponse;
 
-use App\Services\Payment\WebhookService;
+use Modules\Payment\Services\Payment\WebhookService;
 use Stripe\Exception\SignatureVerificationException;
 
 class StripeWebhookController extends Controller

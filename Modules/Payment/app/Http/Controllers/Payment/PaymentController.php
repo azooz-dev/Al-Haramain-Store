@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Payment;
+namespace Modules\Payment\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Payment\CreatePaymentIntentRequest;
-use App\Services\Payment\PaymentService;
+use Modules\Payment\Http\Requests\Payment\CreatePaymentIntentRequest;
+use Modules\Payment\Services\Payment\PaymentService;
 
 use function App\Helpers\showOne;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Eloquent\Payment;
+namespace Modules\Payment\Repositories\Eloquent\Payment;
 
-use App\DTOs\PaymentResult;
-use App\Models\Payment\Payment;
-use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
+use Modules\Payment\DTOs\PaymentResult;
+use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 
 class PaymentRepository implements PaymentRepositoryInterface
 {
