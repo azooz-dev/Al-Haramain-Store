@@ -106,6 +106,7 @@ class CalculatePricesStepTest extends TestCase
             'color_id' => $color->id,
             'quantity' => 100,
             'price' => 100.00,
+            'amount_discount_price' => null,
         ]);
 
         $offer = Offer::factory()->active()->create(['offer_price' => 200.00]);
