@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Interface\Payment;
+namespace Modules\Payment\Repositories\Interface\Payment;
 
-use App\DTOs\PaymentResult;
-use App\Models\Payment\Payment;
+use Modules\Payment\DTOs\PaymentResult;
+use Modules\Payment\Entities\Payment\Payment;
 
 interface PaymentRepositoryInterface
 {
