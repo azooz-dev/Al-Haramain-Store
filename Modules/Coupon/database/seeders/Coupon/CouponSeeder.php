@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders\Coupon;
+namespace Modules\Coupon\Database\Seeders\Coupon;
 
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Database\Seeder;
 use Nette\Utils\Random;
 
