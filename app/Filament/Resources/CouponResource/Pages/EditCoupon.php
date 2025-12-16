@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\CouponResource;
-use App\Services\Coupon\CouponService;
+use Modules\Coupon\Services\Coupon\CouponService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditCoupon extends EditRecord

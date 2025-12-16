@@ -5,7 +5,7 @@ namespace App\Filament\Resources\CouponResource\Pages;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\CouponResource;
-use App\Services\Coupon\CouponService;
+use Modules\Coupon\Services\Coupon\CouponService;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
