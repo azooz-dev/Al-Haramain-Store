@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Eloquent\Analytics;
+namespace Modules\Review\Repositories\Eloquent\Analytics;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;

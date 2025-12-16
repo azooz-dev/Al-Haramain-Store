@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\Review;
+namespace Modules\Review\Repositories\Interface\Review;
 
 interface ReviewRepositoryInterface extends 
     ReadReviewRepositoryInterface, 

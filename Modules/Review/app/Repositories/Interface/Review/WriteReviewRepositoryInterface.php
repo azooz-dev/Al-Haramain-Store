@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interface\Review;
+namespace Modules\Review\Repositories\Interface\Review;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 
 interface WriteReviewRepositoryInterface
 {
