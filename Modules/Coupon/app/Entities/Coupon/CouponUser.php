@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models\Coupon;
+namespace Modules\Coupon\Entities\Coupon;
 
 use Modules\User\Entities\User;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

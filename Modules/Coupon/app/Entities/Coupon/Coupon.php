@@ -1,15 +1,21 @@
 <?php
 
-namespace App\Models\Coupon;
+namespace Modules\Coupon\Entities\Coupon;
 
 use Modules\Order\Entities\Order\Order;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Coupon\Database\Factories\Coupon\CouponFactory;
 
 class Coupon extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return CouponFactory::new();
+    }
 
     const FIXED = 'fixed';
     const PERCENTAGE = 'percentage';
