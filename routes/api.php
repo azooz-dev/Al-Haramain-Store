@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Offer\OfferController;
-use App\Http\Controllers\Order\OrderController;
 use Illuminate\Session\Middleware\StartSession;
 use App\Http\Controllers\Coupon\CouponController;
 use App\Http\Controllers\Payment\PaymentController;
@@ -19,9 +18,6 @@ Route::post('stripe/webhook', [StripeWebhookController::class, 'handle']);
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
-    // Orders
-    Route::apiResource('orders', OrderController::class)->only(['store', 'show']);
-
     // Payments
     Route::post('payments/create-intent', [PaymentController::class, 'createPaymentIntent']);
 

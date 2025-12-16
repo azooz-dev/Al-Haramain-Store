@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Order;
+namespace Modules\Order\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Order\OrderRequest;
-use App\Services\Order\OrderService;
+use Modules\Order\Http\Requests\Order\OrderRequest;
+use Modules\Order\Services\Order\OrderService;
 
 use function App\Helpers\showOne;
 
