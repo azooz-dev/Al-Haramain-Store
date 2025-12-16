@@ -5,22 +5,14 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Offer\OfferController;
 use Illuminate\Session\Middleware\StartSession;
 use App\Http\Controllers\Coupon\CouponController;
-use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
-use App\Http\Controllers\Payment\StripeWebhookController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ResendEmailVerificationController;
 
 
-// Stripe Webhook
-Route::post('stripe/webhook', [StripeWebhookController::class, 'handle']);
-
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
-    // Payments
-    Route::post('payments/create-intent', [PaymentController::class, 'createPaymentIntent']);
-
     // Coupons
     Route::get('coupons/{code}/{userId}', [CouponController::class, 'apply']);
 

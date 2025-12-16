@@ -45,12 +45,19 @@ class PaymentServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
-        // Example:
-        // $this->app->bind(
-        //     \Modules\Payment\Repositories\Interface\YourRepositoryInterface::class,
-        //     \Modules\Payment\Repositories\Eloquent\YourRepository::class
-        // );
+        $this->app->bind(
+            \Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface::class,
+            \Modules\Payment\Repositories\Eloquent\Payment\PaymentRepository::class
+        );
+
+        // Register payment processors as singletons
+        $this->app->singleton(
+            \Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor::class
+        );
+
+        $this->app->singleton(
+            \Modules\Payment\Services\Payment\Processors\StripePaymentProcessor::class
+        );
     }
 
     /**
