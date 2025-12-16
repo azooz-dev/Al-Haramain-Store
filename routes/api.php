@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Offer\OfferController;
 use Illuminate\Session\Middleware\StartSession;
-use App\Http\Controllers\Coupon\CouponController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -13,9 +12,6 @@ use App\Http\Controllers\Auth\ResendEmailVerificationController;
 
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
-    // Coupons
-    Route::get('coupons/{code}/{userId}', [CouponController::class, 'apply']);
-
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('user', [AuthController::class, 'user']);

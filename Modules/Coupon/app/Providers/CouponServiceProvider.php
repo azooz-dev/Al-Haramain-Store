@@ -45,12 +45,10 @@ class CouponServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
-        // Example:
-        // $this->app->bind(
-        //     \Modules\Coupon\Repositories\Interface\YourRepositoryInterface::class,
-        //     \Modules\Coupon\Repositories\Eloquent\YourRepository::class
-        // );
+        $this->app->bind(
+            \Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface::class,
+            \Modules\Coupon\Repositories\Eloquent\Coupon\CouponRepository::class
+        );
     }
 
     /**

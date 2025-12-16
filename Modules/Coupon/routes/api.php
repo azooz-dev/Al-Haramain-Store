@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Coupon\Http\Controllers\Coupon\CouponController;
 
-// Add your API routes here
-// Example:
-// Route::apiResource('coupons', CouponController::class)->only(['index', 'show']);
+// Coupon routes (require authentication)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('coupons/{code}/{userId}', [CouponController::class, 'apply']);
+});
