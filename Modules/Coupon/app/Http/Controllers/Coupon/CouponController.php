@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Coupon;
+namespace Modules\Coupon\Http\Controllers\Coupon;
 
 use App\Http\Controllers\Controller;
-use App\Services\Coupon\CouponService;
+use Modules\Coupon\Services\Coupon\CouponService;
 
 use function App\Helpers\showOne;
 
