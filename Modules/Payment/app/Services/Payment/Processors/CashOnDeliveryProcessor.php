@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Payment\Processors;
+namespace Modules\Payment\Services\Payment\Processors;
 
-use App\DTOs\PaymentResult;
+use Modules\Payment\DTOs\PaymentResult;
 use Modules\Order\Entities\Order\Order;
-use App\Contracts\PaymentProcessorInterface;
-use App\Exceptions\Payment\VerifyPaymentException;
+use Modules\Payment\Contracts\PaymentProcessorInterface;
+use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
 
 class CashOnDeliveryProcessor implements PaymentProcessorInterface
 {

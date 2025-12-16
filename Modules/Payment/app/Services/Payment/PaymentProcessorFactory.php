@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Payment;
+namespace Modules\Payment\Services\Payment;
 
 use Modules\Order\Entities\Order\Order;
-use App\Contracts\PaymentProcessorInterface;
-use App\Services\Payment\Processors\CashOnDeliveryProcessor;
-use App\Services\Payment\Processors\StripePaymentProcessor;
-use App\Exceptions\Payment\InvalidPaymentMethodException;
+use Modules\Payment\Contracts\PaymentProcessorInterface;
+use Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor;
+use Modules\Payment\Services\Payment\Processors\StripePaymentProcessor;
+use Modules\Payment\Exceptions\Payment\InvalidPaymentMethodException;
 
 class PaymentProcessorFactory
 {

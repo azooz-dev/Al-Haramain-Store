@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Payment;
+namespace Modules\Payment\Services\Payment;
 
-use App\DTOs\PaymentResult;
+use Modules\Payment\DTOs\PaymentResult;
 use Modules\Order\Entities\Order\Order;
 
 use function App\Helpers\errorResponse;
-use App\Contracts\PaymentProcessorInterface;
-use App\Services\Payment\PaymentProcessorFactory;
-use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
-use App\Exceptions\Payment\CreatePaymentException;
+use Modules\Payment\Contracts\PaymentProcessorInterface;
+use Modules\Payment\Services\Payment\PaymentProcessorFactory;
+use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
+use Modules\Payment\Exceptions\Payment\CreatePaymentException;
 
 class PaymentService
 {

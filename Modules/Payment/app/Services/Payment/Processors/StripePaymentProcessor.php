@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Services\Payment\Processors;
+namespace Modules\Payment\Services\Payment\Processors;
 
 use Carbon\Carbon;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
-use App\DTOs\PaymentResult;
-use App\Contracts\PaymentProcessorInterface;
-use App\Exceptions\Payment\VerifyPaymentException;
-use App\Exceptions\Payment\ProcessPaymentException;
-use App\Exceptions\Payment\CreatePaymentIntentException;
+use Modules\Payment\DTOs\PaymentResult;
+use Modules\Payment\Contracts\PaymentProcessorInterface;
+use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
+use Modules\Payment\Exceptions\Payment\ProcessPaymentException;
+use Modules\Payment\Exceptions\Payment\CreatePaymentIntentException;
 
 class StripePaymentProcessor implements PaymentProcessorInterface
 {

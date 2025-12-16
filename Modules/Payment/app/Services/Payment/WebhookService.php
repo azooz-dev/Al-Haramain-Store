@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Payment;
+namespace Modules\Payment\Services\Payment;
 
 use Stripe\PaymentIntent;
 use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Order\Services\Order\OrderService;
-use App\Repositories\Interface\Payment\PaymentRepositoryInterface;
+use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 
 class WebhookService
 {
