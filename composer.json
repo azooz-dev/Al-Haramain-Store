@@ -48,6 +48,9 @@
             "Modules\\Review\\": "Modules/Review/app/",
             "Modules\\Review\\Database\\Factories\\": "Modules/Review/database/factories/",
             "Modules\\Review\\Database\\Seeders\\": "Modules/Review/database/seeders/",
+            "Modules\\Order\\": "Modules/Order/app/",
+            "Modules\\Order\\Database\\Factories\\": "Modules/Order/database/factories/",
+            "Modules\\Order\\Database\\Seeders\\": "Modules/Order/database/seeders/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"

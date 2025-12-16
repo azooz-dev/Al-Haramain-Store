@@ -1,5 +1,6 @@
 {
     "Catalog": true,
     "User": true,
-    "Review": true
+    "Review": true,
+    "Order": true
 }
