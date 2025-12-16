@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Coupon;
+namespace Modules\Coupon\Services\Coupon;
 
 use Carbon\Carbon;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\Exceptions\Order\OrderException;
-use App\Exceptions\Coupon\CouponException;
+use Modules\Coupon\Exceptions\Coupon\CouponException;
 use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
-use App\Repositories\Interface\Coupon\CouponRepositoryInterface;
+use Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 class CouponService
 {
