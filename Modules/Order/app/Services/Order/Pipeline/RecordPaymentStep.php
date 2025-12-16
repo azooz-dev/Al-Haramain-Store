@@ -3,7 +3,7 @@
 namespace Modules\Order\Services\Order\Pipeline;
 
 use Modules\Order\Entities\Order\Order;
-use App\Services\Payment\PaymentService;
+use Modules\Payment\Services\Payment\PaymentService;
 
 class RecordPaymentStep implements OrderProcessingStep
 {

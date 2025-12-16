@@ -6,7 +6,7 @@ use Modules\User\Entities\User;
 use App\Models\Coupon\Coupon;
 use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
-use App\Models\Payment\Payment;
+use Modules\Payment\Entities\Payment\Payment;
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;

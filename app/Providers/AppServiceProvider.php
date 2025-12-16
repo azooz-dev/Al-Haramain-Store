@@ -89,7 +89,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(FavoriteRepositoryInterface::class, FavoriteRepository::class);
 
 
-        $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
 
         // Register Analytics Repository Bindings
         $this->app->bind(UserAnalyticsRepositoryInterface::class, UserAnalyticsRepository::class);
@@ -98,9 +97,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(CategoryAnalyticsRepositoryInterface::class, CategoryAnalyticsRepository::class);
 
-        // Register Payment Processors as Singletons
-        $this->app->singleton(CashOnDeliveryProcessor::class);
-        $this->app->singleton(StripePaymentProcessor::class);
     }
 
     /**

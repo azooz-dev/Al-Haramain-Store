@@ -2,7 +2,7 @@
 
 namespace Modules\Order\Services\Order\Pipeline;
 
-use App\Services\Payment\PaymentService;
+use Modules\Payment\Services\Payment\PaymentService;
 
 class ProcessPaymentStep implements OrderProcessingStep
 {
