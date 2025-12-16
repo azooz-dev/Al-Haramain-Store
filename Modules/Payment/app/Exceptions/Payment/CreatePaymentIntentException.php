@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\Payment;
+namespace Modules\Payment\Exceptions\Payment;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
