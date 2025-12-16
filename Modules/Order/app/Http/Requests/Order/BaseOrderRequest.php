@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Order;
+namespace Modules\Order\Http\Requests\Order;
 
 use App\Models\Offer\Offer;
-use App\Models\Order\Order;
-use App\Rules\ValidOrderItem;
+use Modules\Order\Entities\Order\Order;
+use Modules\Order\Rules\ValidOrderItem;
 use Modules\Catalog\Entities\Product\Product;
 use App\Http\Requests\BaseRequest;
 use App\Services\Offer\OfferService;

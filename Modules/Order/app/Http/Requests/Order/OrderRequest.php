@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Order;
+namespace Modules\Order\Http\Requests\Order;
 
-use App\Models\Order\Order;
-use App\Http\Requests\Order\BaseOrderRequest;
+use Modules\Order\Entities\Order\Order;
+use Modules\Order\Http\Requests\Order\BaseOrderRequest;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class OrderRequest extends BaseOrderRequest
