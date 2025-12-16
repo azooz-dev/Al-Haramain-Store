@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\Coupon;
+namespace Modules\Coupon\Exceptions\Coupon;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
