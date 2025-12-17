@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Offer;
+namespace Modules\Offer\Entities\Offer;
 
 use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Catalog\Entities\Product\Product;
-use App\Models\Offer\OfferProduct;
+use Modules\Offer\Entities\Offer\OfferProduct;
 use Modules\Catalog\Entities\Product\ProductColor;
-use App\Models\Offer\OfferTranslation;
+use Modules\Offer\Entities\Offer\OfferTranslation;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,10 +15,16 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Modules\Offer\Database\Factories\Offer\OfferFactory;
 
 class Offer extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return OfferFactory::new();
+    }
 
     const ACTIVE = 'active';
     const INACTIVE = 'inactive';

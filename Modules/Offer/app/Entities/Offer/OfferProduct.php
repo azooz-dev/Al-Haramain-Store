@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Offer;
+namespace Modules\Offer\Entities\Offer;
 
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;

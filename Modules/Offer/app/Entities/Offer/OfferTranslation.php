@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models\Offer;
+namespace Modules\Offer\Entities\Offer;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Offer\Database\Factories\Offer\OfferTranslationFactory;
 
 class OfferTranslation extends Model
 {
