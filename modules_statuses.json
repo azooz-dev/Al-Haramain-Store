@@ -4,5 +4,6 @@
     "Review": true,
     "Order": true,
     "Payment": true,
-    "Coupon": true
+    "Coupon": true,
+    "Offer": true
 }

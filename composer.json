@@ -57,6 +57,9 @@
             "Modules\\Coupon\\": "Modules/Coupon/app/",
             "Modules\\Coupon\\Database\\Factories\\": "Modules/Coupon/database/factories/",
             "Modules\\Coupon\\Database\\Seeders\\": "Modules/Coupon/database/seeders/",
+            "Modules\\Offer\\": "Modules/Offer/app/",
+            "Modules\\Offer\\Database\\Factories\\": "Modules/Offer/database/factories/",
+            "Modules\\Offer\\Database\\Seeders\\": "Modules/Offer/database/seeders/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
