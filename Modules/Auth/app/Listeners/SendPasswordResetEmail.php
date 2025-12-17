@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Listeners\Auth;
+namespace Modules\Auth\Listeners;
 
-use App\Mail\ResetPasswordMail;
+use Modules\Auth\Mail\ResetPasswordMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Events\Auth\PasswordResetTokenCreated;
+use Modules\Auth\Events\PasswordResetTokenCreated;
 
 class SendPasswordResetEmail
 {

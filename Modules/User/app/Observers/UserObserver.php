@@ -5,7 +5,7 @@ namespace Modules\User\Observers;
 use Modules\User\Entities\User;
 use App\Services\Dashboard\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
-use App\Events\Auth\UserRegistered;
+use Modules\Auth\Events\UserRegistered;
 
 class UserObserver
 {

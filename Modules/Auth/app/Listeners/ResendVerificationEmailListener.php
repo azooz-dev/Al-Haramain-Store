@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Listeners\Auth;
+namespace Modules\Auth\Listeners;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Events\Auth\ResendVerificationEmail;
-use App\Notifications\VerificationCodeNotification;
+use Modules\Auth\Events\ResendVerificationEmail;
+use Modules\Auth\Notifications\VerificationCodeNotification;
 use Modules\User\Exceptions\VerificationEmailFailedException;
 
 class ResendVerificationEmailListener implements ShouldQueue

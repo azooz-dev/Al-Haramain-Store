@@ -4,8 +4,8 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use Modules\User\Entities\User;
-use App\Services\Auth\ResetPasswordService;
-use App\Services\Auth\ForgetPasswordService;
+use Modules\Auth\Services\ResetPasswordService;
+use Modules\Auth\Services\ForgetPasswordService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Event;
@@ -44,7 +44,7 @@ class PasswordResetTest extends TestCase
 
         // Assert
         $this->assertIsString($result);
-        Event::assertDispatched(\App\Events\Auth\PasswordResetTokenCreated::class);
+        Event::assertDispatched(\Modules\Auth\Events\PasswordResetTokenCreated::class);
     }
 
     /**

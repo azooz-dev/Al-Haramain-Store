@@ -3,8 +3,8 @@
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\ResetPasswordRequest;
-use App\Services\Auth\ResetPasswordService;
+use Modules\Auth\Http\Requests\ResetPasswordRequest;
+use Modules\Auth\Services\ResetPasswordService;
 
 use function App\Helpers\showMessage;
 

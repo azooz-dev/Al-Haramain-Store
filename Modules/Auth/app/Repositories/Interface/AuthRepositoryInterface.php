@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories\Interface\Auth;
+namespace Modules\Auth\Repositories\Interface;
 
 use Modules\User\Entities\User;
 

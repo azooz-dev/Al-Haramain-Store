@@ -2,7 +2,7 @@
 
 namespace Modules\Auth\Services;
 
-use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
+use Modules\Auth\Repositories\Interface\ResetPasswordRepositoryInterface;
 use Illuminate\Support\Facades\Password;
 
 class ResetPasswordService

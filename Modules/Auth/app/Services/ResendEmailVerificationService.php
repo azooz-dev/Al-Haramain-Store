@@ -2,9 +2,9 @@
 
 namespace Modules\Auth\Services;
 
-use App\Events\Auth\ResendVerificationEmail;
+use Modules\Auth\Events\ResendVerificationEmail;
 use function App\Helpers\errorResponse;
-use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
+use Modules\Auth\Repositories\Interface\ResendEmailVerificationRepositoryInterface;
 
 class ResendEmailVerificationService
 {

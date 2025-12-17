@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use function App\Helpers\showOne;
 
-use App\Services\Auth\EmailVerificationService;
+use Modules\Auth\Services\EmailVerificationService;
 
 class EmailVerificationController extends Controller
 {
