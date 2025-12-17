@@ -1,14 +1,14 @@
 <?php
 
-namespace Database\Factories\Coupon;
+namespace Modules\Coupon\Database\Factories\Coupon;
 
-use App\Models\Coupon\Coupon;
-use App\Models\Coupon\CouponUser;
+use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\CouponUser;
 use Modules\User\Entities\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Coupon\CouponUser>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Coupon\Entities\Coupon\CouponUser>
  */
 class CouponUserFactory extends Factory
 {

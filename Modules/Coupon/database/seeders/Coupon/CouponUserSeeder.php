@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Seeders\Coupon;
+namespace Modules\Coupon\Database\Seeders\Coupon;
 
-use App\Models\User\User;
-use App\Models\Coupon\Coupon;
+use Modules\User\Entities\User;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Database\Seeder;
-use App\Models\Coupon\CouponUser;
+use Modules\Coupon\Entities\Coupon\CouponUser;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CouponUserSeeder extends Seeder
