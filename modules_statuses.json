@@ -6,5 +6,6 @@
     "Payment": true,
     "Coupon": true,
     "Offer": true,
-    "Favorite": true
+    "Favorite": true,
+    "Admin": true
 }

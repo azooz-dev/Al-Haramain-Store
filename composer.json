@@ -64,6 +64,9 @@
             "Modules\\Favorite\\": "Modules/Favorite/app/",
             "Modules\\Favorite\\Database\\Factories\\": "Modules/Favorite/database/factories/",
             "Modules\\Favorite\\Database\\Seeders\\": "Modules/Favorite/database/seeders/",
+            "Modules\\Admin\\": "Modules/Admin/app/",
+            "Modules\\Admin\\Database\\Factories\\": "Modules/Admin/database/factories/",
+            "Modules\\Admin\\Database\\Seeders\\": "Modules/Admin/database/seeders/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
