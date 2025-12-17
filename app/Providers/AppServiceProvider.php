@@ -22,13 +22,10 @@ use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
-use App\Repositories\Eloquent\Admin\AdminRepository;
-
 use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
 use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
-use App\Repositories\Interface\Admin\AdminRepositoryInterface;
 
 use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
