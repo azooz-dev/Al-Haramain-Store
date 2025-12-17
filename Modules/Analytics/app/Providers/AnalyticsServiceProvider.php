@@ -45,12 +45,26 @@ class AnalyticsServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
-        // Example:
-        // $this->app->bind(
-        //     \Modules\Analytics\Repositories\Interface\YourRepositoryInterface::class,
-        //     \Modules\Analytics\Repositories\Eloquent\YourRepository::class
-        // );
+        $this->app->bind(
+            \Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface::class,
+            \Modules\Analytics\Repositories\Eloquent\UserAnalyticsRepository::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface::class,
+            \Modules\Analytics\Repositories\Eloquent\OrderAnalyticsRepository::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface::class,
+            \Modules\Analytics\Repositories\Eloquent\ProductAnalyticsRepository::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Repositories\Interface\CategoryAnalyticsRepositoryInterface::class,
+            \Modules\Analytics\Repositories\Eloquent\CategoryAnalyticsRepository::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Repositories\Interface\ReviewAnalyticsRepositoryInterface::class,
+            \Modules\Analytics\Repositories\Eloquent\ReviewAnalyticsRepository::class
+        );
     }
 
     /**
