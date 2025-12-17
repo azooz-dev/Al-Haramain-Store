@@ -28,6 +28,7 @@ class FavoriteServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
         $this->registerObservers();
+        $this->registerPolicies();
     }
 
     /**
@@ -54,6 +55,17 @@ class FavoriteServiceProvider extends ServiceProvider
     protected function registerObservers(): void
     {
         // Register your model observers here
+    }
+
+    /**
+     * Register policies.
+     */
+    protected function registerPolicies(): void
+    {
+        \Illuminate\Support\Facades\Gate::policy(
+            \Modules\Favorite\Entities\Favorite\Favorite::class,
+            \Modules\Favorite\Policies\Favorite\FavoritePolicy::class
+        );
     }
 
     /**
