@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Offer\Offer;
 
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Catalog\Entities\Product\Product;
 use App\Models\Favorite\Favorite;
-use App\Models\Offer\OfferProduct;
 use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,18 +14,15 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Event;
 
 
-use App\Observers\Offer\OfferObserver;
 use Illuminate\Support\ServiceProvider;
 use Modules\Catalog\Entities\Product\ProductColorImage;
 use App\Policies\Favorite\FavoritePolicy;
 use App\Events\Auth\ResendVerificationEmail;
 
 use App\Listeners\Auth\SendVerificationEmail;
-use App\Observers\Offer\OfferProductObserver;
 use App\Events\Auth\PasswordResetTokenCreated;
 use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
-use App\Repositories\Eloquent\Offer\OfferRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
 use App\Repositories\Eloquent\Admin\AdminRepository;
 use App\Repositories\Eloquent\Favorite\FavoriteRepository;
@@ -35,9 +30,7 @@ use App\Repositories\Eloquent\Favorite\FavoriteRepository;
 use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
 use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
-use App\Repositories\Interface\Offer\OfferRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
-use App\Repositories\Eloquent\Offer\OfferTranslationRepository;
 use App\Repositories\Interface\Admin\AdminRepositoryInterface;
 use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 
@@ -45,7 +38,6 @@ use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
 use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
-use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 use App\Repositories\Eloquent\Analytics\UserAnalyticsRepository;
 use App\Repositories\Eloquent\Analytics\OrderAnalyticsRepository;
@@ -68,10 +60,6 @@ class AppServiceProvider extends ServiceProvider
         // Register Repository Bindings
         $this->app->bind(AdminRepositoryInterface::class, AdminRepository::class);
 
-        $this->app->bind(OfferTranslationRepositoryInterface::class, OfferTranslationRepository::class);
-
-
-        $this->app->bind(OfferRepositoryInterface::class, OfferRepository::class);
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
 
         $this->app->bind(EmailVerificationRepositoryInterface::class, EmailVerificationRepository::class);
@@ -98,8 +86,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Register Observers
-        Offer::observe(OfferObserver::class);
-        OfferProduct::observe(OfferProductObserver::class);
 
 
         // Register Event Listeners
