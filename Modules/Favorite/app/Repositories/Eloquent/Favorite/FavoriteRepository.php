@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent\Favorite;
+namespace Modules\Favorite\Repositories\Eloquent\Favorite;
 
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
+use Modules\Favorite\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 
 class FavoriteRepository implements FavoriteRepositoryInterface
 {

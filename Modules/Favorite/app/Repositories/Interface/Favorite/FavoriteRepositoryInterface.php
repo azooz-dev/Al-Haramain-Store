@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interface\Favorite;
+namespace Modules\Favorite\Repositories\Interface\Favorite;
 
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
