@@ -1,16 +1,22 @@
 <?php
 
-namespace Database\Factories\Offer;
+namespace Modules\Offer\Database\Factories\Offer;
 
-use App\Models\Offer\Offer;
-use App\Models\Offer\OfferTranslation;
+use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Entities\Offer\OfferTranslation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Offer\OfferTranslation>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Offer\Entities\Offer\OfferTranslation>
  */
 class OfferTranslationFactory extends Factory
 {
+  /**
+   * The name of the factory's corresponding model.
+   *
+   * @var class-string<\Illuminate\Database\Eloquent\Model>
+   */
+  protected $model = OfferTranslation::class;
   /**
    * Define the model's default state.
    *

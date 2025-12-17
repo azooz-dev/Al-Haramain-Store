@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders\Offer;
+namespace Modules\Offer\Database\Seeders\Offer;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Database\Seeder;
-use App\Models\Offer\OfferTranslation;
+use Modules\Offer\Entities\Offer\OfferTranslation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OfferTranslationSeeder extends Seeder

@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Seeders\Offer;
+namespace Modules\Offer\Database\Seeders\Offer;
 
-use App\Models\Offer\Offer;
-use App\Models\Product\Product;
+use Modules\Offer\Entities\Offer\Offer;
+use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
