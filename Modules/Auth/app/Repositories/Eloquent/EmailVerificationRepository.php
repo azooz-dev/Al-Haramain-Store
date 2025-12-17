@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent\Auth;
+namespace Modules\Auth\Repositories\Eloquent;
 
 use Modules\User\Entities\User;
 use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;

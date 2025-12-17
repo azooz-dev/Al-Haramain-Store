@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\Auth;
+namespace Modules\Auth\Repositories\Interface;
 
 
 interface ResendEmailVerificationRepositoryInterface

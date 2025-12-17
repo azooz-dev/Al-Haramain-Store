@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent\Auth;
+namespace Modules\Auth\Repositories\Eloquent;
 
 use Modules\User\Entities\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Repositories\Interface\Auth\AuthRepositoryInterface;
+use Modules\Auth\Repositories\Interface\AuthRepositoryInterface;
 
 class AuthRepository implements AuthRepositoryInterface
 {

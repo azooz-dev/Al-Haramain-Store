@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquent\Auth;
+namespace Modules\Auth\Repositories\Eloquent;
 
 use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
