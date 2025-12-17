@@ -3,7 +3,7 @@
 namespace Modules\Auth\Repositories\Eloquent;
 
 use Modules\User\Entities\User;
-use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
+use Modules\Auth\Repositories\Interface\EmailVerificationRepositoryInterface;
 
 class EmailVerificationRepository implements EmailVerificationRepositoryInterface
 {
