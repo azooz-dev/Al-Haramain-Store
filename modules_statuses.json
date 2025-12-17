@@ -8,5 +8,6 @@
     "Offer": true,
     "Favorite": true,
     "Admin": true,
-    "Auth": true
+    "Auth": true,
+    "Analytics": true
 }

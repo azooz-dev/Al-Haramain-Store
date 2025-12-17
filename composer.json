@@ -67,8 +67,9 @@
             "Modules\\Admin\\": "Modules/Admin/app/",
             "Modules\\Admin\\Database\\Factories\\": "Modules/Admin/database/factories/",
             "Modules\\Admin\\Database\\Seeders\\": "Modules/Admin/database/seeders/",
-            "Modules\\Auth\\": "Modules/Auth/app/",
-            "Modules\\": "Modules/",
+                "Modules\\Auth\\": "Modules/Auth/app/",
+                "Modules\\Analytics\\": "Modules/Analytics/app/",
+                "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
