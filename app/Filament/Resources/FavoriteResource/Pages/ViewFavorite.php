@@ -4,10 +4,10 @@ namespace App\Filament\Resources\FavoriteResource\Pages;
 
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\FavoriteResource;
-use App\Services\Favorite\FavoriteService;
+use Modules\Favorite\Services\Favorite\FavoriteService;
 
 class ViewFavorite extends ViewRecord
 {

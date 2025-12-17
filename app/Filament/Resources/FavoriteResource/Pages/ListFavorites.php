@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\FavoriteResource\Pages;
 
 use App\Filament\Resources\FavoriteResource;
-use App\Services\Favorite\FavoriteService;
+use Modules\Favorite\Services\Favorite\FavoriteService;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
