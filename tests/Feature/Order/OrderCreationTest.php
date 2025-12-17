@@ -249,11 +249,11 @@ class OrderCreationTest extends TestCase
     {
         // Arrange
         $productData = OrderFixtures::createProductWithVariantInStock(100, 100.00);
-        $offer = \App\Models\Offer\Offer::factory()
+        $offer = \Modules\Offer\Entities\Offer\Offer::factory()
             ->active()
             ->create(['offer_price' => 80.00]);
 
-        \App\Models\Offer\OfferProduct::create([
+        \Modules\Offer\Entities\Offer\OfferProduct::create([
             'offer_id' => $offer->id,
             'product_id' => $productData['product']->id,
             'product_color_id' => $productData['color']->id,
@@ -269,7 +269,7 @@ class OrderCreationTest extends TestCase
             'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
             'items' => [
                 [
-                    'orderable_type' => \App\Models\Offer\Offer::class,
+                    'orderable_type' => \Modules\Offer\Entities\Offer\Offer::class,
                     'orderable_id' => $offer->id,
                     'quantity' => 1,
                 ],
@@ -340,11 +340,11 @@ class OrderCreationTest extends TestCase
     {
         // Arrange
         $productData = OrderFixtures::createProductWithVariantInStock(100, 100.00);
-        $offer = \App\Models\Offer\Offer::factory()
+        $offer = \Modules\Offer\Entities\Offer\Offer::factory()
             ->active()
             ->create(['offer_price' => 80.00]);
 
-        \App\Models\Offer\OfferProduct::create([
+        \Modules\Offer\Entities\Offer\OfferProduct::create([
             'offer_id' => $offer->id,
             'product_id' => $productData['product']->id,
             'product_color_id' => $productData['color']->id,

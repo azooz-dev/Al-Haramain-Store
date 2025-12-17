@@ -8,7 +8,7 @@ use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use Modules\Coupon\Entities\Coupon\Coupon;
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\User\Entities\Address;
 
 /**
