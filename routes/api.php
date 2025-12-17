@@ -1,26 +1,37 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
-use Illuminate\Session\Middleware\StartSession;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\ForgetPasswordController;
-use App\Http\Controllers\Auth\EmailVerificationController;
-use App\Http\Controllers\Auth\ResendEmailVerificationController;
+use Modules\Catalog\Http\Controllers\Category\CategoryController;
+use Modules\Catalog\Http\Controllers\Product\ProductController;
+use Modules\Review\Http\Controllers\Review\ReviewController;
+use Modules\Order\Http\Controllers\Order\OrderController;
 
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
 
-Route::middleware([StartSession::class, 'set.locale'])->group(function () {
-  Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
+Route::middleware(['auth:sanctum', 'set.locale'])->get('/user', function (Request $request) {
+    return $request->user();
+});
 
-    Route::get('user', [AuthController::class, 'user']);
-  });
+Route::group(['middleware' => ['api', 'set.locale']], function () {
+    // Categories
+    Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
-  // Auth Routes
-  Route::post('login', [AuthController::class, 'login']);
-  Route::post('register', [AuthController::class, 'register']);
-  Route::post('users/email/verify-code', [EmailVerificationController::class, 'verify']);
-  Route::post('users/email/resend-code', [ResendEmailVerificationController::class, 'resend'])->middleware('throttle:3,1');
-  Route::post("/forget-password", [ForgetPasswordController::class, 'forget']);
-  Route::post("/reset-password", [ResetPasswordController::class, 'reset']);
+    // Products
+    Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+
+    // Reviews
+    Route::apiResource('reviews', ReviewController::class)->only(['index', 'show']);
+
+    // Orders
+    Route::apiResource('orders', OrderController::class)->only(['index', 'store', 'show']);
 });
