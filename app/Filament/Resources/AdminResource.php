@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
@@ -19,7 +19,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Validation\Rules\Password;
-use App\Services\Admin\AdminService;
+use Modules\Admin\Services\AdminService;
 use App\Filament\Resources\AdminResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
