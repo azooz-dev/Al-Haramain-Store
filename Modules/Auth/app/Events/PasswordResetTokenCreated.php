@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Auth;
+namespace Modules\Auth\Events;
 
 use Modules\User\Entities\User;
 use Illuminate\Broadcasting\Channel;
@@ -10,16 +10,15 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 
-class UserRegistered implements ShouldDispatchAfterCommit
+class PasswordResetTokenCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public User $user)
+    public function __construct(public User $user, public string $token)
     {
         //
     }
