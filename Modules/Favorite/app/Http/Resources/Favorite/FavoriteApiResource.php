@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Favorite;
+namespace Modules\Favorite\Http\Resources\Favorite;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
