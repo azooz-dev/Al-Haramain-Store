@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FavoriteResource\Pages;
-use App\Models\Favorite\Favorite;
-use App\Services\Favorite\FavoriteService;
+use Modules\Favorite\Entities\Favorite\Favorite;
+use Modules\Favorite\Services\Favorite\FavoriteService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
