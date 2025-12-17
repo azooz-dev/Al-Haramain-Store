@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Repositories\Eloquent\Offer;
+namespace Modules\Offer\Repositories\Eloquent\Offer;
 
-use App\Models\Offer\Offer;
-use App\Models\Offer\OfferProduct;
+use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Entities\Offer\OfferProduct;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Repositories\Interface\Offer\OfferRepositoryInterface;
+use Modules\Offer\Repositories\Interface\Offer\OfferRepositoryInterface;
 
 class OfferRepository implements OfferRepositoryInterface
 {

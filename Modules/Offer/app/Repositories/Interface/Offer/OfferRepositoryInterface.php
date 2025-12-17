@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\Offer;
+namespace Modules\Offer\Repositories\Interface\Offer;
 
 interface OfferRepositoryInterface extends 
     ReadOfferRepositoryInterface, 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interface\Offer;
+namespace Modules\Offer\Repositories\Interface\Offer;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Database\Eloquent\Collection;
 
 interface ReadOfferRepositoryInterface

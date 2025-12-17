@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Interface\Offer;
+namespace Modules\Offer\Repositories\Interface\Offer;
 
-use App\Models\Offer\Offer;
-use App\Models\Offer\OfferTranslation;
+use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Entities\Offer\OfferTranslation;
 use Filament\Notifications\Collection;
 
 interface OfferTranslationRepositoryInterface

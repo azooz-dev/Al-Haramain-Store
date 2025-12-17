@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent\Offer;
+namespace Modules\Offer\Repositories\Eloquent\Offer;
 
-use App\Models\Offer\Offer;
-use App\Models\Offer\OfferTranslation;
+use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Entities\Offer\OfferTranslation;
 use Filament\Notifications\Collection;
-use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
+use Modules\Offer\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 
 class OfferTranslationRepository implements OfferTranslationRepositoryInterface
 {
