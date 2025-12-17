@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Seeders\Admin;
+namespace Modules\Admin\Database\Seeders;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
