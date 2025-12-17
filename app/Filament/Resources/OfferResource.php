@@ -6,13 +6,13 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Entities\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OfferResource\Pages;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 use Modules\Catalog\Services\Product\ProductTranslationService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
