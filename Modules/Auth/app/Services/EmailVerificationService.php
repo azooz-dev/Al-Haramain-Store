@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Auth;
+namespace Modules\Auth\Services;
 
 use Modules\User\Entities\User;
 use Illuminate\Support\Facades\Hash;
@@ -9,7 +9,7 @@ use function App\Helpers\errorResponse;
 
 use Modules\User\Exceptions\VerificationEmailFailedException;
 use Modules\User\app\Http\Resources\UserApiResource;
-use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
+use Modules\Auth\Repositories\Interface\EmailVerificationRepositoryInterface;
 
 class EmailVerificationService
 {

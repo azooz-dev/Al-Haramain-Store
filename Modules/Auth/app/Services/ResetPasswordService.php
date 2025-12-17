@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Auth;
+namespace Modules\Auth\Services;
 
 use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
 use Illuminate\Support\Facades\Password;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Auth;
+namespace Modules\Auth\Services;
 
 use App\Events\Auth\ResendVerificationEmail;
 use function App\Helpers\errorResponse;

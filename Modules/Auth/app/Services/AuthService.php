@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Auth;
+namespace Modules\Auth\Services;
 
-use App\Events\Auth\UserRegistered;
+use Modules\Auth\Events\UserRegistered;
 use function App\Helpers\showMessage;
 use Modules\User\Exceptions\UserException;
 
 use function App\Helpers\errorResponse;
 use Modules\User\app\Http\Resources\UserApiResource;
-use App\Repositories\Interface\Auth\AuthRepositoryInterface;
+use Modules\Auth\Repositories\Interface\AuthRepositoryInterface;
 
 class AuthService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Auth;
+namespace Modules\Auth\Services;
 
 use Illuminate\Support\Facades\Password;
 use App\Events\Auth\PasswordResetTokenCreated;
