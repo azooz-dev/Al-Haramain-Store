@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use App\Services\Dashboard\CustomerAnalyticsService;
+use Modules\Analytics\Services\CustomerAnalyticsService;
 use Filament\Widgets\ChartWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 

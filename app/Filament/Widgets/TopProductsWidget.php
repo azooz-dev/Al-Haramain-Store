@@ -7,7 +7,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Catalog\Entities\Product\Product;
 use Filament\Widgets\TableWidget as BaseWidget;
-use App\Services\Dashboard\ProductAnalyticsService;
+use Modules\Analytics\Services\ProductAnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class TopProductsWidget extends BaseWidget

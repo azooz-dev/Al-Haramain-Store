@@ -8,7 +8,7 @@ use Modules\Order\Entities\Order\Order;
 use Modules\Order\Services\Order\OrderService;
 use App\Filament\Concerns\ResolvesServices;
 use Filament\Widgets\TableWidget as BaseWidget;
-use App\Services\Dashboard\OrderAnalyticsService;
+use Modules\Analytics\Services\OrderAnalyticsService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RecentOrdersWidget extends BaseWidget

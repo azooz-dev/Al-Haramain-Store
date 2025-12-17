@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
 use Modules\Order\Entities\Order\Order;
-use App\Services\Dashboard\DashboardWidgetService;
+use Modules\Analytics\Services\DashboardWidgetService;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
