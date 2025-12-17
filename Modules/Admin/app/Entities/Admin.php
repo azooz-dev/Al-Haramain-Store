@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Admin;
+namespace Modules\Admin\Entities;
 
 use Filament\Panel;
 use Filament\Models\Contracts\HasName;
@@ -10,11 +10,20 @@ use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Modules\Admin\Database\Factories\AdminFactory;
 
 class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail, HasName
 {
-    /** @use HasFactory<\Database\Factories\AdminFactory> */
+    /** @use HasFactory<\Modules\Admin\Database\Factories\AdminFactory> */
     use HasFactory, Notifiable, HasRoles;
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return AdminFactory::new();
+    }
 
     /**
      * The attributes that are mass assignable.
