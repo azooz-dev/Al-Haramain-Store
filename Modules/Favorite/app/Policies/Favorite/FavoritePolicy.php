@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Policies\Favorite;
+namespace Modules\Favorite\Policies\Favorite;
 
 use Modules\User\Entities\User;
 use App\Models\Admin\Admin;
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FavoritePolicy
