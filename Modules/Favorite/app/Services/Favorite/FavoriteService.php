@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Favorite;
+namespace Modules\Favorite\Services\Favorite;
 
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
+use Modules\Favorite\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 use Modules\Catalog\Services\Product\ProductTranslationService;
 
 class FavoriteService
