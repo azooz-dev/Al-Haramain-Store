@@ -5,7 +5,6 @@ namespace App\Providers;
 
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Catalog\Entities\Product\Product;
-use App\Models\Favorite\Favorite;
 use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\Event;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Catalog\Entities\Product\ProductColorImage;
-use App\Policies\Favorite\FavoritePolicy;
 use App\Events\Auth\ResendVerificationEmail;
 
 use App\Listeners\Auth\SendVerificationEmail;
@@ -25,14 +23,12 @@ use App\Listeners\Auth\SendPasswordResetEmail;
 use App\Repositories\Eloquent\Auth\AuthRepository;
 use App\Listeners\Auth\ResendVerificationEmailListener;
 use App\Repositories\Eloquent\Admin\AdminRepository;
-use App\Repositories\Eloquent\Favorite\FavoriteRepository;
 
 use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
 use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
 use App\Repositories\Interface\Auth\AuthRepositoryInterface;
 use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
 use App\Repositories\Interface\Admin\AdminRepositoryInterface;
-use App\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 
 use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
 use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
@@ -67,7 +63,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ForgetPasswordRepositoryInterface::class, ForgetPasswordRepository::class);
         $this->app->bind(ResetPasswordRepositoryInterface::class, ResetPasswordRepository::class);
 
-        $this->app->bind(FavoriteRepositoryInterface::class, FavoriteRepository::class);
 
 
 
