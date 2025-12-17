@@ -2,8 +2,8 @@
 
 namespace Modules\User\Services;
 
-use App\Exceptions\Favorite\FavoriteException;
-use App\Http\Resources\Favorite\FavoriteApiResource;
+use Modules\Favorite\Exceptions\Favorite\FavoriteException;
+use Modules\Favorite\Http\Resources\Favorite\FavoriteApiResource;
 use Modules\User\Repositories\Interface\UserProductFavoriteRepositoryInterface;
 use function App\Helpers\errorResponse;
 

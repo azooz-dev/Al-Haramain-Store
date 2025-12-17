@@ -2,7 +2,7 @@
 
 namespace Modules\User\Repositories\Eloquent;
 
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Modules\User\Repositories\Interface\UserProductFavoriteRepositoryInterface;
 
 class UserProductFavoriteRepository implements UserProductFavoriteRepositoryInterface

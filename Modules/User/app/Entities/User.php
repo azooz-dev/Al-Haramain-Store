@@ -6,7 +6,7 @@ namespace Modules\User\Entities;
 use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Str;
 use App\Models\Coupon\CouponUser;
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -2,7 +2,7 @@
 
 namespace Modules\User\Repositories\Interface;
 
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 
 interface UserProductFavoriteRepositoryInterface
 {

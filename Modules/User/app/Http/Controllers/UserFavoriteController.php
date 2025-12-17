@@ -4,7 +4,7 @@ namespace Modules\User\Http\Controllers;
 
 use function App\Helpers\showAll;
 use App\Http\Controllers\Controller;
-use App\Models\Favorite\Favorite;
+use Modules\Favorite\Entities\Favorite\Favorite;
 use Modules\User\Services\UserFavoriteService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
