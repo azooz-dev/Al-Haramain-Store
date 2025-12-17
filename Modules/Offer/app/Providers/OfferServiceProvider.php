@@ -40,6 +40,7 @@ class OfferServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->registerRepositories();
     }
 
     /**
@@ -47,7 +48,14 @@ class OfferServiceProvider extends ServiceProvider
      */
     protected function registerRepositories(): void
     {
-        // Register your repository bindings here
+        $this->app->bind(
+            \Modules\Offer\Repositories\Interface\Offer\OfferRepositoryInterface::class,
+            \Modules\Offer\Repositories\Eloquent\Offer\OfferRepository::class
+        );
+        $this->app->bind(
+            \Modules\Offer\Repositories\Interface\Offer\OfferTranslationRepositoryInterface::class,
+            \Modules\Offer\Repositories\Eloquent\Offer\OfferTranslationRepository::class
+        );
     }
 
     /**
@@ -55,7 +63,12 @@ class OfferServiceProvider extends ServiceProvider
      */
     protected function registerObservers(): void
     {
-        // Register your observers here
+        \Modules\Offer\Entities\Offer\Offer::observe(
+            \Modules\Offer\Observers\Offer\OfferObserver::class
+        );
+        \Modules\Offer\Entities\Offer\OfferProduct::observe(
+            \Modules\Offer\Observers\Offer\OfferProductObserver::class
+        );
     }
 
     /**

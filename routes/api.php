@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Offer\OfferController;
 use Illuminate\Session\Middleware\StartSession;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
@@ -16,9 +15,6 @@ Route::middleware([StartSession::class, 'set.locale'])->group(function () {
 
     Route::get('user', [AuthController::class, 'user']);
   });
-
-  // Offers
-  Route::apiResource('offers', OfferController::class)->only(['index', 'show']);
 
   // Auth Routes
   Route::post('login', [AuthController::class, 'login']);
