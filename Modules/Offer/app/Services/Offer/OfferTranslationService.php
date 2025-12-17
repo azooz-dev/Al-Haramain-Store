@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Offer;
+namespace Modules\Offer\Services\Offer;
 
-use App\Http\Resources\Offer\OfferApiResource;
-use App\Models\Offer\Offer;
-use App\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
+use Modules\Offer\Http\Resources\Offer\OfferApiResource;
+use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
 use Filament\Notifications\Collection;
 
 class OfferTranslationService

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Offer;
+namespace Modules\Offer\Services\Offer;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Database\Eloquent\Builder;
-use App\Exceptions\Offer\OfferException;
-use App\Http\Resources\Offer\OfferApiResource;
-use App\Repositories\Interface\Offer\OfferRepositoryInterface;
+use Modules\Offer\Exceptions\Offer\OfferException;
+use Modules\Offer\Http\Resources\Offer\OfferApiResource;
+use Modules\Offer\Repositories\Interface\Offer\OfferRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 
