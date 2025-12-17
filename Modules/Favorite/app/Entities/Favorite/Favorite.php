@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Favorite;
+namespace Modules\Favorite\Entities\Favorite;
 
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
@@ -9,10 +9,16 @@ use Modules\User\Entities\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Favorite\Database\Factories\Favorite\FavoriteFactory;
 
 class Favorite extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return FavoriteFactory::new();
+    }
 
     protected $fillable = [
         'user_id',
