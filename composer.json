@@ -60,6 +60,9 @@
             "Modules\\Offer\\": "Modules/Offer/app/",
             "Modules\\Offer\\Database\\Factories\\": "Modules/Offer/database/factories/",
             "Modules\\Offer\\Database\\Seeders\\": "Modules/Offer/database/seeders/",
+            "Modules\\Favorite\\": "Modules/Favorite/app/",
+            "Modules\\Favorite\\Database\\Factories\\": "Modules/Favorite/database/factories/",
+            "Modules\\Favorite\\Database\\Seeders\\": "Modules/Favorite/database/seeders/",
             "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
