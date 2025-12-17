@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
 use Modules\Catalog\Services\Product\ProductTranslationService;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 
 class ReviewService
 {
@@ -95,7 +95,7 @@ class ReviewService
     }
 
     // Handle Offer
-    if ($orderable instanceof \App\Models\Offer\Offer) {
+    if ($orderable instanceof \Modules\Offer\Entities\Offer\Offer) {
       return $this->offerService->getTranslatedName($orderable);
     }
 
@@ -116,7 +116,7 @@ class ReviewService
     }
 
     // Handle Offer - return translated name or "Offer #ID" as fallback
-    if ($orderable instanceof \App\Models\Offer\Offer) {
+    if ($orderable instanceof \Modules\Offer\Entities\Offer\Offer) {
       $name = $this->offerService->getTranslatedName($orderable);
       return $name ?: "Offer #{$orderable->id}";
     }
