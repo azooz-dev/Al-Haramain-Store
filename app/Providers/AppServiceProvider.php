@@ -5,7 +5,6 @@ namespace App\Providers;
 
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Catalog\Entities\Product\Product;
-use App\Events\Auth\UserRegistered;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -15,23 +14,6 @@ use Illuminate\Support\Facades\Event;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Catalog\Entities\Product\ProductColorImage;
-use App\Events\Auth\ResendVerificationEmail;
-
-use App\Listeners\Auth\SendVerificationEmail;
-use App\Events\Auth\PasswordResetTokenCreated;
-use App\Listeners\Auth\SendPasswordResetEmail;
-use App\Repositories\Eloquent\Auth\AuthRepository;
-use App\Listeners\Auth\ResendVerificationEmailListener;
-use App\Repositories\Eloquent\Auth\ResetPasswordRepository;
-use App\Repositories\Eloquent\Auth\ForgetPasswordRepository;
-use App\Repositories\Interface\Auth\AuthRepositoryInterface;
-use App\Repositories\Eloquent\Auth\EmailVerificationRepository;
-
-use App\Repositories\Eloquent\Auth\ResendEmailVerificationRepository;
-use App\Repositories\Interface\Auth\ResetPasswordRepositoryInterface;
-use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
-use App\Repositories\Interface\Auth\EmailVerificationRepositoryInterface;
-use App\Repositories\Interface\Auth\ResendEmailVerificationRepositoryInterface;
 use App\Repositories\Eloquent\Analytics\UserAnalyticsRepository;
 use App\Repositories\Eloquent\Analytics\OrderAnalyticsRepository;
 use App\Repositories\Eloquent\Analytics\ProductAnalyticsRepository;
