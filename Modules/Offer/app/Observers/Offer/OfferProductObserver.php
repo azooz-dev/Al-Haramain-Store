@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Observers\Offer;
+namespace Modules\Offer\Observers\Offer;
 
-use App\Models\Offer\OfferProduct;
+use Modules\Offer\Entities\Offer\OfferProduct;
 
 class OfferProductObserver
 {

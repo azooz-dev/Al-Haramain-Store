@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Observers\Offer;
+namespace Modules\Offer\Observers\Offer;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Support\Facades\Storage;
 
 class OfferObserver
