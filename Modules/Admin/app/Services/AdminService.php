@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Admin;
+namespace Modules\Admin\Services;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use App\Exceptions\Admin\AdminException;
-use App\Repositories\Interface\Admin\AdminRepositoryInterface;
+use Modules\Admin\Exceptions\AdminException;
+use Modules\Admin\Repositories\Interface\AdminRepositoryInterface;
 
 class AdminService
 {
