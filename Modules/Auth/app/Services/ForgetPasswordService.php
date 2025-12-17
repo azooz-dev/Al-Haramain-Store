@@ -4,7 +4,7 @@ namespace Modules\Auth\Services;
 
 use Illuminate\Support\Facades\Password;
 use App\Events\Auth\PasswordResetTokenCreated;
-use App\Repositories\Interface\Auth\ForgetPasswordRepositoryInterface;
+use Modules\Auth\Repositories\Interface\ForgetPasswordRepositoryInterface;
 
 class ForgetPasswordService
 {
