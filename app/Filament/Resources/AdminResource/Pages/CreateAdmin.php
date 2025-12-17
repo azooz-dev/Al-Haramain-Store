@@ -5,7 +5,7 @@ namespace App\Filament\Resources\AdminResource\Pages;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\AdminResource;
-use App\Services\Admin\AdminService;
+use Modules\Admin\Services\AdminService;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
 

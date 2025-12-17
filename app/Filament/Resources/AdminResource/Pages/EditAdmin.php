@@ -6,7 +6,7 @@ use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\AdminResource;
-use App\Services\Admin\AdminService;
+use Modules\Admin\Services\AdminService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditAdmin extends EditRecord
