@@ -17,12 +17,10 @@ use Modules\Catalog\Entities\Product\ProductColorImage;
 use App\Repositories\Eloquent\Analytics\UserAnalyticsRepository;
 use App\Repositories\Eloquent\Analytics\OrderAnalyticsRepository;
 use App\Repositories\Eloquent\Analytics\ProductAnalyticsRepository;
-
 use App\Repositories\Eloquent\Analytics\CategoryAnalyticsRepository;
 use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
 use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
-
 use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
@@ -60,12 +58,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Register Observers
-
-
-        // Register Event Listeners
-        Event::listen(UserRegistered::class, SendVerificationEmail::class);
-        Event::listen(PasswordResetTokenCreated::class, SendPasswordResetEmail::class);
-        Event::listen(ResendVerificationEmail::class, ResendVerificationEmailListener::class);
 
         // Register Policies
 
