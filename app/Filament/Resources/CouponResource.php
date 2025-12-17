@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\Coupon\Coupon;
+use Modules\Coupon\Entities\Coupon\Coupon;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
@@ -18,7 +18,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CouponResource\Pages;
-use App\Services\Coupon\CouponService;
+use Modules\Coupon\Services\Coupon\CouponService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Filament\Support\Exceptions\Halt;
 
