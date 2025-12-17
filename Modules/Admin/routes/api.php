@@ -2,6 +2,5 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Add your API routes here
-// Example:
-// Route::apiResource('admins', AdminController::class)->only(['index', 'show']);
+// Admin routes are handled through Filament admin panel
+// No dedicated API routes needed here
