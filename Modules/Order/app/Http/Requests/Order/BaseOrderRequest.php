@@ -2,12 +2,12 @@
 
 namespace Modules\Order\Http\Requests\Order;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\Order\Entities\Order\Order;
 use Modules\Order\Rules\ValidOrderItem;
 use Modules\Catalog\Entities\Product\Product;
 use App\Http\Requests\BaseRequest;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 use Modules\Catalog\Services\Product\ProductService;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 

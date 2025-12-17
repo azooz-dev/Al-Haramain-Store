@@ -3,9 +3,9 @@
 namespace Modules\Order\Services\Order\Pipeline;
 
 use Modules\Catalog\Entities\Product\Product;
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 
 class ValidateStockStep implements OrderProcessingStep
 {

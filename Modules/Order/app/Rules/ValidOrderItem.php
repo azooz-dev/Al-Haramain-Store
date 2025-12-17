@@ -3,9 +3,9 @@
 namespace Modules\Order\Rules;
 
 use Closure;
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Entities\Product\Product;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 use Modules\Catalog\Services\Product\ProductService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
