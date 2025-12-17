@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Interface\Admin;
+namespace Modules\Admin\Repositories\Interface;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
 

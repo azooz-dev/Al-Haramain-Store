@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Eloquent\Admin;
+namespace Modules\Admin\Repositories\Eloquent;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
-use App\Repositories\Interface\Admin\AdminRepositoryInterface;
+use Modules\Admin\Repositories\Interface\AdminRepositoryInterface;
 
 class AdminRepository implements AdminRepositoryInterface
 {
