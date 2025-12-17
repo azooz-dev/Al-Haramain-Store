@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Offer;
+namespace Modules\Offer\Http\Controllers\Offer;
 
 use App\Http\Controllers\Controller;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;

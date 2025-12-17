@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Offer;
+namespace Modules\Offer\Http\Resources\Offer;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\Review\ReviewApiResource;
+use Modules\Review\Http\Resources\Review\ReviewApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Product\ProductApiResource;
+use Modules\Catalog\Http\Resources\Product\ProductApiResource;
 
 class OfferApiResource extends JsonResource
 {
