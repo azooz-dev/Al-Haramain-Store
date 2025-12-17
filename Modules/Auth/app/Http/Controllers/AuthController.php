@@ -2,55 +2,47 @@
 
 namespace Modules\Auth\Http\Controllers;
 
+use function App\Helpers\showOne;
+use Modules\Auth\Services\AuthService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use Modules\User\app\Http\Requests\UserLoginRequest;
+use Modules\User\app\Http\Requests\UserStoreRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use AuthorizesRequests;
+
+    public function __construct(private AuthService $authService) {}
+
+    public function register(UserStoreRequest $request)
     {
-        return view('auth::index');
+        $data = $request->validated();
+
+        $data = $this->authService->register($data);
+        return showOne($data, 201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function login(UserLoginRequest $request)
     {
-        return view('auth::create');
+        $data = $request->validated();
+
+        $user = $this->authService->login($data);
+
+        return showOne($user, 'user', 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function logout()
     {
-        return view('auth::show');
+        return $this->authService->logout();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function user()
     {
-        return view('auth::edit');
+        $this->authorize('view', Auth::user());
+        return $this->authService->user();
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }
