@@ -6,7 +6,7 @@ use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use Modules\Catalog\Entities\Product\ProductColorImage;
 use Modules\Catalog\Entities\Product\ProductTranslation;
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use App\Models\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Catalog\Entities\Category\Category;

@@ -2,7 +2,7 @@
 
 namespace Modules\Catalog\Services\Product\Variant;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Catalog\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 

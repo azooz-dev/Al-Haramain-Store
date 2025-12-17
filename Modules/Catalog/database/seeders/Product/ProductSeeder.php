@@ -2,7 +2,7 @@
 
 namespace Modules\Catalog\Database\Seeders\Product;
 
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Seeder;
 use Modules\Catalog\Entities\Category\Category;
