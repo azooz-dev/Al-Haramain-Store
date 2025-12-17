@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Interface\Analytics;
+namespace Modules\Analytics\Repositories\Interface;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
