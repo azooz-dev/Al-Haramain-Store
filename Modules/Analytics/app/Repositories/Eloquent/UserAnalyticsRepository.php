@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Eloquent\Analytics;
+namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\User\Entities\User;
 use Modules\Order\Entities\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
 
 class UserAnalyticsRepository implements UserAnalyticsRepositoryInterface
 {

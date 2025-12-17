@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Eloquent\Analytics;
+namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Order\Entities\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Repositories\Interface\Analytics\CategoryAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\CategoryAnalyticsRepositoryInterface;
 
 class CategoryAnalyticsRepository implements CategoryAnalyticsRepositoryInterface
 {

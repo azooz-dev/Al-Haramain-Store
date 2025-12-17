@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Eloquent\Analytics;
+namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Order\Entities\Order\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
 
 class OrderAnalyticsRepository implements OrderAnalyticsRepositoryInterface
 {
@@ -92,7 +92,7 @@ class OrderAnalyticsRepository implements OrderAnalyticsRepositoryInterface
             'items.orderable' => function ($morphTo) {
                 $morphTo->morphWith([
                     \Modules\Catalog\Entities\Product\Product::class => ['translations'],
-                    \App\Models\Offer\Offer::class => ['translations'],
+                    \Modules\Offer\Entities\Offer\Offer::class => ['translations'],
                 ]);
             },
             'items.variant',
