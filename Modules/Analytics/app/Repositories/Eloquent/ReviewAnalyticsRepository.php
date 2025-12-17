@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Review\Repositories\Eloquent\Analytics;
+namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Review\Entities\Review\Review;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
-use App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\ReviewAnalyticsRepositoryInterface;
 
 class ReviewAnalyticsRepository implements ReviewAnalyticsRepositoryInterface
 {
