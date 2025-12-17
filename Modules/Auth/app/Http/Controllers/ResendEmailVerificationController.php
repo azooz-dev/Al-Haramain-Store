@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\Auth\ResendEmailVerificationService;
+use Modules\Auth\Services\ResendEmailVerificationService;
 use Illuminate\Http\Request;
 
 use function App\Helpers\showOne;
