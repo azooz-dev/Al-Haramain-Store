@@ -5,7 +5,7 @@ namespace App\Filament\Resources\OfferResource\Pages;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\OfferResource;
-use App\Services\Offer\OfferService;
+use Modules\Offer\Services\Offer\OfferService;
 use App\Traits\Offer\HasOfferTranslations;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
