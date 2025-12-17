@@ -3,7 +3,7 @@
 namespace Modules\Favorite\Policies\Favorite;
 
 use Modules\User\Entities\User;
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Favorite\Entities\Favorite\Favorite;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

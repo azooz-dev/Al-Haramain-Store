@@ -2,7 +2,7 @@
 
 namespace Modules\Order\Policies\Order;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Order\Entities\Order\Order;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

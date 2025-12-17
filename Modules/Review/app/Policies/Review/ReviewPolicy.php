@@ -3,7 +3,7 @@
 namespace Modules\Review\Policies\Review;
 
 use Modules\User\Entities\User;
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Review\Entities\Review\Review;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

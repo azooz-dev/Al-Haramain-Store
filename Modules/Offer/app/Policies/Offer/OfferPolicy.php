@@ -2,7 +2,7 @@
 
 namespace Modules\Offer\Policies\Offer;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

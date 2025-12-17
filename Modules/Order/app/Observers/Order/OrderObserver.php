@@ -2,7 +2,7 @@
 
 namespace Modules\Order\Observers\Order;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Order\Entities\Order\Order;
 use App\Services\Dashboard\DashboardCacheHelper;
 use App\Services\Cache\CacheService;

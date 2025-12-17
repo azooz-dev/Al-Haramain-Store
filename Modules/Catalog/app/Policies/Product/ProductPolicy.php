@@ -2,7 +2,7 @@
 
 namespace Modules\Catalog\Policies\Product;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

@@ -2,7 +2,7 @@
 
 namespace Modules\Coupon\Policies\Coupon;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
