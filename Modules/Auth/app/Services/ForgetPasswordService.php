@@ -3,7 +3,7 @@
 namespace Modules\Auth\Services;
 
 use Illuminate\Support\Facades\Password;
-use App\Events\Auth\PasswordResetTokenCreated;
+use Modules\Auth\Events\PasswordResetTokenCreated;
 use Modules\Auth\Repositories\Interface\ForgetPasswordRepositoryInterface;
 
 class ForgetPasswordService
