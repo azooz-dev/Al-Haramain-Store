@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Listeners\Auth;
+namespace Modules\Auth\Listeners;
 
-use App\Events\Auth\UserRegistered;
+use Modules\Auth\Events\UserRegistered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\Notifications\VerificationCodeNotification;
+use Modules\Auth\Notifications\VerificationCodeNotification;
 use Modules\User\Exceptions\VerificationEmailFailedException;
 
 class SendVerificationEmail implements ShouldQueue
