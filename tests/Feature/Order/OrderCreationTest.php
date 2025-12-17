@@ -359,7 +359,7 @@ class OrderCreationTest extends TestCase
 
         $orderData = $builder->buildOrderData();
         $orderData['items'][] = [
-            'orderable_type' => \App\Models\Offer\Offer::class,
+            'orderable_type' => \Modules\Offer\Entities\Offer\Offer::class,
             'orderable_id' => $offer->id,
             'quantity' => 1,
             'variant_id' => null,
