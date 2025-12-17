@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies\Offer;
+namespace Modules\Offer\Policies\Offer;
 
 use App\Models\Admin\Admin;
-use App\Models\Offer\Offer;
+use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OfferPolicy
