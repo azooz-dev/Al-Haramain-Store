@@ -7,5 +7,6 @@
     "Coupon": true,
     "Offer": true,
     "Favorite": true,
-    "Admin": true
+    "Admin": true,
+    "Auth": true
 }
