@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Dashboard;
+namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
 use Modules\Order\Entities\Order\Order;
 
 class OrderAnalyticsService

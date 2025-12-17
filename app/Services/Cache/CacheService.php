@@ -48,7 +48,7 @@ class CacheService
         } else {
             // Fallback: Use DashboardCacheHelper for dashboard-related tags
             if (in_array('dashboard', $tags)) {
-                \App\Services\Dashboard\DashboardCacheHelper::flushAll();
+                \Modules\Analytics\Services\DashboardCacheHelper::flushAll();
             } else {
                 // For non-dashboard tags, clear all cache as fallback
                 Cache::flush();

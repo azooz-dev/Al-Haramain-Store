@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Dashboard;
+namespace Modules\Analytics\Services;
 
 use Illuminate\Support\Facades\Cache;
 

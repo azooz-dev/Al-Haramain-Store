@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\Dashboard;
+namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Modules\Catalog\Entities\Product\Product;
-use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface;
 use Modules\Catalog\Services\Product\ProductTranslationService;
 
 class ProductAnalyticsService

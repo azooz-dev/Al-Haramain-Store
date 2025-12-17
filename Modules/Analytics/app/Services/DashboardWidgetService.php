@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Dashboard;
+namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\Interface\Analytics\OrderAnalyticsRepositoryInterface;
-use App\Repositories\Interface\Analytics\UserAnalyticsRepositoryInterface;
-use App\Repositories\Interface\Analytics\ProductAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface;
 use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 use Modules\Order\Entities\Order\Order;
 

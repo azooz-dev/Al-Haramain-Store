@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Dashboard;
+namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use App\Repositories\Interface\Analytics\ReviewAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\ReviewAnalyticsRepositoryInterface;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
 use Modules\Review\Entities\Review\Review;
 
