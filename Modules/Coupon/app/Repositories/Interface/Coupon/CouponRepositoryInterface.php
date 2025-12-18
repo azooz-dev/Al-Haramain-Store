@@ -25,4 +25,8 @@ interface CouponRepositoryInterface
   public function getQueryBuilder(): Builder;
 
   public function codeExists(string $code, ?int $excludeId = null): bool;
+
+  public function activateCoupons(array $ids): int;
+
+  public function deactivateCoupons(array $ids): int;
 }

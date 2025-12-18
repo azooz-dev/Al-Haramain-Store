@@ -64,4 +64,14 @@ class CouponRepository implements CouponRepositoryInterface
     
     return $query->exists();
   }
+
+  public function activateCoupons(array $ids): int
+  {
+    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::ACTIVE]);
+  }
+
+  public function deactivateCoupons(array $ids): int
+  {
+    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::INACTIVE]);
+  }
 }

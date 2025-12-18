@@ -133,12 +133,12 @@ class CouponService implements CouponServiceInterface
 
   public function activateCoupons(array $ids): int
   {
-    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::ACTIVE]);
+    return $this->couponRepository->activateCoupons($ids);
   }
 
   public function deactivateCoupons(array $ids): int
   {
-    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::INACTIVE]);
+    return $this->couponRepository->deactivateCoupons($ids);
   }
 
   public function getCouponsCount(): int
