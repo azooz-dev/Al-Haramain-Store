@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Modules\Order\Exceptions\Order\OrderException;
 use Modules\Coupon\Exceptions\Coupon\CouponException;
 use Modules\Coupon\Contracts\CouponServiceInterface;
 use Modules\Coupon\Contracts\CouponUsageRepositoryInterface;
@@ -22,7 +21,7 @@ class CouponService implements CouponServiceInterface
   /**
    * Validate coupon and return new total amount after discount
    *
-   * @throws OrderException
+   * @throws CouponException
    */
   public function applyCouponToOrder(string $couponCode, float $totalAmount, int $userId): float
   {
@@ -49,31 +48,31 @@ class CouponService implements CouponServiceInterface
   {
     $coupon = $this->couponRepository->findCoupon($couponCode);
     if (!$coupon) {
-      throw new OrderException(__('app.messages.order.coupon_not_found'), 404);
+      throw new CouponException(__('app.messages.order.coupon_not_found'), 404);
     }
 
     if ($coupon->status === Coupon::INACTIVE) {
-      throw new OrderException(__('app.messages.order.coupon_inactive'), 400);
+      throw new CouponException(__('app.messages.order.coupon_inactive'), 400);
     }
 
     $now = Carbon::now();
     if ($coupon->start_date && $now->lt($coupon->start_date)) {
-      throw new OrderException(__('app.messages.order.coupon_not_started'), 400);
+      throw new CouponException(__('app.messages.order.coupon_not_started'), 400);
     }
     if ($coupon->end_date && $now->gt($coupon->end_date)) {
-      throw new OrderException(__('app.messages.order.coupon_expired'), 400);
+      throw new CouponException(__('app.messages.order.coupon_expired'), 400);
     }
 
     // Global usage limit
     $usedCount = $this->couponUsageRepository->countCouponUsage($coupon->id);
     if ($coupon->usage_limit !== null && $usedCount >= $coupon->usage_limit) {
-      throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded', ['usage_limit' => $coupon->usage_limit]), 400);
+      throw new CouponException(__('app.messages.order.coupon_usage_limit_exceeded', ['usage_limit' => $coupon->usage_limit]), 400);
     }
 
     // Per-user usage limit
     $userUsed = $this->couponUsageRepository->countUserCouponUsage($coupon->id, $userId);
     if ($coupon->usage_limit_per_user !== null && $userUsed >= $coupon->usage_limit_per_user) {
-      throw new OrderException(__('app.messages.order.coupon_usage_limit_per_user_exceeded', ['limit' => $coupon->usage_limit_per_user]), 400);
+      throw new CouponException(__('app.messages.order.coupon_usage_limit_per_user_exceeded', ['limit' => $coupon->usage_limit_per_user]), 400);
     }
 
     return $coupon;
