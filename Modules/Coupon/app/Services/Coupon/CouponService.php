@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\Exceptions\Order\OrderException;
 use Modules\Coupon\Exceptions\Coupon\CouponException;
+use Modules\Coupon\Contracts\CouponServiceInterface;
 use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 use Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
-class CouponService
+class CouponService implements CouponServiceInterface
 {
   public function __construct(
     private CouponRepositoryInterface $couponRepository,

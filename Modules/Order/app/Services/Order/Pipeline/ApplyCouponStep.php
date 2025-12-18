@@ -2,13 +2,13 @@
 
 namespace Modules\Order\Services\Order\Pipeline;
 
-use Modules\Coupon\Services\Coupon\CouponService;
+use Modules\Coupon\Contracts\CouponServiceInterface;
 use Modules\Catalog\Services\Product\Variant\ProductVariantService;
 
 class ApplyCouponStep implements OrderProcessingStep
 {
     public function __construct(
-        private CouponService $couponService,
+        private CouponServiceInterface $couponService,
         private ProductVariantService $variantService
     ) {}
 

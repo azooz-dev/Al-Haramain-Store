@@ -49,6 +49,12 @@ class CouponServiceProvider extends ServiceProvider
             \Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface::class,
             \Modules\Coupon\Repositories\Eloquent\Coupon\CouponRepository::class
         );
+
+        // Register CouponServiceInterface binding
+        $this->app->bind(
+            \Modules\Coupon\Contracts\CouponServiceInterface::class,
+            \Modules\Coupon\Services\Coupon\CouponService::class
+        );
     }
 
     /**
