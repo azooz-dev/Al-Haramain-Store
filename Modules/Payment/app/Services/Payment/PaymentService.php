@@ -3,7 +3,6 @@
 namespace Modules\Payment\Services\Payment;
 
 use Modules\Payment\DTOs\PaymentResult;
-use Modules\Order\Entities\Order\Order;
 
 use function App\Helpers\errorResponse;
 use Modules\Payment\Contracts\PaymentProcessorInterface;

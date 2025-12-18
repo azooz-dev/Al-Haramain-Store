@@ -3,12 +3,13 @@
 namespace Modules\Payment\Services\Payment\Processors;
 
 use Modules\Payment\DTOs\PaymentResult;
-use Modules\Order\Entities\Order\Order;
 use Modules\Payment\Contracts\PaymentProcessorInterface;
 use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
 
 class CashOnDeliveryProcessor implements PaymentProcessorInterface
 {
+  private const PAYMENT_METHOD_CASH_ON_DELIVERY = 'cash_on_delivery';
+
   public function requiresPaymentIntent(): bool
   {
     return false;
@@ -24,7 +25,7 @@ class CashOnDeliveryProcessor implements PaymentProcessorInterface
     return new PaymentResult(
       success: true,
       transactionId: null,
-      paymentMethod: Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+      paymentMethod: self::PAYMENT_METHOD_CASH_ON_DELIVERY,
       amount: $orderData['total_amount'],
       paidAt: now(),
     );

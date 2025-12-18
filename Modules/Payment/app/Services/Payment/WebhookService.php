@@ -3,7 +3,6 @@
 namespace Modules\Payment\Services\Payment;
 
 use Stripe\PaymentIntent;
-use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Order\Services\Order\OrderService;
@@ -71,7 +70,7 @@ class WebhookService
           'address_id' => (int) $metadata['address_id'],
           'coupon_code' => $metadata['coupon_code'] ?? null,
           'items' => json_decode($metadata['items'], true),
-          'payment_method' => $metadata['payment_method'] ?? Order::PAYMENT_METHOD_CREDIT_CARD,
+          'payment_method' => $metadata['payment_method'] ?? 'credit_card',
           'payment_intent_id' => $paymentIntent->id,
           'total_amount' => (float) ($metadata['total_amount'] ?? ($paymentIntent->amount / 100)),
         ];
