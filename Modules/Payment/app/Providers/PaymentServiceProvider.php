@@ -50,6 +50,12 @@ class PaymentServiceProvider extends ServiceProvider
             \Modules\Payment\Repositories\Eloquent\Payment\PaymentRepository::class
         );
 
+        // Register PaymentServiceInterface binding
+        $this->app->bind(
+            \Modules\Payment\Contracts\PaymentServiceInterface::class,
+            \Modules\Payment\Services\Payment\PaymentService::class
+        );
+
         // Register payment processors as singletons
         $this->app->singleton(
             \Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor::class

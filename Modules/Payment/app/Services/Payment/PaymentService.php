@@ -7,11 +7,12 @@ use Modules\Order\Entities\Order\Order;
 
 use function App\Helpers\errorResponse;
 use Modules\Payment\Contracts\PaymentProcessorInterface;
+use Modules\Payment\Contracts\PaymentServiceInterface;
 use Modules\Payment\Services\Payment\PaymentProcessorFactory;
 use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 use Modules\Payment\Exceptions\Payment\CreatePaymentException;
 
-class PaymentService
+class PaymentService implements PaymentServiceInterface
 {
   public function __construct(
     private PaymentRepositoryInterface $paymentRepository,

@@ -2,11 +2,11 @@
 
 namespace Modules\Order\Services\Order\Pipeline;
 
-use Modules\Payment\Services\Payment\PaymentService;
+use Modules\Payment\Contracts\PaymentServiceInterface;
 
 class ProcessPaymentStep implements OrderProcessingStep
 {
-    public function __construct(private PaymentService $paymentService) {}
+    public function __construct(private PaymentServiceInterface $paymentService) {}
 
     public function handle(array $data, \Closure $next)
     {

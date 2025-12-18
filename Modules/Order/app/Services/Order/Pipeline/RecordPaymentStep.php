@@ -3,12 +3,12 @@
 namespace Modules\Order\Services\Order\Pipeline;
 
 use Modules\Order\Entities\Order\Order;
-use Modules\Payment\Services\Payment\PaymentService;
+use Modules\Payment\Contracts\PaymentServiceInterface;
 
 class RecordPaymentStep implements OrderProcessingStep
 {
     public function __construct(
-        private PaymentService $paymentService
+        private PaymentServiceInterface $paymentService
     ) {}
 
     public function handle(array $data, \Closure $next)
