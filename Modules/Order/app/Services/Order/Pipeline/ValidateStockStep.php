@@ -5,13 +5,13 @@ namespace Modules\Order\Services\Order\Pipeline;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Contracts\ProductVariantServiceInterface;
-use Modules\Offer\Services\Offer\OfferService;
+use Modules\Offer\Contracts\OfferServiceInterface;
 
 class ValidateStockStep implements OrderProcessingStep
 {
     public function __construct(
         private ProductVariantServiceInterface $variantService,
-        private OfferService $offerService
+        private OfferServiceInterface $offerService
     ) {}
 
     public function handle(array $data, \Closure $next)

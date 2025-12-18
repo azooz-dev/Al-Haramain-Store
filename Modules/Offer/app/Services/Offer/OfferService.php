@@ -4,13 +4,14 @@ namespace Modules\Offer\Services\Offer;
 
 use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Offer\Contracts\OfferServiceInterface;
 use Modules\Offer\Exceptions\Offer\OfferException;
 use Modules\Offer\Http\Resources\Offer\OfferApiResource;
 use Modules\Offer\Repositories\Interface\Offer\OfferRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 
-class OfferService
+class OfferService implements OfferServiceInterface
 {
   public function __construct(
     private OfferRepositoryInterface $offerRepository,

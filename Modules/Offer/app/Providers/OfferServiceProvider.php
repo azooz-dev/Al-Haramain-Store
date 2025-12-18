@@ -56,6 +56,12 @@ class OfferServiceProvider extends ServiceProvider
             \Modules\Offer\Repositories\Interface\Offer\OfferTranslationRepositoryInterface::class,
             \Modules\Offer\Repositories\Eloquent\Offer\OfferTranslationRepository::class
         );
+
+        // Register OfferServiceInterface binding
+        $this->app->bind(
+            \Modules\Offer\Contracts\OfferServiceInterface::class,
+            \Modules\Offer\Services\Offer\OfferService::class
+        );
     }
 
     /**
