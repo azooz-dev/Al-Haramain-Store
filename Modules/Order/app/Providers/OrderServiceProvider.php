@@ -53,6 +53,12 @@ class OrderServiceProvider extends ServiceProvider
             \Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface::class,
             \Modules\Order\Repositories\Eloquent\OrderItem\OrderItemRepository::class
         );
+
+        // Register CouponUsageRepositoryInterface binding for Coupon module
+        $this->app->bind(
+            \Modules\Coupon\Contracts\CouponUsageRepositoryInterface::class,
+            \Modules\Order\Repositories\Eloquent\Order\CouponUsageRepository::class
+        );
     }
 
     /**

@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\DB;
 use Modules\Order\Exceptions\Order\OrderException;
 use Modules\Coupon\Exceptions\Coupon\CouponException;
 use Modules\Coupon\Contracts\CouponServiceInterface;
-use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Coupon\Contracts\CouponUsageRepositoryInterface;
 use Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface;
 
 class CouponService implements CouponServiceInterface
 {
   public function __construct(
     private CouponRepositoryInterface $couponRepository,
-    private OrderRepositoryInterface $orderRepository
+    private CouponUsageRepositoryInterface $couponUsageRepository
   ) {}
 
   /**
@@ -65,13 +65,13 @@ class CouponService implements CouponServiceInterface
     }
 
     // Global usage limit
-    $usedCount = $this->orderRepository->countCouponUsage($coupon->id);
+    $usedCount = $this->couponUsageRepository->countCouponUsage($coupon->id);
     if ($coupon->usage_limit !== null && $usedCount >= $coupon->usage_limit) {
       throw new OrderException(__('app.messages.order.coupon_usage_limit_exceeded', ['usage_limit' => $coupon->usage_limit]), 400);
     }
 
     // Per-user usage limit
-    $userUsed = $this->orderRepository->countUserCouponUsage($coupon->id, $userId);
+    $userUsed = $this->couponUsageRepository->countUserCouponUsage($coupon->id, $userId);
     if ($coupon->usage_limit_per_user !== null && $userUsed >= $coupon->usage_limit_per_user) {
       throw new OrderException(__('app.messages.order.coupon_usage_limit_per_user_exceeded', ['limit' => $coupon->usage_limit_per_user]), 400);
     }
