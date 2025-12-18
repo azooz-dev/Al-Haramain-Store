@@ -5,13 +5,13 @@ namespace Modules\Payment\Services\Payment;
 use Stripe\PaymentIntent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Contracts\OrderServiceInterface;
 use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 
 class WebhookService
 {
   public function __construct(
-    private OrderService $orderService,
+    private OrderServiceInterface $orderService,
     private PaymentRepositoryInterface $paymentRepository
   ) {}
 
