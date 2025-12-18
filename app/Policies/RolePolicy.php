@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Admin\Admin;
+use Modules\Admin\Entities\Admin;
 use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
