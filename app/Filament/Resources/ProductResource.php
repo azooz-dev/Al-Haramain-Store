@@ -9,7 +9,7 @@ use Filament\Tables\Table;
 use Modules\Catalog\Entities\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
-use App\Rules\VariantQuantityMaxRule;
+use Modules\Catalog\Rules\VariantQuantityMaxRule;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use Modules\Catalog\Services\Product\ProductService;
