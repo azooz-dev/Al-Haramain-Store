@@ -4,7 +4,7 @@ namespace Modules\Order\Observers\Order;
 
 use Modules\Admin\Entities\Admin;
 use Modules\Order\Entities\Order\Order;
-use App\Services\Dashboard\DashboardCacheHelper;
+use Modules\Analytics\Services\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 use Filament\Notifications\Notification;
 

@@ -3,7 +3,7 @@
 namespace Modules\Catalog\Observers\Product;
 
 use Modules\Catalog\Entities\Product\Product;
-use App\Services\Dashboard\DashboardCacheHelper;
+use Modules\Analytics\Services\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 
 class ProductObserver

@@ -3,7 +3,7 @@
 namespace Modules\Review\Observers\Review;
 
 use Modules\Review\Entities\Review\Review;
-use App\Services\Dashboard\DashboardCacheHelper;
+use Modules\Analytics\Services\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 
 class ReviewObserver

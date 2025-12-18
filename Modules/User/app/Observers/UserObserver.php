@@ -3,7 +3,7 @@
 namespace Modules\User\Observers;
 
 use Modules\User\Entities\User;
-use App\Services\Dashboard\DashboardCacheHelper;
+use Modules\Analytics\Services\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
 use Modules\Auth\Events\UserRegistered;
 
