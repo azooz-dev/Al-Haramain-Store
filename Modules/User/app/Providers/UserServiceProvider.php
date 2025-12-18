@@ -38,6 +38,7 @@ class UserServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->registerRepositories();
+        $this->registerServices();
     }
 
     /**
@@ -68,6 +69,17 @@ class UserServiceProvider extends ServiceProvider
         $this->app->bind(
             \Modules\User\Repositories\Interface\UserAddressRepositoryInterface::class,
             \Modules\User\Repositories\Eloquent\UserAddressRepository::class
+        );
+    }
+
+    /**
+     * Register service bindings.
+     */
+    protected function registerServices(): void
+    {
+        $this->app->bind(
+            \Modules\User\Contracts\UserServiceInterface::class,
+            \Modules\User\Services\UserService::class
         );
     }
 

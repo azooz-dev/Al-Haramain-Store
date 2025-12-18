@@ -7,10 +7,11 @@ use Modules\Order\Exceptions\Order\OrderException;
 use Modules\User\Exceptions\UserException;
 use Modules\User\app\Http\Resources\UserApiResource;
 use Modules\User\Repositories\Interface\UserRepositoryInterface;
+use Modules\User\Contracts\UserServiceInterface;
 
 use function App\Helpers\errorResponse;
 
-class UserService
+class UserService implements UserServiceInterface
 {
   public function __construct(private UserRepositoryInterface $userRepository) {}
 
@@ -39,6 +40,11 @@ class UserService
     }
 
     return new UserApiResource($user);
+  }
+
+  public function findUserById(int $userId): ?User
+  {
+    return User::find($userId);
   }
 
   private function checkBuyerVerified(int $userId): void
