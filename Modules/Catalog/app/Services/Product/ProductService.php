@@ -6,7 +6,7 @@ use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Eloquent\Builder;
 use function App\Helpers\errorResponse;
 use App\Exceptions\Product\ProductException;
-use App\Http\Resources\Product\ProductApiResource;
+use Modules\Catalog\Http\Resources\Product\ProductApiResource;
 use Modules\Catalog\Repositories\Interface\Product\ProductRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Product\Color\ProductColorRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;

@@ -4,7 +4,7 @@ namespace Modules\Catalog\Services\Category;
 
 use Modules\Catalog\Entities\Category\Category;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\Category\CategoryApiResource;
+use Modules\Catalog\Http\Resources\Category\CategoryApiResource;
 use Modules\Catalog\Repositories\Interface\Category\CategoryRepositoryInterface;
 
 class CategoryService

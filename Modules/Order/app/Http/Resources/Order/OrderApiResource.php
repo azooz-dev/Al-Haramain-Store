@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Modules\User\app\Http\Resources\UserApiResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Order\Http\Resources\Order\OrderItem\OrderItemApiResource;
-use App\Http\Resources\Review\ReviewApiResource;
+use Modules\Review\Http\Resources\Review\ReviewApiResource;
 use Modules\User\app\Http\Resources\UserAddresses\AddressApiResource;
 
 class

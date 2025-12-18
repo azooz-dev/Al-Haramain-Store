@@ -7,7 +7,7 @@ use Modules\Order\Services\Order\OrderService;
 use function App\Helpers\errorResponse;
 use Modules\Order\Exceptions\Order\Review\ReviewException;
 
-use App\Http\Resources\Review\ReviewApiResource;
+use Modules\Review\Http\Resources\Review\ReviewApiResource;
 use Modules\Order\Exceptions\Order\CheckDeliveredOrderException;
 use Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface;
 use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
