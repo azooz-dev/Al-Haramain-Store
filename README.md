@@ -1,3 +1,24 @@
+# Al-Haramain Store
+
+## Architecture
+
+This project follows a **Hierarchical Model-View-Controller (HMVC)** modular architecture. For detailed architecture documentation, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+### Key Principles
+
+- **Loose Coupling**: Modules communicate via interfaces and events, not direct dependencies
+- **Service Container**: All dependencies injected via constructor
+- **Event-Driven**: Modules notify each other through events and listeners
+- **No Entity Dependencies**: Modules don't import entities from other modules
+
+### Quick Links
+
+- [HMVC Architecture Guide](docs/ARCHITECTURE.md)
+- Module Interfaces: Payment, Coupon, Catalog, Offer
+- Event System: OrderCreated, OrderStatusChanged, UserCreated, etc.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
