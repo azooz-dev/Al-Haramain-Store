@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Category;
+namespace Modules\Catalog\Traits;
 
 use Modules\Catalog\Services\Category\CategoryTranslationService;
 
