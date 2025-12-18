@@ -2,7 +2,7 @@
 
 namespace Modules\User\Repositories\Eloquent;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
 
