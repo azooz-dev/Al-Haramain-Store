@@ -3,24 +3,21 @@
 namespace Modules\User\Observers;
 
 use Modules\User\Entities\User;
-use Modules\Analytics\Services\DashboardCacheHelper;
-use App\Services\Cache\CacheService;
+use Modules\User\Events\UserCreated;
 use Modules\Auth\Events\UserRegistered;
 
 class UserObserver
 {
-    public function __construct(private CacheService $cacheService) {}
-
     /**
      * Handle the User "created" event.
      */
     public function created(User $user): void
     {
+        // Dispatch UserRegistered event for Auth module
         UserRegistered::dispatch($user);
 
-        // Invalidate dashboard widget cache
-        DashboardCacheHelper::flushAll();
-        $this->cacheService->flush(['dashboard', 'customers']);
+        // Dispatch UserCreated event for Analytics module
+        UserCreated::dispatch($user);
     }
 
     /**

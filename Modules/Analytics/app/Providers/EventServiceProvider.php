@@ -18,6 +18,18 @@ class EventServiceProvider extends ServiceProvider
         \Modules\Order\Events\OrderStatusChanged::class => [
             \Modules\Analytics\Listeners\InvalidateCacheOnOrderChange::class,
         ],
+        \Modules\User\Events\UserCreated::class => [
+            \Modules\Analytics\Listeners\InvalidateDashboardCache::class,
+        ],
+        \Modules\Catalog\Events\ProductUpdated::class => [
+            \Modules\Analytics\Listeners\InvalidateDashboardCache::class,
+        ],
+        \Modules\Review\Events\ReviewCreated::class => [
+            \Modules\Analytics\Listeners\InvalidateDashboardCache::class,
+        ],
+        \Modules\Review\Events\ReviewUpdated::class => [
+            \Modules\Analytics\Listeners\InvalidateDashboardCache::class,
+        ],
     ];
 
     /**
