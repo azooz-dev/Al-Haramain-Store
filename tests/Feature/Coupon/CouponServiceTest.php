@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Tests\Fixtures\OrderFixtures;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Coupon\Services\Coupon\CouponService;
-use Modules\Order\Exceptions\Order\OrderException;
+use Modules\Coupon\Exceptions\Coupon\CouponException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -76,7 +76,7 @@ class CouponServiceTest extends TestCase
         $totalAmount = 200.00;
 
         // Act & Assert
-        $this->expectException(OrderException::class);
+        $this->expectException(CouponException::class);
         $this->couponService->applyCouponToOrder('INVALID_CODE', $totalAmount, $user->id);
     }
 
@@ -91,7 +91,7 @@ class CouponServiceTest extends TestCase
         $totalAmount = 200.00;
 
         // Act & Assert
-        $this->expectException(OrderException::class);
+        $this->expectException(CouponException::class);
         $this->couponService->applyCouponToOrder($coupon->code, $totalAmount, $user->id);
     }
 

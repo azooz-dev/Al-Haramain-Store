@@ -17,9 +17,9 @@ interface ProductVariantServiceInterface
      * Get variants by their IDs.
      *
      * @param array $ids Array of variant IDs
-     * @return array Array of variants keyed by variant ID
+     * @return \Illuminate\Support\Collection Collection of variants keyed by variant ID
      */
-    public function getVariantsByIds($ids): array;
+    public function getVariantsByIds($ids);
 
     /**
      * Calculate total order price from items.

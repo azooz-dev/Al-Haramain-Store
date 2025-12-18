@@ -11,7 +11,7 @@ class ProductVariantService implements ProductVariantServiceInterface
 {
   public function __construct(private ProductVariantRepositoryInterface $productVariantRepository) {}
 
-  public function checkStock($items)
+  public function checkStock($items): void
   {
     $variants = $this->getVariantsByIds(array_keys($items));
 
@@ -28,9 +28,7 @@ class ProductVariantService implements ProductVariantServiceInterface
     return $this->productVariantRepository->getVariantsByIds($ids);
   }
 
-
-
-  public function calculateTotalOrderPrice($items)
+  public function calculateTotalOrderPrice($items): float
   {
     $itemTotal = 0;
     foreach ($items as $item) {
@@ -61,7 +59,7 @@ class ProductVariantService implements ProductVariantServiceInterface
     return $price * $quantity;
   }
 
-  public function decrementVariantStock($items)
+  public function decrementVariantStock($items): void
   {
     foreach ($items as $itemId => $item) {
       $this->productVariantRepository->decrementVariantStock($itemId, $item['quantity']);
