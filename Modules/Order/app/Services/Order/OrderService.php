@@ -160,12 +160,12 @@ class OrderService implements OrderServiceInterface
 
     public function markOrdersAsProcessing(array $ids): int
     {
-        return Order::whereIn('id', $ids)->update(['status' => Order::PROCESSING]);
+        return $this->orderRepository->markOrdersAsProcessing($ids);
     }
 
     public function markOrdersAsShipped(array $ids): int
     {
-        return Order::whereIn('id', $ids)->update(['status' => Order::SHIPPED]);
+        return $this->orderRepository->markOrdersAsShipped($ids);
     }
 
     public function getOrdersCount(): int

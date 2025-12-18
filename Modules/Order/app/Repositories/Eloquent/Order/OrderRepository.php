@@ -129,4 +129,14 @@ class OrderRepository implements OrderRepositoryInterface
       'payments',
     ]);
   }
+
+  public function markOrdersAsProcessing(array $ids): int
+  {
+    return Order::whereIn('id', $ids)->update(['status' => Order::PROCESSING]);
+  }
+
+  public function markOrdersAsShipped(array $ids): int
+  {
+    return Order::whereIn('id', $ids)->update(['status' => Order::SHIPPED]);
+  }
 }
