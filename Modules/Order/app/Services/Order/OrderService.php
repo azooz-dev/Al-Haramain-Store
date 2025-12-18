@@ -24,8 +24,9 @@ use Modules\Order\Services\Order\Pipeline\CalculatePricesStep;
 use Modules\Order\Services\Order\Pipeline\CreateOrderItemsStep;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Order\Contracts\OrderServiceInterface;
 
-class OrderService
+class OrderService implements OrderServiceInterface
 {
     public function __construct(
         private OrderRepositoryInterface $orderRepository,

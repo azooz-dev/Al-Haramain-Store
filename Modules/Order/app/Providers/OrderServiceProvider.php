@@ -38,6 +38,7 @@ class OrderServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->registerRepositories();
+        $this->registerServices();
     }
 
     /**
@@ -58,6 +59,17 @@ class OrderServiceProvider extends ServiceProvider
         $this->app->bind(
             \Modules\Coupon\Contracts\CouponUsageRepositoryInterface::class,
             \Modules\Order\Repositories\Eloquent\Order\CouponUsageRepository::class
+        );
+    }
+
+    /**
+     * Register service bindings.
+     */
+    protected function registerServices(): void
+    {
+        $this->app->bind(
+            \Modules\Order\Contracts\OrderServiceInterface::class,
+            \Modules\Order\Services\Order\OrderService::class
         );
     }
 
