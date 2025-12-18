@@ -2,11 +2,12 @@
 
 namespace Modules\Order\Services\Order\Pipeline;
 
-use Modules\Order\Entities\Order\Order;
 use Modules\Payment\Contracts\PaymentServiceInterface;
 
 class RecordPaymentStep implements OrderProcessingStep
 {
+    private const PAYMENT_METHOD_CREDIT_CARD = 'credit_card';
+
     public function __construct(
         private PaymentServiceInterface $paymentService
     ) {}
@@ -17,7 +18,7 @@ class RecordPaymentStep implements OrderProcessingStep
         $paymentResult = $data['_payment_result'] ?? null;
         $paymentMethod = $data['payment_method'] ?? null;
 
-        if ($paymentMethod === Order::PAYMENT_METHOD_CREDIT_CARD && 
+        if ($paymentMethod === self::PAYMENT_METHOD_CREDIT_CARD && 
             $paymentResult?->transactionId && 
             $order) {
             $this->paymentService->createPayment($order->id, $paymentResult);
