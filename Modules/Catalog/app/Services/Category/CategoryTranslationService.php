@@ -2,7 +2,7 @@
 
 namespace Modules\Catalog\Services\Category;
 
-use App\Http\Resources\Category\CategoryApiResource;
+use Modules\Catalog\Http\Resources\Category\CategoryApiResource;
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Catalog\Repositories\Interface\Category\CategoryRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;

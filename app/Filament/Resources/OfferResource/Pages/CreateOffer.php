@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\OfferResource;
 use Modules\Offer\Services\Offer\OfferService;
-use App\Traits\Offer\HasOfferTranslations;
+use Modules\Offer\Traits\HasOfferTranslations;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
 

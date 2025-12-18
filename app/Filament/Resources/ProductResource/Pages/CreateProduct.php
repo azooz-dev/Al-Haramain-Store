@@ -7,7 +7,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductResource;
 use Modules\Catalog\Services\Product\ProductService;
-use App\Traits\Product\HasProductTranslations;
+use Modules\Catalog\Traits\HasProductTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class CreateProduct extends CreateRecord

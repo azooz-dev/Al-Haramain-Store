@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\CategoryResource\Pages;
 
 use App\Filament\Resources\CategoryResource;
-use App\Traits\Category\HasCategoryTranslations;
+use Modules\Catalog\Traits\HasCategoryTranslations;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewCategory extends ViewRecord

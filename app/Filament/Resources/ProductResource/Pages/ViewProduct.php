@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\ProductResource\Pages;
 
 use App\Filament\Resources\ProductResource;
-use App\Traits\Product\HasProductTranslations;
+use Modules\Catalog\Traits\HasProductTranslations;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 

@@ -7,7 +7,7 @@ use Filament\Notifications\Notification;
 use Modules\Catalog\Services\Category\CategoryService;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\CategoryResource;
-use App\Traits\Category\HasCategoryTranslations;
+use Modules\Catalog\Traits\HasCategoryTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Modules\Catalog\Services\Product;
 
-use App\Http\Resources\Product\ProductApiResource;
+use Modules\Catalog\Http\Resources\Product\ProductApiResource;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Repositories\Interface\Product\ProductRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
