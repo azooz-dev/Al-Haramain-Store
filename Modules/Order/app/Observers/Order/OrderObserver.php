@@ -2,11 +2,10 @@
 
 namespace Modules\Order\Observers\Order;
 
-use Modules\Admin\Entities\Admin;
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Events\OrderCreated;
 use Modules\Analytics\Services\DashboardCacheHelper;
 use App\Services\Cache\CacheService;
-use Filament\Notifications\Notification;
 
 class OrderObserver
 {
@@ -17,18 +16,8 @@ class OrderObserver
      */
     public function created(Order $order): void
     {
-        $admins = Admin::role('super_admin')->get();
-
-        foreach ($admins as $admin) {
-            Notification::make()
-                ->title('New Order #' . $order->order_number)
-                ->body($order->user?->name . __('app.messages.order.new_order') . "SAR " . number_format($order->total_amount, 2))
-                ->actions([
-                    \Filament\Notifications\Actions\Action::make('view')
-                        ->label('View Order')
-                        ->url(route('filament.admin.resources.orders.view', $order->id)),
-                ])->sendToDatabase($admin, isEventDispatched: true);
-        }
+        // Dispatch OrderCreated event - Admin module will listen and send notifications
+        OrderCreated::dispatch($order);
 
         // Invalidate dashboard widget cache
         DashboardCacheHelper::flushAll();

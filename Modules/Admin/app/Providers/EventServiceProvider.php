@@ -11,7 +11,11 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [];
+    protected $listen = [
+        \Modules\Order\Events\OrderCreated::class => [
+            \Modules\Admin\Listeners\SendOrderNotification::class,
+        ],
+    ];
 
     /**
      * Indicates if events should be discovered.
