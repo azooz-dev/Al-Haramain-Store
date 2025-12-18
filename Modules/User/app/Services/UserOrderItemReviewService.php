@@ -3,7 +3,7 @@
 namespace Modules\User\Services;
 
 use Modules\Order\Entities\OrderItem\OrderItem;
-use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Contracts\OrderServiceInterface;
 use function App\Helpers\errorResponse;
 use Modules\Order\Exceptions\Order\Review\ReviewException;
 
@@ -16,7 +16,7 @@ class UserOrderItemReviewService
 {
   public function __construct(
     private UserOrderItemReviewRepositoryInterface $userOrderItemReviewRepository,
-    private OrderService $orderService,
+    private OrderServiceInterface $orderService,
     private OrderItemRepositoryInterface $orderItemRepository
   ) {}
 
