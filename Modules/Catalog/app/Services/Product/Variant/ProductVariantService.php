@@ -3,10 +3,11 @@
 namespace Modules\Catalog\Services\Product\Variant;
 
 use Modules\Offer\Entities\Offer\Offer;
+use Modules\Catalog\Contracts\ProductVariantServiceInterface;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Catalog\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 
-class ProductVariantService
+class ProductVariantService implements ProductVariantServiceInterface
 {
   public function __construct(private ProductVariantRepositoryInterface $productVariantRepository) {}
 

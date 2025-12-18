@@ -3,13 +3,13 @@
 namespace Modules\Order\Services\Order\Pipeline;
 
 use Modules\Coupon\Contracts\CouponServiceInterface;
-use Modules\Catalog\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Contracts\ProductVariantServiceInterface;
 
 class ApplyCouponStep implements OrderProcessingStep
 {
     public function __construct(
         private CouponServiceInterface $couponService,
-        private ProductVariantService $variantService
+        private ProductVariantServiceInterface $variantService
     ) {}
 
     public function handle(array $data, \Closure $next)

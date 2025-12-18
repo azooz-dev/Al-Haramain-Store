@@ -2,9 +2,10 @@
 
 namespace Modules\Catalog\Services\Product;
 
+use Modules\Catalog\Contracts\ProductStockServiceInterface;
 use Modules\Catalog\Repositories\Interface\Product\ProductRepositoryInterface;
 
-class ProductStockService
+class ProductStockService implements ProductStockServiceInterface
 {
     public function __construct(
         private ProductRepositoryInterface $productRepository

@@ -72,6 +72,17 @@ class CatalogServiceProvider extends ServiceProvider
             \Modules\Catalog\Repositories\Interface\Category\CategoryTranslationRepositoryInterface::class,
             \Modules\Catalog\Repositories\Eloquent\Category\CategoryTranslationRepository::class
         );
+
+        // Register service interfaces
+        $this->app->bind(
+            \Modules\Catalog\Contracts\ProductVariantServiceInterface::class,
+            \Modules\Catalog\Services\Product\Variant\ProductVariantService::class
+        );
+
+        $this->app->bind(
+            \Modules\Catalog\Contracts\ProductStockServiceInterface::class,
+            \Modules\Catalog\Services\Product\ProductStockService::class
+        );
     }
 
     /**

@@ -2,14 +2,14 @@
 
 namespace Modules\Order\Services\Order\Pipeline;
 
-use Modules\Catalog\Services\Product\Variant\ProductVariantService;
-use Modules\Catalog\Services\Product\ProductStockService;
+use Modules\Catalog\Contracts\ProductVariantServiceInterface;
+use Modules\Catalog\Contracts\ProductStockServiceInterface;
 
 class UpdateStockStep implements OrderProcessingStep
 {
     public function __construct(
-        private ProductVariantService $variantService,
-        private ProductStockService $productStockService
+        private ProductVariantServiceInterface $variantService,
+        private ProductStockServiceInterface $productStockService
     ) {}
 
     public function handle(array $data, \Closure $next)
