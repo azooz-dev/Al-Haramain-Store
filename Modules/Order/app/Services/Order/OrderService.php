@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\errorResponse;
+use Modules\Order\Events\OrderCreated;
+use Modules\Order\Events\OrderStatusChanged;
 use Modules\Order\Exceptions\Order\OrderException;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Order\Http\Resources\Order\OrderApiResource;
@@ -65,8 +67,17 @@ class OrderService
                     ->thenReturn();
 
                 // Return the order resource
-                return new OrderApiResource($result['_order']);
+                $order = $result['_order'];
+                return new OrderApiResource($order);
             }, 5);
+
+            // Dispatch OrderCreated event after successful order creation
+            if ($orderResource instanceof OrderApiResource) {
+                $order = $orderResource->resource;
+                if ($order instanceof Order) {
+                    OrderCreated::dispatch($order);
+                }
+            }
 
             return $orderResource;
         } catch (OrderException $e) {
@@ -118,6 +129,9 @@ class OrderService
 
         // Update order status via repository
         $updatedOrder = $this->orderRepository->updateStatus($id, $status);
+
+        // Dispatch OrderStatusChanged event
+        OrderStatusChanged::dispatch($updatedOrder, $oldStatus, $status);
 
         // Log status change
         Log::info('Order status changed', [
