@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\ProductResource;
-use Modules\Catalog\Services\Product\ProductService;
+use Modules\Catalog\Contracts\ProductServiceInterface;
 use Modules\Catalog\Traits\HasProductTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -81,7 +81,7 @@ class EditProduct extends EditRecord
      */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $productService = app(ProductService::class);
+        $productService = app(ProductServiceInterface::class);
 
         // Update product with translations and categories via service
         // Service handles slug regeneration if name changed, translation saving, and category sync

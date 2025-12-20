@@ -12,7 +12,7 @@ use Filament\Resources\Resource;
 use Modules\Catalog\Rules\VariantQuantityMaxRule;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
-use Modules\Catalog\Services\Product\ProductService;
+use Modules\Catalog\Contracts\ProductServiceInterface;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class ProductResource extends Resource
@@ -74,7 +74,7 @@ class ProductResource extends Resource
      */
     public static function getNavigationBadge(): ?string
     {
-        return app(ProductService::class)->getProductsCount();
+        return app(ProductServiceInterface::class)->getProductsCount();
     }
 
     public static function form(Form $form): Form
@@ -393,7 +393,7 @@ class ProductResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $productService = app(ProductService::class);
+        $productService = app(ProductServiceInterface::class);
 
         return $table
             ->columns([
@@ -421,7 +421,7 @@ class ProductResource extends Resource
                     ->wrap()
                     ->state(function (Product $record) use ($productService) {
                         // Access translation service through product service
-                        $translationService = app(\Modules\Catalog\Services\Product\ProductTranslationService::class);
+                        $translationService = app(\Modules\Catalog\Contracts\ProductTranslationServiceInterface::class);
                         return $translationService->getTranslatedName($record);
                     }),
 
@@ -626,7 +626,7 @@ class ProductResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        return app(ProductService::class)->getQueryBuilder();
+        return app(ProductServiceInterface::class)->getQueryBuilder();
     }
 
     /**
