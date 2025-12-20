@@ -6,15 +6,15 @@ use Modules\Review\Entities\Review\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
-use Modules\Catalog\Services\Product\ProductTranslationService;
-use Modules\Offer\Services\Offer\OfferService;
+use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
+use Modules\Offer\Contracts\OfferServiceInterface;
 
 class ReviewService
 {
   public function __construct(
     private ReviewRepositoryInterface $reviewRepository,
-    private ProductTranslationService $productTranslationService,
-    private OfferService $offerService
+    private ProductTranslationServiceInterface $productTranslationService,
+    private OfferServiceInterface $offerService
   ) {}
 
   public function getAllReviews(): Collection
