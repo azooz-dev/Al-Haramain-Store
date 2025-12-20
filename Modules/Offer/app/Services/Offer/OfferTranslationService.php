@@ -5,9 +5,10 @@ namespace Modules\Offer\Services\Offer;
 use Modules\Offer\Http\Resources\Offer\OfferApiResource;
 use Modules\Offer\Entities\Offer\Offer;
 use Modules\Offer\Repositories\Interface\Offer\OfferTranslationRepositoryInterface;
+use Modules\Offer\Contracts\OfferTranslationServiceInterface;
 use Filament\Notifications\Collection;
 
-class OfferTranslationService
+class OfferTranslationService implements OfferTranslationServiceInterface
 {
   public function __construct(private OfferTranslationRepositoryInterface $translationRepository) {}
 
