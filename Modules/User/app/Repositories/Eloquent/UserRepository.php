@@ -7,6 +7,11 @@ use Modules\User\Repositories\Interface\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
+  public function findById(int $userId): ?User
+  {
+    return User::find($userId);
+  }
+
   public function update(int $userId, array $data): User
   {
     $user = User::findOrFail($userId);

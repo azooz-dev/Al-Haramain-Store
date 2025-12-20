@@ -2,16 +2,19 @@
 
 namespace Modules\User\Services;
 
-use Modules\User\Entities\User;
 use Modules\Order\Exceptions\Order\OrderException;
 use Modules\Order\Http\Resources\Order\OrderApiResource;
 use Modules\User\Repositories\Interface\UserOrderRepositoryInterface;
+use Modules\User\Contracts\UserServiceInterface;
 
 use function App\Helpers\errorResponse;
 
 class UserOrderService
 {
-  public function __construct(private UserOrderRepositoryInterface $userOrderRepository) {}
+  public function __construct(
+    private UserOrderRepositoryInterface $userOrderRepository,
+    private UserServiceInterface $userService
+  ) {}
 
   public function getAllUserOrders(int $userId)
   {
@@ -31,7 +34,7 @@ class UserOrderService
 
   private function checkUserVerified(int $userId): void
   {
-    $user = User::find($userId);
+    $user = $this->userService->findUserById($userId);
     if (!$user) {
       throw new OrderException(__('app.messages.order.user_not_found'), 404);
     }

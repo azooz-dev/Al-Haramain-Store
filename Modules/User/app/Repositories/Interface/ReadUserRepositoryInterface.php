@@ -6,8 +6,13 @@ use Modules\User\Entities\User;
 
 interface ReadUserRepositoryInterface
 {
-    // User repository only has write operations currently
-    // This interface is created for consistency and future extensibility
+    /**
+     * Find user by ID
+     *
+     * @param int $userId
+     * @return User|null
+     */
+    public function findById(int $userId): ?User;
 }
 
 

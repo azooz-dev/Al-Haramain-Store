@@ -44,12 +44,12 @@ class UserService implements UserServiceInterface
 
   public function findUserById(int $userId): ?User
   {
-    return User::find($userId);
+    return $this->userRepository->findById($userId);
   }
 
   private function checkBuyerVerified(int $userId): void
   {
-    $user = User::find($userId);
+    $user = $this->userRepository->findById($userId);
     if (!$user) {
       throw new OrderException(__('app.messages.order.user_not_found'), 404);
     }

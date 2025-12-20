@@ -2,18 +2,21 @@
 
 namespace Modules\User\Services;
 
-use Modules\User\Entities\User;
 use Modules\Order\Exceptions\Order\OrderException;
 use Modules\User\Exceptions\UserAddressException;
 use Modules\User\app\Http\Resources\UserAddresses\AddressApiResource;
 use Modules\User\Repositories\Interface\UserAddressRepositoryInterface;
+use Modules\User\Contracts\UserServiceInterface;
 
 use function App\Helpers\errorResponse;
 use function App\Helpers\showMessage;
 
 class UserAddressService
 {
-  public function __construct(private UserAddressRepositoryInterface $userAddressRepository) {}
+  public function __construct(
+    private UserAddressRepositoryInterface $userAddressRepository,
+    private UserServiceInterface $userService
+  ) {}
 
   public function getAllUserAddresses(int $userId)
   {
@@ -70,7 +73,7 @@ class UserAddressService
 
   private function checkUserVerified(int $userId): void
   {
-    $user = User::find($userId);
+    $user = $this->userService->findUserById($userId);
     if (!$user) {
       throw new OrderException(__('app.messages.order.user_not_found'), 404);
     }
