@@ -4,7 +4,7 @@ namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Modules\Catalog\Services\Category\CategoryTranslationService;
+use Modules\Catalog\Contracts\CategoryTranslationServiceInterface;
 use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
 use Modules\Analytics\Repositories\Interface\CategoryAnalyticsRepositoryInterface;
 
@@ -13,7 +13,7 @@ class CustomerAnalyticsService
     public function __construct(
         private UserAnalyticsRepositoryInterface $userAnalyticsRepository,
         private CategoryAnalyticsRepositoryInterface $categoryAnalyticsRepository,
-        private CategoryTranslationService $categoryTranslationService
+        private CategoryTranslationServiceInterface $categoryTranslationService
     ) {}
 
     public function getNewCustomers(Carbon $start, Carbon $end): int

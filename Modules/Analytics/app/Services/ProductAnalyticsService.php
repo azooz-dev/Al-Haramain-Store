@@ -6,13 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface;
-use Modules\Catalog\Services\Product\ProductTranslationService;
+use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
 class ProductAnalyticsService
 {
     public function __construct(
         private ProductAnalyticsRepositoryInterface $productAnalyticsRepository,
-        private ProductTranslationService $productTranslationService
+        private ProductTranslationServiceInterface $productTranslationService
     ) {}
 
     public function getTopSellingProducts(Carbon $start, Carbon $end, int $limit = 3): \Illuminate\Support\Collection
