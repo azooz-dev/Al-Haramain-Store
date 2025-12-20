@@ -93,6 +93,17 @@ class CatalogServiceProvider extends ServiceProvider
             \Modules\Catalog\Contracts\CategoryTranslationServiceInterface::class,
             \Modules\Catalog\Services\Category\CategoryTranslationService::class
         );
+
+        // Product and Category service interfaces
+        $this->app->bind(
+            \Modules\Catalog\Contracts\ProductServiceInterface::class,
+            \Modules\Catalog\Services\Product\ProductService::class
+        );
+
+        $this->app->bind(
+            \Modules\Catalog\Contracts\CategoryServiceInterface::class,
+            \Modules\Catalog\Services\Category\CategoryService::class
+        );
     }
 
     /**

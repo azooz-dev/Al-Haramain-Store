@@ -3,12 +3,13 @@
 namespace Modules\Catalog\Services\Category;
 
 use Modules\Catalog\Entities\Category\Category;
+use Modules\Catalog\Contracts\CategoryServiceInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Catalog\Http\Resources\Category\CategoryApiResource;
 use Modules\Catalog\Repositories\Interface\Category\CategoryRepositoryInterface;
 use Modules\Catalog\Contracts\CategoryTranslationServiceInterface;
 
-class CategoryService
+class CategoryService implements CategoryServiceInterface
 {
   public function __construct(
     private CategoryRepositoryInterface $categoryRepository,

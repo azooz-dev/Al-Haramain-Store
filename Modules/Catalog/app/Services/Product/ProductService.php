@@ -3,6 +3,7 @@
 namespace Modules\Catalog\Services\Product;
 
 use Modules\Catalog\Entities\Product\Product;
+use Modules\Catalog\Contracts\ProductServiceInterface;
 use Illuminate\Database\Eloquent\Builder;
 use function App\Helpers\errorResponse;
 use Modules\Catalog\Exceptions\Product\ProductException;
@@ -12,7 +13,7 @@ use Modules\Catalog\Repositories\Interface\Product\Color\ProductColorRepositoryI
 use Modules\Catalog\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
 use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
-class ProductService
+class ProductService implements ProductServiceInterface
 {
   public function __construct(
     private ProductRepositoryInterface $productRepository,
