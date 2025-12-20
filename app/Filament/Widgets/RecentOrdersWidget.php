@@ -5,8 +5,10 @@ namespace App\Filament\Widgets;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Order\Entities\Order\Order;
-use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Enums\OrderStatus;
+use Modules\Order\Contracts\OrderServiceInterface;
 use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
+use Modules\Payment\Enums\PaymentMethod;
 use App\Filament\Concerns\ResolvesServices;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Modules\Analytics\Services\OrderAnalyticsService;
@@ -33,7 +35,7 @@ class RecentOrdersWidget extends BaseWidget
     public function table(Table $table): Table
     {
         $orderAnalyticsService = $this->resolveService(OrderAnalyticsService::class);
-        $orderService = $this->resolveService(OrderService::class);
+        $orderService = $this->resolveService(OrderServiceInterface::class);
 
         // Get recent orders from service (already has proper eager loading with morphWith)
         $recentOrders = $orderAnalyticsService->getRecentOrders(15);
@@ -91,33 +93,9 @@ class RecentOrdersWidget extends BaseWidget
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('app.widgets.orders.status'))
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        Order::PENDING => 'warning',
-                        Order::PROCESSING => 'info',
-                        Order::SHIPPED => 'primary',
-                        Order::DELIVERED => 'success',
-                        Order::CANCELLED => 'danger',
-                        Order::REFUNDED => 'gray',
-                        default => 'gray',
-                    })
-                    ->icon(fn(string $state): string => match ($state) {
-                        Order::PENDING => 'heroicon-m-clock',
-                        Order::PROCESSING => 'heroicon-m-cog-6-tooth',
-                        Order::SHIPPED => 'heroicon-m-truck',
-                        Order::DELIVERED => 'heroicon-m-check-circle',
-                        Order::CANCELLED => 'heroicon-m-x-circle',
-                        Order::REFUNDED => 'heroicon-m-arrow-path',
-                        default => 'heroicon-m-question-mark-circle',
-                    })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        Order::PENDING => __('app.status.pending'),
-                        Order::PROCESSING => __('app.status.processing'),
-                        Order::SHIPPED => __('app.status.shipped'),
-                        Order::DELIVERED => __('app.status.delivered'),
-                        Order::CANCELLED => __('app.status.cancelled'),
-                        Order::REFUNDED => __('app.status.refunded'),
-                        default => $state,
-                    })
+                    ->color(fn(OrderStatus $state): string => $state->color())
+                    ->icon(fn(OrderStatus $state): string => $state->icon())
+                    ->formatStateUsing(fn(OrderStatus $state): string => $state->label())
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('items_count')
@@ -140,12 +118,12 @@ class RecentOrdersWidget extends BaseWidget
                     ->label(__('app.widgets.orders.payment'))
                     ->badge()
                     ->state(function (Order $record) {
-                        if ($record->payment_method === 'cash_on_delivery') {
-                            return $record->status === Order::DELIVERED ? 'paid' : 'pending';
+                        if ($record->payment_method === PaymentMethod::CASH_ON_DELIVERY->value) {
+                            return $record->status === OrderStatus::DELIVERED ? 'paid' : 'pending';
                         }
 
                         $payment = $record->payments()->latest()->first();
-                        return $payment?->status ?? 'unknown';
+                        return $payment?->status?->value ?? 'unknown';
                     })
                     ->color(fn(string $state): string => match ($state) {
                         'paid' => 'success',

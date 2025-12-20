@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Modules\Analytics\Services\DashboardWidgetService;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
@@ -59,7 +59,7 @@ class KpiStatsWidget extends BaseWidget
                 ->description(__('app.widgets.kpi.requires.attention'))
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
                 ->color($service->getPendingOrdersCount() >= 0 ? 'success' : 'danger')
-                ->url(route('filament.admin.resources.orders.index', ['tableFilters[status][values][0]' => Order::PENDING])),
+                ->url(route('filament.admin.resources.orders.index', ['tableFilters[status][values][0]' => OrderStatus::PENDING->value])),
 
             // Low Stock Products
             Stat::make(__('app.widgets.low_stock_products'), number_format($service->getLowStockProductsCount()))
