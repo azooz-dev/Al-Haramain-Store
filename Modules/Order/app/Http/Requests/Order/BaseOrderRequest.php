@@ -40,7 +40,12 @@ abstract class BaseOrderRequest extends BaseRequest
             'address_id' => 'required|exists:addresses,id',
             'coupon_code' => 'nullable|exists:coupons,code',
             'items' => 'required|array|min:1',
-            'items.*' => new ValidOrderItem(app(ProductService::class), app(OfferService::class), app(ProductVariantService::class), $this->items),
+            'items.*' => new ValidOrderItem(
+                $this->container->make(ProductService::class),
+                $this->container->make(OfferService::class),
+                $this->container->make(ProductVariantService::class),
+                $this->items
+            ),
             'items.*.orderable_type' => 'required|string|in:' . Product::class . ',' . Offer::class,
             'items.*.orderable_id' => 'required|integer',
             'items.*.quantity' => 'required|integer|min:1',
