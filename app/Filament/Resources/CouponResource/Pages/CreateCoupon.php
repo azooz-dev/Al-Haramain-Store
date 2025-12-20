@@ -5,7 +5,7 @@ namespace App\Filament\Resources\CouponResource\Pages;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\CouponResource;
-use Modules\Coupon\Services\Coupon\CouponService;
+use Modules\Coupon\Contracts\CouponServiceInterface;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -22,7 +22,7 @@ class CreateCoupon extends CreateRecord
      */
     protected function handleRecordCreation(array $data): Model
     {
-        $couponService = app(CouponService::class);
+        $couponService = app(CouponServiceInterface::class);
         return $couponService->createCoupon($data);
     }
 

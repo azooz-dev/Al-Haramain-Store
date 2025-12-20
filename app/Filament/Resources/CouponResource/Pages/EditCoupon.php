@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\CouponResource;
-use Modules\Coupon\Services\Coupon\CouponService;
+use Modules\Coupon\Contracts\CouponServiceInterface;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditCoupon extends EditRecord
@@ -24,7 +24,7 @@ class EditCoupon extends EditRecord
      */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $couponService = app(CouponService::class);
+        $couponService = app(CouponServiceInterface::class);
         return $couponService->updateCoupon($record->id, $data);
     }
 

@@ -18,7 +18,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CouponResource\Pages;
-use Modules\Coupon\Services\Coupon\CouponService;
+use Modules\Coupon\Contracts\CouponServiceInterface;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Filament\Support\Exceptions\Halt;
 
@@ -46,7 +46,7 @@ class CouponResource extends Resource
      */
     public static function getNavigationBadge(): ?string
     {
-        return app(CouponService::class)->getCouponsCount();
+        return app(CouponServiceInterface::class)->getCouponsCount();
     }
 
 
@@ -168,7 +168,7 @@ class CouponResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $couponService = app(CouponService::class);
+        $couponService = app(CouponServiceInterface::class);
 
         return $table
             ->columns([
@@ -286,7 +286,7 @@ class CouponResource extends Resource
                     Tables\Actions\Action::make('toggle_status')
                         ->label(__('app.actions.toggle_status'))
                         ->action(function (Coupon $record) {
-                            $couponService = app(CouponService::class);
+                            $couponService = app(CouponServiceInterface::class);
                             $couponService->toggleCouponStatus($record->id);
                             // Refresh the record to get updated status
                             $record->refresh();
@@ -308,7 +308,7 @@ class CouponResource extends Resource
                         ->modalDescription(__('app.messages.coupon.confirm_delete_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->before(function (Coupon $record) {
-                            $couponService = app(CouponService::class);
+                            $couponService = app(CouponServiceInterface::class);
                             if (!$couponService->canDeleteCoupon($record)) {
                                 self::buildErrorNotification(
                                     __('app.messages.coupon.must_be_empty'),
@@ -332,7 +332,7 @@ class CouponResource extends Resource
                     Tables\Actions\BulkAction::make('activate')
                         ->label(__('app.actions.activate'))
                         ->action(function (\Illuminate\Support\Collection $records) {
-                            $couponService = app(CouponService::class);
+                            $couponService = app(CouponServiceInterface::class);
                             $ids = $records->pluck('id')->toArray();
                             $couponService->activateCoupons($ids);
                         })
@@ -347,7 +347,7 @@ class CouponResource extends Resource
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label(__('app.actions.deactivate'))
                         ->action(function (\Illuminate\Support\Collection $records) {
-                            $couponService = app(CouponService::class);
+                            $couponService = app(CouponServiceInterface::class);
                             $ids = $records->pluck('id')->toArray();
                             $couponService->deactivateCoupons($ids);
                         })
@@ -365,7 +365,7 @@ class CouponResource extends Resource
                         ->modalDescription(__('app.messages.coupon.confirm_delete_bulk_description'))
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->before(function (\Illuminate\Support\Collection $records) {
-                            $couponService = app(CouponService::class);
+                            $couponService = app(CouponServiceInterface::class);
                             foreach ($records as $record) {
                                 if (!$couponService->canDeleteCoupon($record)) {
                                     return self::buildErrorNotification(
@@ -410,6 +410,6 @@ class CouponResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        return app(CouponService::class)->getQueryBuilder();
+        return app(CouponServiceInterface::class)->getQueryBuilder();
     }
 }
