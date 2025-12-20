@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\ReviewResource\Pages;
 
-use App\Models\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\ReviewResource;
 use App\Filament\Concerns\SendsFilamentNotifications;
-use App\Services\Review\ReviewService;
+use Modules\Review\Contracts\ReviewServiceInterface;
 
 class ViewReview extends ViewRecord
 {
@@ -23,17 +23,13 @@ class ViewReview extends ViewRecord
         ->form([
           \Filament\Forms\Components\Select::make('status')
             ->label(__('app.fields.new_status'))
-            ->options([
-              Review::PENDING => __('app.status.pending'),
-              Review::APPROVED => __('app.status.approved'),
-              Review::REJECTED => __('app.status.rejected'),
-            ])
-            ->default(fn($record) => $record->status)
+            ->options(ReviewStatus::options())
+            ->default(fn($record) => $record->status instanceof ReviewStatus ? $record->status->value : $record->status)
             ->required()
             ->native(false),
         ])
         ->action(function (array $data, $record) {
-          app(ReviewService::class)->updateReviewStatus($record->id, $data['status']);
+          app(ReviewServiceInterface::class)->updateReviewStatus($record->id, $data['status']);
 
           return self::buildSuccessNotification(
             __('app.messages.review.status_updated'),
@@ -49,7 +45,7 @@ class ViewReview extends ViewRecord
 
   protected function mutateFormDataBeforeFill(array $data): array
   {
-    $reviewService = app(ReviewService::class);
+    $reviewService = app(ReviewServiceInterface::class);
     $review = $reviewService->getReviewById($this->record->id);
 
     $data['user_name'] = $review->user ? $review->user->first_name . ' ' . $review->user->last_name : '';

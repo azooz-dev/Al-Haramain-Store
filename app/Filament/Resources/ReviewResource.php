@@ -7,6 +7,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Modules\Review\Entities\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Filament\Tables\Filters\Filter;
@@ -14,7 +15,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
-use Modules\Review\Services\Review\ReviewService;
+use Modules\Review\Contracts\ReviewServiceInterface;
 
 class ReviewResource extends Resource
 {
@@ -155,7 +156,7 @@ class ReviewResource extends Resource
         Tables\Columns\TextColumn::make('product.sku')
           ->label(__('app.columns.review.product'))
           ->getStateUsing(function (Review $record) {
-            return app(ReviewService::class)->getOrderableIdentifier($record);
+            return app(ReviewServiceInterface::class)->getOrderableIdentifier($record);
           })
           ->searchable()
           ->sortable()
@@ -193,23 +194,9 @@ class ReviewResource extends Resource
           ->label(__('app.columns.review.status'))
           ->sortable()
           ->alignCenter()
-          ->colors([
-            Review::PENDING => 'warning',
-            Review::APPROVED => 'success',
-            Review::REJECTED => 'danger',
-          ])
-          ->formatStateUsing(fn(string $state): string => ucfirst($state))
-          ->icon(fn(string $state): string => match ($state) {
-            Review::PENDING => 'heroicon-o-clock',
-            Review::APPROVED => 'heroicon-o-check-circle',
-            Review::REJECTED => 'heroicon-o-x-circle',
-            default => 'heroicon-o-question-mark-circle',
-          })
-          ->color(fn(string $state): string => match ($state) {
-            Review::PENDING => 'warning',
-            Review::APPROVED => 'success',
-            Review::REJECTED => 'danger',
-          }),
+          ->formatStateUsing(fn($state): string => $state instanceof ReviewStatus ? $state->label() : ucfirst($state))
+          ->icon(fn($state): string => $state instanceof ReviewStatus ? $state->icon() : 'heroicon-o-question-mark-circle')
+          ->color(fn($state): string => $state instanceof ReviewStatus ? $state->color() : 'gray'),
 
         Tables\Columns\TextColumn::make('created_at')
           ->label(__('app.columns.review.created_at'))
@@ -222,11 +209,7 @@ class ReviewResource extends Resource
       ->filters([
         SelectFilter::make('status')
           ->label(__('app.filters.review.status'))
-          ->options([
-            Review::PENDING => __('app.status.pending'),
-            Review::APPROVED => __('app.status.approved'),
-            Review::REJECTED => __('app.status.rejected'),
-          ]),
+          ->options(ReviewStatus::options()),
 
         SelectFilter::make('rating')
           ->label(__('app.filters.review.rating'))
@@ -271,16 +254,12 @@ class ReviewResource extends Resource
             ->form([
               \Filament\Forms\Components\Select::make('status')
                 ->label(__('app.fields.new_status'))
-                ->options([
-                  Review::PENDING => __('app.status.pending'),
-                  Review::APPROVED => __('app.status.approved'),
-                  Review::REJECTED => __('app.status.rejected'),
-                ])
+                ->options(ReviewStatus::options())
                 ->required()
                 ->native(false),
             ])
             ->action(function (array $data, $record) {
-              app(ReviewService::class)->updateReviewStatus($record->id, $data['status']);
+              app(ReviewServiceInterface::class)->updateReviewStatus($record->id, $data['status']);
 
               return self::buildSuccessNotification(
                 __('app.messages.review.status_updated'),
@@ -300,7 +279,7 @@ class ReviewResource extends Resource
             ->modalDescription(__('app.actions.review.approve_selected_modal_description'))
             ->action(function (Collection $records): void {
               $ids = $records->pluck('id')->toArray();
-              app(ReviewService::class)->bulkApproveReviews($ids);
+              app(ReviewServiceInterface::class)->bulkApproveReviews($ids);
             })
             ->modalIcon('heroicon-o-check-circle'),
 
@@ -313,7 +292,7 @@ class ReviewResource extends Resource
             ->modalDescription(__('app.actions.review.reject_selected_modal_description'))
             ->action(function (Collection $records): void {
               $ids = $records->pluck('id')->toArray();
-              app(ReviewService::class)->bulkRejectReviews($ids);
+              app(ReviewServiceInterface::class)->bulkRejectReviews($ids);
             }),
 
           Tables\Actions\DeleteBulkAction::make()
@@ -343,11 +322,11 @@ class ReviewResource extends Resource
 
   public static function getEloquentQuery(): Builder
   {
-    return app(ReviewService::class)->getQueryBuilder();
+    return app(ReviewServiceInterface::class)->getQueryBuilder();
   }
 
   public static function getNavigationBadge(): ?string
   {
-    return (string) app(ReviewService::class)->getReviewsCountByStatus(Review::PENDING);
+    return (string) app(ReviewServiceInterface::class)->getReviewsCountByStatus(ReviewStatus::PENDING->value);
   }
 }
