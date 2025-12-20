@@ -6,7 +6,9 @@ use Modules\User\Entities\User;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
+use Modules\Order\Enums\OrderStatus;
 use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,14 +20,38 @@ class Order extends Model
 {
     use HasFactory;
 
+    /**
+     * @deprecated Use OrderStatus::PENDING instead
+     */
     const PENDING = 'pending';
+    /**
+     * @deprecated Use OrderStatus::PROCESSING instead
+     */
     const PROCESSING = 'processing';
+    /**
+     * @deprecated Use OrderStatus::SHIPPED instead
+     */
     const SHIPPED = 'shipped';
+    /**
+     * @deprecated Use OrderStatus::DELIVERED instead
+     */
     const DELIVERED = 'delivered';
+    /**
+     * @deprecated Use OrderStatus::CANCELLED instead
+     */
     const CANCELLED = 'cancelled';
+    /**
+     * @deprecated Use OrderStatus::REFUNDED instead
+     */
     const REFUNDED = 'refunded';
 
+    /**
+     * @deprecated Use PaymentMethod::CASH_ON_DELIVERY instead
+     */
     const PAYMENT_METHOD_CASH_ON_DELIVERY = 'cash_on_delivery';
+    /**
+     * @deprecated Use PaymentMethod::CREDIT_CARD instead
+     */
     const PAYMENT_METHOD_CREDIT_CARD = 'credit_card';
 
     protected $fillable = [
@@ -41,6 +67,8 @@ class Order extends Model
     protected $casts = [
         'total_amount' => 'decimal:2',
         'deleted_at' => 'datetime',
+        'status' => OrderStatus::class,
+        'payment_method' => PaymentMethod::class,
     ];
 
     public function user(): BelongsTo
@@ -78,14 +106,7 @@ class Order extends Model
      */
     public static function getStatuses(): array
     {
-        return [
-            self::PENDING,
-            self::PROCESSING,
-            self::SHIPPED,
-            self::DELIVERED,
-            self::CANCELLED,
-            self::REFUNDED,
-        ];
+        return OrderStatus::toArray();
     }
 
     /**
@@ -93,15 +114,7 @@ class Order extends Model
      */
     public function getStatusColorAttribute(): string
     {
-        return match ($this->status) {
-            self::PENDING => 'warning',
-            self::PROCESSING => 'info',
-            self::SHIPPED => 'primary',
-            self::DELIVERED => 'success',
-            self::CANCELLED => 'danger',
-            self::REFUNDED => 'gray',
-            default => 'gray',
-        };
+        return $this->status?->color() ?? 'gray';
     }
 
     /**
@@ -109,15 +122,7 @@ class Order extends Model
      */
     public function getStatusIconAttribute(): string
     {
-        return match ($this->status) {
-            self::PENDING => 'heroicon-o-clock',
-            self::PROCESSING => 'heroicon-o-cog-6-tooth',
-            self::SHIPPED => 'heroicon-o-truck',
-            self::DELIVERED => 'heroicon-o-check-circle',
-            self::CANCELLED => 'heroicon-o-x-circle',
-            self::REFUNDED => 'heroicon-o-arrow-path',
-            default => 'heroicon-o-question-mark-circle',
-        };
+        return $this->status?->icon() ?? 'heroicon-o-question-mark-circle';
     }
 
     /**
@@ -125,8 +130,8 @@ class Order extends Model
      */
     public function getPaymentStatusAttribute(): string
     {
-        if ($this->payment_method === self::PAYMENT_METHOD_CASH_ON_DELIVERY) {
-            return $this->status === self::DELIVERED ? 'paid' : 'pending';
+        if ($this->payment_method === PaymentMethod::CASH_ON_DELIVERY) {
+            return $this->status === OrderStatus::DELIVERED ? 'paid' : 'pending';
         }
 
         $payment = $this->payments()->latest()->first();
@@ -183,7 +188,7 @@ class Order extends Model
      */
     public function canBeCancelled(): bool
     {
-        return in_array($this->status, [self::PENDING, self::PROCESSING]);
+        return $this->status?->canBeCancelled() ?? false;
     }
 
     /**
@@ -191,7 +196,7 @@ class Order extends Model
      */
     public function canBeRefunded(): bool
     {
-        return in_array($this->status, [self::DELIVERED]) &&
+        return $this->status?->canBeRefunded() &&
             $this->created_at->diffInDays(now()) <= 30;
     }
 
@@ -200,7 +205,7 @@ class Order extends Model
      */
     public function canBeEdited(): bool
     {
-        return in_array($this->status, [self::PENDING, self::PROCESSING, self::SHIPPED]);
+        return $this->status?->canBeEdited() ?? false;
     }
 
     /**
@@ -216,7 +221,7 @@ class Order extends Model
      */
     public function scopePending($query)
     {
-        return $query->where('status', self::PENDING);
+        return $query->where('status', OrderStatus::PENDING);
     }
 
     /**
@@ -224,7 +229,7 @@ class Order extends Model
      */
     public function scopeProcessing($query)
     {
-        return $query->where('status', self::PROCESSING);
+        return $query->where('status', OrderStatus::PROCESSING);
     }
 
     /**
@@ -232,7 +237,7 @@ class Order extends Model
      */
     public function scopeShipped($query)
     {
-        return $query->where('status', self::SHIPPED);
+        return $query->where('status', OrderStatus::SHIPPED);
     }
 
     /**
@@ -240,7 +245,7 @@ class Order extends Model
      */
     public function scopeDelivered($query)
     {
-        return $query->where('status', self::DELIVERED);
+        return $query->where('status', OrderStatus::DELIVERED);
     }
 
     /**
@@ -265,7 +270,7 @@ class Order extends Model
         static::creating(function ($order) {
             if (empty($order->order_number)) {
                 $order->order_number = self::generateOrderNumber();
-                $order->status = self::PENDING;
+                $order->status = OrderStatus::PENDING;
             }
         });
     }
