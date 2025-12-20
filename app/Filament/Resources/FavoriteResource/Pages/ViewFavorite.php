@@ -7,7 +7,7 @@ use Filament\Infolists\Infolist;
 use Modules\Favorite\Entities\Favorite\Favorite;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\FavoriteResource;
-use Modules\Favorite\Services\Favorite\FavoriteService;
+use Modules\Favorite\Contracts\FavoriteServiceInterface;
 
 class ViewFavorite extends ViewRecord
 {
@@ -55,7 +55,7 @@ class ViewFavorite extends ViewRecord
                 Infolists\Components\TextEntry::make('product.translations')
                   ->label(__('app.columns.favorite.product_name'))
                   ->getStateUsing(function (Favorite $record) {
-                    return app(FavoriteService::class)->getTranslatedProductName($record);
+                    return app(FavoriteServiceInterface::class)->getTranslatedProductName($record);
                   })
                   ->icon('heroicon-o-cube'),
 

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\FavoriteResource\Pages;
 
 use App\Filament\Resources\FavoriteResource;
-use Modules\Favorite\Services\Favorite\FavoriteService;
+use Modules\Favorite\Contracts\FavoriteServiceInterface;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
@@ -32,7 +32,7 @@ class ListFavorites extends ListRecords
 
     public function getTabs(): array
     {
-        $favoriteService = app(FavoriteService::class);
+        $favoriteService = app(FavoriteServiceInterface::class);
 
         return [
             'all' => Tab::make(__('app.tabs.all'))

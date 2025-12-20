@@ -3,12 +3,13 @@
 namespace Modules\Favorite\Services\Favorite;
 
 use Modules\Favorite\Entities\Favorite\Favorite;
+use Modules\Favorite\Contracts\FavoriteServiceInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Favorite\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
 use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
-class FavoriteService
+class FavoriteService implements FavoriteServiceInterface
 {
   public function __construct(
     private FavoriteRepositoryInterface $favoriteRepository,

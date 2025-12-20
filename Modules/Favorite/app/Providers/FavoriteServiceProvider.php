@@ -50,6 +50,12 @@ class FavoriteServiceProvider extends ServiceProvider
             \Modules\Favorite\Repositories\Interface\Favorite\FavoriteRepositoryInterface::class,
             \Modules\Favorite\Repositories\Eloquent\Favorite\FavoriteRepository::class
         );
+
+        // Bind service interface
+        $this->app->bind(
+            \Modules\Favorite\Contracts\FavoriteServiceInterface::class,
+            \Modules\Favorite\Services\Favorite\FavoriteService::class
+        );
     }
 
     /**
