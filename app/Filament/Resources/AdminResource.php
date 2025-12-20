@@ -19,7 +19,7 @@ use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Validation\Rules\Password;
-use Modules\Admin\Services\AdminService;
+use Modules\Admin\Contracts\AdminServiceInterface;
 use App\Filament\Resources\AdminResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -44,7 +44,7 @@ class AdminResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return app(AdminService::class)->getAdminsCount();
+        return app(AdminServiceInterface::class)->getAdminsCount();
     }
 
     public static function getNavigationLabel(): string
@@ -319,11 +319,11 @@ class AdminResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return app(AdminService::class)->getQueryBuilder();
+        return app(AdminServiceInterface::class)->getQueryBuilder();
     }
 
     public static function getNavigationBadgeColor(): ?string
     {
-        return app(AdminService::class)->getAdminsCount() > 0 ? 'success' : 'danger';
+        return app(AdminServiceInterface::class)->getAdminsCount() > 0 ? 'success' : 'danger';
     }
 }

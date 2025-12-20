@@ -5,7 +5,7 @@ namespace App\Filament\Resources\AdminResource\Pages;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\AdminResource;
-use Modules\Admin\Services\AdminService;
+use Modules\Admin\Contracts\AdminServiceInterface;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -33,7 +33,7 @@ class CreateAdmin extends CreateRecord
      */
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
-        $adminService = app(AdminService::class);
+        $adminService = app(AdminServiceInterface::class);
 
         // Extract roles from data if present
         $roleIds = $data['roles'] ?? null;

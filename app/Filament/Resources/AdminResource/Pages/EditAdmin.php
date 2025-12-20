@@ -6,7 +6,7 @@ use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\AdminResource;
-use Modules\Admin\Services\AdminService;
+use Modules\Admin\Contracts\AdminServiceInterface;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class EditAdmin extends EditRecord
@@ -35,7 +35,7 @@ class EditAdmin extends EditRecord
      */
     protected function handleRecordUpdate(\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model
     {
-        $adminService = app(AdminService::class);
+        $adminService = app(AdminServiceInterface::class);
 
         // Extract roles from data if present
         $roleIds = $data['roles'] ?? null;
