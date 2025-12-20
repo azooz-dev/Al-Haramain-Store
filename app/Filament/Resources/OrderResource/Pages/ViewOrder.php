@@ -3,11 +3,12 @@
 namespace App\Filament\Resources\OrderResource\Pages;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Illuminate\Support\Str;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\OrderResource;
-use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Contracts\OrderServiceInterface;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -29,16 +30,16 @@ class ViewOrder extends ViewRecord
             ->options(function () {
               /** @var Order $order */
               $order = $this->record;
-              $orderService = app(OrderService::class);
+              $orderService = app(OrderServiceInterface::class);
               return $orderService->getAvailableStatuses($order);
             })
             ->required()
             ->native(false)
-            ->default(fn() => $this->record->status)
+            ->default(fn() => $this->record->status instanceof OrderStatus ? $this->record->status->value : $this->record->status)
             ->helperText(function () {
               /** @var Order $order */
               $order = $this->record;
-              $orderService = app(OrderService::class);
+              $orderService = app(OrderServiceInterface::class);
               $availableStatuses = $orderService->getAvailableStatuses($order);
 
               if (count($availableStatuses) === 1) {
@@ -51,7 +52,7 @@ class ViewOrder extends ViewRecord
         ->action(function (array $data) {
           /** @var Order $order */
           $order = $this->record;
-          $orderService = app(OrderService::class);
+          $orderService = app(OrderServiceInterface::class);
 
           // Update status via service (includes validation and logging)
           $updatedOrder = $orderService->updateOrderStatus($order->id, $data['status']);
@@ -59,9 +60,11 @@ class ViewOrder extends ViewRecord
           // Refresh record to get updated status
           $order->refresh();
 
+          $statusValue = $updatedOrder->status instanceof OrderStatus ? $updatedOrder->status->value : $updatedOrder->status;
+
           return self::buildSuccessNotification(
             __('app.messages.order.status_updated'),
-            __('app.messages.order.order_status_updated', ['num' => $order->order_number, 'status' => Str::headline($updatedOrder->status)])
+            __('app.messages.order.order_status_updated', ['num' => $order->order_number, 'status' => Str::headline($statusValue)])
           );
         })
         ->requiresConfirmation(),

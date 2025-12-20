@@ -12,7 +12,8 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
-use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Contracts\OrderServiceInterface;
+use Modules\Order\Enums\OrderStatus;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\PaymentsRelationManager;
@@ -72,17 +73,17 @@ class OrderResource extends Resource
                                 if (!$record) {
                                     // For new orders, show all statuses (though orders are typically created as PENDING)
                                     return [
-                                        Order::PENDING => __('app.status.pending'),
-                                        Order::PROCESSING => __('app.status.processing'),
-                                        Order::SHIPPED => __('app.status.shipped'),
-                                        Order::DELIVERED => __('app.status.delivered'),
-                                        Order::CANCELLED => __('app.status.cancelled'),
-                                        Order::REFUNDED => __('app.status.refunded'),
+                                        OrderStatus::PENDING->value => __('app.status.pending'),
+                                        OrderStatus::PROCESSING->value => __('app.status.processing'),
+                                        OrderStatus::SHIPPED->value => __('app.status.shipped'),
+                                        OrderStatus::DELIVERED->value => __('app.status.delivered'),
+                                        OrderStatus::CANCELLED->value => __('app.status.cancelled'),
+                                        OrderStatus::REFUNDED->value => __('app.status.refunded'),
                                     ];
                                 }
 
                                 // For existing orders, show only available status transitions
-                                $orderService = app(OrderService::class);
+                                $orderService = app(OrderServiceInterface::class);
                                 return $orderService->getAvailableStatuses($record);
                             })
                             ->required()
@@ -93,7 +94,7 @@ class OrderResource extends Resource
                                     return null;
                                 }
 
-                                $orderService = app(OrderService::class);
+                                $orderService = app(OrderServiceInterface::class);
                                 $availableStatuses = $orderService->getAvailableStatuses($record);
 
                                 if (count($availableStatuses) === 1) {
@@ -136,30 +137,30 @@ class OrderResource extends Resource
                     ->label(__('app.columns.order.status'))
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
-                        Order::PENDING => 'warning',
-                        Order::PROCESSING => 'info',
-                        Order::SHIPPED => 'primary',
-                        Order::DELIVERED => 'success',
-                        Order::CANCELLED => 'danger',
-                        Order::REFUNDED => 'gray',
+                        OrderStatus::PENDING->value => 'warning',
+                        OrderStatus::PROCESSING->value => 'info',
+                        OrderStatus::SHIPPED->value => 'primary',
+                        OrderStatus::DELIVERED->value => 'success',
+                        OrderStatus::CANCELLED->value => 'danger',
+                        OrderStatus::REFUNDED->value => 'gray',
                         default => 'gray',
                     })
                     ->icon(fn(string $state): string => match ($state) {
-                        Order::PENDING => 'heroicon-o-clock',
-                        Order::PROCESSING => 'heroicon-o-cog-6-tooth',
-                        Order::SHIPPED => 'heroicon-o-truck',
-                        Order::DELIVERED => 'heroicon-o-check-circle',
-                        Order::CANCELLED => 'heroicon-o-x-circle',
-                        Order::REFUNDED => 'heroicon-o-arrow-path',
+                        OrderStatus::PENDING->value => 'heroicon-o-clock',
+                        OrderStatus::PROCESSING->value => 'heroicon-o-cog-6-tooth',
+                        OrderStatus::SHIPPED->value => 'heroicon-o-truck',
+                        OrderStatus::DELIVERED->value => 'heroicon-o-check-circle',
+                        OrderStatus::CANCELLED->value => 'heroicon-o-x-circle',
+                        OrderStatus::REFUNDED->value => 'heroicon-o-arrow-path',
                         default => 'heroicon-o-question-mark-circle',
                     })
                     ->formatStateUsing(fn(string $state): string => match ($state) {
-                        Order::PENDING => __('app.status.pending'),
-                        Order::PROCESSING => __('app.status.processing'),
-                        Order::SHIPPED => __('app.status.shipped'),
-                        Order::DELIVERED => __('app.status.delivered'),
-                        Order::CANCELLED => __('app.status.cancelled'),
-                        Order::REFUNDED => __('app.status.refunded'),
+                        OrderStatus::PENDING->value => __('app.status.pending'),
+                        OrderStatus::PROCESSING->value => __('app.status.processing'),
+                        OrderStatus::SHIPPED->value => __('app.status.shipped'),
+                        OrderStatus::DELIVERED->value => __('app.status.delivered'),
+                        OrderStatus::CANCELLED->value => __('app.status.cancelled'),
+                        OrderStatus::REFUNDED->value => __('app.status.refunded'),
                         default => $state,
                     })
                     ->sortable(),
@@ -263,12 +264,12 @@ class OrderResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->label(__('app.filters.order_status'))
                     ->options([
-                        Order::PENDING => __('app.status.pending'),
-                        Order::PROCESSING => __('app.status.processing'),
-                        Order::SHIPPED => __('app.status.shipped'),
-                        Order::DELIVERED => __('app.status.delivered'),
-                        Order::CANCELLED => __('app.status.cancelled'),
-                        Order::REFUNDED => __('app.status.refunded'),
+                        OrderStatus::PENDING->value => __('app.status.pending'),
+                        OrderStatus::PROCESSING->value => __('app.status.processing'),
+                        OrderStatus::SHIPPED->value => __('app.status.shipped'),
+                        OrderStatus::DELIVERED->value => __('app.status.delivered'),
+                        OrderStatus::CANCELLED->value => __('app.status.cancelled'),
+                        OrderStatus::REFUNDED->value => __('app.status.refunded'),
                     ])
                     ->multiple()
                     ->preload(),
@@ -355,7 +356,7 @@ class OrderResource extends Resource
                                 $query->where(function ($subQuery) {
                                     // Cash on delivery orders that are delivered
                                     $subQuery->where('payment_method', 'cash_on_delivery')
-                                        ->where('status', Order::DELIVERED);
+                                        ->where('status', OrderStatus::DELIVERED->value);
                                 })->orWhereHas('payments', function ($paymentQuery) {
                                     // Credit card payments that are successful
                                     $paymentQuery->where('status', 'paid');
@@ -364,7 +365,7 @@ class OrderResource extends Resource
                                 $query->where(function ($subQuery) {
                                     // Cash on delivery orders that are not delivered
                                     $subQuery->where('payment_method', 'cash_on_delivery')
-                                        ->where('status', '!=', Order::DELIVERED);
+                                        ->where('status', '!=', OrderStatus::DELIVERED->value);
                                 })->orWhereHas('payments', function ($paymentQuery) {
                                     // Credit card payments that are pending
                                     $paymentQuery->where('status', 'pending');
@@ -384,7 +385,7 @@ class OrderResource extends Resource
                         ->icon('heroicon-o-cog-6-tooth')
                         ->color('info')
                         ->action(function ($records) {
-                            $orderService = app(OrderService::class);
+                            $orderService = app(OrderServiceInterface::class);
                             $ids = $records->pluck('id')->toArray();
                             $orderService->markOrdersAsProcessing($ids);
                         })
@@ -394,7 +395,7 @@ class OrderResource extends Resource
                         ->modalSubmitActionLabel(__('app.actions.change_status'))
                         ->successNotification(fn($records) => self::buildSuccessNotification(
                             __('app.messages.order.status_changed_success'),
-                            __('app.messages.order.status_changed_success_body', ['status' => Order::PROCESSING])
+                            __('app.messages.order.status_changed_success_body', ['status' => OrderStatus::PROCESSING->value])
                         )),
 
                     Tables\Actions\BulkAction::make('mark_as_shipped')
@@ -402,7 +403,7 @@ class OrderResource extends Resource
                         ->icon('heroicon-o-truck')
                         ->color('primary')
                         ->action(function ($records) {
-                            $orderService = app(OrderService::class);
+                            $orderService = app(OrderServiceInterface::class);
                             $ids = $records->pluck('id')->toArray();
                             $orderService->markOrdersAsShipped($ids);
                         })
@@ -412,7 +413,7 @@ class OrderResource extends Resource
                         ->modalSubmitActionLabel(__('app.actions.change_status'))
                         ->successNotification(fn($records) => self::buildSuccessNotification(
                             __('app.messages.order.status_changed_success'),
-                            __('app.messages.order.status_changed_success_body', ['status' => Order::SHIPPED])
+                            __('app.messages.order.status_changed_success_body', ['status' => OrderStatus::SHIPPED->value])
                         )),
 
                     Tables\Actions\DeleteBulkAction::make()
@@ -434,7 +435,7 @@ class OrderResource extends Resource
                     Tables\Actions\EditAction::make()
                         ->icon('heroicon-o-pencil')
                         ->color('warning')
-                        ->visible(fn(Order $record): bool => in_array($record->status, [Order::PENDING, Order::PROCESSING, Order::SHIPPED])),
+                        ->visible(fn(Order $record): bool => in_array($record->status, [OrderStatus::PENDING->value, OrderStatus::PROCESSING->value, OrderStatus::SHIPPED->value])),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
                         ->color('danger')
@@ -444,7 +445,7 @@ class OrderResource extends Resource
                         ->modalSubmitActionLabel(__('app.actions.delete'))
                         ->modalCancelActionLabel(__('app.actions.cancel'))
                         ->before(function (Order $record) {
-                            $orderService = app(OrderService::class);
+                            $orderService = app(OrderServiceInterface::class);
                             if (!$orderService->canDeleteOrder($record)) {
                                 throw new \Filament\Support\Exceptions\Halt();
                             }
@@ -454,7 +455,7 @@ class OrderResource extends Resource
                             __('app.messages.order.deleted_success'),
                             __('app.messages.order.deleted_success_body', ['name' => $record->order_number])
                         ))
-                        ->visible(fn(Order $record): bool => in_array($record->status, [Order::CANCELLED, Order::REFUNDED])),
+                        ->visible(fn(Order $record): bool => in_array($record->status, [OrderStatus::CANCELLED->value, OrderStatus::REFUNDED->value])),
 
                     Tables\Actions\Action::make('download_invoice')
                         ->label(__('app.actions.generate_invoice'))
@@ -500,12 +501,12 @@ class OrderResource extends Resource
                                             ->label(__('app.fields.status'))
                                             ->badge()
                                             ->color(fn(string $state): string => match ($state) {
-                                                Order::PENDING => 'warning',
-                                                Order::PROCESSING => 'info',
-                                                Order::SHIPPED => 'primary',
-                                                Order::DELIVERED => 'success',
-                                                Order::CANCELLED => 'danger',
-                                                Order::REFUNDED => 'gray',
+                                                OrderStatus::PENDING->value => 'warning',
+                                                OrderStatus::PROCESSING->value => 'info',
+                                                OrderStatus::SHIPPED->value => 'primary',
+                                                OrderStatus::DELIVERED->value => 'success',
+                                                OrderStatus::CANCELLED->value => 'danger',
+                                                OrderStatus::REFUNDED->value => 'gray',
                                                 default => 'gray',
                                             }),
 
@@ -598,7 +599,7 @@ class OrderResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        return app(OrderService::class)->getQueryBuilder();
+        return app(OrderServiceInterface::class)->getQueryBuilder();
     }
 
     /**
@@ -606,7 +607,7 @@ class OrderResource extends Resource
      */
     public static function getNavigationBadge(): ?string
     {
-        return app(OrderService::class)->getOrdersCountByStatus(Order::PENDING) ?: null;
+        return app(OrderServiceInterface::class)->getOrdersCountByStatus(OrderStatus::PENDING->value) ?: null;
     }
 
     public static function getNavigationBadgeColor(): ?string
