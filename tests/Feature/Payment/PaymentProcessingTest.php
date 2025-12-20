@@ -3,7 +3,7 @@
 namespace Tests\Feature\Payment;
 
 use Tests\TestCase;
-use Modules\Order\Entities\Order\Order;
+use Modules\Payment\Enums\PaymentMethod;
 use Modules\Payment\Services\Payment\PaymentService;
 use Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor;
 use Modules\Payment\Services\Payment\Processors\StripePaymentProcessor;
@@ -33,7 +33,7 @@ class PaymentProcessingTest extends TestCase
     {
         // Arrange
         $orderData = [
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'total_amount' => 250.75,
             'user_id' => 1,
             'address_id' => 1,
@@ -45,7 +45,7 @@ class PaymentProcessingTest extends TestCase
         // Assert
         $this->assertInstanceOf(\Modules\Payment\DTOs\PaymentResult::class, $result);
         $this->assertTrue($result->success);
-        $this->assertEquals(Order::PAYMENT_METHOD_CASH_ON_DELIVERY, $result->paymentMethod);
+        $this->assertEquals(PaymentMethod::CASH_ON_DELIVERY->value, $result->paymentMethod);
         $this->assertEquals(250.75, $result->amount);
         $this->assertNull($result->transactionId);
         $this->assertNotNull($result->paidAt);
@@ -59,7 +59,7 @@ class PaymentProcessingTest extends TestCase
     {
         // Arrange
         $orderData = [
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'total_amount' => 100.00,
         ];
 
@@ -78,7 +78,7 @@ class PaymentProcessingTest extends TestCase
     {
         // Arrange
         $orderData = [
-            'payment_method' => Order::PAYMENT_METHOD_CREDIT_CARD,
+            'payment_method' => PaymentMethod::CREDIT_CARD->value,
             'payment_intent_id' => null,
             'total_amount' => 100.00,
         ];

@@ -3,6 +3,7 @@
 namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Review\Entities\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
@@ -18,7 +19,7 @@ class ReviewAnalyticsRepository implements ReviewAnalyticsRepositoryInterface
     public function getAverageRating(Carbon $start, Carbon $end): float
     {
         return Review::whereBetween('created_at', [$start, $end])
-            ->where('status', Review::APPROVED)
+            ->where('status', ReviewStatus::APPROVED)
             ->avg('rating') ?? 0;
     }
 

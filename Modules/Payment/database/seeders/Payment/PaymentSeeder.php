@@ -4,6 +4,8 @@ namespace Modules\Payment\Database\Seeders\Payment;
 
 use Modules\Order\Entities\Order\Order;
 use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Enums\PaymentStatus;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,10 +22,10 @@ class PaymentSeeder extends Seeder
         // Create specific payment for testing
         Payment::create([
             'order_id' => Order::first()->id,
-            'payment_method' => 'cash',
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY,
             'transaction_id' => '1234567890',
             'amount' => 100,
-            'status' => Payment::SUCCESS,
+            'status' => PaymentStatus::SUCCESS,
             'paid_at' => now(),
         ]);
     }

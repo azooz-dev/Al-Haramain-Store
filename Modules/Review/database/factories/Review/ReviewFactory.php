@@ -3,6 +3,7 @@
 namespace Modules\Review\Database\Factories\Review;
 
 use Modules\Review\Entities\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 use Modules\User\Entities\User;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Order\Entities\Order\Order;
@@ -27,7 +28,7 @@ class ReviewFactory extends Factory
       'order_id' => Order::factory(),
       'rating' => fake()->numberBetween(1, 5),
       'comment' => fake()->paragraph(),
-      'status' => fake()->randomElement([Review::PENDING, Review::APPROVED, Review::REJECTED]),
+      'status' => fake()->randomElement(ReviewStatus::cases()),
       'locale' => fake()->randomElement(['en', 'ar']),
     ];
   }
@@ -38,7 +39,7 @@ class ReviewFactory extends Factory
   public function pending(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Review::PENDING,
+      'status' => ReviewStatus::PENDING,
     ]);
   }
 
@@ -48,7 +49,7 @@ class ReviewFactory extends Factory
   public function approved(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Review::APPROVED,
+      'status' => ReviewStatus::APPROVED,
     ]);
   }
 
@@ -58,7 +59,7 @@ class ReviewFactory extends Factory
   public function rejected(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Review::REJECTED,
+      'status' => ReviewStatus::REJECTED,
     ]);
   }
 

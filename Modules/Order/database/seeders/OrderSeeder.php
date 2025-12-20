@@ -4,6 +4,8 @@ namespace Modules\Order\Database\Seeders;
 
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
+use Modules\Payment\Enums\PaymentMethod;
 use Modules\User\Entities\User;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,8 +28,8 @@ class OrderSeeder extends Seeder
             'coupon_id' => Coupon::first()->id,
             'order_number' => '1234567890',
             'total_amount' => 100,
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
-            'status' => collect([Order::PENDING, Order::PROCESSING, Order::SHIPPED, Order::DELIVERED, Order::CANCELLED, Order::REFUNDED])->random(),
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
+            'status' => collect(OrderStatus::cases())->random(),
         ]);
 
         Order::create([
@@ -36,8 +38,8 @@ class OrderSeeder extends Seeder
             'coupon_id' => Coupon::first()->id,
             'order_number' => '123123123',
             'total_amount' => 100,
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
-            'status' => collect([Order::PENDING, Order::PROCESSING, Order::SHIPPED, Order::DELIVERED, Order::CANCELLED, Order::REFUNDED])->random(),
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
+            'status' => collect(OrderStatus::cases())->random(),
         ]);
     }
 }

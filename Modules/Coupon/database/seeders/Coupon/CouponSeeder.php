@@ -3,6 +3,8 @@
 namespace Modules\Coupon\Database\Seeders\Coupon;
 
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Enums\CouponType;
+use Modules\Coupon\Enums\CouponStatus;
 use Illuminate\Database\Seeder;
 use Nette\Utils\Random;
 
@@ -20,13 +22,13 @@ class CouponSeeder extends Seeder
         Coupon::create([
             'code' => '1234567890',
             'name' => 'Coupon 1',
-            'type' => collect([Coupon::FIXED, Coupon::PERCENTAGE])->random(),
+            'type' => collect(CouponType::cases())->random(),
             'discount_amount' => 100,
             'usage_limit' => 100,
             'usage_limit_per_user' => 1,
             'start_date' => now(),
             'end_date' => now()->addDays(30),
-            'status' => collect([Coupon::ACTIVE, Coupon::INACTIVE])->random(),
+            'status' => collect(CouponStatus::cases())->random(),
         ]);
     }
 }

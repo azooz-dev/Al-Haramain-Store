@@ -4,6 +4,8 @@ namespace Modules\Order\Database\Factories\Order;
 
 use Modules\User\Entities\User;
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
+use Modules\Payment\Enums\PaymentMethod;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -26,8 +28,8 @@ class OrderFactory extends Factory
       'address_id' => Address::factory(),
       'order_number' => 'ORD-' . fake()->unique()->numberBetween(1000, 9999),
       'total_amount' => fake()->randomFloat(2, 50, 2000),
-      'payment_method' => fake()->randomElement([Order::PAYMENT_METHOD_CASH_ON_DELIVERY, Order::PAYMENT_METHOD_CREDIT_CARD]),
-      'status' => fake()->randomElement(Order::getStatuses()),
+      'payment_method' => fake()->randomElement(PaymentMethod::cases())->value,
+      'status' => fake()->randomElement(OrderStatus::cases()),
     ];
   }
 
@@ -37,7 +39,7 @@ class OrderFactory extends Factory
   public function pending(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Order::PENDING,
+      'status' => OrderStatus::PENDING,
     ]);
   }
 
@@ -47,7 +49,7 @@ class OrderFactory extends Factory
   public function processing(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Order::PROCESSING,
+      'status' => OrderStatus::PROCESSING,
     ]);
   }
 
@@ -57,7 +59,7 @@ class OrderFactory extends Factory
   public function shipped(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Order::SHIPPED,
+      'status' => OrderStatus::SHIPPED,
     ]);
   }
 
@@ -67,7 +69,7 @@ class OrderFactory extends Factory
   public function delivered(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Order::DELIVERED,
+      'status' => OrderStatus::DELIVERED,
     ]);
   }
 
@@ -77,7 +79,7 @@ class OrderFactory extends Factory
   public function cancelled(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Order::CANCELLED,
+      'status' => OrderStatus::CANCELLED,
     ]);
   }
 
@@ -87,7 +89,7 @@ class OrderFactory extends Factory
   public function refunded(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Order::REFUNDED,
+      'status' => OrderStatus::REFUNDED,
     ]);
   }
 
@@ -97,7 +99,7 @@ class OrderFactory extends Factory
   public function cashOnDelivery(): static
   {
     return $this->state(fn(array $attributes) => [
-      'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+      'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
     ]);
   }
 
@@ -107,7 +109,7 @@ class OrderFactory extends Factory
   public function creditCard(): static
   {
     return $this->state(fn(array $attributes) => [
-      'payment_method' => Order::PAYMENT_METHOD_CREDIT_CARD,
+      'payment_method' => PaymentMethod::CREDIT_CARD->value,
     ]);
   }
 }

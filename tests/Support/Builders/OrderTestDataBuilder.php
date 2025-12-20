@@ -3,11 +3,11 @@
 namespace Tests\Support\Builders;
 
 use Modules\User\Entities\User;
-use Modules\Order\Entities\Order\Order;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Payment\Enums\PaymentMethod;
 use Modules\Offer\Entities\Offer\Offer;
 use Modules\User\Entities\Address;
 
@@ -21,7 +21,7 @@ class OrderTestDataBuilder
     private array $products = [];
     private array $offers = [];
     private ?Coupon $coupon = null;
-    private string $paymentMethod = Order::PAYMENT_METHOD_CASH_ON_DELIVERY;
+    private string $paymentMethod = PaymentMethod::CASH_ON_DELIVERY->value;
     private bool $userVerified = true;
 
     public static function create(): self

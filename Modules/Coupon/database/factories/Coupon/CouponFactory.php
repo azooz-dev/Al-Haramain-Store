@@ -3,6 +3,8 @@
 namespace Modules\Coupon\Database\Factories\Coupon;
 
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Enums\CouponType;
+use Modules\Coupon\Enums\CouponStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,8 +29,8 @@ class CouponFactory extends Factory
    */
   public function definition(): array
   {
-    $type = fake()->randomElement([Coupon::FIXED, Coupon::PERCENTAGE]);
-    $discountAmount = $type === Coupon::FIXED
+    $type = fake()->randomElement(CouponType::cases());
+    $discountAmount = $type === CouponType::FIXED
       ? fake()->randomFloat(2, 5, 100)
       : fake()->numberBetween(5, 50);
 
@@ -45,7 +47,7 @@ class CouponFactory extends Factory
       'usage_limit_per_user' => fake()->numberBetween(1, 5),
       'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
       'end_date' => fake()->dateTimeBetween('+1 month', '+6 months'),
-      'status' => fake()->randomElement([Coupon::ACTIVE, Coupon::INACTIVE]),
+      'status' => fake()->randomElement(CouponStatus::cases()),
     ];
   }
 
@@ -55,7 +57,7 @@ class CouponFactory extends Factory
   public function active(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Coupon::ACTIVE,
+      'status' => CouponStatus::ACTIVE,
       'start_date' => fake()->dateTimeBetween('-1 month', 'now'),
       'end_date' => fake()->dateTimeBetween('now', '+6 months'),
     ]);
@@ -67,7 +69,7 @@ class CouponFactory extends Factory
   public function inactive(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Coupon::INACTIVE,
+      'status' => CouponStatus::INACTIVE,
     ]);
   }
 
@@ -77,7 +79,7 @@ class CouponFactory extends Factory
   public function fixedDiscount(): static
   {
     return $this->state(fn(array $attributes) => [
-      'type' => Coupon::FIXED,
+      'type' => CouponType::FIXED,
       'discount_amount' => fake()->randomFloat(2, 5, 100),
     ]);
   }
@@ -88,7 +90,7 @@ class CouponFactory extends Factory
   public function percentageDiscount(): static
   {
     return $this->state(fn(array $attributes) => [
-      'type' => Coupon::PERCENTAGE,
+      'type' => CouponType::PERCENTAGE,
       'discount_amount' => fake()->numberBetween(5, 50),
     ]);
   }

@@ -6,6 +6,8 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Enums\CouponType;
+use Modules\Coupon\Enums\CouponStatus;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
@@ -108,10 +110,7 @@ class CouponResource extends Resource
                             Select::make('type')
                                 ->label(__('app.forms.coupon.type'))
                                 ->required()
-                                ->options([
-                                    Coupon::FIXED => __('app.forms.coupon.type_options.fixed'),
-                                    Coupon::PERCENTAGE => __('app.forms.coupon.type_options.percentage'),
-                                ])
+                                ->options(CouponType::options())
                                 ->native(false)
                                 ->columnSpan(4),
                             TextInput::make('discount_amount')
@@ -120,10 +119,10 @@ class CouponResource extends Resource
                                 ->required()
                                 ->step('0.01')
                                 ->suffix(function (callable $get) {
-                                    return $get('type') === Coupon::PERCENTAGE ? '%' : 'US';
+                                    return $get('type') === CouponType::PERCENTAGE->value ? '%' : 'US';
                                 })
                                 ->rule(function (callable $get) {
-                                    return $get('type') === Coupon::PERCENTAGE
+                                    return $get('type') === CouponType::PERCENTAGE->value
                                         ? 'between:0,100'
                                         : 'min:0';
                                 })
@@ -131,10 +130,7 @@ class CouponResource extends Resource
                             Select::make('status')
                                 ->label(__('app.forms.coupon.status'))
                                 ->required()
-                                ->options([
-                                    Coupon::ACTIVE => __('app.forms.coupon.status_options.active'),
-                                    Coupon::INACTIVE => __('app.forms.coupon.status_options.inactive'),
-                                ])
+                                ->options(CouponStatus::options())
                                 ->native(false)
                                 ->columnSpan(4),
                         ]),
@@ -185,17 +181,17 @@ class CouponResource extends Resource
                 BadgeColumn::make('type')
                     ->label(__('app.columns.coupon.type'))
                     ->colors([
-                        'primary' => Coupon::FIXED,
-                        'warning' => Coupon::PERCENTAGE,
+                        'primary' => CouponType::FIXED->value,
+                        'warning' => CouponType::PERCENTAGE->value,
                     ])
-                    ->formatStateUsing(fn($state) => ucfirst($state))
+                    ->formatStateUsing(fn($state) => CouponType::tryFrom($state)?->label() ?? ucfirst($state))
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('discount_amount')
                     ->label(__('app.columns.coupon.discount'))
                     ->formatStateUsing(function (Coupon $record) {
                         $value = number_format((float) $record->discount_amount, 2);
-                        return $record->type === Coupon::PERCENTAGE ? $value . '%' : $value . ' ' . __('app.forms.coupon.sar');
+                        return $record->type === CouponType::PERCENTAGE ? $value . '%' : $value . ' ' . __('app.forms.coupon.sar');
                     })
                     ->sortable()
                     ->alignCenter()
@@ -245,20 +241,14 @@ class CouponResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options([
-                        Coupon::ACTIVE => __('app.forms.coupon.status_options.active'),
-                        Coupon::INACTIVE => __('app.forms.coupon.status_options.inactive'),
-                    ]),
+                    ->options(CouponStatus::options()),
                 SelectFilter::make('type')
-                    ->options([
-                        Coupon::FIXED => __('app.forms.coupon.type_options.fixed'),
-                        Coupon::PERCENTAGE => __('app.forms.coupon.type_options.percentage'),
-                    ]),
+                    ->options(CouponType::options()),
                 Filter::make('active_now')
                     ->label(__('app.status.active'))
                     ->query(function (Builder $query) {
                         $today = now()->toDateString();
-                        $query->where('status', Coupon::ACTIVE)
+                        $query->where('status', CouponStatus::ACTIVE)
                             ->where(function (Builder $q) use ($today) {
                                 $q->whereNull('start_date')->orWhere('start_date', '<=', $today);
                             })
@@ -297,7 +287,7 @@ class CouponResource extends Resource
                         ->successNotification(
                             fn($record) => self::buildSuccessNotification(
                                 __('app.messages.coupon.status_updated'),
-                                __('app.messages.coupon.status_updated_body', ['status' => $record->status === Coupon::ACTIVE ? __('app.status.active') : __('app.status.inactive')])
+                                __('app.messages.coupon.status_updated_body', ['status' => $record->status === CouponStatus::ACTIVE ? __('app.status.active') : __('app.status.inactive')])
                             )
                         ),
                     Tables\Actions\DeleteAction::make()

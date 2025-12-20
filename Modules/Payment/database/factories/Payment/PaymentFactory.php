@@ -4,6 +4,8 @@ namespace Modules\Payment\Database\Factories\Payment;
 
 use Modules\Order\Entities\Order\Order;
 use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Enums\PaymentStatus;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +20,12 @@ class PaymentFactory extends Factory
    */
   public function definition(): array
   {
-    $status = fake()->randomElement([Payment::SUCCESS, Payment::FAILED]);
-    $paidAt = $status === Payment::SUCCESS ? fake()->dateTimeBetween('-1 year', 'now') : null;
+    $status = fake()->randomElement([PaymentStatus::SUCCESS, PaymentStatus::FAILED]);
+    $paidAt = $status === PaymentStatus::SUCCESS ? fake()->dateTimeBetween('-1 year', 'now') : null;
 
     return [
       'order_id' => Order::factory(),
-      'payment_method' => fake()->randomElement(['credit_card', 'paypal', 'stripe', 'cash_on_delivery']),
+      'payment_method' => fake()->randomElement(PaymentMethod::cases()),
       'transaction_id' => fake()->unique()->uuid(),
       'amount' => fake()->randomFloat(2, 10, 1000),
       'status' => $status,
@@ -37,7 +39,7 @@ class PaymentFactory extends Factory
   public function successful(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Payment::SUCCESS,
+      'status' => PaymentStatus::SUCCESS,
       'paid_at' => fake()->dateTimeBetween('-1 year', 'now'),
     ]);
   }
@@ -48,7 +50,7 @@ class PaymentFactory extends Factory
   public function failed(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Payment::FAILED,
+      'status' => PaymentStatus::FAILED,
       'paid_at' => null,
     ]);
   }

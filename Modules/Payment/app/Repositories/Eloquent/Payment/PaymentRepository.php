@@ -4,6 +4,7 @@ namespace Modules\Payment\Repositories\Eloquent\Payment;
 
 use Modules\Payment\DTOs\PaymentResult;
 use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Enums\PaymentStatus;
 use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 
 class PaymentRepository implements PaymentRepositoryInterface
@@ -15,7 +16,7 @@ class PaymentRepository implements PaymentRepositoryInterface
       'payment_method' => $paymentResult->paymentMethod,
       'transaction_id' => $paymentResult->transactionId,
       'amount' => $paymentResult->amount,
-      'status' => $paymentResult->success ? Payment::SUCCESS : Payment::FAILED,
+      'status' => $paymentResult->success ? PaymentStatus::SUCCESS : PaymentStatus::FAILED,
       'paid_at' => $paymentResult->paidAt,
     ]);
   }

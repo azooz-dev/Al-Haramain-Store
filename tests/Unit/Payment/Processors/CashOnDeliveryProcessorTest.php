@@ -3,7 +3,7 @@
 namespace Tests\Unit\Payment\Processors;
 
 use Tests\TestCase;
-use Modules\Order\Entities\Order\Order;
+use Modules\Payment\Enums\PaymentMethod;
 use Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor;
 use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
 
@@ -27,7 +27,7 @@ class CashOnDeliveryProcessorTest extends TestCase
     {
         // Arrange
         $orderData = [
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'total_amount' => 150.00,
         ];
 
@@ -37,7 +37,7 @@ class CashOnDeliveryProcessorTest extends TestCase
         // Assert
         $this->assertInstanceOf(\Modules\Payment\DTOs\PaymentResult::class, $result);
         $this->assertTrue($result->success);
-        $this->assertEquals(Order::PAYMENT_METHOD_CASH_ON_DELIVERY, $result->paymentMethod);
+        $this->assertEquals(PaymentMethod::CASH_ON_DELIVERY->value, $result->paymentMethod);
         $this->assertEquals(150.00, $result->amount);
         $this->assertNull($result->transactionId);
     }
@@ -49,7 +49,7 @@ class CashOnDeliveryProcessorTest extends TestCase
     {
         // Arrange
         $orderData = [
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'total_amount' => 100.00,
         ];
 

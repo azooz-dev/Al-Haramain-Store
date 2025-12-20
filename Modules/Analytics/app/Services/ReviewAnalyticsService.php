@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Modules\Analytics\Repositories\Interface\ReviewAnalyticsRepositoryInterface;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
-use Modules\Review\Entities\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 
 class ReviewAnalyticsService
 {
@@ -38,7 +38,7 @@ class ReviewAnalyticsService
         $cacheKey = 'dashboard_widget_pending_reviews';
         
         return Cache::remember($cacheKey, now()->addMinutes(2), function () {
-                return $this->reviewRepository->countByStatus(Review::PENDING);
+                return $this->reviewRepository->countByStatus(ReviewStatus::PENDING->value);
             });
     }
 

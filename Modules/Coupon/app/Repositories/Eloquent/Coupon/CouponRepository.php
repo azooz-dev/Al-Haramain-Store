@@ -3,6 +3,7 @@
 namespace Modules\Coupon\Repositories\Eloquent\Coupon;
 
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Enums\CouponStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Coupon\Repositories\Interface\Coupon\CouponRepositoryInterface;
@@ -67,11 +68,11 @@ class CouponRepository implements CouponRepositoryInterface
 
   public function activateCoupons(array $ids): int
   {
-    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::ACTIVE]);
+    return Coupon::whereIn('id', $ids)->update(['status' => CouponStatus::ACTIVE]);
   }
 
   public function deactivateCoupons(array $ids): int
   {
-    return Coupon::whereIn('id', $ids)->update(['status' => Coupon::INACTIVE]);
+    return Coupon::whereIn('id', $ids)->update(['status' => CouponStatus::INACTIVE]);
   }
 }

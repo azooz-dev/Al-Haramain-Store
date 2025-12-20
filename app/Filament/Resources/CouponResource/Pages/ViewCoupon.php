@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CouponResource\Pages;
 
 use App\Filament\Resources\CouponResource;
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Enums\CouponType;
 use Filament\Actions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Section;
@@ -38,12 +39,12 @@ class ViewCoupon extends ViewRecord
             TextEntry::make('name')->label('Name')->columnSpan(9),
           ]),
           Grid::make(12)->schema([
-            TextEntry::make('type')->label('Type')->columnSpan(3)->formatStateUsing(fn($s) => ucfirst($s)),
+            TextEntry::make('type')->label('Type')->columnSpan(3)->formatStateUsing(fn($s) => CouponType::tryFrom($s)?->label() ?? ucfirst($s)),
             TextEntry::make('discount_amount')
               ->label('Discount')
               ->state(function (Coupon $coupon) {
                 $value = number_format((float) $coupon->discount_amount, 2);
-                return $coupon->type === Coupon::PERCENTAGE ? $value . '%' : $value . ' SAR';
+                return $coupon->type === CouponType::PERCENTAGE ? $value . '%' : $value . ' SAR';
               })
               ->columnSpan(3),
             TextEntry::make('status')->label('Status')->columnSpan(3)->formatStateUsing(fn($s) => ucfirst($s)),

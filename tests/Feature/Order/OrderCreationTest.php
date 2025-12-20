@@ -4,6 +4,8 @@ namespace Tests\Feature\Order;
 
 use Tests\TestCase;
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
+use Modules\Payment\Enums\PaymentMethod;
 use Modules\Catalog\Entities\Product\Product;
 use Tests\Fixtures\OrderFixtures;
 use Modules\Order\Services\Order\OrderService;
@@ -56,8 +58,8 @@ class OrderCreationTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'user_id' => $orderData['user_id'],
             'address_id' => $orderData['address_id'],
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
-            'status' => Order::PENDING,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
+            'status' => OrderStatus::PENDING->value,
         ]);
 
         $order = Order::latest()->first();
@@ -142,7 +144,7 @@ class OrderCreationTest extends TestCase
         $orderData = [
             'user_id' => $userData['user']->id,
             'address_id' => $userData['address']->id,
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'items' => [
                 [
                     'orderable_type' => Product::class,
@@ -266,7 +268,7 @@ class OrderCreationTest extends TestCase
         $orderData = [
             'user_id' => $userData['user']->id,
             'address_id' => $userData['address']->id,
-            'payment_method' => Order::PAYMENT_METHOD_CASH_ON_DELIVERY,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'items' => [
                 [
                     'orderable_type' => \Modules\Offer\Entities\Offer\Offer::class,
@@ -329,7 +331,7 @@ class OrderCreationTest extends TestCase
 
         // Assert
         $order = Order::latest()->first();
-        $this->assertEquals(Order::PENDING, $order->status);
+        $this->assertEquals(OrderStatus::PENDING, $order->status);
     }
 
     /**

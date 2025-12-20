@@ -1,6 +1,6 @@
 <?php
 
-use Modules\Order\Entities\Order\Order;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('coupon_id')->nullable()->constrained('coupons')->nullOnDelete();
             $table->string('order_number');
             $table->decimal('total_amount', 10, 2);
-            $table->enum('payment_method', [Order::PAYMENT_METHOD_CASH_ON_DELIVERY, Order::PAYMENT_METHOD_CREDIT_CARD]);
+            $table->enum('payment_method', array_column(PaymentMethod::cases(), 'value'));
             $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded']);
             $table->index('coupon_id');
             $table->index(['user_id', 'coupon_id']);

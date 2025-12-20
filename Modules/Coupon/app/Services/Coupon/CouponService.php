@@ -4,6 +4,8 @@ namespace Modules\Coupon\Services\Coupon;
 
 use Carbon\Carbon;
 use Modules\Coupon\Entities\Coupon\Coupon;
+use Modules\Coupon\Enums\CouponType;
+use Modules\Coupon\Enums\CouponStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Modules\Coupon\Exceptions\Coupon\CouponException;
@@ -27,7 +29,7 @@ class CouponService implements CouponServiceInterface
   {
     $coupon = $this->applyCoupon($couponCode, $userId);
     // Compute discount
-    if ($coupon->type === Coupon::FIXED) {
+    if ($coupon->type === CouponType::FIXED) {
       $discountAmount = (float)$coupon->discount_amount;
     } else {
       $discountAmount = ($coupon->discount_amount / 100.0) * $totalAmount;
@@ -51,7 +53,7 @@ class CouponService implements CouponServiceInterface
       throw new CouponException(__('app.messages.order.coupon_not_found'), 404);
     }
 
-    if ($coupon->status === Coupon::INACTIVE) {
+    if ($coupon->status === CouponStatus::INACTIVE) {
       throw new CouponException(__('app.messages.order.coupon_inactive'), 400);
     }
 
@@ -126,7 +128,7 @@ class CouponService implements CouponServiceInterface
   {
     $coupon = $this->couponRepository->findById($id);
 
-    $newStatus = $coupon->status === Coupon::ACTIVE ? Coupon::INACTIVE : Coupon::ACTIVE;
+    $newStatus = $coupon->status === CouponStatus::ACTIVE ? CouponStatus::INACTIVE : CouponStatus::ACTIVE;
 
     return $this->couponRepository->update($id, ['status' => $newStatus]);
   }

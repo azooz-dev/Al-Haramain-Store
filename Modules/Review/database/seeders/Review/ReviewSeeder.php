@@ -3,6 +3,7 @@
 namespace Modules\Review\Database\Seeders\Review;
 
 use Modules\Review\Entities\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 use App\Models\User\User;
 use App\Models\Product\Product;
 use Modules\Order\Entities\Order\Order;
@@ -27,7 +28,7 @@ class ReviewSeeder extends Seeder
             'rating' => 5,
             'comment' => 'The product is very awesome',
             'locale' => 'en',
-            'status' => collect([Review::PENDING, Review::APPROVED, Review::REJECTED])->random(),
+            'status' => collect(ReviewStatus::cases())->random(),
         ]);
 
         Review::create([
@@ -37,7 +38,7 @@ class ReviewSeeder extends Seeder
             'rating' => 5,
             'comment' => 'المنتج مرره رهييب',
             'locale' => 'ar',
-            'status' => collect([Review::PENDING, Review::APPROVED, Review::REJECTED])->random(),
+            'status' => collect(ReviewStatus::cases())->random(),
         ]);
     }
 }
