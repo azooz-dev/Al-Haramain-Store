@@ -4,7 +4,7 @@ namespace App\Filament\Resources\CategoryResource\Pages;
 
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
-use Modules\Catalog\Services\Category\CategoryService;
+use Modules\Catalog\Contracts\CategoryServiceInterface;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\CategoryResource;
 use Modules\Catalog\Traits\HasCategoryTranslations;
@@ -75,7 +75,7 @@ class CreateCategory extends CreateRecord
      */
     protected function handleRecordCreation(array $data): Model
     {
-        $categoryService = app(CategoryService::class);
+        $categoryService = app(CategoryServiceInterface::class);
 
         // Create category with translations via service
         // Service handles slug generation and translation saving

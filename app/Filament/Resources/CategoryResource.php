@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Modules\Catalog\Entities\Category\Category;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Concerns\SendsFilamentNotifications;
-use Modules\Catalog\Services\Category\CategoryService;
-use Modules\Catalog\Services\Category\CategoryTranslationService;
+use Modules\Catalog\Contracts\CategoryServiceInterface;
+use Modules\Catalog\Contracts\CategoryTranslationServiceInterface;
 
 class CategoryResource extends Resource
 {
@@ -73,7 +73,7 @@ class CategoryResource extends Resource
      */
     public static function getNavigationBadge(): ?string
     {
-        return app(CategoryService::class)->getCategoriesCount();
+        return app(CategoryServiceInterface::class)->getCategoriesCount();
     }
 
     public static function form(Form $form): Form
@@ -158,7 +158,7 @@ class CategoryResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $categoryService = app(CategoryService::class);
+        $categoryService = app(CategoryServiceInterface::class);
 
         return $table
             ->columns([
@@ -183,7 +183,7 @@ class CategoryResource extends Resource
                     ->icon('heroicon-o-tag')
                     ->state(function (Category $record) use ($categoryService) {
                         // Access translation service through category service
-                        $translationService = app(CategoryTranslationService::class);
+                        $translationService = app(CategoryTranslationServiceInterface::class);
                         return $translationService->getTranslatedName($record);
                     }),
 
@@ -209,7 +209,7 @@ class CategoryResource extends Resource
                     ->sortable()
                     ->state(function (Category $record) use ($categoryService) {
                         // Access translation service through category service
-                        $translationService = app(CategoryTranslationService::class);
+                        $translationService = app(CategoryTranslationServiceInterface::class);
                         return $translationService->getTranslatedDescription($record);
                     })
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -275,7 +275,7 @@ class CategoryResource extends Resource
                         ->requiresConfirmation()
                         ->modalHeading(__('app.messages.category.confirm_delete_heading'))
                         ->modalDescription(function (Category $record) {
-                            $translationService = app(CategoryTranslationService::class);
+                            $translationService = app(CategoryTranslationServiceInterface::class);
                             $translatedName = $translationService->getTranslatedName($record);
                             return __('app.messages.category.confirm_delete_description', ['name' => $translatedName]);
                         })
@@ -312,7 +312,7 @@ class CategoryResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        return app(CategoryService::class)->getQueryBuilder();
+        return app(CategoryServiceInterface::class)->getQueryBuilder();
     }
 
     public static function getRelations(): array

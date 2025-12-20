@@ -6,7 +6,7 @@ use Filament\Actions;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use Modules\Catalog\Services\Category\CategoryService;
+use Modules\Catalog\Contracts\CategoryServiceInterface;
 use App\Filament\Resources\CategoryResource;
 use Modules\Catalog\Traits\HasCategoryTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
@@ -110,7 +110,7 @@ class EditCategory extends EditRecord
      */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $categoryService = app(CategoryService::class);
+        $categoryService = app(CategoryServiceInterface::class);
 
         // Update category with translations via service
         // Service handles slug regeneration if name changed and translation saving
