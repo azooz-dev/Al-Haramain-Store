@@ -2,16 +2,16 @@
 
 namespace Modules\Offer\Traits;
 
-use Modules\Offer\Services\OfferTranslationService;
+use Modules\Offer\Contracts\OfferTranslationServiceInterface;
 
 trait HasOfferTranslations
 {
-  protected ?OfferTranslationService $translationService = null;
+  protected ?OfferTranslationServiceInterface $translationService = null;
 
-  protected function getTranslationService(): OfferTranslationService
+  protected function getTranslationService(): OfferTranslationServiceInterface
   {
     if ($this->translationService === null) {
-      $this->translationService = resolve(OfferTranslationService::class);
+      $this->translationService = resolve(OfferTranslationServiceInterface::class);
     }
 
     return $this->translationService;

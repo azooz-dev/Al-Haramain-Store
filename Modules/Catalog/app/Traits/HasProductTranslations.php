@@ -2,16 +2,16 @@
 
 namespace Modules\Catalog\Traits;
 
-use Modules\Catalog\Services\Product\ProductTranslationService;
+use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
 trait HasProductTranslations
 {
-  protected ?ProductTranslationService $translationService = null;
+  protected ?ProductTranslationServiceInterface $translationService = null;
 
-  protected function getTranslationService(): ProductTranslationService
+  protected function getTranslationService(): ProductTranslationServiceInterface
   {
     if ($this->translationService === null) {
-      $this->translationService = resolve(ProductTranslationService::class);
+      $this->translationService = resolve(ProductTranslationServiceInterface::class);
     }
 
     return $this->translationService;
