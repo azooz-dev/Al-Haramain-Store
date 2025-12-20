@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use Modules\Analytics\Services\ReviewAnalyticsService;
+use Modules\Analytics\Contracts\ReviewAnalyticsServiceInterface;
 use Filament\Widgets\ChartWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
@@ -39,7 +39,7 @@ class ReviewAnalyticsWidget extends ChartWidget
 
     public function getDescription(): ?string
     {
-        $service = $this->resolveService(ReviewAnalyticsService::class);
+        $service = $this->resolveService(ReviewAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         $averageRating = $service->getAverageRating(
             $period['start'],
@@ -60,7 +60,7 @@ class ReviewAnalyticsWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $service = $this->resolveService(ReviewAnalyticsService::class);
+        $service = $this->resolveService(ReviewAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         return $service->getRatingDistribution(
             $period['start'],

@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use Modules\Analytics\Services\CustomerAnalyticsService;
+use Modules\Analytics\Contracts\CustomerAnalyticsServiceInterface;
 use Filament\Widgets\ChartWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
@@ -39,7 +39,7 @@ class CustomerAnalyticsWidget extends ChartWidget
 
     public function getDescription(): ?string
     {
-        $service = $this->resolveService(CustomerAnalyticsService::class);
+        $service = $this->resolveService(CustomerAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         $newCustomers = $service->getNewCustomers(
             $period['start'],
@@ -60,7 +60,7 @@ class CustomerAnalyticsWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $service = $this->resolveService(CustomerAnalyticsService::class);
+        $service = $this->resolveService(CustomerAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         return $service->getCustomerAcquisitionData(
             $period['start'],

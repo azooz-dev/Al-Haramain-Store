@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use Modules\Analytics\Services\OrderAnalyticsService;
+use Modules\Analytics\Contracts\OrderAnalyticsServiceInterface;
 use Filament\Widgets\ChartWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
@@ -115,7 +115,7 @@ class RevenueOverviewWidget extends ChartWidget
 
     public function getDescription(): string
     {
-        $service = $this->resolveService(OrderAnalyticsService::class);
+        $service = $this->resolveService(OrderAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         $totalRevenue = $service->getTotalRevenue($period['start'], $period['end']);
         $growth = $service->getRevenueGrowthPercentage($period['start'], $period['end']);
@@ -128,7 +128,7 @@ class RevenueOverviewWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $service = $this->resolveService(OrderAnalyticsService::class);
+        $service = $this->resolveService(OrderAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         return $service->getRevenueOverview($period['start'], $period['end']);
     }

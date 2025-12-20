@@ -7,7 +7,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Catalog\Entities\Product\Product;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Modules\Analytics\Services\ProductAnalyticsService;
+use Modules\Analytics\Contracts\ProductAnalyticsServiceInterface;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class TopProductsWidget extends BaseWidget
@@ -42,7 +42,7 @@ class TopProductsWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
-        $service = $this->resolveService(ProductAnalyticsService::class);
+        $service = $this->resolveService(ProductAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         $topProducts = $service->getTopSellingProducts(
             $period['start'],

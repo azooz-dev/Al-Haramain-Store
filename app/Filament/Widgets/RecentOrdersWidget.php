@@ -11,7 +11,7 @@ use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 use Modules\Payment\Enums\PaymentMethod;
 use App\Filament\Concerns\ResolvesServices;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Modules\Analytics\Services\OrderAnalyticsService;
+use Modules\Analytics\Contracts\OrderAnalyticsServiceInterface;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
 class RecentOrdersWidget extends BaseWidget
@@ -34,7 +34,7 @@ class RecentOrdersWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
-        $orderAnalyticsService = $this->resolveService(OrderAnalyticsService::class);
+        $orderAnalyticsService = $this->resolveService(OrderAnalyticsServiceInterface::class);
         $orderService = $this->resolveService(OrderServiceInterface::class);
 
         // Get recent orders from service (already has proper eager loading with morphWith)

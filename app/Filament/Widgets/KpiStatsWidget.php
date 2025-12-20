@@ -4,7 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
 use Modules\Order\Enums\OrderStatus;
-use Modules\Analytics\Services\DashboardWidgetService;
+use Modules\Analytics\Contracts\DashboardWidgetServiceInterface;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -18,7 +18,7 @@ class KpiStatsWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        $service = $this->resolveService(DashboardWidgetService::class);
+        $service = $this->resolveService(DashboardWidgetServiceInterface::class);
 
         $revenueGrowth = $service->getRevenueGrowth();
         $ordersGrowth = $service->getOrdersGrowth();

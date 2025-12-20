@@ -3,7 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Concerns\ResolvesServices;
-use Modules\Analytics\Services\OrderAnalyticsService;
+use Modules\Analytics\Contracts\OrderAnalyticsServiceInterface;
 use Filament\Widgets\ChartWidget;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
@@ -39,7 +39,7 @@ class OrderStatusWidget extends ChartWidget
 
     public function getDescription(): ?string
     {
-        $service = $this->resolveService(OrderAnalyticsService::class);
+        $service = $this->resolveService(OrderAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         $totalOrders = $service->getTotalOrdersCount($period['start'], $period['end']);
         return __('app.widgets.orders.total_orders_description', ['count' => number_format($totalOrders)]);
@@ -47,7 +47,7 @@ class OrderStatusWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $service = $this->resolveService(OrderAnalyticsService::class);
+        $service = $this->resolveService(OrderAnalyticsServiceInterface::class);
         $period = $this->getPeriodDates();
         return $service->getOrderStatusDistribution($period['start'], $period['end']);
     }
