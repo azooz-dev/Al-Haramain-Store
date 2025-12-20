@@ -21,4 +21,3 @@ interface ProductStockServiceInterface
      */
     public function decrementProductStock(array $productQuantities): void;
 }
-
