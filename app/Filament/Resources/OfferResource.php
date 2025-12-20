@@ -12,7 +12,7 @@ use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OfferResource\Pages;
-use Modules\Offer\Services\Offer\OfferService;
+use Modules\Offer\Contracts\OfferServiceInterface;
 use Modules\Catalog\Services\Product\ProductTranslationService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -42,7 +42,7 @@ class OfferResource extends Resource
      */
     public static function getNavigationBadge(): ?string
     {
-        return app(OfferService::class)->getOffersCount();
+        return app(OfferServiceInterface::class)->getOffersCount();
     }
 
     public static function getNavigationGroup(): ?string
@@ -164,11 +164,11 @@ class OfferResource extends Resource
                                             ->native(false)
                                             ->optionsLimit(25)
                                             ->getOptionLabelFromRecordUsing(function ($record) {
-                                                $service = app(ProductTranslationService::class);
+                                                $service = app(\Modules\Catalog\Contracts\ProductTranslationServiceInterface::class);
                                                 return $service->getTranslatedName($record);
                                             })
                                             ->getSearchResultsUsing(function (string $search) {
-                                                $service = app(ProductTranslationService::class);
+                                                $service = app(\Modules\Catalog\Contracts\ProductTranslationServiceInterface::class);
                                                 return Product::query()
                                                     ->with('translations')
                                                     ->whereHas('translations', function (Builder $q) use ($search) {
@@ -358,7 +358,7 @@ class OfferResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $offerService = app(OfferService::class);
+        $offerService = app(OfferServiceInterface::class);
 
         return $table
             ->columns([
@@ -561,6 +561,6 @@ class OfferResource extends Resource
      */
     public static function getEloquentQuery(): Builder
     {
-        return app(OfferService::class)->getQueryBuilder();
+        return app(OfferServiceInterface::class)->getQueryBuilder();
     }
 }

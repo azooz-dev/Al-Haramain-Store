@@ -6,7 +6,7 @@ use Filament\Actions;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Resources\OfferResource;
-use Modules\Offer\Services\Offer\OfferService;
+use Modules\Offer\Contracts\OfferServiceInterface;
 use Modules\Offer\Traits\HasOfferTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use Filament\Notifications\Notification;
@@ -87,7 +87,7 @@ class EditOffer extends EditRecord
      */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $offerService = app(OfferService::class);
+        $offerService = app(OfferServiceInterface::class);
 
         // Update offer with translations via service
         // Service handles translation saving
@@ -98,7 +98,7 @@ class EditOffer extends EditRecord
 
     protected function getSavedNotification(): ?Notification
     {
-        $offerService = app(OfferService::class);
+        $offerService = app(OfferServiceInterface::class);
         return self::buildSuccessNotification(
             __('app.messages.offer.updated_success'),
             __('app.messages.offer.updated_success_body', ['name' => $offerService->getTranslatedName($this->record)])
