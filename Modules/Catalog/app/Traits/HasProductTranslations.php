@@ -6,13 +6,16 @@ use Modules\Catalog\Services\Product\ProductTranslationService;
 
 trait HasProductTranslations
 {
-  protected ProductTranslationService $translationService;
+  protected ?ProductTranslationService $translationService = null;
 
-  public function __construct()
+  protected function getTranslationService(): ProductTranslationService
   {
-    $this->translationService = app(ProductTranslationService::class);
-  }
+    if ($this->translationService === null) {
+      $this->translationService = resolve(ProductTranslationService::class);
+    }
 
+    return $this->translationService;
+  }
 
   protected function getTranslationData(): array
   {
@@ -20,7 +23,7 @@ trait HasProductTranslations
       return [];
     }
 
-    return $this->translationService->getFormData($this->record);
+    return $this->getTranslationService()->getFormData($this->record);
   }
 
   protected function extractTranslationData(array $data): array
@@ -50,6 +53,6 @@ trait HasProductTranslations
    */
   protected function generateSlugFromName(string $productName): string
   {
-    return $this->translationService->generateSlugFromName($productName);
+    return $this->getTranslationService()->generateSlugFromName($productName);
   }
 }

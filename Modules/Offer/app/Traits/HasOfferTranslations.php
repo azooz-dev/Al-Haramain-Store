@@ -6,11 +6,15 @@ use Modules\Offer\Services\OfferTranslationService;
 
 trait HasOfferTranslations
 {
-  protected OfferTranslationService $translationService;
+  protected ?OfferTranslationService $translationService = null;
 
-  public function __construct()
+  protected function getTranslationService(): OfferTranslationService
   {
-    $this->translationService = app(OfferTranslationService::class);
+    if ($this->translationService === null) {
+      $this->translationService = resolve(OfferTranslationService::class);
+    }
+
+    return $this->translationService;
   }
 
   protected function getTranslationData(): array
@@ -19,7 +23,7 @@ trait HasOfferTranslations
       return [];
     }
 
-    return $this->translationService->getFormData($this->record);
+    return $this->getTranslationService()->getFormData($this->record);
   }
 
   protected function extractTranslationData(array $data): array

@@ -6,11 +6,15 @@ use Modules\Catalog\Services\Category\CategoryTranslationService;
 
 trait HasCategoryTranslations
 {
-  protected CategoryTranslationService $translationService;
+  protected ?CategoryTranslationService $translationService = null;
 
-  public function __construct()
+  protected function getTranslationService(): CategoryTranslationService
   {
-    $this->translationService = app(CategoryTranslationService::class);
+    if ($this->translationService === null) {
+      $this->translationService = resolve(CategoryTranslationService::class);
+    }
+
+    return $this->translationService;
   }
 
   protected function getTranslationData(): array
@@ -19,7 +23,7 @@ trait HasCategoryTranslations
       return [];
     }
 
-    return $this->translationService->getFormData($this->record);
+    return $this->getTranslationService()->getFormData($this->record);
   }
 
   protected function saveTranslations(array $translationData): void
@@ -28,7 +32,7 @@ trait HasCategoryTranslations
       return;
     }
 
-    $this->translationService->saveTranslations($this->record, $translationData);
+    $this->getTranslationService()->saveTranslations($this->record, $translationData);
   }
 
   protected function extractTranslationData(array $data): array
@@ -59,6 +63,6 @@ trait HasCategoryTranslations
    */
   protected function generateSlugFromName(string $categoryName): string
   {
-    return $this->translationService->generateSlugFromName($categoryName);
+    return $this->getTranslationService()->generateSlugFromName($categoryName);
   }
 }
