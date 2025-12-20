@@ -38,6 +38,34 @@ class AnalyticsServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->registerRepositories();
+        $this->registerServices();
+    }
+
+    /**
+     * Register service bindings.
+     */
+    protected function registerServices(): void
+    {
+        $this->app->bind(
+            \Modules\Analytics\Contracts\DashboardWidgetServiceInterface::class,
+            \Modules\Analytics\Services\DashboardWidgetService::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Contracts\OrderAnalyticsServiceInterface::class,
+            \Modules\Analytics\Services\OrderAnalyticsService::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Contracts\ProductAnalyticsServiceInterface::class,
+            \Modules\Analytics\Services\ProductAnalyticsService::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Contracts\ReviewAnalyticsServiceInterface::class,
+            \Modules\Analytics\Services\ReviewAnalyticsService::class
+        );
+        $this->app->bind(
+            \Modules\Analytics\Contracts\CustomerAnalyticsServiceInterface::class,
+            \Modules\Analytics\Services\CustomerAnalyticsService::class
+        );
     }
 
     /**

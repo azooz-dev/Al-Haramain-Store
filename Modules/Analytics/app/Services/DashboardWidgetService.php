@@ -4,12 +4,13 @@ namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Modules\Analytics\Contracts\DashboardWidgetServiceInterface;
 use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
 use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
 use Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface;
 use Modules\Order\Enums\OrderStatus;
 
-class DashboardWidgetService
+class DashboardWidgetService implements DashboardWidgetServiceInterface
 {
     public function __construct(
         private OrderAnalyticsRepositoryInterface $orderAnalyticsRepository,

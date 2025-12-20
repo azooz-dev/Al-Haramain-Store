@@ -4,11 +4,12 @@ namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Modules\Analytics\Contracts\CustomerAnalyticsServiceInterface;
 use Modules\Catalog\Contracts\CategoryTranslationServiceInterface;
 use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
 use Modules\Analytics\Repositories\Interface\CategoryAnalyticsRepositoryInterface;
 
-class CustomerAnalyticsService
+class CustomerAnalyticsService implements CustomerAnalyticsServiceInterface
 {
     public function __construct(
         private UserAnalyticsRepositoryInterface $userAnalyticsRepository,

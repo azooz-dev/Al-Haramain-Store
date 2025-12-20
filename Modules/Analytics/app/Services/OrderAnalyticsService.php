@@ -4,10 +4,12 @@ namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
+use Modules\Analytics\Contracts\OrderAnalyticsServiceInterface;
 use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
 use Modules\Order\Enums\OrderStatus;
 
-class OrderAnalyticsService
+class OrderAnalyticsService implements OrderAnalyticsServiceInterface
 {
     public function __construct(
         private OrderAnalyticsRepositoryInterface $orderAnalyticsRepository
@@ -120,7 +122,7 @@ class OrderAnalyticsService
             });
     }
 
-    public function getRecentOrders(int $limit = 15): \Illuminate\Support\Collection
+    public function getRecentOrders(int $limit = 15): Collection
     {
         $cacheKey = 'dashboard_widget_recent_orders_' . $limit;
         

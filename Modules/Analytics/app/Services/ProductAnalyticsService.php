@@ -4,18 +4,20 @@ namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 use Modules\Catalog\Entities\Product\Product;
+use Modules\Analytics\Contracts\ProductAnalyticsServiceInterface;
 use Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface;
 use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
-class ProductAnalyticsService
+class ProductAnalyticsService implements ProductAnalyticsServiceInterface
 {
     public function __construct(
         private ProductAnalyticsRepositoryInterface $productAnalyticsRepository,
         private ProductTranslationServiceInterface $productTranslationService
     ) {}
 
-    public function getTopSellingProducts(Carbon $start, Carbon $end, int $limit = 3): \Illuminate\Support\Collection
+    public function getTopSellingProducts(Carbon $start, Carbon $end, int $limit = 3): Collection
     {
         $cacheKey = 'dashboard_widget_top_products_' . $start->format('Y-m-d') . '_' . $end->format('Y-m-d') . '_' . $limit;
 

@@ -4,11 +4,12 @@ namespace Modules\Analytics\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Modules\Analytics\Contracts\ReviewAnalyticsServiceInterface;
 use Modules\Analytics\Repositories\Interface\ReviewAnalyticsRepositoryInterface;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
 use Modules\Review\Enums\ReviewStatus;
 
-class ReviewAnalyticsService
+class ReviewAnalyticsService implements ReviewAnalyticsServiceInterface
 {
     public function __construct(
         private ReviewAnalyticsRepositoryInterface $reviewAnalyticsRepository,
