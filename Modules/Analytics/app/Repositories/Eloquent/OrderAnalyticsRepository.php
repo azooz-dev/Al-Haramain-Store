@@ -3,6 +3,7 @@
 namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
@@ -12,16 +13,14 @@ class OrderAnalyticsRepository implements OrderAnalyticsRepositoryInterface
 {
     public function getRevenueByDateRange(Carbon $start, Carbon $end): float
     {
-        return Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
+        return Order::whereNotIn('status', OrderStatus::excludedFromStats())
             ->whereBetween('created_at', [$start, $end])
             ->sum('total_amount');
     }
 
     public function getRevenueByDateRangeGrouped(Carbon $start, Carbon $end): Collection
     {
-        return Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
+        return Order::whereNotIn('status', OrderStatus::excludedFromStats())
             ->whereBetween('created_at', [$start, $end])
             ->selectRaw('DATE(created_at) as date, SUM(total_amount) as revenue')
             ->groupBy('date')
@@ -64,8 +63,7 @@ class OrderAnalyticsRepository implements OrderAnalyticsRepositoryInterface
 
     public function getAverageOrderValue(Carbon $start, Carbon $end): float
     {
-        $orders = Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
+        $orders = Order::whereNotIn('status', OrderStatus::excludedFromStats())
             ->whereBetween('created_at', [$start, $end]);
 
         $totalRevenue = $orders->sum('total_amount');
@@ -76,8 +74,7 @@ class OrderAnalyticsRepository implements OrderAnalyticsRepositoryInterface
 
     public function getAverageOrderValueGrouped(Carbon $start, Carbon $end): Collection
     {
-        return Order::where('status', '!=', Order::CANCELLED)
-            ->where('status', '!=', Order::REFUNDED)
+        return Order::whereNotIn('status', OrderStatus::excludedFromStats())
             ->whereBetween('created_at', [$start, $end])
             ->selectRaw('DATE(created_at) as date, AVG(total_amount) as avg_value')
             ->groupBy('date')
@@ -104,4 +101,3 @@ class OrderAnalyticsRepository implements OrderAnalyticsRepositoryInterface
             ->get();
     }
 }
-

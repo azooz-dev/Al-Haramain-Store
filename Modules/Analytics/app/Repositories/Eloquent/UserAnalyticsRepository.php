@@ -3,7 +3,7 @@
 namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\User\Entities\User;
-use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -29,28 +29,28 @@ class UserAnalyticsRepository implements UserAnalyticsRepositoryInterface
     {
         // Users who have placed more than one order
         // where at least one order is within the date range
-        // First, get the user IDs that match the criteria
+        $excludedStatuses = array_map(fn($status) => $status->value, OrderStatus::excludedFromStats());
+        
         $userIds = DB::table('users')
             ->join('orders', 'users.id', '=', 'orders.user_id')
             ->whereBetween('orders.created_at', [$start, $end])
-            ->where('orders.status', '!=', Order::CANCELLED)
-            ->where('orders.status', '!=', Order::REFUNDED)
+            ->whereNotIn('orders.status', $excludedStatuses)
             ->groupBy('users.id')
             ->havingRaw('COUNT(DISTINCT orders.id) > 1')
             ->pluck('users.id');
 
-        // Then count the distinct user IDs
         return $userIds->count();
     }
 
     public function getReturningCustomersByDateGrouped(Carbon $start, Carbon $end): Collection
     {
+        $excludedStatuses = array_map(fn($status) => $status->value, OrderStatus::excludedFromStats());
+        
         // Group returning customers by date of their second+ order within the period
         return DB::table('users')
             ->join('orders', 'users.id', '=', 'orders.user_id')
             ->whereBetween('orders.created_at', [$start, $end])
-            ->where('orders.status', '!=', Order::CANCELLED)
-            ->where('orders.status', '!=', Order::REFUNDED)
+            ->whereNotIn('orders.status', $excludedStatuses)
             ->selectRaw('DATE(orders.created_at) as date, COUNT(DISTINCT users.id) as count')
             ->groupBy('users.id', 'date')
             ->havingRaw('COUNT(DISTINCT orders.id) > 1')
@@ -59,4 +59,3 @@ class UserAnalyticsRepository implements UserAnalyticsRepositoryInterface
             ->get();
     }
 }
-

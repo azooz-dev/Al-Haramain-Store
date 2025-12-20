@@ -3,7 +3,7 @@
 namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Catalog\Entities\Product\Product;
-use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
@@ -18,6 +18,8 @@ class ProductAnalyticsRepository implements ProductAnalyticsRepositoryInterface
 
     public function getTopSellingProducts(Carbon $start, Carbon $end, int $limit = 3): Collection
     {
+        $excludedStatuses = array_map(fn($status) => $status->value, OrderStatus::excludedFromStats());
+        
         return Product::query()
             ->select([
                 'products.*',
@@ -30,8 +32,7 @@ class ProductAnalyticsRepository implements ProductAnalyticsRepositoryInterface
                     ->where('order_items.orderable_type', '=', Product::class);
             })
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('orders.status', '!=', Order::CANCELLED)
-            ->where('orders.status', '!=', Order::REFUNDED)
+            ->whereNotIn('orders.status', $excludedStatuses)
             ->whereBetween('orders.created_at', [$start, $end])
             ->groupBy('products.id')
             ->orderByDesc('total_sold')
@@ -40,4 +41,3 @@ class ProductAnalyticsRepository implements ProductAnalyticsRepositoryInterface
             ->get();
     }
 }
-

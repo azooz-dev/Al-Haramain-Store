@@ -7,16 +7,14 @@ use Illuminate\Support\Facades\Cache;
 use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
 use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
 use Modules\Analytics\Repositories\Interface\ProductAnalyticsRepositoryInterface;
-use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
-use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 
 class DashboardWidgetService
 {
     public function __construct(
         private OrderAnalyticsRepositoryInterface $orderAnalyticsRepository,
         private UserAnalyticsRepositoryInterface $userAnalyticsRepository,
-        private ProductAnalyticsRepositoryInterface $productAnalyticsRepository,
-        private OrderRepositoryInterface $orderRepository
+        private ProductAnalyticsRepositoryInterface $productAnalyticsRepository
     ) {}
 
     public function getTodaysRevenue(): float
@@ -153,7 +151,7 @@ class DashboardWidgetService
         $cacheKey = 'dashboard_widget_pending_orders';
         
         return Cache::remember($cacheKey, now()->addMinutes(2), function () {
-                return $this->orderAnalyticsRepository->getOrdersCountByStatus(Order::PENDING);
+                return $this->orderAnalyticsRepository->getOrdersCountByStatus(OrderStatus::PENDING->value);
             });
     }
 
@@ -236,4 +234,3 @@ class DashboardWidgetService
             });
     }
 }
-

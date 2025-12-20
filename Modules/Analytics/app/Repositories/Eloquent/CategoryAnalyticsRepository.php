@@ -3,7 +3,7 @@
 namespace Modules\Analytics\Repositories\Eloquent;
 
 use Modules\Catalog\Entities\Category\Category;
-use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Modules\Analytics\Repositories\Interface\CategoryAnalyticsRepositoryInterface;
@@ -12,6 +12,8 @@ class CategoryAnalyticsRepository implements CategoryAnalyticsRepositoryInterfac
 {
     public function getTopCategoryByRevenue(Carbon $start, Carbon $end): ?Category
     {
+        $excludedStatuses = array_map(fn($status) => $status->value, OrderStatus::excludedFromStats());
+        
         $topCategoryId = DB::table('categories')
             ->join('category_product', 'categories.id', '=', 'category_product.category_id')
             ->join('order_items', function ($join) {
@@ -19,8 +21,7 @@ class CategoryAnalyticsRepository implements CategoryAnalyticsRepositoryInterfac
                     ->where('order_items.orderable_type', '=', \Modules\Catalog\Entities\Product\Product::class);
             })
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('orders.status', '!=', Order::CANCELLED)
-            ->where('orders.status', '!=', Order::REFUNDED)
+            ->whereNotIn('orders.status', $excludedStatuses)
             ->whereBetween('orders.created_at', [$start, $end])
             ->select('categories.id', DB::raw('SUM(order_items.quantity * order_items.total_price) as revenue'))
             ->groupBy('categories.id')

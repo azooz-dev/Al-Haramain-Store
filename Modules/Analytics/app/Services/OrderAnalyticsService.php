@@ -5,7 +5,7 @@ namespace Modules\Analytics\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Modules\Analytics\Repositories\Interface\OrderAnalyticsRepositoryInterface;
-use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 
 class OrderAnalyticsService
 {
@@ -93,25 +93,16 @@ class OrderAnalyticsService
                 $statusData = $this->orderAnalyticsRepository->getOrdersCountByStatusGrouped($start, $end)
                     ->pluck('count', 'status');
 
-                $statuses = [
-                    Order::PENDING => __('app.status.pending'),
-                    Order::PROCESSING => __('app.status.processing'),
-                    Order::SHIPPED => __('app.status.shipped'),
-                    Order::DELIVERED => __('app.status.delivered'),
-                    Order::CANCELLED => __('app.status.cancelled'),
-                    Order::REFUNDED => __('app.status.refunded'),
-                ];
-
                 $labels = [];
                 $data = [];
                 $backgroundColors = [];
 
-                foreach ($statuses as $status => $label) {
-                    $count = $statusData->get($status, 0);
+                foreach (OrderStatus::cases() as $status) {
+                    $count = $statusData->get($status->value, 0);
                     if ($count > 0) {
-                        $labels[] = $label;
+                        $labels[] = $status->label();
                         $data[] = $count;
-                        $backgroundColors[] = $this->getStatusColor($status);
+                        $backgroundColors[] = $status->chartColor();
                     }
                 }
 
@@ -156,19 +147,6 @@ class OrderAnalyticsService
             });
     }
 
-    private function getStatusColor(string $status): string
-    {
-        return match ($status) {
-            Order::PENDING => 'rgba(245, 158, 11, 0.8)',
-            Order::PROCESSING => 'rgba(59, 130, 246, 0.8)',
-            Order::SHIPPED => 'rgba(139, 92, 246, 0.8)',
-            Order::DELIVERED => 'rgba(34, 197, 94, 0.8)',
-            Order::CANCELLED => 'rgba(239, 68, 68, 0.8)',
-            Order::REFUNDED => 'rgba(107, 114, 128, 0.8)',
-            default => 'rgba(156, 163, 175, 0.8)',
-        };
-    }
-
     private function darkenColor(string $color): string
     {
         // Simple darkening by reducing opacity slightly
@@ -179,4 +157,3 @@ class OrderAnalyticsService
         return $color;
     }
 }
-
