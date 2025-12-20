@@ -3,6 +3,8 @@
 namespace Modules\Payment\Entities\Payment;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Payment\Enums\PaymentStatus;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +18,14 @@ class Payment extends Model
     {
         return PaymentFactory::new();
     }
+
+    /**
+     * @deprecated Use PaymentStatus::SUCCESS instead
+     */
     const SUCCESS = 'success';
+    /**
+     * @deprecated Use PaymentStatus::FAILED instead
+     */
     const FAILED = 'failed';
 
     protected $fillable = [
@@ -33,6 +42,8 @@ class Payment extends Model
         'amount' => 'decimal:2',
         'gateway_response' => 'json',
         'paid_at' => 'datetime',
+        'status' => PaymentStatus::class,
+        'payment_method' => PaymentMethod::class,
     ];
 
     public function order(): BelongsTo
@@ -45,10 +56,7 @@ class Payment extends Model
      */
     public function getStatusColorAttribute(): string
     {
-        return match ($this->status) {
-            self::SUCCESS => 'success',
-            self::FAILED => 'danger',
-        };
+        return $this->status?->color() ?? 'gray';
     }
 
     /**
@@ -56,10 +64,7 @@ class Payment extends Model
      */
     public function getStatusIconAttribute(): string
     {
-        return match ($this->status) {
-            self::SUCCESS => 'heroicon-o-check-circle',
-            self::FAILED => 'heroicon-o-x-circle',
-        };
+        return $this->status?->icon() ?? 'heroicon-o-question-mark-circle';
     }
 
     /**
@@ -67,14 +72,14 @@ class Payment extends Model
      */
     public function isSuccessful(): bool
     {
-        return $this->status === self::SUCCESS;
+        return $this->status === PaymentStatus::SUCCESS;
     }
 
     /**
-     * Check if payment is successful
+     * Check if payment is pending
      */
     public function isPending(): bool
     {
-        return $this->status === self::SUCCESS;
+        return $this->status === PaymentStatus::PENDING;
     }
 }
