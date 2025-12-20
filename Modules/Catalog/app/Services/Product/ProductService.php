@@ -10,6 +10,7 @@ use Modules\Catalog\Http\Resources\Product\ProductApiResource;
 use Modules\Catalog\Repositories\Interface\Product\ProductRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Product\Color\ProductColorRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Product\Variant\ProductVariantRepositoryInterface;
+use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
 class ProductService
 {
@@ -17,7 +18,7 @@ class ProductService
     private ProductRepositoryInterface $productRepository,
     private ProductColorRepositoryInterface $productColorRepository,
     private ProductVariantRepositoryInterface $productVariantRepository,
-    private ProductTranslationService $translationService
+    private ProductTranslationServiceInterface $translationService
   ) {}
 
   public function getProducts()

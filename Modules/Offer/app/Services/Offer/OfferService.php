@@ -5,6 +5,7 @@ namespace Modules\Offer\Services\Offer;
 use Modules\Offer\Entities\Offer\Offer;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Offer\Contracts\OfferServiceInterface;
+use Modules\Offer\Contracts\OfferTranslationServiceInterface;
 use Modules\Offer\Exceptions\Offer\OfferException;
 use Modules\Offer\Http\Resources\Offer\OfferApiResource;
 use Modules\Offer\Repositories\Interface\Offer\OfferRepositoryInterface;
@@ -15,7 +16,7 @@ class OfferService implements OfferServiceInterface
 {
   public function __construct(
     private OfferRepositoryInterface $offerRepository,
-    private OfferTranslationService $translationService
+    private OfferTranslationServiceInterface $translationService
   ) {}
 
   public function fetchAllOffers()
