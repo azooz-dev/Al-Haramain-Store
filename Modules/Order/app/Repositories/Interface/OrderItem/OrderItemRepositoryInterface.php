@@ -10,4 +10,6 @@ interface OrderItemRepositoryInterface
   public function update(int $itemId, array $data): bool;
 
   public function checkItemIsReviewed($itemId): bool;
+
+  public function checkItemIsInOrder(int $itemId, int $orderId): bool;
 }

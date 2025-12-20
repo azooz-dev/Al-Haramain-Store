@@ -37,4 +37,11 @@ class OrderItemRepository implements OrderItemRepositoryInterface
   {
     return OrderItem::where('id', $itemId)->where('is_reviewed', true)->exists();
   }
+
+  public function checkItemIsInOrder(int $itemId, int $orderId): bool
+  {
+    return OrderItem::where('order_id', $orderId)
+      ->where('id', $itemId)
+      ->exists();
+  }
 }

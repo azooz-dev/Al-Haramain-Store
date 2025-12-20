@@ -3,11 +3,15 @@
 namespace Modules\User\Repositories\Eloquent;
 
 use Modules\Review\Entities\Review\Review;
-use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
+use Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface;
 
 class UserOrderItemReviewRepository implements UserOrderItemReviewRepositoryInterface
 {
+  public function __construct(
+    private OrderItemRepositoryInterface $orderItemRepository
+  ) {}
+
   public function store(array $data): Review
   {
     return Review::create($data);
@@ -15,8 +19,6 @@ class UserOrderItemReviewRepository implements UserOrderItemReviewRepositoryInte
 
   public function checkItemIsInOrder($itemId, $orderId): bool
   {
-    return OrderItem::where('order_id', $orderId)
-      ->where('id', $itemId)
-      ->exists();
+    return $this->orderItemRepository->checkItemIsInOrder($itemId, $orderId);
   }
 }
