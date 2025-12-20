@@ -6,13 +6,13 @@ use Modules\Favorite\Entities\Favorite\Favorite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Favorite\Repositories\Interface\Favorite\FavoriteRepositoryInterface;
-use Modules\Catalog\Services\Product\ProductTranslationService;
+use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 
 class FavoriteService
 {
   public function __construct(
     private FavoriteRepositoryInterface $favoriteRepository,
-    private ProductTranslationService $productTranslationService
+    private ProductTranslationServiceInterface $productTranslationService
   ) {}
 
   public function getAllFavorites(): Collection
