@@ -18,6 +18,12 @@ class CreateOffer extends CreateRecord
 
     private array $translationData = [];
 
+    public function __construct(
+        protected OfferService $offerService
+    ) {
+        parent::__construct();
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
@@ -50,21 +56,18 @@ class CreateOffer extends CreateRecord
      */
     protected function handleRecordCreation(array $data): Model
     {
-        $offerService = app(OfferService::class);
-
         // Create offer with translations via service
         // Service handles translation saving
-        $offer = $offerService->createOffer($data, $this->translationData);
+        $offer = $this->offerService->createOffer($data, $this->translationData);
 
         return $offer;
     }
 
     protected function getSavedNotification(): ?Notification
     {
-        $offerService = app(OfferService::class);
         return self::buildSuccessNotification(
             __('app.messages.offer.created_success'),
-            __('app.messages.offer.created_success_body', ['name' => $offerService->getTranslatedName($this->record)])
+            __('app.messages.offer.created_success_body', ['name' => $this->offerService->getTranslatedName($this->record)])
         );
     }
 }

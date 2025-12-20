@@ -19,6 +19,12 @@ class CreateProduct extends CreateRecord
     private array $translationData = [];
     private ?array $categoryIds = null;
 
+    public function __construct(
+        protected ProductService $productService
+    ) {
+        parent::__construct();
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
@@ -51,11 +57,9 @@ class CreateProduct extends CreateRecord
      */
     protected function handleRecordCreation(array $data): Model
     {
-        $productService = app(ProductService::class);
-
         // Create product with translations and categories via service
         // Service handles slug generation, translation saving, and category sync
-        $product = $productService->createProduct($data, $this->translationData, $this->categoryIds);
+        $product = $this->productService->createProduct($data, $this->translationData, $this->categoryIds);
 
         return $product;
     }
