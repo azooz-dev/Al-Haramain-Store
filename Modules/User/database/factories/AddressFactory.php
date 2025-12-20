@@ -4,6 +4,7 @@ namespace Modules\User\Database\Factories;
 
 use Modules\User\Entities\User;
 use Modules\User\Entities\Address;
+use Modules\User\Enums\AddressType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +29,7 @@ class AddressFactory extends Factory
     return [
       'user_id' => User::factory(),
       'label' => fake()->words(2, true),
-      'address_type' => fake()->randomElement([Address::ADDRESS_TYPE_HOME, Address::ADDRESS_TYPE_WORK, Address::ADDRESS_TYPE_OTHER]),
+      'address_type' => fake()->randomElement(AddressType::cases()),
       'street' => fake()->streetAddress(),
       'city' => fake()->city(),
       'state' => fake()->state(),

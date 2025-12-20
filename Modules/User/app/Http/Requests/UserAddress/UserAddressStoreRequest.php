@@ -2,7 +2,7 @@
 
 namespace Modules\User\app\Http\Requests\UserAddress;
 
-use Modules\User\Entities\Address;
+use Modules\User\Enums\AddressType;
 
 class UserAddressStoreRequest extends BaseUserAddressRequest
 {
@@ -21,8 +21,10 @@ class UserAddressStoreRequest extends BaseUserAddressRequest
      */
     public function rules(): array
     {
+        $addressTypes = implode(',', array_column(AddressType::cases(), 'value'));
+        
         return [
-            "address_type" => "required|in:" . Address::ADDRESS_TYPE_HOME . "," . Address::ADDRESS_TYPE_WORK,
+            "address_type" => "required|in:" . $addressTypes,
             "label" => "nullable|string|max:255",
             "street" => "required|string|max:255",
             "city" => "required|string|max:255",

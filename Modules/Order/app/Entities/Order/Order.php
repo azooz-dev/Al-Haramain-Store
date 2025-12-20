@@ -20,40 +20,6 @@ class Order extends Model
 {
     use HasFactory;
 
-    /**
-     * @deprecated Use OrderStatus::PENDING instead
-     */
-    const PENDING = 'pending';
-    /**
-     * @deprecated Use OrderStatus::PROCESSING instead
-     */
-    const PROCESSING = 'processing';
-    /**
-     * @deprecated Use OrderStatus::SHIPPED instead
-     */
-    const SHIPPED = 'shipped';
-    /**
-     * @deprecated Use OrderStatus::DELIVERED instead
-     */
-    const DELIVERED = 'delivered';
-    /**
-     * @deprecated Use OrderStatus::CANCELLED instead
-     */
-    const CANCELLED = 'cancelled';
-    /**
-     * @deprecated Use OrderStatus::REFUNDED instead
-     */
-    const REFUNDED = 'refunded';
-
-    /**
-     * @deprecated Use PaymentMethod::CASH_ON_DELIVERY instead
-     */
-    const PAYMENT_METHOD_CASH_ON_DELIVERY = 'cash_on_delivery';
-    /**
-     * @deprecated Use PaymentMethod::CREDIT_CARD instead
-     */
-    const PAYMENT_METHOD_CREDIT_CARD = 'credit_card';
-
     protected $fillable = [
         'user_id',
         'coupon_id',

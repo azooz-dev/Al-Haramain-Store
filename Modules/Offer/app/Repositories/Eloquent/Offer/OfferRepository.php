@@ -5,6 +5,7 @@ namespace Modules\Offer\Repositories\Eloquent\Offer;
 
 use Modules\Offer\Entities\Offer\Offer;
 use Modules\Offer\Entities\Offer\OfferProduct;
+use Modules\Offer\Enums\OfferStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Offer\Repositories\Interface\Offer\OfferRepositoryInterface;
@@ -13,7 +14,7 @@ class OfferRepository implements OfferRepositoryInterface
 {
   public function getAllOffers(): Collection
   {
-    return Offer::with(['translations', 'products'])->where('status', Offer::ACTIVE)->get();
+    return Offer::with(['translations', 'products'])->where('status', OfferStatus::ACTIVE)->get();
   }
 
   public function findOfferById(int $offerId): ?Offer

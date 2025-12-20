@@ -3,6 +3,7 @@
 namespace Modules\Offer\Database\Seeders\Offer;
 
 use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Enums\OfferStatus;
 use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -32,7 +33,7 @@ class OfferSeeder extends Seeder
             'offer_price' => 100,
             'start_date' => now(),
             'end_date' => now()->addDays(30),
-            'status' => Offer::ACTIVE,
+            'status' => OfferStatus::ACTIVE,
         ]);
         $offer->products()->attach(Product::inRandomOrder()->limit(3)->pluck('id'));
     }

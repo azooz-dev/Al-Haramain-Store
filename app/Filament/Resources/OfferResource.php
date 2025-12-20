@@ -7,6 +7,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Enums\OfferStatus;
 use Modules\Catalog\Entities\Product\Product;
 use App\Traits\HasTranslations;
 use Filament\Resources\Resource;
@@ -131,11 +132,8 @@ class OfferResource extends Resource
 
                                 Forms\Components\Select::make('status')
                                     ->label(__('app.forms.offer.status'))
-                                    ->options([
-                                        Offer::ACTIVE => __('app.status.active'),
-                                        Offer::INACTIVE => __('app.status.inactive'),
-                                    ])
-                                    ->default(Offer::ACTIVE)
+                                    ->options(OfferStatus::options())
+                                    ->default(OfferStatus::ACTIVE->value)
                                     ->required()
                                     ->native(false)
                                     ->columnSpan(1),
@@ -428,21 +426,9 @@ class OfferResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('app.columns.offer.status'))
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        Offer::ACTIVE => 'success',
-                        Offer::INACTIVE => 'gray',
-                        default => 'gray',
-                    })
-                    ->icon(fn(string $state): string => match ($state) {
-                        Offer::ACTIVE => 'heroicon-o-check-badge',
-                        Offer::INACTIVE => 'heroicon-o-pause-circle',
-                        default => 'heroicon-o-question-mark-circle',
-                    })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        Offer::ACTIVE => __('app.status.active'),
-                        Offer::INACTIVE => __('app.status.inactive'),
-                        default => $state,
-                    })
+                    ->color(fn(OfferStatus $state): string => $state->color())
+                    ->icon(fn(OfferStatus $state): string => $state->icon())
+                    ->formatStateUsing(fn(OfferStatus $state): string => $state->label())
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('is_running')
@@ -479,10 +465,7 @@ class OfferResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->label(__('app.filters.offer_status'))
-                    ->options([
-                        Offer::ACTIVE => __('app.status.active'),
-                        Offer::INACTIVE => __('app.status.inactive'),
-                    ])
+                    ->options(OfferStatus::options())
                     ->multiple()
                     ->preload(),
 

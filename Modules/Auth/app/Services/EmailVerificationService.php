@@ -29,7 +29,7 @@ class EmailVerificationService
     }
 
     if (!$user->isVerified()) {
-      $user->forceFill(['email_verified_at' => now(), 'verified' => User::VERIFIED_USER])->save();
+      $user->forceFill(['email_verified_at' => now(), 'verified' => true])->save();
     }
 
     Cache::forget($cacheKey);

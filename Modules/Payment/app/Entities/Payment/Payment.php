@@ -19,15 +19,6 @@ class Payment extends Model
         return PaymentFactory::new();
     }
 
-    /**
-     * @deprecated Use PaymentStatus::SUCCESS instead
-     */
-    const SUCCESS = 'success';
-    /**
-     * @deprecated Use PaymentStatus::FAILED instead
-     */
-    const FAILED = 'failed';
-
     protected $fillable = [
         'order_id',
         'payment_method',

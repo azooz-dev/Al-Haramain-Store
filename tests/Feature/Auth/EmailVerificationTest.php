@@ -57,7 +57,7 @@ class EmailVerificationTest extends TestCase
         $this->assertArrayHasKey('token', $result);
 
         $user->refresh();
-        $this->assertEquals(User::VERIFIED_USER, $user->verified);
+        $this->assertTrue($user->verified);
         $this->assertNotNull($user->email_verified_at);
     }
 

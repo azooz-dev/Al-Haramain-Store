@@ -1,6 +1,6 @@
 <?php
 
-use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Enums\OfferStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('offer_price', 10, 2);
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', [Offer::ACTIVE, Offer::INACTIVE])->default(Offer::ACTIVE);
+            $table->enum('status', array_column(OfferStatus::cases(), 'value'))->default(OfferStatus::ACTIVE->value);
             $table->timestamps();
         });
     }

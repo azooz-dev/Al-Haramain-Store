@@ -23,19 +23,6 @@ class Review extends Model
         return ReviewFactory::new();
     }
 
-    /**
-     * @deprecated Use ReviewStatus::PENDING instead
-     */
-    const PENDING = 'pending';
-    /**
-     * @deprecated Use ReviewStatus::APPROVED instead
-     */
-    const APPROVED = 'approved';
-    /**
-     * @deprecated Use ReviewStatus::REJECTED instead
-     */
-    const REJECTED = 'rejected';
-
     protected $fillable = [
         "user_id",
         "order_id",

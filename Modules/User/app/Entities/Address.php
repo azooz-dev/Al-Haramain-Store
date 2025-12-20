@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\User\Database\Factories\AddressFactory;
+use Modules\User\Enums\AddressType;
 
 class Address extends Model
 {
@@ -19,10 +20,6 @@ class Address extends Model
         return AddressFactory::new();
     }
 
-    const ADDRESS_TYPE_HOME = 'Home';
-    const ADDRESS_TYPE_WORK = 'Work';
-    const ADDRESS_TYPE_OTHER = "Other";
-
     protected $table = 'addresses';
     protected $fillable = [
         'user_id',
@@ -34,6 +31,11 @@ class Address extends Model
         'postal_code',
         'country',
         'is_default',
+    ];
+
+    protected $casts = [
+        'address_type' => AddressType::class,
+        'is_default' => 'boolean',
     ];
 
     public function user(): BelongsTo

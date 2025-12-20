@@ -56,7 +56,7 @@ class AuthenticationFlowTest extends TestCase
             'email' => 'john.doe@example.com',
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'verified' => User::UNVERIFIED_USER,
+            'verified' => false,
         ]);
     }
 

@@ -6,6 +6,7 @@ use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Offer\Entities\Offer\OfferProduct;
+use Modules\Offer\Enums\OfferStatus;
 use Modules\Catalog\Entities\Product\ProductColor;
 use Modules\Offer\Entities\Offer\OfferTranslation;
 use Modules\Catalog\Entities\Product\ProductVariant;
@@ -26,9 +27,6 @@ class Offer extends Model
         return OfferFactory::new();
     }
 
-    const ACTIVE = 'active';
-    const INACTIVE = 'inactive';
-
     protected $fillable = [
         'image_path',
         'products_total_price',
@@ -36,6 +34,14 @@ class Offer extends Model
         'start_date',
         'end_date',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => OfferStatus::class,
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'products_total_price' => 'decimal:2',
+        'offer_price' => 'decimal:2',
     ];
 
     public function products(): BelongsToMany

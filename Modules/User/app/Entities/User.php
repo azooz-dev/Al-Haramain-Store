@@ -5,7 +5,7 @@ namespace Modules\User\Entities;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Modules\Order\Entities\Order\Order;
 use Illuminate\Support\Str;
-use App\Models\Coupon\CouponUser;
+use Modules\Coupon\Entities\Coupon\CouponUser;
 use Modules\Favorite\Entities\Favorite\Favorite;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -27,9 +27,6 @@ class User extends Authenticatable
     {
         return UserFactory::new();
     }
-
-    const VERIFIED_USER = '1';
-    const UNVERIFIED_USER = '0';
 
     /**
      * The attributes that are mass assignable.
@@ -67,12 +64,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'verified' => 'boolean',
         ];
     }
 
-    public function isVerified()
+    public function isVerified(): bool
     {
-        return $this->verified == self::VERIFIED_USER;
+        return $this->verified === true;
     }
 
     public function couponUsers(): HasMany
@@ -103,8 +101,8 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user) {
-            if (!$user->verified) {
-                $user->verified = self::UNVERIFIED_USER;
+            if ($user->verified === null) {
+                $user->verified = false;
             }
         });
     }

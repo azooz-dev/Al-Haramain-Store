@@ -22,7 +22,7 @@ class UserService implements UserServiceInterface
       $user = $this->userRepository->update($userId, $data);
 
       if ($user->wasChanged('email')) {
-        $user->verified = User::UNVERIFIED_USER;
+        $user->verified = false;
         $user->save();
       }
       return new UserApiResource($user);

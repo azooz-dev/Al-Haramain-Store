@@ -7,7 +7,7 @@ use Modules\Catalog\Entities\Product\ProductVariant;
 use Modules\Catalog\Entities\Product\ProductColorImage;
 use Modules\Catalog\Entities\Product\ProductTranslation;
 use Modules\Offer\Entities\Offer\Offer;
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Catalog\Entities\Category\Category;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +22,7 @@ use Modules\Catalog\Database\Factories\Product\ProductFactory;
 class Product extends Model
 {
     use SoftDeletes, HasFactory;
-    
+
     /**
      * Create a new factory instance for the model.
      */
@@ -202,5 +202,3 @@ class Product extends Model
         return $this->colors->pluck('color_code')->unique()->values()->toArray();
     }
 }
-
-

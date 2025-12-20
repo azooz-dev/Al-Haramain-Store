@@ -19,23 +19,6 @@ class Coupon extends Model
         return CouponFactory::new();
     }
 
-    /**
-     * @deprecated Use CouponType::FIXED instead
-     */
-    const FIXED = 'fixed';
-    /**
-     * @deprecated Use CouponType::PERCENTAGE instead
-     */
-    const PERCENTAGE = 'percentage';
-    /**
-     * @deprecated Use CouponStatus::ACTIVE instead
-     */
-    const ACTIVE = 'active';
-    /**
-     * @deprecated Use CouponStatus::INACTIVE instead
-     */
-    const INACTIVE = 'inactive';
-
     protected $fillable = [
         'code',
         'name',

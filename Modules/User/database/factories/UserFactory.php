@@ -49,7 +49,7 @@ class UserFactory extends Factory
     public function unverified(): static
     {
         return $this->state(fn(array $attributes) => [
-            'verified' => User::UNVERIFIED_USER,
+            'verified' => false,
             'email_verified_at' => null,
         ]);
     }
@@ -60,7 +60,7 @@ class UserFactory extends Factory
     public function verified(): static
     {
         return $this->state(fn(array $attributes) => [
-            'verified' => User::VERIFIED_USER,
+            'verified' => true,
             'email_verified_at' => now(),
         ]);
     }

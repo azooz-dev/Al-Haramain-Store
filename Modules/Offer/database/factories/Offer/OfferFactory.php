@@ -3,6 +3,7 @@
 namespace Modules\Offer\Database\Factories\Offer;
 
 use Modules\Offer\Entities\Offer\Offer;
+use Modules\Offer\Enums\OfferStatus;
 use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -34,7 +35,7 @@ class OfferFactory extends Factory
       'offer_price' => $offer_price,
       'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
       'end_date' => fake()->dateTimeBetween('+1 month', '+3 months'),
-      'status' => fake()->randomElement([Offer::ACTIVE, Offer::INACTIVE]),
+      'status' => fake()->randomElement(OfferStatus::cases()),
     ];
   }
 
@@ -44,7 +45,7 @@ class OfferFactory extends Factory
   public function active(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Offer::ACTIVE,
+      'status' => OfferStatus::ACTIVE,
       'start_date' => fake()->dateTimeBetween('-1 month', 'now'),
       'end_date' => fake()->dateTimeBetween('now', '+3 months'),
     ]);
@@ -56,7 +57,7 @@ class OfferFactory extends Factory
   public function inactive(): static
   {
     return $this->state(fn(array $attributes) => [
-      'status' => Offer::INACTIVE,
+      'status' => OfferStatus::INACTIVE,
     ]);
   }
 }
