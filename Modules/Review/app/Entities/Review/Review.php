@@ -5,6 +5,7 @@ namespace Modules\Review\Entities\Review;
 use Modules\User\Entities\User;
 use Modules\Order\Entities\Order\Order;
 use Modules\Order\Entities\OrderItem\OrderItem;
+use Modules\Review\Enums\ReviewStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,8 +23,17 @@ class Review extends Model
         return ReviewFactory::new();
     }
 
+    /**
+     * @deprecated Use ReviewStatus::PENDING instead
+     */
     const PENDING = 'pending';
+    /**
+     * @deprecated Use ReviewStatus::APPROVED instead
+     */
     const APPROVED = 'approved';
+    /**
+     * @deprecated Use ReviewStatus::REJECTED instead
+     */
     const REJECTED = 'rejected';
 
     protected $fillable = [
@@ -34,6 +44,10 @@ class Review extends Model
         "comment",
         "status",
         "locale",
+    ];
+
+    protected $casts = [
+        'status' => ReviewStatus::class,
     ];
 
     public function user(): BelongsTo
@@ -53,7 +67,15 @@ class Review extends Model
 
     public function getStatusLabelAttribute()
     {
-        return __('app.status.' . $this->status);
+        return $this->status?->label() ?? __('app.status.' . $this->attributes['status']);
+    }
+
+    /**
+     * Get status color for badges
+     */
+    public function getStatusColorAttribute(): string
+    {
+        return $this->status?->color() ?? 'gray';
     }
 
     protected static function boot()
@@ -62,7 +84,7 @@ class Review extends Model
 
         static::creating(function ($review) {
             if (empty($review->status)) {
-                $review->status = self::PENDING;
+                $review->status = ReviewStatus::PENDING;
             }
         });
     }
