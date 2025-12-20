@@ -6,10 +6,11 @@ use Modules\Catalog\Http\Resources\Category\CategoryApiResource;
 use Modules\Catalog\Entities\Category\Category;
 use Modules\Catalog\Repositories\Interface\Category\CategoryRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Category\CategoryTranslationRepositoryInterface;
+use Modules\Catalog\Contracts\CategoryTranslationServiceInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class CategoryTranslationService
+class CategoryTranslationService implements CategoryTranslationServiceInterface
 {
   public function __construct(
     private CategoryRepositoryInterface $categoryRepository,
