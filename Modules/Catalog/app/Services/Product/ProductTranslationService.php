@@ -6,10 +6,11 @@ use Modules\Catalog\Http\Resources\Product\ProductApiResource;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Catalog\Repositories\Interface\Product\ProductRepositoryInterface;
 use Modules\Catalog\Repositories\Interface\Product\ProductTranslationRepositoryInterface;
+use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class ProductTranslationService
+class ProductTranslationService implements ProductTranslationServiceInterface
 {
 
   public function __construct(
