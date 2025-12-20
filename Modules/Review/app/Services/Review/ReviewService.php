@@ -3,6 +3,7 @@
 namespace Modules\Review\Services\Review;
 
 use Modules\Review\Entities\Review\Review;
+use Modules\Review\Enums\ReviewStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
@@ -48,22 +49,22 @@ class ReviewService
 
   public function approveReview(int $id): Review
   {
-    return $this->updateReviewStatus($id, Review::APPROVED);
+    return $this->updateReviewStatus($id, ReviewStatus::APPROVED->value);
   }
 
   public function rejectReview(int $id): Review
   {
-    return $this->updateReviewStatus($id, Review::REJECTED);
+    return $this->updateReviewStatus($id, ReviewStatus::REJECTED->value);
   }
 
   public function bulkApproveReviews(array $ids): int
   {
-    return $this->reviewRepository->bulkUpdateStatus($ids, Review::APPROVED);
+    return $this->reviewRepository->bulkUpdateStatus($ids, ReviewStatus::APPROVED->value);
   }
 
   public function bulkRejectReviews(array $ids): int
   {
-    return $this->reviewRepository->bulkUpdateStatus($ids, Review::REJECTED);
+    return $this->reviewRepository->bulkUpdateStatus($ids, ReviewStatus::REJECTED->value);
   }
 
   public function getReviewsCount(): int
@@ -137,29 +138,11 @@ class ReviewService
 
   public function getAvailableStatuses(Review $review): array
   {
-    $allStatuses = [
-      Review::PENDING => __('app.status.pending'),
-      Review::APPROVED => __('app.status.approved'),
-      Review::REJECTED => __('app.status.rejected'),
-    ];
-
-    // Filter out invalid statuses based on business rules
-    $available = [];
-    foreach ($allStatuses as $status => $label) {
-      if ($this->canUpdateStatus($review, $status)) {
-        $available[$status] = $label;
-      }
-    }
-
-    return $available;
+    return ReviewStatus::options();
   }
 
   private function isValidStatus(string $status): bool
   {
-    return in_array($status, [
-      Review::PENDING,
-      Review::APPROVED,
-      Review::REJECTED,
-    ]);
+    return in_array($status, array_column(ReviewStatus::cases(), 'value'));
   }
 }
