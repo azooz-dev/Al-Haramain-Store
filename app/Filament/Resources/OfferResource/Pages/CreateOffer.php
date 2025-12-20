@@ -5,7 +5,7 @@ namespace App\Filament\Resources\OfferResource\Pages;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use App\Filament\Resources\OfferResource;
-use Modules\Offer\Services\Offer\OfferService;
+use Modules\Offer\Contracts\OfferServiceInterface;
 use Modules\Offer\Traits\HasOfferTranslations;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Concerns\SendsFilamentNotifications;
@@ -19,7 +19,7 @@ class CreateOffer extends CreateRecord
     private array $translationData = [];
 
     public function __construct(
-        protected OfferService $offerService
+        protected OfferServiceInterface $offerService
     ) {
         parent::__construct();
     }

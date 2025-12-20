@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductResource;
-use Modules\Catalog\Services\Product\ProductService;
+use Modules\Catalog\Contracts\ProductServiceInterface;
 use Modules\Catalog\Traits\HasProductTranslations;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
@@ -20,7 +20,7 @@ class CreateProduct extends CreateRecord
     private ?array $categoryIds = null;
 
     public function __construct(
-        protected ProductService $productService
+        protected ProductServiceInterface $productService
     ) {
         parent::__construct();
     }

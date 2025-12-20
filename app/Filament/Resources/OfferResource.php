@@ -14,7 +14,6 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OfferResource\Pages;
 use Modules\Offer\Contracts\OfferServiceInterface;
-use Modules\Catalog\Services\Product\ProductTranslationService;
 use App\Filament\Concerns\SendsFilamentNotifications;
 
 class OfferResource extends Resource
