@@ -3,13 +3,15 @@
 namespace Modules\Admin\Services;
 
 use Modules\Admin\Entities\Admin;
+use Modules\Admin\Contracts\AdminServiceInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Models\Role;
 use Modules\Admin\Exceptions\AdminException;
 use Modules\Admin\Repositories\Interface\AdminRepositoryInterface;
 
-class AdminService
+class AdminService implements AdminServiceInterface
 {
     public function __construct(
         private AdminRepositoryInterface $adminRepository

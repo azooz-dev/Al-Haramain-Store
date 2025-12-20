@@ -51,6 +51,12 @@ class AdminServiceProvider extends ServiceProvider
             \Modules\Admin\Repositories\Interface\AdminRepositoryInterface::class,
             \Modules\Admin\Repositories\Eloquent\AdminRepository::class
         );
+
+        // Bind service interface
+        $this->app->bind(
+            \Modules\Admin\Contracts\AdminServiceInterface::class,
+            \Modules\Admin\Services\AdminService::class
+        );
     }
 
     /**
