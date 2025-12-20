@@ -3,6 +3,7 @@
 namespace Modules\Order\Repositories\Eloquent\Order;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Modules\Coupon\Contracts\CouponUsageRepositoryInterface;
 
 class CouponUsageRepository implements CouponUsageRepositoryInterface
@@ -10,7 +11,7 @@ class CouponUsageRepository implements CouponUsageRepositoryInterface
     public function countCouponUsage(int $couponId): int
     {
         return Order::where('coupon_id', $couponId)
-            ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
+            ->whereNotIn('status', [OrderStatus::CANCELLED->value, OrderStatus::REFUNDED->value])
             ->count();
     }
 
@@ -18,8 +19,7 @@ class CouponUsageRepository implements CouponUsageRepositoryInterface
     {
         return Order::where('coupon_id', $couponId)
             ->where('user_id', $userId)
-            ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
+            ->whereNotIn('status', [OrderStatus::CANCELLED->value, OrderStatus::REFUNDED->value])
             ->count();
     }
 }
-

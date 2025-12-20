@@ -1,26 +1,26 @@
 <?php
 
+use Modules\Order\Enums\OrderStatus;
+
 return [
     'status_transitions' => [
-        \Modules\Order\Entities\Order\Order::PENDING => [
-            \Modules\Order\Entities\Order\Order::PROCESSING,
-            \Modules\Order\Entities\Order\Order::SHIPPED,
-            \Modules\Order\Entities\Order\Order::CANCELLED,
+        OrderStatus::PENDING->value => [
+            OrderStatus::PROCESSING->value,
+            OrderStatus::SHIPPED->value,
+            OrderStatus::CANCELLED->value,
         ],
-        \Modules\Order\Entities\Order\Order::PROCESSING => [
-            \Modules\Order\Entities\Order\Order::SHIPPED,
-            \Modules\Order\Entities\Order\Order::CANCELLED,
+        OrderStatus::PROCESSING->value => [
+            OrderStatus::SHIPPED->value,
+            OrderStatus::CANCELLED->value,
         ],
-        \Modules\Order\Entities\Order\Order::SHIPPED => [
-            \Modules\Order\Entities\Order\Order::DELIVERED,
-            \Modules\Order\Entities\Order\Order::CANCELLED,
+        OrderStatus::SHIPPED->value => [
+            OrderStatus::DELIVERED->value,
+            OrderStatus::CANCELLED->value,
         ],
-        \Modules\Order\Entities\Order\Order::DELIVERED => [
-            \Modules\Order\Entities\Order\Order::REFUNDED,
+        OrderStatus::DELIVERED->value => [
+            OrderStatus::REFUNDED->value,
         ],
-        \Modules\Order\Entities\Order\Order::CANCELLED => [],
-        \Modules\Order\Entities\Order\Order::REFUNDED => [],
+        OrderStatus::CANCELLED->value => [],
+        OrderStatus::REFUNDED->value => [],
     ],
 ];
-
-

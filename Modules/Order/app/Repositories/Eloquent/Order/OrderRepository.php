@@ -3,6 +3,7 @@
 namespace Modules\Order\Repositories\Eloquent\Order;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class OrderRepository implements OrderRepositoryInterface
   public function countCouponUsage(int $couponId): int
   {
     return Order::where('coupon_id', $couponId)
-      ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
+      ->whereNotIn('status', [OrderStatus::CANCELLED->value, OrderStatus::REFUNDED->value])
       ->count();
   }
 
@@ -32,14 +33,14 @@ class OrderRepository implements OrderRepositoryInterface
   {
     return Order::where('coupon_id', $couponId)
       ->where('user_id', $userId)
-      ->whereNotIn('status', [Order::CANCELLED, Order::REFUNDED])
+      ->whereNotIn('status', [OrderStatus::CANCELLED->value, OrderStatus::REFUNDED->value])
       ->count();
   }
 
   public function isDelivered(int $orderId): bool
   {
     return Order::where('id', $orderId)
-      ->where('status', Order::DELIVERED)
+      ->where('status', OrderStatus::DELIVERED)
       ->exists();
   }
 
@@ -132,11 +133,11 @@ class OrderRepository implements OrderRepositoryInterface
 
   public function markOrdersAsProcessing(array $ids): int
   {
-    return Order::whereIn('id', $ids)->update(['status' => Order::PROCESSING]);
+    return Order::whereIn('id', $ids)->update(['status' => OrderStatus::PROCESSING->value]);
   }
 
   public function markOrdersAsShipped(array $ids): int
   {
-    return Order::whereIn('id', $ids)->update(['status' => Order::SHIPPED]);
+    return Order::whereIn('id', $ids)->update(['status' => OrderStatus::SHIPPED->value]);
   }
 }

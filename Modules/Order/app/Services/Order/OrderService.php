@@ -3,6 +3,7 @@
 namespace Modules\Order\Services\Order;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -110,7 +111,10 @@ class OrderService implements OrderServiceInterface
     {
         // If status is being updated, use updateOrderStatus for logging
         if (isset($data['status'])) {
-            return $this->updateOrderStatus($id, $data['status']);
+            $status = $data['status'] instanceof OrderStatus
+                ? $data['status']->value
+                : $data['status'];
+            return $this->updateOrderStatus($id, $status);
         }
 
         // Otherwise, update normally
@@ -126,7 +130,9 @@ class OrderService implements OrderServiceInterface
             throw new OrderException(__('app.messages.order.invalid_status_transition'), 422);
         }
 
-        $oldStatus = $order->status;
+        $oldStatus = $order->status instanceof OrderStatus
+            ? $order->status->value
+            : $order->status;
 
         // Update order status via repository
         $updatedOrder = $this->orderRepository->updateStatus($id, $status);
@@ -192,7 +198,8 @@ class OrderService implements OrderServiceInterface
     public function canDeleteOrder(Order $order): bool
     {
         // Only cancelled or refunded orders can be deleted
-        return in_array($order->status, [Order::CANCELLED, Order::REFUNDED]);
+        $status = $order->status;
+        return $status === OrderStatus::CANCELLED || $status === OrderStatus::REFUNDED;
     }
 
     protected function getStatusTransitions(): array
@@ -203,17 +210,21 @@ class OrderService implements OrderServiceInterface
     public function canUpdateStatus(Order $order, string $newStatus): bool
     {
         // Check if new status is valid
-        if (!in_array($newStatus, Order::getStatuses())) {
+        if (!in_array($newStatus, OrderStatus::toArray())) {
             return false;
         }
 
+        // Get current status value
+        $currentStatus = $order->status instanceof OrderStatus
+            ? $order->status->value
+            : $order->status;
+
         // If status hasn't changed, allow it
-        if ($order->status === $newStatus) {
+        if ($currentStatus === $newStatus) {
             return true;
         }
 
         $transitions = $this->getStatusTransitions();
-        $currentStatus = $order->status;
 
         if (!isset($transitions[$currentStatus])) {
             return false;
@@ -224,7 +235,10 @@ class OrderService implements OrderServiceInterface
 
     public function getAvailableStatuses(Order $order): array
     {
-        $currentStatus = $order->status;
+        $currentStatus = $order->status instanceof OrderStatus
+            ? $order->status->value
+            : $order->status;
+
         $transitions = $this->getStatusTransitions();
         $availableStatuses = $transitions[$currentStatus] ?? [];
 
@@ -232,18 +246,11 @@ class OrderService implements OrderServiceInterface
         $availableStatuses[] = $currentStatus;
         $availableStatuses = array_unique($availableStatuses);
 
-        // Build options array with translations
+        // Build options array with translations using enum
         $options = [];
         foreach ($availableStatuses as $status) {
-            $options[$status] = match ($status) {
-                Order::PENDING => __('app.status.pending'),
-                Order::PROCESSING => __('app.status.processing'),
-                Order::SHIPPED => __('app.status.shipped'),
-                Order::DELIVERED => __('app.status.delivered'),
-                Order::CANCELLED => __('app.status.cancelled'),
-                Order::REFUNDED => __('app.status.refunded'),
-                default => $status,
-            };
+            $enumStatus = OrderStatus::tryFrom($status);
+            $options[$status] = $enumStatus?->label() ?? $status;
         }
 
         return $options;
