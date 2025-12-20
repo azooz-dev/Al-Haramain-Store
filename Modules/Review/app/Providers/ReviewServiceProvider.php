@@ -65,6 +65,12 @@ class ReviewServiceProvider extends ServiceProvider
             \Modules\Analytics\Repositories\Interface\ReviewAnalyticsRepositoryInterface::class,
             \Modules\Analytics\Repositories\Eloquent\ReviewAnalyticsRepository::class
         );
+
+        // Bind service interface
+        $this->app->bind(
+            \Modules\Review\Contracts\ReviewServiceInterface::class,
+            \Modules\Review\Services\Review\ReviewService::class
+        );
     }
 
     /**

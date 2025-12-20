@@ -4,13 +4,14 @@ namespace Modules\Review\Services\Review;
 
 use Modules\Review\Entities\Review\Review;
 use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Contracts\ReviewServiceInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Modules\Review\Repositories\Interface\Review\ReviewRepositoryInterface;
 use Modules\Catalog\Contracts\ProductTranslationServiceInterface;
 use Modules\Offer\Contracts\OfferServiceInterface;
 
-class ReviewService
+class ReviewService implements ReviewServiceInterface
 {
   public function __construct(
     private ReviewRepositoryInterface $reviewRepository,
