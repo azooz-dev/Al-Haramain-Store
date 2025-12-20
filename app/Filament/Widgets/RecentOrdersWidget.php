@@ -6,6 +6,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Order\Entities\Order\Order;
 use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Repositories\Interface\Order\OrderRepositoryInterface;
 use App\Filament\Concerns\ResolvesServices;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Modules\Analytics\Services\OrderAnalyticsService;
@@ -19,6 +20,10 @@ class RecentOrdersWidget extends BaseWidget
     protected static ?int $sort = 6;
     protected static bool $isLazy = true;
     protected int | string | array $columnSpan = 'full';
+
+    public function __construct(
+        protected OrderRepositoryInterface $orderRepository
+    ) {}
 
     public function getHeading(): ?string
     {
@@ -36,13 +41,13 @@ class RecentOrdersWidget extends BaseWidget
 
         return $table
             ->query(function () use ($orderIds) {
-                $query = Order::query()
+                $query = $this->orderRepository->getQueryBuilder()
                     ->with([
                         'user',
                         'items.orderable' => function ($morphTo) {
                             $morphTo->morphWith([
                                 \Modules\Catalog\Entities\Product\Product::class => ['translations'],
-                                \App\Models\Offer\Offer::class => ['translations'],
+                                \Modules\Offer\Entities\Offer\Offer::class => ['translations'],
                             ]);
                         },
                         'items.variant',
