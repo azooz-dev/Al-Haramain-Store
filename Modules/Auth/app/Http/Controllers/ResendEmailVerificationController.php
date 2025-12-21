@@ -3,7 +3,7 @@
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\Auth\Services\ResendEmailVerificationService;
+use Modules\Auth\Contracts\ResendEmailVerificationServiceInterface;
 use Illuminate\Http\Request;
 
 use function App\Helpers\showOne;
@@ -11,7 +11,7 @@ use function App\Helpers\showOne;
 class ResendEmailVerificationController extends Controller
 {
 
-    public function __construct(private ResendEmailVerificationService $resendEmail) {}
+    public function __construct(private ResendEmailVerificationServiceInterface $resendEmail) {}
 
     public function resend(Request $request)
     {

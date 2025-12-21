@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 
 use function App\Helpers\showOne;
 
-use Modules\Auth\Services\EmailVerificationService;
+use Modules\Auth\Contracts\EmailVerificationServiceInterface;
 
 class EmailVerificationController extends Controller
 {
-    public function __construct(private EmailVerificationService $emailVerificationService) {}
+    public function __construct(private EmailVerificationServiceInterface $emailVerificationService) {}
     public function verify(Request $request)
     {
         $data = $request->validate(['code' => 'required|string', "email" => "required|email"]);

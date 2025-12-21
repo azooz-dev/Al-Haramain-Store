@@ -4,13 +4,13 @@ namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Modules\Auth\Http\Requests\ResetPasswordRequest;
-use Modules\Auth\Services\ResetPasswordService;
+use Modules\Auth\Contracts\ResetPasswordServiceInterface;
 
 use function App\Helpers\showMessage;
 
 class ResetPasswordController extends Controller
 {
-    public function __construct(private ResetPasswordService $resetPasswordService) {}
+    public function __construct(private ResetPasswordServiceInterface $resetPasswordService) {}
 
     public function reset(ResetPasswordRequest $request)
     {

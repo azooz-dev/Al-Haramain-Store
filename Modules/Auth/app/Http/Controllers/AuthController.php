@@ -3,7 +3,7 @@
 namespace Modules\Auth\Http\Controllers;
 
 use function App\Helpers\showOne;
-use Modules\Auth\Services\AuthService;
+use Modules\Auth\Contracts\AuthServiceInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +15,7 @@ class AuthController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private AuthService $authService) {}
+    public function __construct(private AuthServiceInterface $authService) {}
 
     public function register(UserStoreRequest $request)
     {

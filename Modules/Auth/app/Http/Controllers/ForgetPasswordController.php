@@ -3,14 +3,14 @@
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\Auth\Services\ForgetPasswordService;
+use Modules\Auth\Contracts\ForgetPasswordServiceInterface;
 use Illuminate\Http\Request;
 
 use function App\Helpers\showMessage;
 
 class ForgetPasswordController extends Controller
 {
-    public function __construct(private ForgetPasswordService $forgetPassword) {}
+    public function __construct(private ForgetPasswordServiceInterface $forgetPassword) {}
 
     public function forget(Request $request)
     {
