@@ -275,7 +275,7 @@ class OfferResource extends Resource
                                 fn(array $state): ?string =>
                                 $state['product_id'] ?
                                     (function () use ($state) {
-                                        $product = app(\Modules\Catalog\Services\Product\ProductService::class)->findProductById($state['product_id']);
+                                        $product = app(\Modules\Catalog\Contracts\ProductServiceInterface::class)->findProductById($state['product_id']);
                                         return $product->translations->where('local', app()->getLocale())->first()?->name ?? 'Product';
                                     })()
                                     : null
