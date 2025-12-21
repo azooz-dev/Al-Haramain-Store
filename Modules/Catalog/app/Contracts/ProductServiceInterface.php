@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 interface ProductServiceInterface
 {
     /**
+     * Get all products
+     */
+    public function getProducts();
+
+    /**
      * Get product by ID
      */
     public function getProductById(int $id);
@@ -57,4 +62,3 @@ interface ProductServiceInterface
      */
     public function getPriceRange(Product $product): string;
 }
-
