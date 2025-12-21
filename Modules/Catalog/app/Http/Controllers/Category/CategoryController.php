@@ -3,13 +3,13 @@
 namespace Modules\Catalog\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
-use Modules\Catalog\Services\Category\CategoryService;
+use Modules\Catalog\Contracts\CategoryServiceInterface;
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;
 
 class CategoryController extends Controller
 {
-    public function __construct(private CategoryService $categoryService) {}
+    public function __construct(private CategoryServiceInterface $categoryService) {}
 
     /**
      * Display a listing of the resource.

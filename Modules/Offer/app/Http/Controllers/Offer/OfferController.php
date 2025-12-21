@@ -3,14 +3,14 @@
 namespace Modules\Offer\Http\Controllers\Offer;
 
 use App\Http\Controllers\Controller;
-use Modules\Offer\Services\Offer\OfferService;
+use Modules\Offer\Contracts\OfferServiceInterface;
 
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;
 
 class OfferController extends Controller
 {
-    public function __construct(private OfferService $offerService) {}
+    public function __construct(private OfferServiceInterface $offerService) {}
 
     /**
      * Display a listing of the resource.

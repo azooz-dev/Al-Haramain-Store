@@ -4,13 +4,13 @@ namespace Modules\Order\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
 use Modules\Order\Http\Requests\Order\OrderRequest;
-use Modules\Order\Services\Order\OrderService;
+use Modules\Order\Contracts\OrderServiceInterface;
 
 use function App\Helpers\showOne;
 
 class OrderController extends Controller
 {
-    public function __construct(private OrderService $orderService) {}
+    public function __construct(private OrderServiceInterface $orderService) {}
     /**
      * Store a newly created resource in storage.
      */

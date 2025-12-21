@@ -9,12 +9,12 @@ use App\Http\Controllers\Controller;
 use function App\Helpers\errorResponse;
 use function App\Helpers\successResponse;
 
-use Modules\Payment\Services\Payment\WebhookService;
+use Modules\Payment\Contracts\WebhookServiceInterface;
 use Stripe\Exception\SignatureVerificationException;
 
 class StripeWebhookController extends Controller
 {
-    public function __construct(private WebhookService $webhookService) {}
+    public function __construct(private WebhookServiceInterface $webhookService) {}
 
     public function handle(Request $request)
     {

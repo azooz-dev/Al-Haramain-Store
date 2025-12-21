@@ -3,13 +3,13 @@
 namespace Modules\Coupon\Http\Controllers\Coupon;
 
 use App\Http\Controllers\Controller;
-use Modules\Coupon\Services\Coupon\CouponService;
+use Modules\Coupon\Contracts\CouponServiceInterface;
 
 use function App\Helpers\showOne;
 
 class CouponController extends Controller
 {
-    public function __construct(private CouponService $couponService) {}
+    public function __construct(private CouponServiceInterface $couponService) {}
     /**
      * Display a listing of the resource.
      */
