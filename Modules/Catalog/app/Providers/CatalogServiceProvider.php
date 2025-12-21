@@ -101,6 +101,11 @@ class CatalogServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \Modules\Catalog\Contracts\ProductAnalyticsDataInterface::class,
+            \Modules\Catalog\Services\Product\ProductAnalyticsDataService::class
+        );
+
+        $this->app->bind(
             \Modules\Catalog\Contracts\CategoryServiceInterface::class,
             \Modules\Catalog\Services\Category\CategoryService::class
         );
