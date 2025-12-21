@@ -3,13 +3,13 @@
 namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\User\Services\UserOrderService;
+use Modules\User\Contracts\UserOrderServiceInterface;
 
 use function App\Helpers\showAll;
 
 class UserOrderController extends Controller
 {
-    public function __construct(private UserOrderService $userOrderService) {}
+    public function __construct(private UserOrderServiceInterface $userOrderService) {}
     /**
      * Display a listing of the resource.
      */

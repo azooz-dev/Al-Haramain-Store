@@ -7,7 +7,7 @@ use function App\Helpers\showAll;
 use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
 use Modules\User\Entities\Address;
-use Modules\User\Services\UserAddressService;
+use Modules\User\Contracts\UserAddressServiceInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Modules\User\app\Http\Requests\UserAddress\UserAddressStoreRequest;
 use Modules\User\app\Http\Requests\UserAddress\UserAddressUpdateRequest;
@@ -16,7 +16,7 @@ class UserAddressController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private UserAddressService $userAddressService) {}
+    public function __construct(private UserAddressServiceInterface $userAddressService) {}
 
     /**
      * Display a listing of the resource.

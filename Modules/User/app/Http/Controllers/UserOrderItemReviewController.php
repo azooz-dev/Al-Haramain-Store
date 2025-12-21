@@ -11,13 +11,13 @@ use function App\Helpers\showOne;
 use App\Http\Controllers\Controller;
 use Modules\Review\Http\Requests\Review\ReviewRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Modules\User\Services\UserOrderItemReviewService;
+use Modules\User\Contracts\UserOrderItemReviewServiceInterface;
 
 class UserOrderItemReviewController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private UserOrderItemReviewService $reviewService) {}
+    public function __construct(private UserOrderItemReviewServiceInterface $reviewService) {}
     /**
      * Store a newly created resource in storage.
      */

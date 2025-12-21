@@ -5,14 +5,14 @@ namespace Modules\User\Http\Controllers;
 use function App\Helpers\showAll;
 use App\Http\Controllers\Controller;
 use Modules\Favorite\Entities\Favorite\Favorite;
-use Modules\User\Services\UserFavoriteService;
+use Modules\User\Contracts\UserFavoriteServiceInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserFavoriteController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private UserFavoriteService $userFavoriteService) {}
+    public function __construct(private UserFavoriteServiceInterface $userFavoriteService) {}
 
     /**
      * Display a listing of the resource.

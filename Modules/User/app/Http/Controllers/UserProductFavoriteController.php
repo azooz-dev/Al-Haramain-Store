@@ -3,13 +3,13 @@
 namespace Modules\User\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\User\Services\UserProductFavoriteService;
+use Modules\User\Contracts\UserProductFavoriteServiceInterface;
 
 use function App\Helpers\showOne;
 
 class UserProductFavoriteController extends Controller
 {
-    public function __construct(private UserProductFavoriteService $userProductFavoriteService) {}
+    public function __construct(private UserProductFavoriteServiceInterface $userProductFavoriteService) {}
 
     /**
      * Store a newly created resource in storage.

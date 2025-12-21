@@ -3,7 +3,7 @@
 namespace Modules\User\Http\Controllers;
 
 use Modules\User\Entities\User;
-use Modules\User\Services\UserService;
+use Modules\User\Contracts\UserServiceInterface;
 use App\Http\Controllers\Controller;
 use Modules\User\app\Http\Requests\UserUpdateRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private UserService $userService) {}
+    public function __construct(private UserServiceInterface $userService) {}
 
     /**
      * Update the specified resource in storage.
