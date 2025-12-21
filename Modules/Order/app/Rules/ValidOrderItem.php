@@ -5,18 +5,18 @@ namespace Modules\Order\Rules;
 use Closure;
 use Modules\Offer\Entities\Offer\Offer;
 use Modules\Catalog\Entities\Product\Product;
-use Modules\Offer\Services\Offer\OfferService;
-use Modules\Catalog\Services\Product\ProductService;
+use Modules\Offer\Contracts\OfferServiceInterface;
+use Modules\Catalog\Contracts\ProductServiceInterface;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
-use Modules\Catalog\Services\Product\Variant\ProductVariantService;
+use Modules\Catalog\Contracts\ProductVariantServiceInterface;
 
 class ValidOrderItem implements ValidationRule
 {
     public function __construct(
-        private ProductService $productService,
-        private OfferService $offerService,
-        private ProductVariantService $productVariantService,
+        private ProductServiceInterface $productService,
+        private OfferServiceInterface $offerService,
+        private ProductVariantServiceInterface $productVariantService,
         private array $items
     ) {}
     /**

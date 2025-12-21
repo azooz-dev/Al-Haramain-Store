@@ -8,9 +8,9 @@ use Modules\Order\Rules\ValidOrderItem;
 use Modules\Payment\Enums\PaymentMethod;
 use Modules\Catalog\Entities\Product\Product;
 use App\Http\Requests\BaseRequest;
-use Modules\Offer\Services\Offer\OfferService;
-use Modules\Catalog\Services\Product\ProductService;
-use Modules\Catalog\Services\Product\Variant\ProductVariantService;
+use Modules\Offer\Contracts\OfferServiceInterface;
+use Modules\Catalog\Contracts\ProductServiceInterface;
+use Modules\Catalog\Contracts\ProductVariantServiceInterface;
 
 abstract class BaseOrderRequest extends BaseRequest
 {
@@ -42,9 +42,9 @@ abstract class BaseOrderRequest extends BaseRequest
             'coupon_code' => 'nullable|exists:coupons,code',
             'items' => 'required|array|min:1',
             'items.*' => new ValidOrderItem(
-                $this->container->make(ProductService::class),
-                $this->container->make(OfferService::class),
-                $this->container->make(ProductVariantService::class),
+                $this->container->make(ProductServiceInterface::class),
+                $this->container->make(OfferServiceInterface::class),
+                $this->container->make(ProductVariantServiceInterface::class),
                 $this->items
             ),
             'items.*.orderable_type' => 'required|string|in:' . Product::class . ',' . Offer::class,
