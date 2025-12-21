@@ -2,11 +2,12 @@
 
 namespace Modules\Auth\Services;
 
+use Modules\Auth\Contracts\ForgetPasswordServiceInterface;
 use Illuminate\Support\Facades\Password;
 use Modules\Auth\Events\PasswordResetTokenCreated;
 use Modules\Auth\Repositories\Interface\ForgetPasswordRepositoryInterface;
 
-class ForgetPasswordService
+class ForgetPasswordService implements ForgetPasswordServiceInterface
 {
   public function __construct(private ForgetPasswordRepositoryInterface $forgetPasswordRepository) {}
 

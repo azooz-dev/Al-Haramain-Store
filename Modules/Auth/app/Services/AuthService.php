@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\Services;
 
+use Modules\Auth\Contracts\AuthServiceInterface;
 use Modules\Auth\Events\UserRegistered;
 use function App\Helpers\showMessage;
 use Modules\User\Exceptions\UserException;
@@ -10,7 +11,7 @@ use function App\Helpers\errorResponse;
 use Modules\User\app\Http\Resources\UserApiResource;
 use Modules\Auth\Repositories\Interface\AuthRepositoryInterface;
 
-class AuthService
+class AuthService implements AuthServiceInterface
 {
   public function __construct(private AuthRepositoryInterface $authRepository) {}
 

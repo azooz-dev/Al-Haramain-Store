@@ -2,10 +2,11 @@
 
 namespace Modules\Auth\Services;
 
+use Modules\Auth\Contracts\ResetPasswordServiceInterface;
 use Modules\Auth\Repositories\Interface\ResetPasswordRepositoryInterface;
 use Illuminate\Support\Facades\Password;
 
-class ResetPasswordService
+class ResetPasswordService implements ResetPasswordServiceInterface
 {
   public function __construct(private ResetPasswordRepositoryInterface $resetPasswordRepository) {}
 

@@ -2,11 +2,12 @@
 
 namespace Modules\Auth\Services;
 
+use Modules\Auth\Contracts\ResendEmailVerificationServiceInterface;
 use Modules\Auth\Events\ResendVerificationEmail;
 use function App\Helpers\errorResponse;
 use Modules\Auth\Repositories\Interface\ResendEmailVerificationRepositoryInterface;
 
-class ResendEmailVerificationService
+class ResendEmailVerificationService implements ResendEmailVerificationServiceInterface
 {
   public function __construct(private ResendEmailVerificationRepositoryInterface $resendEmail) {}
 

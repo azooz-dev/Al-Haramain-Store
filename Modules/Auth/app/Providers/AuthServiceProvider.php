@@ -41,6 +41,34 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
         $this->registerRepositories();
+        $this->registerServices();
+    }
+
+    /**
+     * Register service bindings.
+     */
+    protected function registerServices(): void
+    {
+        $this->app->bind(
+            \Modules\Auth\Contracts\AuthServiceInterface::class,
+            \Modules\Auth\Services\AuthService::class
+        );
+        $this->app->bind(
+            \Modules\Auth\Contracts\ResetPasswordServiceInterface::class,
+            \Modules\Auth\Services\ResetPasswordService::class
+        );
+        $this->app->bind(
+            \Modules\Auth\Contracts\ForgetPasswordServiceInterface::class,
+            \Modules\Auth\Services\ForgetPasswordService::class
+        );
+        $this->app->bind(
+            \Modules\Auth\Contracts\EmailVerificationServiceInterface::class,
+            \Modules\Auth\Services\EmailVerificationService::class
+        );
+        $this->app->bind(
+            \Modules\Auth\Contracts\ResendEmailVerificationServiceInterface::class,
+            \Modules\Auth\Services\ResendEmailVerificationService::class
+        );
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\Services;
 
+use Modules\Auth\Contracts\EmailVerificationServiceInterface;
 use Modules\User\Entities\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
@@ -11,7 +12,7 @@ use Modules\User\Exceptions\VerificationEmailFailedException;
 use Modules\User\app\Http\Resources\UserApiResource;
 use Modules\Auth\Repositories\Interface\EmailVerificationRepositoryInterface;
 
-class EmailVerificationService
+class EmailVerificationService implements EmailVerificationServiceInterface
 {
   public function __construct(private EmailVerificationRepositoryInterface $emailVerification) {}
 
