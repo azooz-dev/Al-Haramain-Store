@@ -56,6 +56,12 @@ class PaymentServiceProvider extends ServiceProvider
             \Modules\Payment\Services\Payment\PaymentService::class
         );
 
+        // Register WebhookServiceInterface binding
+        $this->app->bind(
+            \Modules\Payment\Contracts\WebhookServiceInterface::class,
+            \Modules\Payment\Services\Payment\WebhookService::class
+        );
+
         // Register payment processors as singletons
         $this->app->singleton(
             \Modules\Payment\Services\Payment\Processors\CashOnDeliveryProcessor::class

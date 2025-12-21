@@ -6,9 +6,10 @@ use Stripe\PaymentIntent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Order\Contracts\OrderServiceInterface;
+use Modules\Payment\Contracts\WebhookServiceInterface;
 use Modules\Payment\Repositories\Interface\Payment\PaymentRepositoryInterface;
 
-class WebhookService
+class WebhookService implements WebhookServiceInterface
 {
   public function __construct(
     private OrderServiceInterface $orderService,
