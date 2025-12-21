@@ -3,18 +3,20 @@
 namespace Modules\Auth\Services;
 
 use Modules\Auth\Contracts\EmailVerificationServiceInterface;
-use Modules\User\Entities\User;
+use Modules\User\Contracts\UserServiceInterface;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use function App\Helpers\errorResponse;
 
 use Modules\User\Exceptions\VerificationEmailFailedException;
-use Modules\User\app\Http\Resources\UserApiResource;
 use Modules\Auth\Repositories\Interface\EmailVerificationRepositoryInterface;
 
 class EmailVerificationService implements EmailVerificationServiceInterface
 {
-  public function __construct(private EmailVerificationRepositoryInterface $emailVerification) {}
+  public function __construct(
+    private EmailVerificationRepositoryInterface $emailVerification,
+    private UserServiceInterface $userService
+  ) {}
 
   public function verify(array $data)
   {
@@ -29,18 +31,24 @@ class EmailVerificationService implements EmailVerificationServiceInterface
       return errorResponse($exception->getMessage(), $exception->getCode());
     }
 
-    if (!$user->isVerified()) {
-      $user->forceFill(['email_verified_at' => now(), 'verified' => true])->save();
+    // Use UserServiceInterface instead of direct entity access
+    if (!$this->userService->isUserVerified($user->id)) {
+      $userResource = $this->userService->markUserAsVerified($user->id);
+    } else {
+      // User already verified, get the resource without updating
+      $userResource = $this->userService->getUserApiResource($user->id);
+    }
+
+    if (!$userResource) {
+      return errorResponse(__("app.messages.auth.user_not_found"), 404);
     }
 
     Cache::forget($cacheKey);
 
     request()->session()->regenerate();
 
-    $user = new UserApiResource($user);
+    $token = $userResource->createToken('personal_token')->plainTextToken;
 
-    $token = $user->createToken('personal_token')->plainTextToken;
-
-    return ['user' => $user, 'token' => $token];
+    return ['user' => $userResource, 'token' => $token];
   }
 }

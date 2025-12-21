@@ -47,6 +47,38 @@ class UserService implements UserServiceInterface
     return $this->userRepository->findById($userId);
   }
 
+  public function isUserVerified(int $userId): bool
+  {
+    $user = $this->userRepository->findById($userId);
+    return $user && $user->isVerified();
+  }
+
+  public function markUserAsVerified(int $userId)
+  {
+    $user = $this->userRepository->findById($userId);
+    
+    if (!$user) {
+      return null;
+    }
+
+    if (!$user->isVerified()) {
+      $user->forceFill(['email_verified_at' => now(), 'verified' => true])->save();
+    }
+
+    return new UserApiResource($user);
+  }
+
+  public function getUserApiResource(int $userId)
+  {
+    $user = $this->userRepository->findById($userId);
+    
+    if (!$user) {
+      return null;
+    }
+
+    return new UserApiResource($user);
+  }
+
   private function checkBuyerVerified(int $userId): void
   {
     $user = $this->userRepository->findById($userId);
