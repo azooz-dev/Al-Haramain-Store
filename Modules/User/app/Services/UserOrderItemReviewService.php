@@ -9,10 +9,11 @@ use Modules\Order\Exceptions\Order\Review\ReviewException;
 
 use Modules\Review\Http\Resources\Review\ReviewApiResource;
 use Modules\Order\Exceptions\Order\CheckDeliveredOrderException;
+use Modules\User\Contracts\UserOrderItemReviewServiceInterface;
 use Modules\Order\Repositories\Interface\OrderItem\OrderItemRepositoryInterface;
 use Modules\User\Repositories\Interface\UserOrderItemReviewRepositoryInterface;
 
-class UserOrderItemReviewService
+class UserOrderItemReviewService implements UserOrderItemReviewServiceInterface
 {
   public function __construct(
     private UserOrderItemReviewRepositoryInterface $userOrderItemReviewRepository,

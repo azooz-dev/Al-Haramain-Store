@@ -81,6 +81,26 @@ class UserServiceProvider extends ServiceProvider
             \Modules\User\Contracts\UserServiceInterface::class,
             \Modules\User\Services\UserService::class
         );
+        $this->app->bind(
+            \Modules\User\Contracts\UserAddressServiceInterface::class,
+            \Modules\User\Services\UserAddressService::class
+        );
+        $this->app->bind(
+            \Modules\User\Contracts\UserFavoriteServiceInterface::class,
+            \Modules\User\Services\UserFavoriteService::class
+        );
+        $this->app->bind(
+            \Modules\User\Contracts\UserOrderServiceInterface::class,
+            \Modules\User\Services\UserOrderService::class
+        );
+        $this->app->bind(
+            \Modules\User\Contracts\UserProductFavoriteServiceInterface::class,
+            \Modules\User\Services\UserProductFavoriteService::class
+        );
+        $this->app->bind(
+            \Modules\User\Contracts\UserOrderItemReviewServiceInterface::class,
+            \Modules\User\Services\UserOrderItemReviewService::class
+        );
     }
 
     /**

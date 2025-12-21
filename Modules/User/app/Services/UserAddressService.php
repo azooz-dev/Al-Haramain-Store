@@ -3,6 +3,7 @@
 namespace Modules\User\Services;
 
 use Modules\Order\Exceptions\Order\OrderException;
+use Modules\User\Contracts\UserAddressServiceInterface;
 use Modules\User\Exceptions\UserAddressException;
 use Modules\User\app\Http\Resources\UserAddresses\AddressApiResource;
 use Modules\User\Repositories\Interface\UserAddressRepositoryInterface;
@@ -11,7 +12,7 @@ use Modules\User\Contracts\UserServiceInterface;
 use function App\Helpers\errorResponse;
 use function App\Helpers\showMessage;
 
-class UserAddressService
+class UserAddressService implements UserAddressServiceInterface
 {
   public function __construct(
     private UserAddressRepositoryInterface $userAddressRepository,

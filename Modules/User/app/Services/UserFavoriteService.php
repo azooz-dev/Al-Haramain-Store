@@ -4,12 +4,13 @@ namespace Modules\User\Services;
 
 use Modules\Favorite\Exceptions\Favorite\FavoriteException;
 use Modules\Favorite\Http\Resources\Favorite\FavoriteApiResource;
+use Modules\User\Contracts\UserFavoriteServiceInterface;
 use Modules\User\Repositories\Interface\UserFavoriteRepositoryInterface;
 
 use function App\Helpers\errorResponse;
 use function App\Helpers\showMessage;
 
-class UserFavoriteService
+class UserFavoriteService implements UserFavoriteServiceInterface
 {
   public function __construct(private UserFavoriteRepositoryInterface $userFavoriteRepository) {}
 

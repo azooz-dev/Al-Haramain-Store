@@ -4,12 +4,13 @@ namespace Modules\User\Services;
 
 use Modules\Order\Exceptions\Order\OrderException;
 use Modules\Order\Http\Resources\Order\OrderApiResource;
+use Modules\User\Contracts\UserOrderServiceInterface;
 use Modules\User\Repositories\Interface\UserOrderRepositoryInterface;
 use Modules\User\Contracts\UserServiceInterface;
 
 use function App\Helpers\errorResponse;
 
-class UserOrderService
+class UserOrderService implements UserOrderServiceInterface
 {
   public function __construct(
     private UserOrderRepositoryInterface $userOrderRepository,
