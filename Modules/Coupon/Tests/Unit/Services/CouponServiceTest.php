@@ -202,6 +202,7 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = Coupon::factory()->make([
+            'id' => 2,
             'usage_limit_per_user' => 2,
             'status' => CouponStatus::ACTIVE,
             'start_date' => Carbon::now()->subDay(),
@@ -216,13 +217,13 @@ class CouponServiceTest extends TestCase
 
         $this->couponUsageRepositoryMock
             ->shouldReceive('countCouponUsage')
-            ->with($coupon->id)
+            ->with(2)
             ->once()
             ->andReturn(0);
 
         $this->couponUsageRepositoryMock
             ->shouldReceive('countUserCouponUsage')
-            ->with($coupon->id, 1)
+            ->with(2, 1)
             ->once()
             ->andReturn(2); // User already used 2 times
 
