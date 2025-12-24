@@ -100,6 +100,16 @@ class OrderService implements OrderServiceInterface
         }
     }
 
+    public function getUserOrders()
+    {
+        $userId = Auth::id();
+        
+        return $this->orderRepository->getQueryBuilder()
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
 
 
     public function isDelivered(int $orderId): bool

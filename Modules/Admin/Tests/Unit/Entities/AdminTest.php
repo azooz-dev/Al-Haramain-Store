@@ -6,6 +6,8 @@ use Tests\TestCase;
 use Modules\Admin\Entities\Admin;
 use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Filament\Panel;
 
 /**
  * TC-ADM-001: Admin Login - Verified Account
@@ -31,7 +33,7 @@ class AdminTest extends TestCase
         ]);
 
         // Act
-        $canAccess = $admin->canAccessPanel(Mockery::mock(\Filament\Panel::class));
+        $canAccess = $admin->canAccessPanel(Mockery::mock(Panel::class));
 
         // Assert
         $this->assertTrue($canAccess);
@@ -45,7 +47,7 @@ class AdminTest extends TestCase
         ]);
 
         // Act
-        $canAccess = $admin->canAccessPanel(Mockery::mock(\Filament\Panel::class));
+        $canAccess = $admin->canAccessPanel(Mockery::mock(Panel::class));
 
         // Assert
         $this->assertFalse($canAccess);
@@ -60,7 +62,7 @@ class AdminTest extends TestCase
         ]);
 
         // Act
-        $canAccess = $admin->canAccessPanel(Mockery::mock(\Filament\Panel::class));
+        $canAccess = $admin->canAccessPanel(Mockery::mock(Panel::class));
 
         // Assert
         $this->assertFalse($canAccess);

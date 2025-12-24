@@ -94,4 +94,16 @@ class CouponFactory extends Factory
       'discount_amount' => fake()->numberBetween(5, 50),
     ]);
   }
+
+  /**
+   * Indicate that the coupon is expired.
+   */
+  public function expired(): static
+  {
+    return $this->state(fn(array $attributes) => [
+      'status' => CouponStatus::ACTIVE,
+      'start_date' => fake()->dateTimeBetween('-6 months', '-2 months'),
+      'end_date' => fake()->dateTimeBetween('-2 months', '-1 day'),
+    ]);
+  }
 }

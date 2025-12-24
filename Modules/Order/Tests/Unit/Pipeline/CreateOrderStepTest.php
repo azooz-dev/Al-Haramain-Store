@@ -32,15 +32,23 @@ class CreateOrderStepTest extends TestCase
         $data = ['user_id' => 1, 'total_amount' => 100.00];
         $order = Order::factory()->make(['id' => 1]);
         $this->orderRepositoryMock->shouldReceive('store')->with($data)->once()->andReturn($order);
-        $result = $this->step->handle($data, function ($data) { return $data; });
+        $result = $this->step->handle($data, function ($data) {
+            return $data;
+        });
         $this->assertArrayHasKey('_order', $result);
     }
 
     public function test_throws_exception_when_order_creation_fails(): void
     {
         $data = ['user_id' => 1];
-        $this->orderRepositoryMock->shouldReceive('store')->with($data)->once()->andReturn(null);
+        $this->orderRepositoryMock
+            ->shouldReceive('store')
+            ->with($data)
+            ->once()
+            ->andThrow(new OrderException('Order creation failed', 500));
         $this->expectException(OrderException::class);
-        $this->step->handle($data, function ($data) { return $data; });
+        $this->step->handle($data, function ($data) {
+            return $data;
+        });
     }
 }

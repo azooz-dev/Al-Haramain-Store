@@ -41,3 +41,4 @@ interface ProductTranslationServiceInterface
     public function generateSlugFromName(string $productName): string;
 }
 
+

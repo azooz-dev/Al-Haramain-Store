@@ -21,7 +21,7 @@ class ProfileTest extends TestCase
         $user = User::factory()->verified()->create();
 
         // Act - The /api/user route is handled by Auth module
-        $response = $this->actingAs($user, 'sanctum')
+        $response = $this->actingAs($user, 'web')
             ->getJson('/api/user');
 
         // Assert
@@ -46,7 +46,7 @@ class ProfileTest extends TestCase
         ];
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->putJson("/api/users/{$user->id}", $data);
 
         // Assert
@@ -68,11 +68,10 @@ class ProfileTest extends TestCase
         ];
 
         // Act
-        $response = $this->actingAs($user1, 'api')
+        $response = $this->actingAs($user1, 'web')
             ->putJson("/api/users/{$user2->id}", $data);
 
         // Assert
         $response->assertStatus(403);
     }
 }
-

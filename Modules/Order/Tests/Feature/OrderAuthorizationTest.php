@@ -19,7 +19,7 @@ class OrderAuthorizationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         \Spatie\Permission\Models\Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'admin']
         );
@@ -59,7 +59,7 @@ class OrderAuthorizationTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user1->id]);
 
         // Act - User2 tries to view User1's order
-        $response = $this->actingAs($user2, 'api')
+        $response = $this->actingAs($user2, 'web')
             ->getJson("/api/orders/{$order->id}");
 
         // Assert
@@ -73,7 +73,7 @@ class OrderAuthorizationTest extends TestCase
         $order = Order::factory()->create(['user_id' => $user->id]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/orders/{$order->id}");
 
         // Assert
@@ -81,4 +81,3 @@ class OrderAuthorizationTest extends TestCase
         $response->assertJsonPath('data.id', $order->id);
     }
 }
-

@@ -11,6 +11,7 @@ use Modules\Catalog\Entities\Product\ProductVariant;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Payment\Enums\PaymentMethod;
+use Modules\User\Entities\Address;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 

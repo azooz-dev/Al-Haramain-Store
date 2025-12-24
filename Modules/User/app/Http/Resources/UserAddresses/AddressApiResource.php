@@ -4,6 +4,7 @@ namespace Modules\User\app\Http\Resources\UserAddresses;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\User\Enums\AddressType;
 
 class AddressApiResource extends JsonResource
 {
@@ -16,7 +17,9 @@ class AddressApiResource extends JsonResource
     {
         return [
             'identifier' => (int) $this->id,
-            'addressType' => (string) $this->address_type,
+            'addressType' => $this->address_type instanceof AddressType 
+                ? $this->address_type->value 
+                : (string) $this->address_type,
             "label" => (string) $this->label,
             'street' => (string) $this->street,
             "city" => (string) $this->city,

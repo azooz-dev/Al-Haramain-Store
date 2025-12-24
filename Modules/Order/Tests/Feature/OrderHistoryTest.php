@@ -17,7 +17,7 @@ class OrderHistoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         \Spatie\Permission\Models\Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'admin']
         );
@@ -34,21 +34,21 @@ class OrderHistoryTest extends TestCase
 
         // Create 3 orders for the user
         $userOrders = Order::factory()->count(3)->create(['user_id' => $user->id]);
-        
+
         // Create 2 orders for another user
         Order::factory()->count(2)->create(['user_id' => $otherUser->id]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson('/api/orders');
 
         // Assert
         $response->assertStatus(200);
-        
+
         // Verify only user's orders are returned
         $responseData = $response->json('data');
         $this->assertCount(3, $responseData);
-        
+
         foreach ($responseData as $orderData) {
             $this->assertEquals($user->id, $orderData['user_id']);
         }
@@ -60,7 +60,7 @@ class OrderHistoryTest extends TestCase
         $user = User::factory()->verified()->create();
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson('/api/orders');
 
         // Assert
@@ -68,4 +68,3 @@ class OrderHistoryTest extends TestCase
         $response->assertJsonPath('data', []);
     }
 }
-

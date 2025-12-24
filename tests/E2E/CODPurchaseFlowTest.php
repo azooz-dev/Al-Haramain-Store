@@ -4,9 +4,11 @@ namespace Tests\E2E;
 
 use Tests\TestCase;
 use Modules\User\Entities\User;
+use Modules\User\Entities\Address;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Order\Entities\Order\Order;
 use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -26,13 +28,18 @@ class CODPurchaseFlowTest extends TestCase
     {
         // Arrange
         $user = User::factory()->verified()->create();
-        $product = Product::factory()->create(['stock' => 5]);
+        $address = Address::factory()->create(['user_id' => $user->id]);
+        $product = Product::factory()->create(['quantity' => 5]);
 
         // Step 1: User creates order
         $orderData = [
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
             'items' => [
                 [
-                    'product_id' => $product->id,
+                    'orderable_type' => Product::class,
+                    'orderable_id' => $product->id,
                     'quantity' => 1,
                 ],
             ],

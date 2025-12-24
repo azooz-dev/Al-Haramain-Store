@@ -35,7 +35,7 @@ class ProductManagementFlowTest extends TestCase
         $productData = [
             'name' => 'Test Product',
             'price' => 99.99,
-            'stock' => 10,
+            'quantity' => 10,
         ];
 
         $createResponse = $this->actingAs($admin, 'admin')

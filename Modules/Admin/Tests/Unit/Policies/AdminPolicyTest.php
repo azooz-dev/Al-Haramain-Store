@@ -36,6 +36,9 @@ class AdminPolicyTest extends TestCase
     {
         // Arrange
         $admin = Admin::factory()->create();
+        $role = Role::where('name', 'super_admin')->first();
+        $permission = Permission::where('name', 'view_any_admin')->first();
+        $role->givePermissionTo($permission);
         $admin->assignRole('super_admin');
 
         // Act

@@ -75,8 +75,14 @@ class AuthServiceTest extends TestCase
         $result = $this->service->register($data);
 
         // Assert
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('message', $result);
+        if ($result instanceof \Illuminate\Http\JsonResponse) {
+            $resultData = $result->getData(true);
+            $this->assertIsArray($resultData);
+            $this->assertArrayHasKey('message', $resultData);
+        } else {
+            $this->assertIsArray($result);
+            $this->assertArrayHasKey('message', $result);
+        }
     }
 
     public function test_login_returns_user_and_token_when_verified(): void

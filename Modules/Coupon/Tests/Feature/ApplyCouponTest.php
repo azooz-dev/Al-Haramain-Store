@@ -20,7 +20,7 @@ class ApplyCouponTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         \Spatie\Permission\Models\Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'admin']
         );
@@ -37,7 +37,7 @@ class ApplyCouponTest extends TestCase
         ]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/coupons/{$coupon->code}/{$user->id}");
 
         // Assert
@@ -55,7 +55,7 @@ class ApplyCouponTest extends TestCase
         ]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/coupons/{$coupon->code}/{$user->id}");
 
         // Assert
@@ -73,7 +73,7 @@ class ApplyCouponTest extends TestCase
         ]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/coupons/{$coupon->code}/{$user->id}");
 
         // Assert
@@ -90,7 +90,7 @@ class ApplyCouponTest extends TestCase
         ]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/coupons/{$coupon->code}/{$user->id}");
 
         // Assert
@@ -108,11 +108,10 @@ class ApplyCouponTest extends TestCase
         ]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/coupons/{$coupon->code}/{$user->id}");
 
         // Assert
         $response->assertStatus(422);
     }
 }
-

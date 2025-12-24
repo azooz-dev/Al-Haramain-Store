@@ -2,7 +2,7 @@
 
 namespace Modules\User\Repositories\Interface;
 
-use App\Models\Review\Review;
+use Modules\Review\Entities\Review\Review;
 
 interface UserOrderItemReviewRepositoryInterface
 {

@@ -13,6 +13,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class OrderItemFactory extends Factory
 {
   /**
+   * The name of the factory's corresponding model.
+   *
+   * @var class-string<\Illuminate\Database\Eloquent\Model>
+   */
+  protected $model = OrderItem::class;
+
+  /**
    * Define the model's default state.
    *
    * @return array<string, mixed>
@@ -23,10 +30,12 @@ class OrderItemFactory extends Factory
     $quantity = fake()->numberBetween(1, 5);
     $hasDiscount = fake()->boolean(30);
     $discountPrice = $hasDiscount ? fake()->randomFloat(2, 1, $price * 0.3) : 0;
+    $product = Product::factory()->create();
 
     return [
       'order_id' => Order::factory(),
-      'product_id' => Product::factory(),
+      'orderable_type' => Product::class,
+      'orderable_id' => $product->id,
       'quantity' => $quantity,
       'total_price' => $price,
       'amount_discount_price' => $discountPrice,

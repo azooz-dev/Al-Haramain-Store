@@ -16,6 +16,13 @@ use Modules\User\Database\Factories\UserFactory;
 class ReviewFactory extends Factory
 {
   /**
+   * The name of the factory's corresponding model.
+   *
+   * @var class-string<\Illuminate\Database\Eloquent\Model>
+   */
+  protected $model = Review::class;
+
+  /**
    * Define the model's default state.
    *
    * @return array<string, mixed>

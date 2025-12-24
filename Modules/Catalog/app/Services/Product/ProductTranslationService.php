@@ -100,5 +100,3 @@ class ProductTranslationService implements ProductTranslationServiceInterface
     return $this->productRepository->slugExists($slug);
   }
 }
-
-

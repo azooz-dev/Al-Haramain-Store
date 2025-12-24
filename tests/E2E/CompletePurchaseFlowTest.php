@@ -4,9 +4,11 @@ namespace Tests\E2E;
 
 use Tests\TestCase;
 use Modules\User\Entities\User;
+use Modules\User\Entities\Address;
 use Modules\Catalog\Entities\Product\Product;
 use Modules\Order\Entities\Order\Order;
 use Modules\Payment\Entities\Payment\Payment;
+use Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -27,13 +29,18 @@ class CompletePurchaseFlowTest extends TestCase
     {
         // Arrange
         $user = User::factory()->verified()->create();
-        $product = Product::factory()->create(['stock' => 10]);
+        $address = Address::factory()->create(['user_id' => $user->id]);
+        $product = Product::factory()->create(['quantity' => 10]);
 
         // Step 1: User creates order
         $orderData = [
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'payment_method' => PaymentMethod::CREDIT_CARD->value,
             'items' => [
                 [
-                    'product_id' => $product->id,
+                    'orderable_type' => Product::class,
+                    'orderable_id' => $product->id,
                     'quantity' => 2,
                 ],
             ],
@@ -63,7 +70,7 @@ class CompletePurchaseFlowTest extends TestCase
 
         // Step 4: Verify product stock was deducted
         $product->refresh();
-        $this->assertEquals(8, $product->stock); // 10 - 2 = 8
+        $this->assertEquals(8, $product->quantity); // 10 - 2 = 8
     }
 }
 

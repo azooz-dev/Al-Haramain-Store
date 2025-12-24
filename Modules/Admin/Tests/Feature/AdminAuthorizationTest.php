@@ -22,10 +22,10 @@ class AdminAuthorizationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
-        $superAdminRole = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'admin']);
-        $limitedRole = Role::firstOrCreate(['name' => 'limited_admin', 'guard_name' => 'admin']);
-        
+
+        Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'admin']);
+        Role::firstOrCreate(['name' => 'limited_admin', 'guard_name' => 'admin']);
+
         Permission::firstOrCreate(['name' => 'view_any_order', 'guard_name' => 'admin']);
         Permission::firstOrCreate(['name' => 'create_product', 'guard_name' => 'admin']);
         Permission::firstOrCreate(['name' => 'widget_revenue_overview_widget', 'guard_name' => 'admin']);
@@ -71,11 +71,10 @@ class AdminAuthorizationTest extends TestCase
         $user = User::factory()->verified()->create();
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->get('/admin');
 
         // Assert
         $response->assertStatus(302); // Redirect to admin login
     }
 }
-

@@ -32,7 +32,7 @@ class AddressManagementTest extends TestCase
         ];
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->postJson("/api/users/{$user->id}/addresses", $data);
 
         // Assert
@@ -55,7 +55,7 @@ class AddressManagementTest extends TestCase
         ];
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->postJson("/api/users/{$user->id}/addresses", $data);
 
         // Assert
@@ -71,7 +71,7 @@ class AddressManagementTest extends TestCase
         Address::factory()->count(3)->create(['user_id' => $user->id]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->getJson("/api/users/{$user->id}/addresses");
 
         // Assert
@@ -89,7 +89,7 @@ class AddressManagementTest extends TestCase
         $data = ['is_default' => true];
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->putJson("/api/users/{$user->id}/addresses/{$address2->id}", $data);
 
         // Assert
@@ -107,7 +107,7 @@ class AddressManagementTest extends TestCase
         $address = Address::factory()->create(['user_id' => $user->id, 'is_default' => false]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->deleteJson("/api/users/{$user->id}/addresses/{$address->id}");
 
         // Assert
@@ -122,7 +122,7 @@ class AddressManagementTest extends TestCase
         $address = Address::factory()->create(['user_id' => $user->id, 'is_default' => true]);
 
         // Act
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user, 'web')
             ->deleteJson("/api/users/{$user->id}/addresses/{$address->id}");
 
         // Assert
@@ -130,4 +130,3 @@ class AddressManagementTest extends TestCase
         $this->assertDatabaseHas('addresses', ['id' => $address->id]);
     }
 }
-
