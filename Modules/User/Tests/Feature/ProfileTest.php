@@ -20,8 +20,8 @@ class ProfileTest extends TestCase
         // Arrange
         $user = User::factory()->verified()->create();
 
-        // Act
-        $response = $this->actingAs($user, 'api')
+        // Act - The /api/user route is handled by Auth module
+        $response = $this->actingAs($user, 'sanctum')
             ->getJson('/api/user');
 
         // Assert
