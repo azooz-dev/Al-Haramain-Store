@@ -24,7 +24,7 @@ class ProductTranslationService implements ProductTranslationServiceInterface
     return $this->translationRepository->getTranslationsForProduct($product);
   }
 
-  public function getTranslatedName(Product $product, ?string $locale = null)
+  public function getTranslatedName(Product $product, ?string $locale = null): string
   {
     $locale = $locale ?: app()->getLocale();
 
