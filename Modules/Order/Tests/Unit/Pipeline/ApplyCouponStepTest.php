@@ -7,7 +7,7 @@ use Modules\Order\Services\Order\Pipeline\ApplyCouponStep;
 use Modules\Coupon\Contracts\CouponServiceInterface;
 use Modules\Catalog\Contracts\ProductVariantServiceInterface;
 use Modules\Coupon\Entities\Coupon\Coupon;
-use Modules\Coupon\Exceptions\CouponException;
+use Modules\Coupon\Exceptions\Coupon\CouponException;
 use Mockery;
 
 /**
