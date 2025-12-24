@@ -50,10 +50,10 @@ class ProductTranslationService implements ProductTranslationServiceInterface
     return $translation->description ?? '';
   }
 
-  public function saveTranslation(Product $product, array $translationDate)
+  public function saveTranslation(Product $product, array $translationData): void
   {
     foreach (['en', 'ar'] as $locale) {
-      $payload = $translationDate[$locale];
+      $payload = $translationData[$locale];
 
       if (!empty($payload['name']) || !empty($payload['description'])) {
         $this->translationRepository->updateOrCreateTranslation($product, $locale, $payload);
