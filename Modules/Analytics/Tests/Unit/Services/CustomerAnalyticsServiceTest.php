@@ -4,21 +4,32 @@ namespace Modules\Analytics\Tests\Unit\Services;
 
 use Tests\TestCase;
 use Modules\Analytics\Services\CustomerAnalyticsService;
-use Modules\Analytics\Repositories\Interface\CustomerAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\UserAnalyticsRepositoryInterface;
+use Modules\Analytics\Repositories\Interface\CategoryAnalyticsRepositoryInterface;
+use Modules\Catalog\Contracts\CategoryTranslationServiceInterface;
 use Carbon\Carbon;
 use Mockery;
 
 class CustomerAnalyticsServiceTest extends TestCase
 {
     private CustomerAnalyticsService $service;
-    private $customerAnalyticsRepositoryMock;
+    private $userAnalyticsRepositoryMock;
+    private $categoryAnalyticsRepositoryMock;
+    private $categoryTranslationServiceMock;
 
     protected function setUp(): void
     {
         parent::setUp();
         
-        $this->customerAnalyticsRepositoryMock = Mockery::mock(CustomerAnalyticsRepositoryInterface::class);
-        $this->service = new CustomerAnalyticsService($this->customerAnalyticsRepositoryMock);
+        $this->userAnalyticsRepositoryMock = Mockery::mock(UserAnalyticsRepositoryInterface::class);
+        $this->categoryAnalyticsRepositoryMock = Mockery::mock(CategoryAnalyticsRepositoryInterface::class);
+        $this->categoryTranslationServiceMock = Mockery::mock(CategoryTranslationServiceInterface::class);
+        
+        $this->service = new CustomerAnalyticsService(
+            $this->userAnalyticsRepositoryMock,
+            $this->categoryAnalyticsRepositoryMock,
+            $this->categoryTranslationServiceMock
+        );
     }
 
     protected function tearDown(): void
@@ -34,8 +45,8 @@ class CustomerAnalyticsServiceTest extends TestCase
         $end = Carbon::now();
         $expectedCount = 10;
 
-        $this->customerAnalyticsRepositoryMock
-            ->shouldReceive('getNewCustomers')
+        $this->userAnalyticsRepositoryMock
+            ->shouldReceive('getUsersCountByDateRange')
             ->with($start, $end)
             ->once()
             ->andReturn($expectedCount);

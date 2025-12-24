@@ -27,17 +27,17 @@ class AnalyticsDataAggregationTest extends TestCase
         Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'delivered',
-            'total' => 100.00,
+            'total_amount' => 100.00,
         ]);
         Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'cancelled',
-            'total' => 50.00,
+            'total_amount' => 50.00,
         ]);
         Order::factory()->create([
             'user_id' => $user->id,
             'status' => 'refunded',
-            'total' => 30.00,
+            'total_amount' => 30.00,
         ]);
 
         $start = Carbon::now()->subDays(30);

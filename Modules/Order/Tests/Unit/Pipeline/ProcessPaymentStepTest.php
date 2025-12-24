@@ -29,7 +29,10 @@ class ProcessPaymentStepTest extends TestCase
     public function test_processes_payment_successfully(): void
     {
         // Arrange
-        $paymentResult = (object)['transactionId' => 'txn_123', 'status' => 'succeeded'];
+        $paymentResult = Mockery::mock(\Modules\Payment\DTOs\PaymentResult::class);
+        $paymentResult->transactionId = 'txn_123';
+        $paymentResult->success = true;
+        
         $data = [
             'payment_method' => 'credit_card',
             'total_amount' => 100.00,

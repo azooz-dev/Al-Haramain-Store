@@ -45,28 +45,38 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = Coupon::factory()->make([
+            'id' => 1,
             'type' => CouponType::FIXED,
             'discount_amount' => 10.00,
             'status' => CouponStatus::ACTIVE,
             'start_date' => Carbon::now()->subDay(),
             'end_date' => Carbon::now()->addDay(),
         ]);
+        
+        $couponMock = Mockery::mock($coupon)->makePartial();
+        $couponUsersRelation = Mockery::mock();
+        $couponUsersRelation->shouldReceive('updateOrCreate')
+            ->once()
+            ->andReturn(true);
+        $couponMock->shouldReceive('couponUsers')
+            ->once()
+            ->andReturn($couponUsersRelation);
 
         $this->couponRepositoryMock
             ->shouldReceive('findCoupon')
             ->with('TEST-001')
             ->once()
-            ->andReturn($coupon);
+            ->andReturn($couponMock);
 
         $this->couponUsageRepositoryMock
             ->shouldReceive('countCouponUsage')
-            ->with($coupon->id)
+            ->with($couponMock->id)
             ->once()
             ->andReturn(0);
 
         $this->couponUsageRepositoryMock
             ->shouldReceive('countUserCouponUsage')
-            ->with($coupon->id, 1)
+            ->with($couponMock->id, 1)
             ->once()
             ->andReturn(0);
 
@@ -81,28 +91,38 @@ class CouponServiceTest extends TestCase
     {
         // Arrange
         $coupon = Coupon::factory()->make([
+            'id' => 2,
             'type' => CouponType::PERCENTAGE,
             'discount_amount' => 10, // 10%
             'status' => CouponStatus::ACTIVE,
             'start_date' => Carbon::now()->subDay(),
             'end_date' => Carbon::now()->addDay(),
         ]);
+        
+        $couponMock = Mockery::mock($coupon)->makePartial();
+        $couponUsersRelation = Mockery::mock();
+        $couponUsersRelation->shouldReceive('updateOrCreate')
+            ->once()
+            ->andReturn(true);
+        $couponMock->shouldReceive('couponUsers')
+            ->once()
+            ->andReturn($couponUsersRelation);
 
         $this->couponRepositoryMock
             ->shouldReceive('findCoupon')
             ->with('TEST-002')
             ->once()
-            ->andReturn($coupon);
+            ->andReturn($couponMock);
 
         $this->couponUsageRepositoryMock
             ->shouldReceive('countCouponUsage')
-            ->with($coupon->id)
+            ->with($couponMock->id)
             ->once()
             ->andReturn(0);
 
         $this->couponUsageRepositoryMock
             ->shouldReceive('countUserCouponUsage')
-            ->with($coupon->id, 1)
+            ->with($couponMock->id, 1)
             ->once()
             ->andReturn(0);
 

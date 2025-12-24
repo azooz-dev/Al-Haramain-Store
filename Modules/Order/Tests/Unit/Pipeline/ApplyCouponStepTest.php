@@ -92,7 +92,7 @@ class ApplyCouponStepTest extends TestCase
             ->shouldReceive('applyCoupon')
             ->with('INVALID', 1)
             ->once()
-            ->andThrow(new CouponException('Invalid coupon'));
+            ->andThrow(new CouponException('Invalid coupon', 404));
 
         // Act & Assert
         $this->expectException(CouponException::class);

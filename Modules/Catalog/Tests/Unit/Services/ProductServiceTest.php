@@ -59,6 +59,11 @@ class ProductServiceTest extends TestCase
         ];
 
         $product = Product::factory()->make(['id' => 1, 'slug' => 'test-product-name']);
+        $productMock = Mockery::mock($product)->makePartial();
+        $productMock->shouldReceive('fresh')
+            ->with(['translations', 'colors.images', 'variants', 'categories.translations'])
+            ->once()
+            ->andReturn($product);
 
         $this->translationServiceMock
             ->shouldReceive('generateSlugFromName')
@@ -70,11 +75,11 @@ class ProductServiceTest extends TestCase
             ->shouldReceive('create')
             ->with(array_merge($data, ['slug' => 'test-product-name']))
             ->once()
-            ->andReturn($product);
+            ->andReturn($productMock);
 
         $this->translationServiceMock
             ->shouldReceive('saveTranslation')
-            ->with($product, $translationData)
+            ->with($productMock, $translationData)
             ->once();
 
         // Act

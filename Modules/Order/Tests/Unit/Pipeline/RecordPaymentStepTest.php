@@ -31,7 +31,9 @@ class RecordPaymentStepTest extends TestCase
     {
         // Arrange
         $order = Order::factory()->make(['id' => 1]);
-        $paymentResult = (object)['transactionId' => 'txn_123'];
+        $paymentResult = Mockery::mock(\Modules\Payment\DTOs\PaymentResult::class);
+        $paymentResult->transactionId = 'txn_123';
+        $paymentResult->success = true;
 
         $data = [
             '_order' => $order,

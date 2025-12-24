@@ -86,6 +86,11 @@ class CategoryServiceTest extends TestCase
         ];
 
         $category = Category::factory()->make(['id' => 1, 'slug' => 'test-category']);
+        $categoryMock = Mockery::mock($category)->makePartial();
+        $categoryMock->shouldReceive('fresh')
+            ->with(['translations', 'products'])
+            ->once()
+            ->andReturn($category);
 
         $this->translationServiceMock
             ->shouldReceive('generateSlugFromName')
@@ -97,11 +102,11 @@ class CategoryServiceTest extends TestCase
             ->shouldReceive('create')
             ->with(['slug' => 'test-category'])
             ->once()
-            ->andReturn($category);
+            ->andReturn($categoryMock);
 
         $this->translationServiceMock
             ->shouldReceive('saveTranslations')
-            ->with($category, $translationData)
+            ->with($categoryMock, $translationData)
             ->once();
 
         // Act
