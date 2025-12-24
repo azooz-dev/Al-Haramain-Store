@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Admin\Tests\Unit\Entities;
 
@@ -7,6 +7,10 @@ use Modules\Admin\Entities\Admin;
 use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * TC-ADM-001: Admin Login - Verified Account
+ * TC-ADM-007: Customer Access Admin Panel
+ */
 class AdminTest extends TestCase
 {
     use RefreshDatabase;
@@ -14,20 +18,51 @@ class AdminTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        
         Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'admin']);
     }
 
     public function test_admin_can_access_panel_when_verified(): void
     {
-        $admin = Admin::factory()->create(['verified' => true, 'email_verified_at' => now()]);
+        // Arrange
+        $admin = Admin::factory()->create([
+            'verified' => true,
+            'email_verified_at' => now(),
+        ]);
+
+        // Act
         $canAccess = $admin->canAccessPanel(Mockery::mock(\Filament\Panel::class));
+
+        // Assert
         $this->assertTrue($canAccess);
     }
 
     public function test_admin_cannot_access_panel_when_unverified(): void
     {
-        $admin = Admin::factory()->create(['verified' => false]);
+        // Arrange
+        $admin = Admin::factory()->create([
+            'verified' => false,
+        ]);
+
+        // Act
         $canAccess = $admin->canAccessPanel(Mockery::mock(\Filament\Panel::class));
+
+        // Assert
+        $this->assertFalse($canAccess);
+    }
+
+    public function test_admin_cannot_access_panel_when_email_unverified(): void
+    {
+        // Arrange
+        $admin = Admin::factory()->create([
+            'verified' => true,
+            'email_verified_at' => null,
+        ]);
+
+        // Act
+        $canAccess = $admin->canAccessPanel(Mockery::mock(\Filament\Panel::class));
+
+        // Assert
         $this->assertFalse($canAccess);
     }
 }
