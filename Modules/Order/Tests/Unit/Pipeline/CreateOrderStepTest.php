@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Order\Tests\Unit\Pipeline;
 
