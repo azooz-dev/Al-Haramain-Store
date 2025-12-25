@@ -4,53 +4,47 @@ namespace Modules\Review\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Review\Contracts\ReviewServiceInterface;
+use Modules\Review\Enums\ReviewStatus;
+use Modules\Review\Http\Resources\Review\ReviewApiResource;
+use function App\Helpers\showAll;
+use function App\Helpers\showOne;
 
 class ReviewController extends Controller
 {
+    public function __construct(private ReviewServiceInterface $reviewService) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('review::index');
+        $reviews = $this->reviewService->getQueryBuilder()
+            ->where('status', 'approved')
+            ->get();
+        
+        return showAll(ReviewApiResource::collection($reviews), 'Reviews', 200);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('review::create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
 
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(int $id)
     {
-        return view('review::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('review::edit');
+        $review = $this->reviewService->getReviewById($id);
+        return showOne($review, 'Review', 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, int $id)
+    {
+        $data = $request->validate([
+            'status' => 'required|string|in:' . implode(',', array_map(fn($s) => $s->value, ReviewStatus::cases())),
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+        $review = $this->reviewService->updateReviewStatus($id, $data['status']);
+        return showOne($review, 'Review', 200);
+    }
 }

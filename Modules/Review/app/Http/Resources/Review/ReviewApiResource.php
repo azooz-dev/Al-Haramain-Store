@@ -3,6 +3,7 @@
 namespace Modules\Review\Http\Resources\Review;
 
 use Illuminate\Http\Request;
+use Modules\Review\Enums\ReviewStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Order\Http\Resources\Order\OrderItem\OrderItemApiResource;
 
@@ -20,7 +21,7 @@ class ReviewApiResource extends JsonResource
             'rating' => $this->rating,
             'locale' => $this->locale,
             'comment' => $this->comment,
-            'status' => $this->status,
+            'status' => $this->status instanceof ReviewStatus ? $this->status->value : $this->status,
             'item' => new OrderItemApiResource($this->orderItem),
             'createdDate' => $this->created_at,
             'lastChange' => $this->updated_at,

@@ -33,6 +33,7 @@ class CreateReviewTest extends TestCase
         $data = [
             'rating' => 5,
             'comment' => 'Great product!',
+            'locale' => 'en',
         ];
 
         // Act
@@ -63,6 +64,7 @@ class CreateReviewTest extends TestCase
         $data = [
             'rating' => 5,
             'comment' => 'Another review',
+            'locale' => 'en',
         ];
 
         // Act
@@ -86,6 +88,7 @@ class CreateReviewTest extends TestCase
         $data = [
             'rating' => 6, // Invalid: should be 1-5
             'comment' => 'Test comment',
+            'locale' => 'en',
         ];
 
         // Act
@@ -111,6 +114,7 @@ class CreateReviewTest extends TestCase
         $data = [
             'rating' => 5,
             'comment' => 'Hacked review',
+            'locale' => 'en',
         ];
 
         // Act - User2 trying to create review for User1's order
