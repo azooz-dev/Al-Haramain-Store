@@ -9,8 +9,8 @@ Route::apiResource('reviews', ReviewController::class)->only(['index', 'show']);
 
 // Protected review routes (require authentication)
 Route::middleware([StartSession::class, 'set.locale'])->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::put('reviews/{review}', [ReviewController::class, 'update']);
-        Route::patch('reviews/{review}', [ReviewController::class, 'update']);
-    });
+  Route::middleware('auth:sanctum')->group(function () {
+    Route::put('reviews/{review}', [ReviewController::class, 'update']);
+    Route::patch('reviews/{review}', [ReviewController::class, 'update']);
+  });
 });

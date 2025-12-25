@@ -2,10 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Modules\Catalog\Http\Controllers\Category\CategoryController;
-use Modules\Catalog\Http\Controllers\Product\ProductController;
-use Modules\Review\Http\Controllers\ReviewController;
-use Modules\Order\Http\Controllers\Order\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,17 +30,5 @@ Route::middleware(['auth:sanctum', 'set.locale'])->get('/user', function (Reques
 });
 
 Route::group(['middleware' => ['api', 'set.locale']], function () {
-    // Categories
-    Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
-
-    // Products
-    Route::apiResource('products', ProductController::class)->only(['index', 'show']);
-
     // Reviews
-    Route::apiResource('reviews', ReviewController::class)->only(['index', 'show', 'update']);
-
-    // Orders - require authentication
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('orders', OrderController::class)->only(['index', 'store', 'show']);
-    });
 });
