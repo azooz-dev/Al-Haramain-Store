@@ -29,9 +29,17 @@ class ProductListingTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'id',
-                    'name',
-                    'description',
+                    'identifier',
+                    'slug',
+                    'sku',
+                    'en' => [
+                        'title',
+                        'details',
+                    ],
+                    'ar' => [
+                        'title',
+                        'details',
+                    ],
                 ],
             ],
         ]);
@@ -43,7 +51,7 @@ class ProductListingTest extends TestCase
         $product = Product::factory()->create();
         ProductTranslation::factory()->create([
             'product_id' => $product->id,
-            'locale' => 'en',
+            'local' => 'en',
             'name' => 'English Product Name',
         ]);
 
@@ -53,7 +61,7 @@ class ProductListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonFragment(['name' => 'English Product Name']);
+        $response->assertJsonPath('data.0.en.title', 'English Product Name');
     }
 
     public function test_products_returned_with_arabic_translations(): void
@@ -62,7 +70,7 @@ class ProductListingTest extends TestCase
         $product = Product::factory()->create();
         ProductTranslation::factory()->create([
             'product_id' => $product->id,
-            'locale' => 'ar',
+            'local' => 'ar',
             'name' => 'اسم المنتج',
         ]);
 
@@ -72,7 +80,7 @@ class ProductListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonFragment(['name' => 'اسم المنتج']);
+        $response->assertJsonPath('data.0.ar.title', 'اسم المنتج');
     }
 }
 

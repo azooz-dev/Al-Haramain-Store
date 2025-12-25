@@ -32,10 +32,18 @@ class ProductDetailsTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                'id',
-                'name',
+                'identifier',
+                'slug',
+                'sku',
+                'en' => [
+                    'title',
+                    'details',
+                ],
+                'ar' => [
+                    'title',
+                    'details',
+                ],
                 'colors',
-                'variants',
             ],
         ]);
     }

@@ -4,6 +4,7 @@ namespace Modules\Catalog\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use Modules\Catalog\Contracts\ProductServiceInterface;
+use Modules\Catalog\Http\Resources\Product\ProductApiResource;
 
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;
@@ -19,7 +20,7 @@ class ProductController extends Controller
     {
         $products = $this->productService->getProducts();
 
-        return showAll($products, 'products', 200);
+        return showAll(ProductApiResource::collection($products), 'products', 200);
     }
 
     /**
@@ -29,7 +30,7 @@ class ProductController extends Controller
     {
         $product = $this->productService->findProductById($id);
 
-        return showOne($product, 'product', 201);
+        return showOne($product, 'product', 200);
     }
 }
 

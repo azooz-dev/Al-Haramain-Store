@@ -27,7 +27,7 @@ class ProductService implements ProductServiceInterface
     try {
       $products = $this->productRepository->getAllProducts();
 
-      return ProductApiResource::collection($products);
+      return $products;
     } catch (ProductException $e) {
       return errorResponse($e->getMessage(), 500);
     }

@@ -20,7 +20,7 @@ class CategoryService implements CategoryServiceInterface
   {
     $categories = $this->categoryRepository->getAllCategories();
 
-    return CategoryApiResource::collection($categories);
+    return $categories;
   }
 
   public function findCategoryById(int $id)

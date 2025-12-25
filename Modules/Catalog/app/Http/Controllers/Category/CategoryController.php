@@ -4,6 +4,7 @@ namespace Modules\Catalog\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
 use Modules\Catalog\Contracts\CategoryServiceInterface;
+use Modules\Catalog\Http\Resources\Category\CategoryApiResource;
 use function App\Helpers\showAll;
 use function App\Helpers\showOne;
 
@@ -18,7 +19,7 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryService->getCategories();
 
-        return showAll($categories, 'Categories', 200);
+        return showAll(CategoryApiResource::collection($categories), 'Categories', 200);
     }
 
     /**

@@ -28,8 +28,16 @@ class CategoryListingTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'id',
-                    'name',
+                    'identifier',
+                    'slug',
+                    'en' => [
+                        'title',
+                        'details',
+                    ],
+                    'ar' => [
+                        'title',
+                        'details',
+                    ],
                 ],
             ],
         ]);
@@ -41,12 +49,12 @@ class CategoryListingTest extends TestCase
         $category = Category::factory()->create();
         CategoryTranslation::factory()->create([
             'category_id' => $category->id,
-            'locale' => 'en',
+            'local' => 'en',
             'name' => 'Test Category',
         ]);
         CategoryTranslation::factory()->create([
             'category_id' => $category->id,
-            'locale' => 'ar',
+            'local' => 'ar',
             'name' => 'فئة الاختبار',
         ]);
 
@@ -56,7 +64,7 @@ class CategoryListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonFragment(['name' => 'Test Category']);
+        $response->assertJsonFragment(['title' => 'Test Category'], 'data.*.en');
     }
 }
 

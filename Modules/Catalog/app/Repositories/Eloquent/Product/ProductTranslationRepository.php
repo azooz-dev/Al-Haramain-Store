@@ -28,11 +28,12 @@ class ProductTranslationRepository implements ProductTranslationRepositoryInterf
   {
     return ProductTranslation::updateOrCreate(
       [
-        ...$data
+        'product_id' => $product->id,
+        'local' => $locale,
       ],
       [
-        'product_id' => $product->id,
-        'local' => $locale
+        'name' => $data['name'] ?? '',
+        'description' => $data['description'] ?? '',
       ]
     );
   }

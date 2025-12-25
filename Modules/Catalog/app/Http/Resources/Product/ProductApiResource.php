@@ -5,7 +5,7 @@ namespace Modules\Catalog\Http\Resources\Product;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Review\ReviewApiResource;
+use Modules\Review\Http\Resources\Review\ReviewApiResource;
 
 class ProductApiResource extends JsonResource
 {
