@@ -5,7 +5,6 @@ namespace Modules\Favorite\Tests\Feature;
 use Tests\TestCase;
 use Modules\User\Entities\User;
 use Modules\Favorite\Entities\Favorite\Favorite;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * TC-FAV-002: Add Favorite - Invalid Color
@@ -14,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class ListFavoritesTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_user_can_list_own_favorites(): void
     {
