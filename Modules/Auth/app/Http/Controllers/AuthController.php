@@ -21,8 +21,14 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
-        $data = $this->authService->register($data);
-        return showOne($data, 201);
+        $result = $this->authService->register($data);
+        
+        // If it's an error response, return it directly
+        if ($result instanceof \Illuminate\Http\JsonResponse) {
+            return $result;
+        }
+        
+        return showOne($result, 'User', 201);
     }
 
 
