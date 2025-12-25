@@ -41,6 +41,7 @@ class ReviewSubmissionFlowTest extends TestCase
         $reviewData = [
             'rating' => 5,
             'comment' => 'Excellent product!',
+            'locale' => 'en',
         ];
 
         $reviewResponse = $this->actingAs($user, 'sanctum')
