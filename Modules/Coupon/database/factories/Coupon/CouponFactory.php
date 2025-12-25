@@ -6,6 +6,7 @@ use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Coupon\Enums\CouponType;
 use Modules\Coupon\Enums\CouponStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Coupon\Entities\Coupon\Coupon>
@@ -19,9 +20,6 @@ class CouponFactory extends Factory
    */
   protected $model = Coupon::class;
 
-  // Static counter to ensure uniqueness across all factory calls
-  private static $counter = 0;
-
   /**
    * Define the model's default state.
    *
@@ -34,9 +32,10 @@ class CouponFactory extends Factory
       ? fake()->randomFloat(2, 5, 100)
       : fake()->numberBetween(5, 50);
 
-    // Generate unique code only if not provided
-    self::$counter++;
-    $uniqueCode = 'TEST-' . str_pad((string)self::$counter, 8, '0', STR_PAD_LEFT) . '-' . bin2hex(random_bytes(8));
+    // Use ONLY UUID for guaranteed global uniqueness
+    // UUIDs are cryptographically unique and don't rely on timestamps or counters
+    // This is the most reliable approach for test factories with RefreshDatabase
+    $uniqueCode = 'TEST-' . \Illuminate\Support\Str::uuid()->toString();
 
     return [
       'code' => $uniqueCode,
