@@ -5,7 +5,6 @@ namespace Modules\Offer\Tests\Feature;
 use Tests\TestCase;
 use Modules\Offer\Entities\Offer\Offer;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * TC-OFF-004: Offer Details with Products
@@ -13,7 +12,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class OfferDetailsTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_shows_offer_details_with_products(): void
     {
@@ -31,9 +29,9 @@ class OfferDetailsTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                'id',
-                'offer_price',
-                'products_total_price',
+                'identifier',
+                'offerPrice',
+                'productsTotalPrice',
             ],
         ]);
     }

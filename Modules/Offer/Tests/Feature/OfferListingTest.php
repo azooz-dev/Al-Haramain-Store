@@ -5,7 +5,6 @@ namespace Modules\Offer\Tests\Feature;
 use Tests\TestCase;
 use Modules\Offer\Entities\Offer\Offer;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * TC-OFF-001: List Active Offers
@@ -14,7 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class OfferListingTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_lists_only_active_offers(): void
     {
