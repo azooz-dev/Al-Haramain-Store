@@ -59,6 +59,9 @@ return Application::configure(basePath: dirname(__DIR__))
                     case $exception instanceof MethodNotAllowedHttpException:
                         return errorResponse(__('app.messages.exception.method_not_allowed'), 405);
 
+                    case $exception instanceof \Modules\Coupon\Exceptions\Coupon\CouponException:
+                        return errorResponse($exception->getMessage(), $exception->getCode() ?: 422);
+                    
                     case $exception instanceof HttpException:
                         return errorResponse($exception->getMessage(), $exception->getStatusCode());
 

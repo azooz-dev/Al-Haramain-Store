@@ -24,15 +24,12 @@ abstract class BaseRequest extends FormRequest
     {
         $errors = $validator->errors()->messages();
 
-        // Transform attribute names based on the mappings defined in attributes()
-        $transformedErrors = [];
-        foreach ($errors as $attribute => $errorMessages) {
-            // Use the mapped name if it exists, otherwise keep the original attribute name
-            $transformedAttribute = $this->attributes()[$attribute] ?? $attribute;
-            $transformedErrors[$transformedAttribute] = $errorMessages;
-        }
-
-        $response = errorResponse($transformedErrors, 422);
+        // Don't transform attribute names for validation errors - keep original field names
+        // Return validation errors in Laravel's standard format
+        $response = response()->json([
+            'message' => 'The given data was invalid.',
+            'errors' => $errors,
+        ], 422);
 
         throw new HttpResponseException($response);
     }
