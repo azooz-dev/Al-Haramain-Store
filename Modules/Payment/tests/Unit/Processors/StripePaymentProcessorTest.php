@@ -4,17 +4,9 @@ namespace Modules\Payment\Tests\Unit\Processors;
 
 use Tests\TestCase;
 use Modules\Payment\Services\Payment\Processors\StripePaymentProcessor;
-use Modules\Payment\DTOs\PaymentResult;
-use Modules\Payment\Exceptions\Payment\CreatePaymentIntentException;
 use Modules\Payment\Exceptions\Payment\ProcessPaymentException;
-use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
 use Mockery;
 
-/**
- * TC-PAY-001: Create Payment Intent - Stripe
- * TC-PAY-002: Process Payment - Stripe Success
- * TC-PAY-003: Process Payment - Stripe Failure
- */
 class StripePaymentProcessorTest extends TestCase
 {
     private StripePaymentProcessor $processor;
@@ -43,12 +35,25 @@ class StripePaymentProcessorTest extends TestCase
     public function test_processes_payment_requires_payment_intent_id(): void
     {
         // Arrange
-        $orderData = ['total_amount' => 100.00];
+        $orderData = ['total_amount' => 100.00]; // Missing payment_intent_id
 
         // Act & Assert
         $this->expectException(ProcessPaymentException::class);
 
-        $this->processor->processPayment($orderData);
+        try {
+            $this->processor->processPayment($orderData);
+            $this->fail('Expected ProcessPaymentException was not thrown');
+        } catch (ProcessPaymentException $e) {
+            // The exception message should indicate that payment_intent_id is required
+            // It might be translated, so check for common keywords
+            $message = strtolower($e->getMessage());
+            $this->assertTrue(
+                str_contains($message, 'payment') ||
+                    str_contains($message, 'intent') ||
+                    str_contains($message, 'required'),
+                "Exception message should mention payment intent requirement. Got: {$e->getMessage()}"
+            );
+            throw $e; // Re-throw to satisfy expectException
+        }
     }
 }
-

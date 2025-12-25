@@ -21,4 +21,3 @@ interface WebhookServiceInterface
      */
     public function handlePaymentCanceled(PaymentIntent $paymentIntent): void;
 }
-

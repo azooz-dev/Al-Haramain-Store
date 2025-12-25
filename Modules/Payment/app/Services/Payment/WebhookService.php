@@ -50,7 +50,7 @@ class WebhookService implements WebhookServiceInterface
     ]);
   }
 
-  private function recreateOrderFromMetadata(PaymentIntent $paymentIntent): void
+  public function recreateOrderFromMetadata(PaymentIntent $paymentIntent): void
   {
     $metadata = $paymentIntent->metadata;
 

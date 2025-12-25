@@ -10,11 +10,6 @@ use Modules\Payment\Entities\Payment\Payment;
 use Stripe\PaymentIntent;
 use Mockery;
 
-/**
- * TC-PAY-007: Stripe Webhook - Payment Succeeded
- * TC-PAY-008: Stripe Webhook - Payment Failed
- * TC-PAY-009: Stripe Webhook - Payment Canceled
- */
 class WebhookServiceTest extends TestCase
 {
     private WebhookService $service;
@@ -24,7 +19,7 @@ class WebhookServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->orderServiceMock = Mockery::mock(OrderServiceInterface::class);
         $this->paymentRepositoryMock = Mockery::mock(PaymentRepositoryInterface::class);
         $this->service = new WebhookService(
@@ -41,10 +36,18 @@ class WebhookServiceTest extends TestCase
 
     public function test_handles_payment_succeeded_when_payment_exists(): void
     {
-        // Arrange
-        $paymentIntent = Mockery::mock(PaymentIntent::class);
-        $paymentIntent->id = 'pi_test123';
-        
+        // Arrange - Create a simple test double for PaymentIntent
+        // Since Stripe objects don't allow direct property setting, we create a minimal object
+        $paymentIntent = new class extends PaymentIntent {
+            public $id = 'pi_test123';
+            public $metadata = [];
+
+            public function __construct()
+            {
+                // Skip parent constructor to avoid Stripe API calls
+            }
+        };
+
         $existingPayment = Payment::factory()->make(['id' => 1]);
 
         $this->paymentRepositoryMock
@@ -62,9 +65,16 @@ class WebhookServiceTest extends TestCase
 
     public function test_handles_payment_failed(): void
     {
-        // Arrange
-        $paymentIntent = Mockery::mock(PaymentIntent::class);
-        $paymentIntent->id = 'pi_test123';
+        // Arrange - Create a simple test double for PaymentIntent
+        $paymentIntent = new class extends PaymentIntent {
+            public $id = 'pi_test123';
+            public $last_payment_error = null;
+
+            public function __construct()
+            {
+                // Skip parent constructor to avoid Stripe API calls
+            }
+        };
         $paymentIntent->last_payment_error = (object)['message' => 'Card declined'];
 
         // Act
@@ -76,9 +86,15 @@ class WebhookServiceTest extends TestCase
 
     public function test_handles_payment_canceled(): void
     {
-        // Arrange
-        $paymentIntent = Mockery::mock(PaymentIntent::class);
-        $paymentIntent->id = 'pi_test123';
+        // Arrange - Create a simple test double for PaymentIntent
+        $paymentIntent = new class extends PaymentIntent {
+            public $id = 'pi_test123';
+
+            public function __construct()
+            {
+                // Skip parent constructor to avoid Stripe API calls
+            }
+        };
 
         // Act
         $this->service->handlePaymentCanceled($paymentIntent);
@@ -87,4 +103,3 @@ class WebhookServiceTest extends TestCase
         $this->assertTrue(true);
     }
 }
-

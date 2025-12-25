@@ -49,12 +49,11 @@ class StripePaymentProcessor implements PaymentProcessorInterface
   public function processPayment(array $orderData): PaymentResult
   {
     // This is called after payment is confirmed on frontend
-    $paymentIntentId = $orderData['payment_intent_id'];
-
-    if (!$paymentIntentId) {
+    if (!isset($orderData['payment_intent_id']) || empty($orderData['payment_intent_id'])) {
       throw new ProcessPaymentException(__('app.messages.payment.payment_intent_id_required'), 500);
     }
 
+    $paymentIntentId = $orderData['payment_intent_id'];
     return $this->verifyPayment($paymentIntentId);
   }
 
