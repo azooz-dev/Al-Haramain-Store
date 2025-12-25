@@ -38,6 +38,10 @@ class AdminAuthorizationTest extends TestCase
             'verified' => true,
             'email_verified_at' => now(),
         ]);
+        $role = Role::where('name', 'super_admin')->first();
+        $permission1 = Permission::where('name', 'view_any_order')->first();
+        $permission2 = Permission::where('name', 'create_product')->first();
+        $role->givePermissionTo([$permission1, $permission2]);
         $superAdmin->assignRole('super_admin');
 
         // Act
