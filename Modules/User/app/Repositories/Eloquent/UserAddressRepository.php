@@ -21,16 +21,25 @@ class UserAddressRepository implements UserAddressRepositoryInterface
         $this->unsetDefaultAddresses($userId);
       }
 
+      // If this is the first address, set it as default
+      $isFirstAddress = Address::where('user_id', $userId)->count() === 0;
+      $isDefault = $data['is_default'] ?? $isFirstAddress;
+      
+      // If setting as default, unset other defaults
+      if ($isDefault) {
+        $this->unsetDefaultAddresses($userId);
+      }
+
       return Address::create([
         'user_id' => $userId,
         "address_type" => $data['address_type'],
-        "label" => $data['label'],
+        "label" => $data['label'] ?? null,
         "street" => $data['street'],
         "city" => $data['city'],
         "state" => $data['state'],
         "postal_code" => $data['postal_code'],
         "country" => $data['country'],
-        "is_default" => $data['is_default'] ?? false
+        "is_default" => $isDefault
       ]);
     });
   }
@@ -56,26 +65,15 @@ class UserAddressRepository implements UserAddressRepositoryInterface
   public function deleteUserAddress(int $userId, int $addressId)
   {
     return DB::transaction(function () use ($userId, $addressId) {
-      // Check if the address being deleted is the default address
-      $address = Address::where("id", $addressId)
-        ->where('user_id', $userId)
-        ->first();
-
-      if ($address && $address->is_default) {
-        // If deleting the default address, set the first remaining address as default
-        $remainingAddress = Address::where('user_id', $userId)
-          ->where('id', '!=', $addressId)
-          ->first();
-
-        if ($remainingAddress) {
-          $remainingAddress->update(['is_default' => true]);
-        }
-      }
-
       return Address::where("id", $addressId)
         ->where('user_id', $userId)
         ->delete();
     });
+  }
+
+  public function getAddressById(int $addressId)
+  {
+    return Address::find($addressId);
   }
 
   /**

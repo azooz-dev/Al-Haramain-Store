@@ -21,16 +21,17 @@ class ProfileTest extends TestCase
         $user = User::factory()->verified()->create();
 
         // Act - The /api/user route is handled by Auth module
-        $response = $this->actingAs($user, 'web')
+        $token = $user->createToken('test-token')->plainTextToken;
+        $response = $this->withHeader('Authorization', "Bearer {$token}")
             ->getJson('/api/user');
 
         // Assert
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                'id',
-                'first_name',
-                'last_name',
+                'identifier',
+                'firstName',
+                'lastName',
                 'email',
             ],
         ]);

@@ -36,14 +36,28 @@ class UserServiceTest extends TestCase
     public function test_updates_user_profile_successfully(): void
     {
         // Arrange
-        $user = User::factory()->verified()->make(['id' => 1]);
+        $user = \Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        $user->verified = true;
         $data = ['first_name' => 'Updated Name'];
+
+        $this->userRepositoryMock
+            ->shouldReceive('findById')
+            ->with(1)
+            ->once()
+            ->andReturn($user);
 
         $this->userRepositoryMock
             ->shouldReceive('update')
             ->with(1, $data)
             ->once()
             ->andReturn($user);
+
+        // Mock wasChanged to return false (email not changed)
+        $user->shouldReceive('wasChanged')
+            ->with('email')
+            ->once()
+            ->andReturn(false);
 
         // Act
         $result = $this->service->updateUser(1, $data);
@@ -55,8 +69,16 @@ class UserServiceTest extends TestCase
     public function test_marks_user_unverified_when_email_changes(): void
     {
         // Arrange
-        $user = User::factory()->verified()->create(['id' => 1]);
+        $user = \Mockery::mock(User::class)->makePartial();
+        $user->id = 1;
+        $user->verified = true;
         $data = ['email' => 'newemail@example.com'];
+
+        $this->userRepositoryMock
+            ->shouldReceive('findById')
+            ->with(1)
+            ->once()
+            ->andReturn($user);
 
         $this->userRepositoryMock
             ->shouldReceive('update')
@@ -65,17 +87,22 @@ class UserServiceTest extends TestCase
             ->andReturn($user);
 
         // Mock wasChanged to return true for email
-        $userMock = Mockery::mock($user)->makePartial();
-        $userMock->shouldReceive('wasChanged')
+        $user->shouldReceive('wasChanged')
             ->with('email')
+            ->once()
             ->andReturn(true);
-        $userMock->verified = false;
+        
+        // Mock save method
+        $user->shouldReceive('save')
+            ->once()
+            ->andReturn(true);
 
         // Act
         $result = $this->service->updateUser(1, $data);
 
         // Assert
         $this->assertNotNull($result);
+        $this->assertInstanceOf(\Modules\User\app\Http\Resources\UserApiResource::class, $result);
     }
 
     public function test_checks_user_verification_status(): void

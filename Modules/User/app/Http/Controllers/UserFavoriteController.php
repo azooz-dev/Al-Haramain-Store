@@ -19,6 +19,11 @@ class UserFavoriteController extends Controller
      */
     public function index(int $userId)
     {
+        // Check if user is trying to access their own favorites
+        if (auth()->id() !== $userId) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
         $userFavorites = $this->userFavoriteService->getAllUserFavorites($userId);
 
         return showAll($userFavorites, 'User Favorites', 200);

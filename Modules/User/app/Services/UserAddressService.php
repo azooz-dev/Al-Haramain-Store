@@ -62,8 +62,14 @@ class UserAddressService implements UserAddressServiceInterface
     try {
       $this->checkUserVerified($userId);
 
+      // Check if address is default before deletion
+      $address = $this->userAddressRepository->getAddressById($addressId);
+      if ($address && $address->is_default) {
+        return errorResponse(__("app.messages.user_address.cannot_delete_default"), 422);
+      }
+
       if ($this->userAddressRepository->deleteUserAddress($userId, $addressId)) {
-        return showMessage(__("app.messages.user_address.user_address_deleted"), 200);;
+        return showMessage(__("app.messages.user_address.user_address_deleted"), 200);
       }
 
       return showMessage(__("app.messages.user_address.user_address_not_deleted"), 500);

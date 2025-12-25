@@ -5,7 +5,6 @@ namespace Modules\User\Tests\Feature;
 use Tests\TestCase;
 use Modules\User\Entities\User;
 use Modules\User\Entities\Address;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * TC-USR-004: Create Address
@@ -17,7 +16,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
  */
 class AddressManagementTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_user_can_create_address(): void
     {
@@ -27,8 +25,10 @@ class AddressManagementTest extends TestCase
         $data = [
             'street' => '123 Main St',
             'city' => 'City',
+            'state' => 'State',
             'country' => 'Country',
             'postal_code' => '12345',
+            'address_type' => 'Home',
         ];
 
         // Act
@@ -51,7 +51,10 @@ class AddressManagementTest extends TestCase
         $data = [
             'street' => '123 Main St',
             'city' => 'City',
+            'state' => 'State',
             'country' => 'Country',
+            'postal_code' => '12345',
+            'address_type' => 'Home',
         ];
 
         // Act

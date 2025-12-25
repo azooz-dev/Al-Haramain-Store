@@ -28,7 +28,7 @@ class AddressServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->addressRepositoryMock = Mockery::mock(UserAddressRepositoryInterface::class);
         $this->userServiceMock = Mockery::mock(UserServiceInterface::class);
         $this->service = new UserAddressService($this->addressRepositoryMock, $this->userServiceMock);
@@ -129,12 +129,20 @@ class AddressServiceTest extends TestCase
         // Arrange
         $user = User::factory()->verified()->make(['id' => 1]);
         $addressId = 1;
+        // Explicitly set is_default to false to ensure the deletion proceeds
+        $address = Address::factory()->make(['id' => $addressId, 'user_id' => 1, 'is_default' => false]);
 
         $this->userServiceMock
             ->shouldReceive('findUserById')
             ->with(1)
             ->once()
             ->andReturn($user);
+
+        $this->addressRepositoryMock
+            ->shouldReceive('getAddressById')
+            ->with($addressId)
+            ->once()
+            ->andReturn($address);
 
         $this->addressRepositoryMock
             ->shouldReceive('deleteUserAddress')
@@ -146,7 +154,9 @@ class AddressServiceTest extends TestCase
         $result = $this->service->deleteUserAddress(1, $addressId);
 
         // Assert
-        $this->assertIsArray($result);
+        // deleteUserAddress returns JsonResponse from showMessage()
+        $this->assertInstanceOf(\Illuminate\Http\JsonResponse::class, $result);
+        $resultData = $result->getData(true);
+        $this->assertArrayHasKey('message', $resultData);
     }
 }
-

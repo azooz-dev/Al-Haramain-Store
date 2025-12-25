@@ -11,4 +11,6 @@ interface UserAddressRepositoryInterface
   public function updateUserAddress(array $data, int $userId, int $addressId);
 
   public function deleteUserAddress(int $userId, int $addressId);
+
+  public function getAddressById(int $addressId);
 }
