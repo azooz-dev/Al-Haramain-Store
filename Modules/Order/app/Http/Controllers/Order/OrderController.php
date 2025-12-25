@@ -18,7 +18,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->orderService->getUserOrders();
+        // Pass authenticated user ID explicitly to ensure correct context
+        $userId = auth('sanctum')->id() ?? auth()->id();
+        $orders = $this->orderService->getUserOrders($userId);
 
         return showAll($orders, 'Orders', 200);
     }
@@ -39,6 +41,11 @@ class OrderController extends Controller
     public function show(int $orderId)
     {
         $order = $this->orderService->findOrderById($orderId);
+
+        // Check if user owns the order
+        if ($order->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
 
         return showOne($order, 'Order', 200);
     }

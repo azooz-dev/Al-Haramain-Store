@@ -34,12 +34,12 @@ class OrderItemApiResource extends JsonResource
                     'title' => $ar->name ?? '',
                     'details' => $ar->description ?? ''
                 ],
-                'sku' => $this->orderable->sku,
-                'color' => $this->color->color_code,
-                'images' => $this->color->images,
-                'variant' => $this->variant->size,
-                'price' => (float) $this->variant->price,
-                'discount_price' => (float) $this->variant->amount_discount_price,
+                'sku' => $this->orderable->sku ?? '',
+                'color' => $this->color?->color_code ?? null,
+                'images' => $this->color?->images ?? [],
+                'variant' => $this->variant?->size ?? null,
+                'price' => $this->variant ? (float) $this->variant->price : 0.0,
+                'discount_price' => $this->variant ? (float) $this->variant->amount_discount_price : 0.0,
                 "createdDate" => $this->created_at,
                 "lastChange" => $this->updated_at
             ] : [

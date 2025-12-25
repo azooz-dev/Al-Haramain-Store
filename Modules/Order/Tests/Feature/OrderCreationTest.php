@@ -12,7 +12,6 @@ use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Catalog\Exceptions\Product\Variant\OutOfStockException;
 use Modules\Payment\Enums\PaymentMethod;
 use Modules\User\Entities\Address;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -27,12 +26,11 @@ use Illuminate\Support\Facades\DB;
  */
 class OrderCreationTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         \Spatie\Permission\Models\Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'admin']
         );
@@ -51,16 +49,17 @@ class OrderCreationTest extends TestCase
         $orderData = $builder->buildOrderData();
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'data' => [
-                'id',
-                'order_number',
+                'identifier',
+                'orderNumber',
                 'status',
-                'total_amount',
+                'totalAmount',
             ],
         ]);
 
@@ -86,7 +85,8 @@ class OrderCreationTest extends TestCase
         $orderData = $builder->buildOrderData();
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(422);
@@ -109,7 +109,8 @@ class OrderCreationTest extends TestCase
         $orderData['items'][0]['quantity'] = 10; // Request more than available
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(422);
@@ -132,16 +133,17 @@ class OrderCreationTest extends TestCase
         $builder = OrderTestDataBuilder::create()
             ->withVerifiedUser()
             ->withProduct(['quantity' => 10], ['quantity' => 10, 'price' => 100.00])
-            ->withActiveCoupon(['code' => $coupon->code, 'discount_amount' => 10]);
+            ->withCoupon($coupon);
 
         $orderData = $builder->buildOrderData();
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
-        
+
         $order = Order::where('user_id', $builder->getUser()->id)->first();
         $this->assertNotNull($order->coupon_id);
         $this->assertEquals($coupon->id, $order->coupon_id);
@@ -167,7 +169,8 @@ class OrderCreationTest extends TestCase
         $orderData = $builder->buildOrderData();
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(422);
@@ -190,14 +193,15 @@ class OrderCreationTest extends TestCase
         $orderData = $builder->buildOrderData();
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
-        
+
         $order = Order::where('user_id', $builder->getUser()->id)->first();
         $this->assertGreaterThan(1, $order->items->count());
-        
+
         // Verify both product and offer items exist
         $hasProduct = $order->items->contains(function ($item) {
             return $item->orderable_type === Product::class;
@@ -225,11 +229,12 @@ class OrderCreationTest extends TestCase
         $initialVariantStock = $variant->quantity;
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
-        
+
         $variant->refresh();
         $this->assertEquals($initialVariantStock - $orderQuantity, $variant->quantity);
     }
@@ -241,7 +246,7 @@ class OrderCreationTest extends TestCase
     {
         // Arrange
         $stock = 1; // Only 1 item available
-        
+
         $builder1 = OrderTestDataBuilder::create()
             ->withVerifiedUser()
             ->withProduct(['quantity' => $stock], ['quantity' => $stock]);
@@ -251,7 +256,7 @@ class OrderCreationTest extends TestCase
 
         // Get the same variant for both orders
         $variant = $builder1->getProducts()[0]['variant'];
-        
+
         $orderData2 = $builder2->buildOrderData();
         $orderData2['items'] = [[
             'orderable_type' => Product::class,
@@ -264,31 +269,24 @@ class OrderCreationTest extends TestCase
 
         $orderData1 = $builder1->buildOrderData();
 
-        // Act - Create orders in transaction to simulate concurrency
-        $results = [];
-        
-        DB::transaction(function () use ($orderData1, $orderData2, &$results) {
-            $response1 = $this->postJson('/api/orders', $orderData1);
-            $results[] = $response1->status();
-            
-            // Try to create second order immediately
-            try {
-                $response2 = $this->postJson('/api/orders', $orderData2);
-                $results[] = $response2->status();
-            } catch (OutOfStockException $e) {
-                $results[] = 422;
-            }
-        });
+        // Act - Create first order
+        $response1 = $this->actingAs($builder1->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData1);
+        $results[] = $response1->status();
+
+        // Try to create second order immediately (should fail due to stock)
+        $response2 = $this->actingAs($builder2->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData2);
+        $results[] = $response2->status();
 
         // Assert - Only one order should succeed
         $successfulOrders = Order::whereIn('user_id', [
             $builder1->getUser()->id,
             $builder2->getUser()->id,
         ])->count();
-        
-        $this->assertEquals(1, $successfulOrders);
+
+        $this->assertEquals(1, $successfulOrders, 'Expected exactly 1 successful order, but got: ' . $successfulOrders);
         $this->assertContains(201, $results);
         $this->assertContains(422, $results);
     }
 }
-

@@ -7,16 +7,14 @@ use Tests\Support\Builders\OrderTestDataBuilder;
 use Modules\Order\Entities\Order\Order;
 use Modules\Coupon\Entities\Coupon\Coupon;
 use Modules\Order\Repositories\Eloquent\Order\CouponUsageRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderCouponIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         \Spatie\Permission\Models\Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'admin']
         );
@@ -33,17 +31,18 @@ class OrderCouponIntegrationTest extends TestCase
         $builder = OrderTestDataBuilder::create()
             ->withVerifiedUser()
             ->withProduct(['quantity' => 10], ['quantity' => 10, 'price' => 100.00])
-            ->withActiveCoupon(['code' => $coupon->code, 'discount_amount' => 20]);
+            ->withCoupon($coupon);
 
         $orderData = $builder->buildOrderData();
         $expectedTotal = 80.00; // 100 - 20%
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
-        
+
         $order = Order::where('user_id', $builder->getUser()->id)->first();
         $this->assertNotNull($order->coupon_id);
         $this->assertEquals($coupon->id, $order->coupon_id);
@@ -60,20 +59,20 @@ class OrderCouponIntegrationTest extends TestCase
         $builder = OrderTestDataBuilder::create()
             ->withVerifiedUser()
             ->withProduct(['quantity' => 10], ['quantity' => 10])
-            ->withActiveCoupon(['code' => $coupon->code]);
+            ->withCoupon($coupon);
 
         $orderData = $builder->buildOrderData();
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
-        
+
         $couponUsageRepo = new CouponUsageRepository();
         $usageCount = $couponUsageRepo->countCouponUsage($coupon->id);
-        
+
         $this->assertGreaterThan(0, $usageCount);
     }
 }
-

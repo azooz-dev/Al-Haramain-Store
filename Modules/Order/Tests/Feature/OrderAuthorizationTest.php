@@ -78,6 +78,6 @@ class OrderAuthorizationTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonPath('data.id', $order->id);
+        $response->assertJsonPath('data.identifier', $order->id);
     }
 }

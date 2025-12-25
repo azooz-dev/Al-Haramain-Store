@@ -17,9 +17,10 @@ interface OrderServiceInterface
     /**
      * Get orders for the authenticated user
      *
+     * @param int|null $userId Optional user ID. If not provided, will try to get from request context
      * @return \Illuminate\Support\Collection
      */
-    public function getUserOrders();
+    public function getUserOrders(?int $userId = null);
 
     /**
      * Find order by ID

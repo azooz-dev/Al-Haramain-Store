@@ -100,12 +100,32 @@ class OrderService implements OrderServiceInterface
         }
     }
 
-    public function getUserOrders()
+    public function getUserOrders(?int $userId = null)
     {
-        $userId = Auth::id();
+        // If userId is provided, use it directly (from controller)
+        // Otherwise, try to get from request context (fallback for backward compatibility)
+        if ($userId === null) {
+            $user = request()->user();
+            $userId = $user?->id;
+        }
         
-        return $this->orderRepository->getQueryBuilder()
-            ->where('user_id', $userId)
+        if (!$userId) {
+            return collect();
+        }
+        
+        // Build query directly to ensure user_id filter is applied correctly
+        // Don't use getQueryBuilder() as it might have scopes or other filters
+        return Order::where('user_id', $userId)
+            ->with([
+                'user',
+                'address',
+                'coupon',
+                'items.orderable.translations',
+                'items.variant',
+                'items.color',
+                'payments',
+            ])
+            ->withCount(['items'])
             ->orderBy('created_at', 'desc')
             ->get();
     }

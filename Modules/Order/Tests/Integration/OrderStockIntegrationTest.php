@@ -7,11 +7,9 @@ use Tests\Support\Builders\OrderTestDataBuilder;
 use Modules\Order\Entities\Order\Order;
 use Modules\Catalog\Entities\Product\ProductVariant;
 use Modules\Catalog\Entities\Product\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class OrderStockIntegrationTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -46,7 +44,8 @@ class OrderStockIntegrationTest extends TestCase
         $initialProductQty = $product->quantity;
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(201);
@@ -75,7 +74,8 @@ class OrderStockIntegrationTest extends TestCase
         $initialStock = $variant->quantity;
 
         // Act
-        $response = $this->postJson('/api/orders', $orderData);
+        $response = $this->actingAs($builder->getUser(), 'sanctum')
+            ->postJson('/api/orders', $orderData);
 
         // Assert
         $response->assertStatus(422);
