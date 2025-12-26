@@ -23,10 +23,6 @@ class RecentOrdersWidget extends BaseWidget
     protected static bool $isLazy = true;
     protected int | string | array $columnSpan = 'full';
 
-    public function __construct(
-        protected OrderRepositoryInterface $orderRepository
-    ) {}
-
     public function getHeading(): ?string
     {
         return __('app.widgets.orders.recent_orders_heading');
@@ -36,14 +32,15 @@ class RecentOrdersWidget extends BaseWidget
     {
         $orderAnalyticsService = $this->resolveService(OrderAnalyticsServiceInterface::class);
         $orderService = $this->resolveService(OrderServiceInterface::class);
+        $orderRepository = $this->resolveService(OrderRepositoryInterface::class);
 
         // Get recent orders from service (already has proper eager loading with morphWith)
         $recentOrders = $orderAnalyticsService->getRecentOrders(15);
         $orderIds = $recentOrders->pluck('id')->toArray();
 
         return $table
-            ->query(function () use ($orderIds) {
-                $query = $this->orderRepository->getQueryBuilder()
+            ->query(function () use ($orderIds, $orderRepository) {
+                $query = $orderRepository->getQueryBuilder()
                     ->with([
                         'user',
                         'items.orderable' => function ($morphTo) {
