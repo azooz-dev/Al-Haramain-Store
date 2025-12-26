@@ -27,7 +27,7 @@ class ReviewModerationTest extends TestCase
         ];
 
         // Act
-        $response = $this->actingAs($admin, 'admin')
+        $response = $this->actingAs($admin, 'sanctum')
             ->putJson("/api/reviews/{$review->id}", $data);
 
         // Assert
@@ -47,7 +47,7 @@ class ReviewModerationTest extends TestCase
         ];
 
         // Act
-        $response = $this->actingAs($admin, 'admin')
+        $response = $this->actingAs($admin, 'sanctum')
             ->putJson("/api/reviews/{$review->id}", $data);
 
         // Assert
