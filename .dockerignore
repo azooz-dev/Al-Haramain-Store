@@ -1,0 +1,101 @@
+# ============================================
+# Al-Haramain Store - Docker Build Exclusions
+# Files/folders excluded from Docker build context
+# ============================================
+
+# ====================
+# Git
+# ====================
+.git
+.gitignore
+.gitattributes
+
+# ====================
+# Dependencies (built in Docker)
+# ====================
+/node_modules
+/vendor
+
+# ====================
+# IDE & Editors
+# ====================
+.idea
+.vscode
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# ====================
+# OS Files
+# ====================
+.DS_Store
+Thumbs.db
+*.log
+
+# ====================
+# Laravel Development
+# ====================
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*
+.phpunit.result.cache
+
+# Keep the .gitkeep files
+!storage/logs/.gitkeep
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+
+# ====================
+# Environment Files
+# ====================
+.env
+.env.local
+.env.*.local
+.env.testing
+.env.production
+
+# ====================
+# Docker (avoid recursive copy)
+# ====================
+docker-compose.override.yml
+
+# ====================
+# Testing
+# ====================
+/tests
+phpunit.xml
+.phpunit.result.cache
+coverage/
+
+# ====================
+# Documentation
+# ====================
+/docs
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+
+# ====================
+# Build Artifacts
+# ====================
+/public/hot
+/public/build
+*.map
+
+# ====================
+# CI/CD
+# ====================
+.github
+.gitlab-ci.yml
+Jenkinsfile
+
+# ====================
+# Misc
+# ====================
+*.md
+!vendor/**/*.md
+Makefile

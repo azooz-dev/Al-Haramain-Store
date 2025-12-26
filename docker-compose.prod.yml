@@ -1,0 +1,130 @@
+# ============================================
+# Al-Haramain Store - Production Docker Compose
+# ============================================
+# Usage:
+#   docker compose -f docker-compose.prod.yml up -d
+# ============================================
+
+services:
+  # ===========================================
+  # Main Application Container
+  # PHP-FPM + Nginx + Queue Workers + Scheduler
+  # ===========================================
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      target: production
+    container_name: alharamain-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-80}:80"
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - AUTO_MIGRATE=${AUTO_MIGRATE:-false}
+    env_file:
+      - .env.production
+    volumes:
+      # Persistent storage for uploads
+      - app-storage:/var/www/html/storage/app
+      # Logs (optional - for debugging)
+      - app-logs:/var/log
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - alharamain-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ===========================================
+  # MySQL Database
+  # ===========================================
+  mysql:
+    image: mysql:8.0
+    container_name: alharamain-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_DATABASE:-alharamain}
+      MYSQL_USER: ${DB_USERNAME:-alharamain}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # Custom MySQL config (optional)
+      # - ./docker/mysql/my.cnf:/etc/mysql/conf.d/custom.cnf
+    networks:
+      - alharamain-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ===========================================
+  # Redis Cache & Queue
+  # ===========================================
+  redis:
+    image: redis:7-alpine
+    container_name: alharamain-redis
+    restart: unless-stopped
+    command: >
+      redis-server  --appendonly yes  --maxmemory 256mb  --maxmemory-policy allkeys-lru --save 60 1
+    volumes:
+      - redis-data:/data
+    networks:
+      - alharamain-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  # ===========================================
+  # Laravel Reverb WebSocket Server (Optional)
+  # Uncomment if using real-time features
+  # ===========================================
+  # reverb:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/php/Dockerfile
+  #     target: production
+  #   container_name: alharamain-reverb
+  #   restart: unless-stopped
+  #   command: php artisan reverb:start --host=0.0.0.0 --port=8080
+  #   ports:
+  #     - "${REVERB_PORT:-8080}:8080"
+  #   env_file:
+  #     - .env.production
+  #   depends_on:
+  #     - app
+  #     - redis
+  #   networks:
+  #     - alharamain-network
+
+  # ===========================================
+  # Networks
+  # ===========================================
+networks:
+  alharamain-network:
+    driver: bridge
+
+# ===========================================
+# Volumes (Persistent Data)
+# ===========================================
+volumes:
+  mysql-data:
+    driver: local
+  redis-data:
+    driver: local
+  app-storage:
+    driver: local
+  app-logs:
+    driver: local
