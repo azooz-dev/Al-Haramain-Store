@@ -317,6 +317,12 @@ Al-Haramain-Store/
 │   ├── Review/                   # Product reviews
 │   └── User/                     # Customer management
 │
+├── docker/                       # Docker configuration files
+│   ├── nginx/                    # Nginx configuration
+│   ├── php/                      # PHP Dockerfile & configuration
+│   ├── scripts/                  # Container entrypoint scripts
+│   └── supervisor/               # Process manager configuration
+│
 ├── config/                       # Configuration files
 ├── database/                     # Migrations, seeders, factories
 ├── docs/                         # Documentation
@@ -326,7 +332,9 @@ Al-Haramain-Store/
 ├── routes/                       # Route definitions
 ├── storage/                      # Logs, cache, uploads
 ├── tests/                        # Test suites
-└── vendor/                       # Composer dependencies
+├── vendor/                       # Composer dependencies
+├── docker-compose.yml            # Local development Docker (Sail)
+└── docker-compose.prod.yml       # Production Docker configuration
 ```
 
 ### 4.2 Purpose of Each Major Folder/Module
@@ -335,6 +343,7 @@ Al-Haramain-Store/
 |-----------|---------|
 | `app/` | Core application code shared across modules |
 | `Modules/` | Self-contained HMVC modules with own MVC structure |
+| `docker/` | Docker configuration (Nginx, PHP, Supervisor, scripts) |
 | `config/` | Application configuration (database, auth, cache, etc.) |
 | `database/` | Schema migrations and data seeders |
 | `lang/` | Internationalization files for English and Arabic |
@@ -1064,6 +1073,150 @@ composer run dev
 | Migration conflicts | Run `php artisan migrate:fresh` (development only) |
 | Permission issues | Check storage/ and bootstrap/cache/ permissions |
 | Stripe webhook fails | Verify webhook secret and signature |
+| Docker build fails | Ensure Docker Desktop is running and has sufficient resources |
+| Redis connection refused | Verify Redis container is running: `docker compose ps` |
+
+### 11.4 Docker Development Setup
+
+The project supports two Docker approaches:
+
+1. **Local Development Docker** - Using Laravel Sail for rapid development
+2. **Production Docker** - Custom multi-stage build for optimized, secure production images
+
+#### 11.4.1 Local Development with Laravel Sail
+
+Laravel Sail provides a lightweight Docker development environment.
+
+**Prerequisites:**
+- Docker Desktop installed and running
+- WSL2 (Windows) or native Docker (macOS/Linux)
+
+**Quick Start:**
+
+```bash
+# 1. Start the development environment
+./vendor/bin/sail up -d
+
+# 2. Access the application
+# Application: http://localhost
+# Mailpit: http://localhost:8025
+
+# 3. Run artisan commands
+./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan db:seed
+
+# 4. Stop the environment
+./vendor/bin/sail down
+```
+
+**Docker Compose Services (Development):**
+
+| Service | Image | Port | Purpose |
+|---------|-------|------|---------|
+| `laravel.test` | sail-8.4/app | 80, 5173 | PHP Application + Vite |
+| `mysql` | mysql:8.0 | 3306 | Database |
+| `redis` | redis:alpine | 6379 | Cache/Queue/Sessions |
+| `mailpit` | axllent/mailpit | 1025, 8025 | Email Testing |
+
+**Configuration File:** `docker-compose.yml`
+
+#### 11.4.2 Production Docker Setup
+
+The production Docker setup uses a custom multi-stage Dockerfile for optimized, secure images.
+
+**Multi-Stage Build Process:**
+
+| Stage | Base Image | Purpose |
+|-------|------------|---------|
+| 1. `composer` | composer:2 | Install PHP dependencies |
+| 2. `frontend` | node:20-alpine | Build frontend assets with Vite |
+| 3. `production` | php:8.2-fpm-alpine | Final optimized image |
+
+**Production Image Features:**
+- PHP 8.2 with OPcache optimization
+- Nginx as reverse proxy
+- Supervisor for process management (PHP-FPM + Queue Workers)
+- Redis PHP extension pre-installed
+- Development files removed (tests, docs, .git)
+- Non-root user (www-data) for security
+- Health checks enabled
+- Automatic Laravel optimization on startup
+
+**Quick Start (Production):**
+
+```bash
+# 1. Create production environment file
+cp .env.production.example .env.production
+
+# 2. Build and start production containers
+docker compose -f docker-compose.prod.yml up -d --build
+
+# 3. Run initial migrations (first deployment only)
+docker compose -f docker-compose.prod.yml exec app php artisan migrate --force
+
+# 4. View logs
+docker compose -f docker-compose.prod.yml logs -f app
+```
+
+**Production Docker Compose Services:**
+
+| Service | Container Name | Port | Purpose |
+|---------|---------------|------|---------|
+| `app` | alharamain-app | 80 | PHP-FPM + Nginx + Workers |
+| `mysql` | alharamain-mysql | Internal | Database |
+| `redis` | alharamain-redis | Internal | Cache/Queue |
+
+**Configuration File:** `docker-compose.prod.yml`
+
+**Docker Directory Structure:**
+
+```
+docker/
+├── nginx/
+│   ├── nginx.conf              # Main Nginx configuration
+│   └── sites/
+│       └── default.conf        # Laravel site configuration
+├── php/
+│   ├── Dockerfile              # Multi-stage production Dockerfile
+│   ├── php.ini                 # PHP production configuration
+│   └── www.conf                # PHP-FPM pool configuration
+├── scripts/
+│   └── entrypoint.sh           # Container initialization script
+└── supervisor/
+    └── supervisord.conf        # Process manager configuration
+```
+
+**Docker Commands Reference:**
+
+```bash
+# Build and start
+docker compose -f docker-compose.prod.yml up -d --build
+
+# View running containers
+docker compose -f docker-compose.prod.yml ps
+
+# View logs
+docker compose -f docker-compose.prod.yml logs -f app
+
+# Execute commands in container
+docker compose -f docker-compose.prod.yml exec app php artisan migrate
+
+# Stop containers
+docker compose -f docker-compose.prod.yml down
+
+# Rebuild without cache
+docker compose -f docker-compose.prod.yml build --no-cache
+```
+
+**Persistent Volumes:**
+
+| Volume | Purpose | Mount Point |
+|--------|---------|-------------|
+| `mysql-data` | Database storage | `/var/lib/mysql` |
+| `redis-data` | Redis persistence | `/data` |
+| `app-storage` | Uploaded files | `/var/www/html/storage/app` |
+| `app-logs` | Application logs | `/var/log` |
+
 
 ---
 
