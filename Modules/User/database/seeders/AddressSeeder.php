@@ -4,6 +4,7 @@ namespace Modules\User\Database\Seeders;
 
 use Modules\User\Entities\Address;
 use Modules\User\Entities\User;
+use Modules\User\Enums\AddressType;
 use Illuminate\Database\Seeder;
 
 class AddressSeeder extends Seeder
@@ -17,7 +18,7 @@ class AddressSeeder extends Seeder
         Address::create([
             'user_id' => User::first()->id,
             'label' => '456 Business District',
-            'address_type' => 'home',
+            'address_type' => AddressType::HOME,
             'street' => '123 Main St',
             'city' => 'Anytown',
             'state' => 'CA',
