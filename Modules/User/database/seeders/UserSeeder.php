@@ -14,9 +14,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create sample users using factory
-        User::factory(50)->create();
-
         // Create specific user for testing
         User::create([
             'first_name' => 'User',
