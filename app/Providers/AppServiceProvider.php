@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+use App\Filament\Pages\Auth\AdminLogin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register custom Livewire components for Filament
+        Livewire::component('app.filament.pages.auth.admin-login', AdminLogin::class);
+
         // Application-level bootstrapping
         // Module-specific observers and policies are registered by their respective ServiceProviders
     }
