@@ -26,7 +26,7 @@ class ListFavoritesTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonCount(3, 'data');
+        $response->assertJsonCount(3, 'data.data');
     }
 
     public function test_user_cannot_access_other_users_favorites(): void
@@ -44,4 +44,3 @@ class ListFavoritesTest extends TestCase
         $response->assertStatus(403);
     }
 }
-

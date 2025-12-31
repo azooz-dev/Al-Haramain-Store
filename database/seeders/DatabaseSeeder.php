@@ -4,19 +4,16 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\Role\RoleSeeder;
-use Database\Seeders\Admin\AdminSeeder;
-use Database\Seeders\Offer\OfferSeeder;
-use Database\Seeders\Order\OrderSeeder;
-use Database\Seeders\Coupon\CouponSeeder;
-use Database\Seeders\Review\ReviewSeeder;
-use Database\Seeders\Order\OrderItemSeeder;
-use Database\Seeders\Payment\PaymentSeeder;
-use Database\Seeders\Coupon\CouponUserSeeder;
-use Database\Seeders\Favorite\FavoriteSeeder;
 use Database\Seeders\Permission\PermissionSeeder;
-use Database\Seeders\Offer\OfferTranslationSeeder;
+use Modules\Admin\Database\Seeders\AdminDatabaseSeeder;
 use Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder;
+use Modules\Offer\Database\Seeders\OfferDatabaseSeeder;
 use Modules\User\Database\Seeders\UserDatabaseSeeder;
+use Modules\Coupon\Database\Seeders\CouponDatabaseSeeder;
+use Modules\Order\Database\Seeders\OrderDatabaseSeeder;
+use Modules\Payment\Database\Seeders\PaymentDatabaseSeeder;
+use Modules\Review\Database\Seeders\ReviewDatabaseSeeder;
+use Modules\Favorite\Database\Seeders\FavoriteDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,20 +23,20 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            // UserDatabaseSeeder::class, // User module seeders
-            // PermissionSeeder::class,
-            // RoleSeeder::class,
-            // AdminSeeder::class,
-            // CatalogDatabaseSeeder::class, // Catalog module seeders (Category, Product, etc.)
-            OfferSeeder::class,
-            OfferTranslationSeeder::class,
-            // CouponSeeder::class,
-            // CouponUserSeeder::class,
-            // OrderSeeder::class,
-            // OrderItemSeeder::class,
-            // PaymentSeeder::class,
-            // ReviewSeeder::class,
-            FavoriteSeeder::class,
+            // Core seeders
+            PermissionSeeder::class,
+            RoleSeeder::class,
+
+            // Module seeders - Order matters for foreign key constraints
+            UserDatabaseSeeder::class,
+            AdminDatabaseSeeder::class,
+            CatalogDatabaseSeeder::class, // Categories, Products, Variants, Colors, Images, Translations
+            OfferDatabaseSeeder::class,   // Offers, Offer Translations, Offer Products
+            CouponDatabaseSeeder::class,
+            OrderDatabaseSeeder::class,
+            PaymentDatabaseSeeder::class,
+            ReviewDatabaseSeeder::class,
+            FavoriteDatabaseSeeder::class,
         ]);
     }
 }

@@ -79,7 +79,7 @@ class AddressManagementTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonCount(3, 'data');
+        $response->assertJsonCount(3, 'data.data');
     }
 
     public function test_user_can_set_new_default_address(): void

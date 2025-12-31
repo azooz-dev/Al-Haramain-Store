@@ -21,6 +21,18 @@ class ProductListingTest extends TestCase
         // Arrange
         $products = Product::factory()->count(5)->create();
 
+        // Create translations for each product
+        foreach ($products as $product) {
+            ProductTranslation::factory()->create([
+                'product_id' => $product->id,
+                'local' => 'en',
+            ]);
+            ProductTranslation::factory()->create([
+                'product_id' => $product->id,
+                'local' => 'ar',
+            ]);
+        }
+
         // Act
         $response = $this->getJson('/api/products');
 
@@ -28,20 +40,24 @@ class ProductListingTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    'identifier',
-                    'slug',
-                    'sku',
-                    'en' => [
-                        'title',
-                        'details',
-                    ],
-                    'ar' => [
-                        'title',
-                        'details',
+                'data' => [
+                    '*' => [
+                        'identifier',
+                        'slug',
+                        'sku',
+                        'en' => [
+                            'title',
+                            'details',
+                        ],
+                        'ar' => [
+                            'title',
+                            'details',
+                        ],
                     ],
                 ],
             ],
+            'message',
+            'status',
         ]);
     }
 
@@ -61,7 +77,7 @@ class ProductListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonPath('data.0.en.title', 'English Product Name');
+        $response->assertJsonPath('data.data.0.en.title', 'English Product Name');
     }
 
     public function test_products_returned_with_arabic_translations(): void
@@ -80,7 +96,6 @@ class ProductListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $response->assertJsonPath('data.0.ar.title', 'اسم المنتج');
+        $response->assertJsonPath('data.data.0.ar.title', 'اسم المنتج');
     }
 }
-

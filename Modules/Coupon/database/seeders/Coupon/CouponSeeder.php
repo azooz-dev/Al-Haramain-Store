@@ -15,9 +15,6 @@ class CouponSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create sample coupons using factory
-        Coupon::factory(30)->create();
-
         // Create specific coupon for testing
         Coupon::create([
             'code' => '1234567890',

@@ -20,6 +20,18 @@ class CategoryListingTest extends TestCase
         // Arrange
         $categories = Category::factory()->count(3)->create();
 
+        // Create translations for each category
+        foreach ($categories as $category) {
+            CategoryTranslation::factory()->create([
+                'category_id' => $category->id,
+                'local' => 'en',
+            ]);
+            CategoryTranslation::factory()->create([
+                'category_id' => $category->id,
+                'local' => 'ar',
+            ]);
+        }
+
         // Act
         $response = $this->getJson('/api/categories');
 
@@ -27,19 +39,23 @@ class CategoryListingTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    'identifier',
-                    'slug',
-                    'en' => [
-                        'title',
-                        'details',
-                    ],
-                    'ar' => [
-                        'title',
-                        'details',
+                'data' => [
+                    '*' => [
+                        'identifier',
+                        'slug',
+                        'en' => [
+                            'title',
+                            'details',
+                        ],
+                        'ar' => [
+                            'title',
+                            'details',
+                        ],
                     ],
                 ],
             ],
+            'message',
+            'status',
         ]);
     }
 
@@ -67,4 +83,3 @@ class CategoryListingTest extends TestCase
         $response->assertJsonFragment(['title' => 'Test Category'], 'data.*.en');
     }
 }
-
