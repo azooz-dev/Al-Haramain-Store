@@ -42,8 +42,10 @@ class AuthService implements AuthServiceInterface
 
       request()->session()->regenerate();
 
+      $token = $user->createToken('personal_token')->plainTextToken;
+
       $user = new UserApiResource($user);
-      return ['user' => $user];
+      return ['user' => $user, 'token' => $token];
     } catch (UserException $e) {
       return errorResponse($e->getMessage(), $e->getCode());
     }

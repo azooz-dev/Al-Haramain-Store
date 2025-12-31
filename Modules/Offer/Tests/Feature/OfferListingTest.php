@@ -33,7 +33,7 @@ class OfferListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $offers = $response->json('data');
+        $offers = $response->json('data.data');
         $this->assertCount(2, $offers);
     }
 
@@ -56,7 +56,7 @@ class OfferListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $offers = $response->json('data');
+        $offers = $response->json('data.data');
         $this->assertCount(1, $offers);
     }
 
@@ -79,9 +79,8 @@ class OfferListingTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $offers = $response->json('data');
+        $offers = $response->json('data.data');
         $this->assertCount(1, $offers);
         $this->assertEquals('active', $offers[0]['status']);
     }
 }
-

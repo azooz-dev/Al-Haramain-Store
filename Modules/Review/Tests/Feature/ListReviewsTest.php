@@ -31,7 +31,7 @@ class ListReviewsTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        $reviews = $response->json('data');
+        $reviews = $response->json('data.data');
 
         // Debug: Check what status values we're getting
         if (empty($reviews)) {

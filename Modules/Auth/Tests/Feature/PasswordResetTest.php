@@ -40,6 +40,7 @@ class PasswordResetTest extends TestCase
         $user = User::factory()->create([
             'email' => 'user@example.com',
             'password' => Hash::make('oldpassword'),
+            'verified' => true,
         ]);
 
         $token = Password::createToken($user);
@@ -56,13 +57,13 @@ class PasswordResetTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
-        
+
         // Verify user can login with new password
         $loginResponse = $this->postJson('/api/login', [
             'email' => 'user@example.com',
             'password' => 'newpassword123',
         ]);
-        
+
         $loginResponse->assertStatus(200);
     }
 
@@ -87,4 +88,3 @@ class PasswordResetTest extends TestCase
         $response->assertStatus(422);
     }
 }
-
