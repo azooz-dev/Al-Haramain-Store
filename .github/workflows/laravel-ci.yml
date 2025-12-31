@@ -15,7 +15,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: laravel_test
+          MYSQL_DATABASE: al-haramain-store-test
         ports:
           - 3306:3306
         options: >-
@@ -79,7 +79,7 @@ jobs:
         run: |
           php artisan config:clear
           sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" .env
-          sed -i "s/DB_DATABASE=.*/DB_DATABASE=laravel_test/" .env
+          sed -i "s/DB_DATABASE=.*/DB_DATABASE=al-haramain-store-test/" .env
           sed -i "s/DB_USERNAME=.*/DB_USERNAME=root/" .env
           sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=root/" .env
           sed -i "s/REDIS_HOST=.*/REDIS_HOST=127.0.0.1/" .env

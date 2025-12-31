@@ -37,12 +37,6 @@ if (!function_exists('errorResponse')) {
 if (!function_exists('showAll')) {
   function showAll($collection, $message = 'Success', $status = 200): JsonResponse
   {
-    // If it's already a ResourceCollection or JsonResource, return it directly
-    if ($collection instanceof \Illuminate\Http\Resources\Json\ResourceCollection || 
-        $collection instanceof \Illuminate\Http\Resources\Json\JsonResource) {
-      return successResponse($collection, $message, $status);
-    }
-
     if ($collection->isEmpty()) {
       return successResponse($collection, $message, $status);
     }
