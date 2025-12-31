@@ -20,7 +20,7 @@ class AdminTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'admin']);
     }
 
@@ -57,7 +57,7 @@ class AdminTest extends TestCase
     {
         // Arrange
         $admin = Admin::factory()->create([
-            'verified' => true,
+            'verified' => false,
             'email_verified_at' => null,
         ]);
 
