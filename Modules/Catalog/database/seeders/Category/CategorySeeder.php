@@ -57,7 +57,7 @@ class CategorySeeder extends Seeder
             [
                 'id' => 6,
                 'slug' => 'personalized-holy-qurans',
-                'image' => 'categories/images/01K6K5A474T67YXSV29NZNC3GR.jpg.jpg',
+                'image' => 'categories/images/01K6K5A474T67YXSV29NZNC3GR.jpg',
                 'deleted_at' => null,
                 'created_at' => '2025-09-17 15:25:07',
                 'updated_at' => '2025-09-17 15:25:07',

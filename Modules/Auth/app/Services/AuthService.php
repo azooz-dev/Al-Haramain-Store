@@ -56,20 +56,16 @@ class AuthService implements AuthServiceInterface
     $user = request()->user();
 
     if ($user) {
-      // Delete the current Sanctum access token
-      if ($user->currentAccessToken()) {
-        $user->currentAccessToken()->delete();
+      $token = $user->currentAccessToken();
+      if ($token instanceof \Laravel\Sanctum\PersonalAccessToken) {
+        $token->delete();
       }
-      // Also delete all tokens for this user to ensure complete logout
-      $user->tokens()->delete();
     }
 
     if ($this->authRepository->logout()) {
       // Invalidate the session completely
       if (request()->hasSession()) {
         request()->session()->invalidate();
-        // Regenerate CSRF token
-        request()->session()->regenerateToken();
       }
 
       $response = showMessage(__("app.messages.auth.logged_out"), 200);
