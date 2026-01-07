@@ -3,38 +3,53 @@
 namespace Modules\Offer\Database\Seeders\Offer;
 
 use Modules\Offer\Entities\Offer\Offer;
-use Modules\Offer\Enums\OfferStatus;
-use Modules\Catalog\Entities\Product\Product;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OfferSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Ensure products exist before attaching offers
-        if (Product::count() === 0) {
-            Product::factory(20)->create();
+        $offers = [
+            [
+                'id' => 1,
+                'image_path' => 'offers/images/01K6K5TDDACPZQ1DFPMD6JSE6F.jpg',
+                'products_total_price' => '403.00',
+                'offer_price' => '200.00',
+                'start_date' => '2025-12-19',
+                'end_date' => '2025-12-30',
+                'status' => 'active',
+                'created_at' => '2025-12-17 23:11:15',
+                'updated_at' => '2025-12-18 12:02:12',
+            ],
+            [
+                'id' => 3,
+                'image_path' => 'offers/images/01K6K5W5MG0WZ2ZS6D5W8PPS2N.jpg',
+                'products_total_price' => '224.00',
+                'offer_price' => '120.00',
+                'start_date' => '2025-12-19',
+                'end_date' => '2025-12-30',
+                'status' => 'active',
+                'created_at' => '2025-12-18 13:54:38',
+                'updated_at' => '2025-12-18 13:55:54',
+            ],
+            [
+                'id' => 4,
+                'image_path' => 'offers/images/01K6K5YWRHJQG64EWQ92VMZGYW.png',
+                'products_total_price' => '448.00',
+                'offer_price' => '159.00',
+                'start_date' => '2025-12-19',
+                'end_date' => '2025-12-30',
+                'status' => 'active',
+                'created_at' => '2025-12-18 14:46:17',
+                'updated_at' => '2025-12-18 15:12:37',
+            ],
+        ];
+
+        foreach ($offers as $offer) {
+            Offer::updateOrCreate(
+                ['id' => $offer['id']],
+                $offer
+            );
         }
-
-        // Create sample offers
-        Offer::factory(25)->create()->each(function (Offer $offer) {
-            $productIds = Product::inRandomOrder()->limit(rand(1, 5))->pluck('id');
-            $offer->products()->attach($productIds);
-        });
-
-        // Create specific offer for testing
-        $offer = Offer::create([
-            'image_path' => 'https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=800&h=600&fit=crop',
-            'products_total_price' => 100,
-            'offer_price' => 100,
-            'start_date' => now(),
-            'end_date' => now()->addDays(30),
-            'status' => OfferStatus::ACTIVE,
-        ]);
-        $offer->products()->attach(Product::inRandomOrder()->limit(3)->pluck('id'));
     }
 }

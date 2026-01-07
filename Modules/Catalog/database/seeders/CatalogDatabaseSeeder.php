@@ -5,6 +5,7 @@ namespace Modules\Catalog\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Modules\Catalog\Database\Seeders\Category\CategorySeeder;
 use Modules\Catalog\Database\Seeders\Category\CategoryTranslationSeeder;
+use Modules\Catalog\Database\Seeders\Category\CategoryProductSeeder;
 use Modules\Catalog\Database\Seeders\Product\ProductSeeder;
 use Modules\Catalog\Database\Seeders\Product\ProductColorSeeder;
 use Modules\Catalog\Database\Seeders\Product\ProductColorImageSeeder;
@@ -26,6 +27,7 @@ class CatalogDatabaseSeeder extends Seeder
             ProductVariantSeeder::class,
             ProductColorImageSeeder::class,
             ProductTranslationSeeder::class,
+            CategoryProductSeeder::class, // Must run after categories and products are seeded
         ]);
     }
 }

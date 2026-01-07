@@ -15,7 +15,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: laravel_test
+          MYSQL_DATABASE: testing
         ports:
           - 3306:3306
         options: >-
@@ -78,14 +78,19 @@ jobs:
       - name: Configure environment for CI
         run: |
           php artisan config:clear
+          # Update .env file
           sed -i "s/DB_HOST=.*/DB_HOST=127.0.0.1/" .env
-          sed -i "s/DB_DATABASE=.*/DB_DATABASE=laravel_test/" .env
+          sed -i "s/DB_DATABASE=.*/DB_DATABASE=testing/" .env
           sed -i "s/DB_USERNAME=.*/DB_USERNAME=root/" .env
           sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=root/" .env
           sed -i "s/REDIS_HOST=.*/REDIS_HOST=127.0.0.1/" .env
           sed -i "s/CACHE_STORE=.*/CACHE_STORE=redis/" .env
           sed -i "s/QUEUE_CONNECTION=.*/QUEUE_CONNECTION=sync/" .env
           sed -i "s/SESSION_DRIVER=.*/SESSION_DRIVER=array/" .env
+          # Update phpunit.xml for CI (it overrides .env for tests)
+          sed -i 's/value="mysql"/value="127.0.0.1"/' phpunit.xml
+          sed -i 's/value="sail"/value="root"/' phpunit.xml
+          sed -i 's/value="password"/value="root"/' phpunit.xml
 
       - name: Generate application key
         run: php artisan key:generate
