@@ -140,3 +140,4 @@ services:
     plan: starter
     region: frankfurt
     maxmemoryPolicy: allkeys-lru
+    ipAllowList: []  # Empty list = only accessible from Render private network
