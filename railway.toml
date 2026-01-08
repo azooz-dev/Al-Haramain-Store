@@ -1,0 +1,10 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "bash railway/init-app.sh && /start-nginx.sh"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+
+[build.env]
+NIXPACKS_PHP_VERSION = "8.2"
