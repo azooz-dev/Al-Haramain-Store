@@ -41,19 +41,22 @@ services:
       - key: MYSQL_ATTR_SSL_CA
         value: /etc/ssl/certs/ca-certificates.crt
       
-      # Redis - References the Render Redis service
+      # Redis - References the Render Key Value service
+      - key: REDIS_URL
+        fromService:
+          name: alharamain-cache
+          type: keyvalue
+          property: connectionString
       - key: REDIS_HOST
         fromService:
-          name: alharamain-redis
-          type: redis
+          name: alharamain-cache
+          type: keyvalue
           property: host
       - key: REDIS_PORT
         fromService:
-          name: alharamain-redis
-          type: redis
+          name: alharamain-cache
+          type: keyvalue
           property: port
-      - key: REDIS_PASSWORD
-        value: ""
       
       # Cache & Session
       - key: CACHE_STORE
@@ -119,25 +122,31 @@ services:
         value: /etc/ssl/certs/ca-certificates.crt
       
       # Redis
+      - key: REDIS_URL
+        fromService:
+          name: alharamain-cache
+          type: keyvalue
+          property: connectionString
       - key: REDIS_HOST
         fromService:
-          name: alharamain-redis
-          type: redis
+          name: alharamain-cache
+          type: keyvalue
           property: host
       - key: REDIS_PORT
         fromService:
-          name: alharamain-redis
-          type: redis
+          name: alharamain-cache
+          type: keyvalue
           property: port
       - key: QUEUE_CONNECTION
         value: redis
 
   # ===========================================
-  # Redis Cache & Queue (Managed by Render)
+  # Redis/Key Value Cache & Queue (Managed by Render)
+  # Note: 'redis' type is deprecated, use 'keyvalue' instead
   # ===========================================
-  - type: redis
-    name: alharamain-redis
-    plan: starter
+  - type: keyvalue
+    name: alharamain-cache
+    ipAllowList: []  # Only allow internal connections from Render services
     region: frankfurt
+    plan: starter
     maxmemoryPolicy: allkeys-lru
-    ipAllowList: []  # Empty list = only accessible from Render private network
