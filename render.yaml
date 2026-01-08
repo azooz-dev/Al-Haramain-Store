@@ -1,11 +1,3 @@
-# ============================================
-# Al-Haramain Store - Render Blueprint
-# Infrastructure as Code for Render.com
-# ============================================
-# This file defines all services needed for deployment.
-# Deploy with: https://dashboard.render.com/blueprints
-# ============================================
-
 services:
   # ===========================================
   # Main Web Application
@@ -23,7 +15,7 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: "false"
       - key: APP_URL
         sync: false  # Set manually after deployment
       - key: APP_KEY
@@ -33,27 +25,21 @@ services:
       - key: APP_LOCALE
         value: en
       
-      # Database - References the MySQL service
+      # Database - Set these manually with your external MySQL provider
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        fromService:
-          name: alharamain-mysql
-          type: pserv
-          property: host
+        sync: false  # Set manually (e.g., from PlanetScale)
       - key: DB_PORT
-        value: 3306
+        value: "3306"
       - key: DB_DATABASE
-        value: alharamain
+        sync: false  # Set manually
       - key: DB_USERNAME
-        value: alharamain
+        sync: false  # Set manually
       - key: DB_PASSWORD
-        fromService:
-          name: alharamain-mysql
-          type: pserv
-          envVarKey: MYSQL_PASSWORD
+        sync: false  # Set manually
       
-      # Redis - References the Redis service
+      # Redis - References the Render Redis service
       - key: REDIS_HOST
         fromService:
           name: alharamain-redis
@@ -73,7 +59,7 @@ services:
       - key: SESSION_DRIVER
         value: redis
       - key: SESSION_LIFETIME
-        value: 120
+        value: "120"
       - key: QUEUE_CONNECTION
         value: redis
       
@@ -89,7 +75,7 @@ services:
       
       # Auto Migration
       - key: AUTO_MIGRATE
-        value: true
+        value: "true"
 
   # ===========================================
   # Background Worker (Queue Processing)
@@ -103,34 +89,32 @@ services:
     region: frankfurt
     dockerCommand: php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
     envVars:
-      # Same environment variables as web service
+      # Application
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: "false"
       - key: APP_KEY
         fromService:
           name: alharamain-store
           type: web
           envVarKey: APP_KEY
+      
+      # Database - Same as web service
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        fromService:
-          name: alharamain-mysql
-          type: pserv
-          property: host
+        sync: false
       - key: DB_PORT
-        value: 3306
+        value: "3306"
       - key: DB_DATABASE
-        value: alharamain
+        sync: false
       - key: DB_USERNAME
-        value: alharamain
+        sync: false
       - key: DB_PASSWORD
-        fromService:
-          name: alharamain-mysql
-          type: pserv
-          envVarKey: MYSQL_PASSWORD
+        sync: false
+      
+      # Redis
       - key: REDIS_HOST
         fromService:
           name: alharamain-redis
@@ -145,30 +129,7 @@ services:
         value: redis
 
   # ===========================================
-  # MySQL Database (Private Service)
-  # ===========================================
-  - type: pserv
-    name: alharamain-mysql
-    runtime: docker
-    plan: starter
-    region: frankfurt
-    disk:
-      name: mysql-data
-      mountPath: /var/lib/mysql
-      sizeGB: 10
-    dockerImage: mysql:8.0
-    envVars:
-      - key: MYSQL_ROOT_PASSWORD
-        generateValue: true
-      - key: MYSQL_DATABASE
-        value: alharamain
-      - key: MYSQL_USER
-        value: alharamain
-      - key: MYSQL_PASSWORD
-        generateValue: true
-
-  # ===========================================
-  # Redis Cache & Queue
+  # Redis Cache & Queue (Managed by Render)
   # ===========================================
   - type: redis
     name: alharamain-redis
