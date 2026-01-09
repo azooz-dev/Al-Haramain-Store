@@ -12,6 +12,7 @@
         "php": "^8.2",
         "astrotomic/laravel-translatable": "^11.16",
         "bezhansalleh/filament-language-switch": "^3.1",
+        "ext-redis": "*",
         "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.3",
         "joaopaulolndev/filament-edit-profile": "^1.0",
@@ -67,9 +68,9 @@
             "Modules\\Admin\\": "Modules/Admin/app/",
             "Modules\\Admin\\Database\\Factories\\": "Modules/Admin/database/factories/",
             "Modules\\Admin\\Database\\Seeders\\": "Modules/Admin/database/seeders/",
-                "Modules\\Auth\\": "Modules/Auth/app/",
-                "Modules\\Analytics\\": "Modules/Analytics/app/",
-                "Modules\\": "Modules/",
+            "Modules\\Auth\\": "Modules/Auth/app/",
+            "Modules\\Analytics\\": "Modules/Analytics/app/",
+            "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
