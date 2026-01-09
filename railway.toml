@@ -4,5 +4,5 @@ builder = "nixpacks"
 
 
 [build.env]
-NIXPACKS_PHP_VERSION = "8.2"
+NIXPACKS_PHP_VERSION = "8.4"
 NIXPACKS_NODE_VERSION = "20"
