@@ -32,4 +32,8 @@ php artisan storage:link || true
 echo "==========================================="
 echo "✅ Al-Haramain Store initialization complete!"
 echo "==========================================="
-# Server startup is handled by Nixpacks (nginx)
+
+# Start the web server
+# PORT is set by Railway automatically
+echo "🌐 Starting server on port ${PORT:-8080}..."
+exec php artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
