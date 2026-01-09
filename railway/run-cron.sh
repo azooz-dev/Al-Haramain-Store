@@ -4,6 +4,8 @@
 # ============================================
 
 echo "⏰ Starting Laravel Scheduler..."
+php artisan config:clear
+
 
 while true
 do

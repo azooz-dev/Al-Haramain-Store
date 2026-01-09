@@ -6,6 +6,8 @@
 
 echo "==========================================="
 echo "🔌 Starting Laravel Reverb WebSocket Server..."
+php artisan config:clear
+
 echo "==========================================="
 
 # Run Laravel Reverb
