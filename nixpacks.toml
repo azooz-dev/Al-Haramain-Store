@@ -1,0 +1,7 @@
+# Nixpacks configuration for Railway deployment
+# This runs migrations before starting the default Nginx server
+
+[phases.start]
+# Run initialization script, then execute the default Nixpacks start command
+# The "..." syntax inherits the default start command from the PHP provider
+cmd = "bash railway/init-app.sh && ..."
