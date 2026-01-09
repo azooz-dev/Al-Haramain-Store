@@ -8,3 +8,4 @@ healthcheckTimeout = 300
 
 [build.env]
 NIXPACKS_PHP_VERSION = "8.2"
+NIXPACKS_NODE_VERSION = "20"
