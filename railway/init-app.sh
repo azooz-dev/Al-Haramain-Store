@@ -35,7 +35,9 @@ echo "==========================================="
 
 # Start the web server
 # PORT is set by Railway automatically
+PORT="${PORT:-8080}"
 echo "🔍 DEBUG: PORT environment variable = '${PORT}'"
-echo "🔍 DEBUG: Will use port: ${PORT:-8080}"
-echo "🌐 Starting server on port ${PORT:-8080}..."
-exec php artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
+echo "🔍 DEBUG: Will use port: ${PORT}"
+echo "🌐 Starting PHP server on 0.0.0.0:${PORT}..."
+echo "🔍 DEBUG: Document root = $(pwd)/public"
+exec php -S 0.0.0.0:${PORT} -t public public/index.php
