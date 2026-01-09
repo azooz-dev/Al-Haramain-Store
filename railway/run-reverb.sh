@@ -12,5 +12,5 @@ echo "==========================================="
 
 # Run Laravel Reverb
 # --host=0.0.0.0: Listen on all interfaces
-# --port=8080: Default port for Railway (Railway will map this)
-php artisan reverb:start --host=0.0.0.0 --port=8080 --debug
+# --port=${PORT:-8080}: Use Railway's dynamic port or default to 8080
+php artisan reverb:start --host=0.0.0.0 --port=${PORT:-8080} --debug
