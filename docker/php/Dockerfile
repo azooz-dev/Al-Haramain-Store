@@ -95,6 +95,8 @@ RUN apk update && apk add --no-cache \
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
+  && docker-php-ext-configure mysqli --with-mysqli=mysqlnd \
   && docker-php-ext-install -j$(nproc) \
   pdo_mysql \
   mysqli \

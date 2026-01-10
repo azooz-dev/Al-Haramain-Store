@@ -1,5 +1,5 @@
-# Nixpacks configuration for Railway deployment
+[phases.setup]
+nixPkgs = ["...", "php84Extensions.pdo_mysql"]
 
-[phases.start]
-# Run migrations first, then start nginx with php-fpm
-cmd = "bash railway/init-app.sh && perl /assets/start_nginx.pl"
+[start]
+cmd = "bash railway/init-app.sh && php -S 0.0.0.0:${PORT:-8000} -t public"
