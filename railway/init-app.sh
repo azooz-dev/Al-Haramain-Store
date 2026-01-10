@@ -14,6 +14,14 @@ echo "==========================================="
 echo "📦 Running database migrations..."
 php artisan migrate --force
 
+# Run database seeders
+echo "🌱 Seeding database..."
+php artisan db:seed --force
+
+# Publish Filament assets
+echo "🎨 Publishing Filament assets..."
+php artisan filament:assets
+
 # Clear all caches first
 echo "🧹 Clearing caches..."
 php artisan optimize:clear
