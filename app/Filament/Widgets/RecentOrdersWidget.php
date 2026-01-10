@@ -197,7 +197,7 @@ class RecentOrdersWidget extends BaseWidget
                                 ->send();
                         })
                         ->visible(function (Order $record) use ($orderService): bool {
-                            return $orderService->canUpdateStatus($record, $record->status);
+                            return $orderService->canUpdateStatus($record, $record->status->value);
                         }),
                 ])
             ])
