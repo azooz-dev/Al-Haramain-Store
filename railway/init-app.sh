@@ -48,4 +48,4 @@ echo "🔍 DEBUG: PORT environment variable = '${PORT}'"
 echo "🔍 DEBUG: Will use port: ${PORT}"
 echo "🌐 Starting PHP server on 0.0.0.0:${PORT}..."
 echo "🔍 DEBUG: Document root = $(pwd)/public"
-exec php -S 0.0.0.0:${PORT} -t public public/index.php
+exec php -S 0.0.0.0:${PORT} -t public public/server.php
