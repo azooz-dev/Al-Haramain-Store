@@ -1,8 +1,11 @@
 [phases.setup]
 nixPkgs = ["...", "php84Extensions.pdo_mysql"]
 
+[phases.install]
+cmds = ["npm ci"]
+
 [phases.build]
-cmds = ["npm ci", "npm run build"]
+cmds = ["npm run build"]
 
 [start]
 cmd = "bash railway/init-app.sh"
