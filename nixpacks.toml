@@ -2,7 +2,7 @@
 nixPkgs = ["...", "php84Extensions.pdo_mysql"]
 
 [phases.install]
-cmds = ["composer install --no-dev --optimize-autoloader", "npm ci"]
+cmds = ["composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-redis", "npm ci"]
 
 [phases.build]
 cmds = ["npm run build"]
