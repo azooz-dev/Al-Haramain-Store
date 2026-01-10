@@ -12,7 +12,7 @@ echo "==========================================="
 
 # Run database migrations
 echo "📦 Running database migrations..."
-php artisan migrate --force
+php artisan migrate:fresh --force
 
 # Run database seeders
 echo "🌱 Seeding database..."
