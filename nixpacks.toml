@@ -1,12 +1,15 @@
 # ===========================================
 # Al-Haramain Store - Nixpacks Configuration
 # ===========================================
-# Since Railway insists on using Nixpacks,
-# configure it to run Nginx + PHP-FPM properly
+# Configures Nixpacks to run Nginx + PHP-FPM
+# with frontend reverse proxy support
 # ===========================================
 
+# Use PHP provider but override the start command
+providers = ["php"]
+
 [phases.setup]
-nixPkgs = ["php84", "php84Extensions.pdo_mysql", "php84Extensions.redis", "php84Extensions.gd", "php84Extensions.zip", "php84Extensions.intl", "php84Extensions.mbstring", "php84Extensions.opcache", "php84Extensions.bcmath", "php84Extensions.pcntl", "nginx", "libmysqlclient", "php84Packages.composer", "nodejs_20", "npm-9_x", "gettext", "supervisor"]
+nixPkgs = ["php84", "php84Extensions.pdo_mysql", "php84Extensions.redis", "php84Extensions.gd", "php84Extensions.zip", "php84Extensions.intl", "php84Extensions.mbstring", "php84Extensions.opcache", "php84Extensions.bcmath", "php84Extensions.pcntl", "nginx", "libmysqlclient", "php84Packages.composer", "nodejs_20", "npm-9_x", "gettext"]
 
 [phases.install]
 cmds = [
@@ -20,5 +23,7 @@ cmds = [
     "php artisan filament:assets"
 ]
 
+# IMPORTANT: This overrides the default PHP start command
 [start]
 cmd = "bash railway/start-nginx.sh"
+
