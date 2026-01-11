@@ -218,6 +218,34 @@ fi
 # Substitute environment variables in nginx config
 envsubst '${PORT} ${FRONTEND_UPSTREAM_HOST}' < /tmp/nginx/app.conf > /tmp/nginx/default.conf
 
+# Create main nginx.conf that includes our config
+cat > /tmp/nginx/nginx.conf << 'MAIN_CONF'
+worker_processes auto;
+error_log /var/log/nginx/error.log warn;
+pid /tmp/nginx/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+    
+    access_log /var/log/nginx/access.log main;
+    
+    sendfile on;
+    keepalive_timeout 65;
+    client_max_body_size 100M;
+    
+    include /tmp/nginx/default.conf;
+}
+MAIN_CONF
+
 echo "✅ Nginx configured on port $PORT"
 
 # ===========================================
@@ -237,5 +265,5 @@ if [ -n "$FRONTEND_UPSTREAM_HOST" ]; then
 fi
 echo "==========================================="
 
-# Run nginx with custom config
-exec nginx -c /tmp/nginx/nginx.conf -g "daemon off;" || exec nginx -g "daemon off;"
+# Run nginx with our custom config
+exec nginx -c /tmp/nginx/nginx.conf -g "daemon off;"
