@@ -1,8 +1,9 @@
 [build]
-builder = "nixpacks"
+builder = "dockerfile"
+dockerfilePath = "docker/php/Dockerfile"
 
-
-
-[build.env]
-NIXPACKS_PHP_VERSION = "8.4"
-NIXPACKS_NODE_VERSION = "20"
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3

@@ -130,6 +130,7 @@ COPY docker/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx/sites/default.conf /etc/nginx/http.d/default.conf
+# Copy production config as template for frontend proxy mode
 COPY docker/nginx/sites/production.conf /etc/nginx/http.d/production.conf.template
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
