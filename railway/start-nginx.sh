@@ -58,11 +58,17 @@ fi
 # php artisan view:cache || true
 # php artisan event:cache || true
 
-echo "🧹 Clearing caches to ensure freshness..."
-php artisan optimize:clear
+echo "🔧 Caching configuration..."
+php artisan config:cache
+# php artisan route:cache (Disabled to prevent module route issues)
+php artisan view:cache || true
+php artisan event:cache || true
 
-echo "📋 Debugging Routes:"
-php artisan route:list || echo "❌ Could not list routes"
+echo "🧹 Clearing route cache force..."
+php artisan route:clear
+
+# echo "📋 Debugging Routes:"
+# php artisan route:list || echo "❌ Could not list routes"
 
 # ===========================================
 # Configure Nginx
