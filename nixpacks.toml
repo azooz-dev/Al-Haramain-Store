@@ -1,0 +1,24 @@
+# ===========================================
+# Al-Haramain Store - Nixpacks Configuration
+# ===========================================
+# Since Railway insists on using Nixpacks,
+# configure it to run Nginx + PHP-FPM properly
+# ===========================================
+
+[phases.setup]
+nixPkgs = ["php84", "php84Extensions.pdo_mysql", "php84Extensions.redis", "php84Extensions.gd", "php84Extensions.zip", "php84Extensions.intl", "php84Extensions.mbstring", "php84Extensions.opcache", "php84Extensions.bcmath", "php84Extensions.pcntl", "nginx", "libmysqlclient", "php84Packages.composer", "nodejs_20", "npm-9_x", "gettext", "supervisor"]
+
+[phases.install]
+cmds = [
+    "composer install --optimize-autoloader --no-dev --ignore-platform-req=ext-redis",
+    "npm ci"
+]
+
+[phases.build]
+cmds = [
+    "npm run build",
+    "php artisan filament:assets"
+]
+
+[start]
+cmd = "bash railway/start-nginx.sh"
