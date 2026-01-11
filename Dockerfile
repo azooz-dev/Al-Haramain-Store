@@ -83,6 +83,7 @@ ENV APP_DEBUG=false
 # Install system dependencies
 RUN apk update && apk add --no-cache \
   nginx \
+  bash \
   supervisor \
   curl \
   zip \
@@ -163,7 +164,7 @@ RUN chown -R www-data:www-data /var/www/html \
 
 # Copy and setup entrypoint
 COPY docker/scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /entrypoint.sh && chmod +x railway/*.sh
 
 # Expose HTTP port
 EXPOSE 80
