@@ -215,8 +215,25 @@ server {
 NGINX_CONF
 fi
 
+# Dump config for debugging
+echo "🔍 Debugging Nginx Config Generation:"
+echo "   FRONTEND_UPSTREAM_HOST: '${FRONTEND_UPSTREAM_HOST}'"
+echo "   PORT: '${PORT}'"
+
+# Check if envsubst exists
+if ! command -v envsubst &> /dev/null; then
+    echo "❌ Error: envsubst is not installed!"
+    exit 1
+fi
+
 # Substitute environment variables in nginx config
+echo "⚙️ Substituting variables..."
 envsubst '${PORT} ${FRONTEND_UPSTREAM_HOST}' < /tmp/nginx/app.conf > /tmp/nginx/default.conf
+
+# Log the generated config
+echo "📄 Generated Nginx Config (/tmp/nginx/default.conf):"
+cat /tmp/nginx/default.conf
+echo "-------------------------------------------"
 
 # Create main nginx.conf that includes our config
 cat > /tmp/nginx/nginx.conf << 'MAIN_CONF'
