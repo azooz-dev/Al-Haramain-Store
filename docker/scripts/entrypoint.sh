@@ -67,9 +67,31 @@ chown -R www-data:www-data /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage
 chmod -R 775 /var/www/html/bootstrap/cache
 
-echo "=========================================="
+echo "==========================================="
 echo "✅ Al-Haramain Store is ready!"
-echo "=========================================="
+echo "==========================================="
+
+# ===========================================
+# Configure Frontend Proxy (if enabled)
+# ===========================================
+if [ -n "$FRONTEND_UPSTREAM_HOST" ]; then
+    echo "🔄 Configuring frontend proxy..."
+    echo "   Frontend host: $FRONTEND_UPSTREAM_HOST"
+    
+    # Check if production.conf exists and has the placeholder
+    NGINX_CONF="/etc/nginx/http.d/default.conf"
+    PROD_TEMPLATE="/var/www/html/docker/nginx/sites/production.conf"
+    
+    if [ -f "$PROD_TEMPLATE" ]; then
+        # Replace placeholder with actual host and copy to nginx
+        sed "s/FRONTEND_UPSTREAM_HOST_PLACEHOLDER/$FRONTEND_UPSTREAM_HOST/g" "$PROD_TEMPLATE" > "$NGINX_CONF"
+        echo "✅ Frontend proxy configured at $NGINX_CONF"
+    else
+        echo "⚠️ Production nginx template not found, using default config"
+    fi
+else
+    echo "ℹ️ FRONTEND_UPSTREAM_HOST not set - running backend-only mode"
+fi
 
 # Execute CMD (supervisord)
 exec "$@"
