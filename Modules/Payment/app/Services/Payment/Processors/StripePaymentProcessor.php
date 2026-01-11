@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
+use Modules\Payment\Enums\PaymentMethod as EnumPaymentMethod;
 use Modules\Payment\DTOs\PaymentResult;
 use Modules\Payment\Contracts\PaymentProcessorInterface;
 use Modules\Payment\Exceptions\Payment\VerifyPaymentException;
@@ -80,7 +81,7 @@ class StripePaymentProcessor implements PaymentProcessorInterface
       return new PaymentResult(
         success: true,
         transactionId: $paymentIntent->id,
-        paymentMethod: $cardDetails->brand,
+        paymentMethod: EnumPaymentMethod::CREDIT_CARD->value,
         amount: $paymentIntent->amount_received / 100,
         paidAt: Carbon::createFromTimestamp($paymentIntent->created)
       );
