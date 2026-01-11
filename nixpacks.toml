@@ -3,6 +3,7 @@
 # ===========================================
 # Configures Nixpacks to run Nginx + PHP-FPM
 # with frontend reverse proxy support
+# Cache bust: 2026-01-11-v3
 # ===========================================
 
 # Use PHP provider but override the start command
