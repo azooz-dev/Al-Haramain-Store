@@ -26,5 +26,5 @@ cmds = [
 
 # IMPORTANT: This overrides the default PHP start command
 [start]
-cmd = "bash railway/start-nginx.sh"
+cmd = "bash railway/run.sh"
 
