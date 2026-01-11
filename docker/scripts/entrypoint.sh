@@ -78,16 +78,19 @@ if [ -n "$FRONTEND_UPSTREAM_HOST" ]; then
     echo "🔄 Configuring frontend proxy..."
     echo "   Frontend host: $FRONTEND_UPSTREAM_HOST"
     
-    # Check if production.conf exists and has the placeholder
+    # Template is copied during Docker build to this location
     NGINX_CONF="/etc/nginx/http.d/default.conf"
-    PROD_TEMPLATE="/var/www/html/docker/nginx/sites/production.conf"
+    PROD_TEMPLATE="/etc/nginx/http.d/production.conf.template"
     
     if [ -f "$PROD_TEMPLATE" ]; then
         # Replace placeholder with actual host and copy to nginx
         sed "s/FRONTEND_UPSTREAM_HOST_PLACEHOLDER/$FRONTEND_UPSTREAM_HOST/g" "$PROD_TEMPLATE" > "$NGINX_CONF"
-        echo "✅ Frontend proxy configured at $NGINX_CONF"
+        echo "✅ Frontend proxy configured!"
+        echo "   Template: $PROD_TEMPLATE"
+        echo "   Output: $NGINX_CONF"
     else
-        echo "⚠️ Production nginx template not found, using default config"
+        echo "⚠️ Production nginx template not found at $PROD_TEMPLATE"
+        echo "   Running in backend-only mode"
     fi
 else
     echo "ℹ️ FRONTEND_UPSTREAM_HOST not set - running backend-only mode"
