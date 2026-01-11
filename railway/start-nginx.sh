@@ -52,11 +52,17 @@ if [ ! -L public/storage ]; then
 fi
 
 # Cache configuration for production
-echo "🔧 Caching configuration..."
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache || true
-php artisan event:cache || true
+# echo "🔧 Caching configuration..."
+# php artisan config:cache
+# php artisan route:cache
+# php artisan view:cache || true
+# php artisan event:cache || true
+
+echo "🧹 Clearing caches to ensure freshness..."
+php artisan optimize:clear
+
+echo "📋 Debugging Routes:"
+php artisan route:list || echo "❌ Could not list routes"
 
 # ===========================================
 # Configure Nginx
