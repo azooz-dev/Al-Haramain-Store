@@ -42,15 +42,21 @@ fi
 # Run migrations if enabled
 if [ "$AUTO_MIGRATE" = "true" ]; then
     if [ "$FRESH_DATABASE" = "true" ]; then
-        echo "�️ Fresh database requested - dropping all tables and re-migrating..."
-        php artisan migrate:fresh --seed --force --no-interaction
-        echo "✅ Database freshly migrated and seeded!"
+        echo "🗑️ Fresh database requested - dropping all tables and re-migrating..."
+        php artisan migrate:fresh --force --no-interaction
+        echo "✅ Database freshly migrated!"
+        
+        echo "🌱 Running essential seeders (permissions & roles)..."
+        php artisan db:seed --class=Database\\Seeders\\Permission\\PermissionSeeder --force --no-interaction || true
+        php artisan db:seed --class=Database\\Seeders\\Role\\RoleSeeder --force --no-interaction || true
+        echo "✅ Essential data seeded!"
     else
-        echo "�🔄 Running migrations..."
+        echo "🔄 Running migrations..."
         php artisan migrate --force --no-interaction
         
-        echo "🌱 Running database seeders..."
-        php artisan db:seed --force --no-interaction || echo "⚠️ Seeding skipped or failed (may already be seeded)"
+        echo "🌱 Running essential seeders (permissions & roles)..."
+        php artisan db:seed --class=Database\\Seeders\\Permission\\PermissionSeeder --force --no-interaction || echo "⚠️ Permissions seeder skipped"
+        php artisan db:seed --class=Database\\Seeders\\Role\\RoleSeeder --force --no-interaction || echo "⚠️ Roles seeder skipped"
     fi
 fi
 
