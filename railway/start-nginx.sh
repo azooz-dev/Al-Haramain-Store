@@ -44,14 +44,7 @@ fi
 if [ "$AUTO_MIGRATE" = "true" ]; then
     if [ "$FRESH_DATABASE" = "true" ]; then
         echo "�️ Fresh database requested - dropping all tables and re-migrating..."
-        php artisan migrate:fresh --seed --force --no-interaction
-        echo "✅ Database freshly migrated and seeded!"
-    else
-        echo "�🔄 Running migrations..."
-        php artisan migrate --force --no-interaction
-        
-        echo "🌱 Running database seeders..."
-        php artisan db:seed --force --no-interaction || echo "⚠️ Seeding skipped or failed (may already be seeded)"
+        php artisan migrate:fresh --force --no-interaction
     fi
 fi
 
