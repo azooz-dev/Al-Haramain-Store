@@ -27,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         // Ensure locale is set before any API group middleware runs (e.g., auth)
         $middleware->prependToGroup('api', \App\Http\Middleware\SetLocale::class);
+        
+        // Trust all proxies (Required for Railway/Docker load balancers)
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (Throwable $exception, $request) {
