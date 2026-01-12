@@ -177,7 +177,7 @@ server {
         # Pass headers for TrustProxies
         fastcgi_param HTTP_X_FORWARDED_PROTO $http_x_forwarded_proto;
         fastcgi_param HTTP_X_REAL_IP $remote_addr;
-        fastcgi_param HTTPS $https if_not_empty; # Optional but helpful
+        fastcgi_param HTTPS $fastcgi_https if_not_empty; # Use mapped variable
     }
 
     # Frontend proxy - everything else
@@ -237,7 +237,7 @@ server {
         # Pass headers for TrustProxies
         fastcgi_param HTTP_X_FORWARDED_PROTO $http_x_forwarded_proto;
         fastcgi_param HTTP_X_REAL_IP $remote_addr;
-        fastcgi_param HTTPS $https if_not_empty;
+        fastcgi_param HTTPS $fastcgi_https if_not_empty;
     }
 
     location ~ /\.(?!well-known).* {
@@ -280,6 +280,12 @@ events {
 http {
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
+    
+    # Map X-Forwarded-Proto to HTTPS param
+    map $http_x_forwarded_proto $fastcgi_https {
+        default $https;
+        https on;
+    }
     
     log_format main '$remote_addr - $remote_user [$time_local] "$request" '
                     '$status $body_bytes_sent "$http_referer" '
