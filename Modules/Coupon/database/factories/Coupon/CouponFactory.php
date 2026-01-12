@@ -57,8 +57,8 @@ class CouponFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'status' => CouponStatus::ACTIVE,
-      'start_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
-      'end_date' => $this->faker->dateTimeBetween('now', '+6 months'),
+      'start_date' => now()->subDays(7),
+      'end_date' => now()->addMonths(6),
     ]);
   }
 
