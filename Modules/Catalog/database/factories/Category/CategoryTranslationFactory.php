@@ -27,9 +27,9 @@ class CategoryTranslationFactory extends Factory
   {
     return [
       'category_id' => Category::factory(),
-      'local' => fake()->randomElement(['en', 'ar']),
-      'name' => fake()->words(2, true),
-      'description' => fake()->paragraph(),
+      'local' => $this->faker->randomElement(['en', 'ar']),
+      'name' => $this->faker->words(2, true),
+      'description' => $this->faker->paragraph(),
     ];
   }
 

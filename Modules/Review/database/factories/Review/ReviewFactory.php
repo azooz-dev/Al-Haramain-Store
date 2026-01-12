@@ -33,10 +33,10 @@ class ReviewFactory extends Factory
       'user_id' => UserFactory::new(),
       'order_id' => Order::factory(),
       'order_item_id' => OrderItem::factory(),
-      'rating' => fake()->numberBetween(1, 5),
-      'comment' => fake()->paragraph(),
-      'status' => fake()->randomElement(ReviewStatus::cases()),
-      'locale' => fake()->randomElement(['en', 'ar']),
+      'rating' => $this->faker->numberBetween(1, 5),
+      'comment' => $this->faker->paragraph(),
+      'status' => $this->faker->randomElement(ReviewStatus::cases()),
+      'locale' => $this->faker->randomElement(['en', 'ar']),
     ];
   }
 

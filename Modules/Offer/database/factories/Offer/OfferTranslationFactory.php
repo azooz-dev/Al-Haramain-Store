@@ -26,9 +26,9 @@ class OfferTranslationFactory extends Factory
   {
     return [
       'offer_id' => Offer::factory(),
-      'locale' => fake()->randomElement(['en', 'ar']),
-      'name' => fake()->words(2, true),
-      'description' => fake()->sentence(10, false),
+      'locale' => $this->faker->randomElement(['en', 'ar']),
+      'name' => $this->faker->words(2, true),
+      'description' => $this->faker->sentence(10, false),
     ];
   }
 

@@ -31,12 +31,12 @@ class OrderFactory extends Factory
   {
     return [
       'user_id' => User::factory(),
-      'coupon_id' => fake()->optional(0.3)->randomElement([Coupon::factory()]),
+      'coupon_id' => $this->faker->optional(0.3)->randomElement([Coupon::factory()]),
       'address_id' => Address::factory(),
-      'order_number' => 'ORD-' . fake()->unique()->numberBetween(1000, 9999),
-      'total_amount' => fake()->randomFloat(2, 50, 2000),
-      'payment_method' => fake()->randomElement(PaymentMethod::cases())->value,
-      'status' => fake()->randomElement(OrderStatus::cases()),
+      'order_number' => 'ORD-' . $this->faker->unique()->numberBetween(1000, 9999),
+      'total_amount' => $this->faker->randomFloat(2, 50, 2000),
+      'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
+      'status' => $this->faker->randomElement(OrderStatus::cases()),
     ];
   }
 

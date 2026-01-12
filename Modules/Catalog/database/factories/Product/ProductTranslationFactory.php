@@ -27,9 +27,9 @@ class ProductTranslationFactory extends Factory
   {
     return [
       'product_id' => Product::factory(),
-      'local' => fake()->randomElement(['en', 'ar']),
-      'name' => fake()->words(3, true),
-      'description' => fake()->paragraph(),
+      'local' => $this->faker->randomElement(['en', 'ar']),
+      'name' => $this->faker->words(3, true),
+      'description' => $this->faker->paragraph(),
     ];
   }
 

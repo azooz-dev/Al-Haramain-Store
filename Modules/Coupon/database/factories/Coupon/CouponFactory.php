@@ -27,10 +27,10 @@ class CouponFactory extends Factory
    */
   public function definition(): array
   {
-    $type = fake()->randomElement(CouponType::cases());
+    $type = $this->faker->randomElement(CouponType::cases());
     $discountAmount = $type === CouponType::FIXED
-      ? fake()->randomFloat(2, 5, 100)
-      : fake()->numberBetween(5, 50);
+      ? $this->faker->randomFloat(2, 5, 100)
+      : $this->faker->numberBetween(5, 50);
 
     // Use ONLY UUID for guaranteed global uniqueness
     // UUIDs are cryptographically unique and don't rely on timestamps or counters
@@ -39,14 +39,14 @@ class CouponFactory extends Factory
 
     return [
       'code' => $uniqueCode,
-      'name' => fake()->words(2, true),
+      'name' => $this->faker->words(2, true),
       'type' => $type,
       'discount_amount' => $discountAmount,
-      'usage_limit' => fake()->numberBetween(10, 1000),
-      'usage_limit_per_user' => fake()->numberBetween(1, 5),
-      'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
-      'end_date' => fake()->dateTimeBetween('+1 month', '+6 months'),
-      'status' => fake()->randomElement(CouponStatus::cases()),
+      'usage_limit' => $this->faker->numberBetween(10, 1000),
+      'usage_limit_per_user' => $this->faker->numberBetween(1, 5),
+      'start_date' => $this->faker->dateTimeBetween('-1 month', '+1 month'),
+      'end_date' => $this->faker->dateTimeBetween('+1 month', '+6 months'),
+      'status' => $this->faker->randomElement(CouponStatus::cases()),
     ];
   }
 
@@ -57,8 +57,8 @@ class CouponFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'status' => CouponStatus::ACTIVE,
-      'start_date' => fake()->dateTimeBetween('-1 month', 'now'),
-      'end_date' => fake()->dateTimeBetween('now', '+6 months'),
+      'start_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
+      'end_date' => $this->faker->dateTimeBetween('now', '+6 months'),
     ]);
   }
 
@@ -79,7 +79,7 @@ class CouponFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'type' => CouponType::FIXED,
-      'discount_amount' => fake()->randomFloat(2, 5, 100),
+      'discount_amount' => $this->faker->randomFloat(2, 5, 100),
     ]);
   }
 
@@ -90,7 +90,7 @@ class CouponFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'type' => CouponType::PERCENTAGE,
-      'discount_amount' => fake()->numberBetween(5, 50),
+      'discount_amount' => $this->faker->numberBetween(5, 50),
     ]);
   }
 
@@ -101,8 +101,8 @@ class CouponFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'status' => CouponStatus::ACTIVE,
-      'start_date' => fake()->dateTimeBetween('-6 months', '-2 months'),
-      'end_date' => fake()->dateTimeBetween('-2 months', '-1 day'),
+      'start_date' => $this->faker->dateTimeBetween('-6 months', '-2 months'),
+      'end_date' => $this->faker->dateTimeBetween('-2 months', '-1 day'),
     ]);
   }
 }

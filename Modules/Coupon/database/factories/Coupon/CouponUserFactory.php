@@ -22,7 +22,7 @@ class CouponUserFactory extends Factory
     return [
       'coupon_id' => Coupon::factory(),
       'user_id' => User::factory(),
-      'times_used' => fake()->numberBetween(0, 5),
+      'times_used' => $this->faker->numberBetween(0, 5),
     ];
   }
 
@@ -32,7 +32,7 @@ class CouponUserFactory extends Factory
   public function usedMultipleTimes(): static
   {
     return $this->state(fn(array $attributes) => [
-      'times_used' => fake()->numberBetween(1, 5),
+      'times_used' => $this->faker->numberBetween(1, 5),
     ]);
   }
 

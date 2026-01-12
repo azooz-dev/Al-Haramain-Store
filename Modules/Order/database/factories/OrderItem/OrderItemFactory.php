@@ -26,10 +26,10 @@ class OrderItemFactory extends Factory
    */
   public function definition(): array
   {
-    $price = fake()->randomFloat(2, 10, 500);
-    $quantity = fake()->numberBetween(1, 5);
-    $hasDiscount = fake()->boolean(30);
-    $discountPrice = $hasDiscount ? fake()->randomFloat(2, 1, $price * 0.3) : 0;
+    $price = $this->faker->randomFloat(2, 10, 500);
+    $quantity = $this->faker->numberBetween(1, 5);
+    $hasDiscount = $this->faker->boolean(30);
+    $discountPrice = $hasDiscount ? $this->faker->randomFloat(2, 1, $price * 0.3) : 0;
     $product = Product::factory()->create();
 
     return [
@@ -48,9 +48,9 @@ class OrderItemFactory extends Factory
   public function withDiscount(): static
   {
     return $this->state(function (array $attributes) {
-      $price = $attributes['total_price'] ?? fake()->randomFloat(2, 10, 500);
+      $price = $attributes['total_price'] ?? $this->faker->randomFloat(2, 10, 500);
       return [
-        'amount_discount_price' => fake()->randomFloat(2, 1, $price * 0.3),
+        'amount_discount_price' => $this->faker->randomFloat(2, 1, $price * 0.3),
       ];
     });
   }

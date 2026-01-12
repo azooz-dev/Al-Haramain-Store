@@ -28,14 +28,14 @@ class AddressFactory extends Factory
   {
     return [
       'user_id' => User::factory(),
-      'label' => fake()->words(2, true),
-      'address_type' => fake()->randomElement(AddressType::cases()),
-      'street' => fake()->streetAddress(),
-      'city' => fake()->city(),
-      'state' => fake()->state(),
-      'postal_code' => fake()->postcode(),
-      'country' => fake()->country(),
-      'is_default' => fake()->boolean(20),
+      'label' => $this->faker->words(2, true),
+      'address_type' => $this->faker->randomElement(AddressType::cases()),
+      'street' => $this->faker->streetAddress(),
+      'city' => $this->faker->city(),
+      'state' => $this->faker->state(),
+      'postal_code' => $this->faker->postcode(),
+      'country' => $this->faker->country(),
+      'is_default' => $this->faker->boolean(20),
     ];
   }
 

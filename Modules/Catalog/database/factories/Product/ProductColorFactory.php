@@ -27,7 +27,7 @@ class ProductColorFactory extends Factory
   {
     return [
       'product_id' => Product::factory(),
-      'color_code' => fake()->randomElement(['red', 'blue', 'green', 'black', 'white', 'yellow', 'purple', 'orange', 'pink', 'brown']),
+      'color_code' => $this->faker->randomElement(['red', 'blue', 'green', 'black', 'white', 'yellow', 'purple', 'orange', 'pink', 'brown']),
     ];
   }
 

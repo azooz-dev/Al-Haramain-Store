@@ -26,17 +26,17 @@ class ProductVariantFactory extends Factory
    */
   public function definition(): array
   {
-    $price = fake()->randomFloat(2, 10, 500);
-    $hasDiscount = fake()->boolean(30);
-    $discountPrice = $hasDiscount ? fake()->randomFloat(2, 5, $price * 0.8) : null;
+    $price = $this->faker->randomFloat(2, 10, 500);
+    $hasDiscount = $this->faker->boolean(30);
+    $discountPrice = $hasDiscount ? $this->faker->randomFloat(2, 5, $price * 0.8) : null;
 
     return [
       'product_id' => Product::factory(),
       'color_id' => ProductColor::factory(),
-      'size' => fake()->randomElement(['XS', 'S', 'M', 'L', 'XL', 'XXL']),
+      'size' => $this->faker->randomElement(['XS', 'S', 'M', 'L', 'XL', 'XXL']),
       'price' => $price,
       'amount_discount_price' => $discountPrice,
-      'quantity' => fake()->numberBetween(0, 100),
+      'quantity' => $this->faker->numberBetween(0, 100),
     ];
   }
 
@@ -46,7 +46,7 @@ class ProductVariantFactory extends Factory
   public function inStock(): static
   {
     return $this->state(fn(array $attributes) => [
-      'quantity' => fake()->numberBetween(1, 100),
+      'quantity' => $this->faker->numberBetween(1, 100),
     ]);
   }
 
@@ -66,9 +66,9 @@ class ProductVariantFactory extends Factory
   public function withDiscount(): static
   {
     return $this->state(function (array $attributes) {
-      $price = $attributes['price'] ?? fake()->randomFloat(2, 10, 500);
+      $price = $attributes['price'] ?? $this->faker->randomFloat(2, 10, 500);
       return [
-        'amount_discount_price' => fake()->randomFloat(2, 5, $price * 0.8),
+        'amount_discount_price' => $this->faker->randomFloat(2, 5, $price * 0.8),
       ];
     });
   }

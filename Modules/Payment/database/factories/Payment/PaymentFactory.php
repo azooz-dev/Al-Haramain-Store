@@ -27,14 +27,14 @@ class PaymentFactory extends Factory
    */
   public function definition(): array
   {
-    $status = fake()->randomElement([PaymentStatus::SUCCESS, PaymentStatus::FAILED]);
-    $paidAt = $status === PaymentStatus::SUCCESS ? fake()->dateTimeBetween('-1 year', 'now') : null;
+    $status = $this->faker->randomElement([PaymentStatus::SUCCESS, PaymentStatus::FAILED]);
+    $paidAt = $status === PaymentStatus::SUCCESS ? $this->faker->dateTimeBetween('-1 year', 'now') : null;
 
     return [
       'order_id' => Order::factory(),
-      'payment_method' => fake()->randomElement(PaymentMethod::cases()),
-      'transaction_id' => fake()->unique()->uuid(),
-      'amount' => fake()->randomFloat(2, 10, 1000),
+      'payment_method' => $this->faker->randomElement(PaymentMethod::cases()),
+      'transaction_id' => $this->faker->unique()->uuid(),
+      'amount' => $this->faker->randomFloat(2, 10, 1000),
       'status' => $status,
       'paid_at' => $paidAt,
     ];
@@ -47,7 +47,7 @@ class PaymentFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'status' => PaymentStatus::SUCCESS,
-      'paid_at' => fake()->dateTimeBetween('-1 year', 'now'),
+      'paid_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
     ]);
   }
 

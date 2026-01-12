@@ -25,17 +25,17 @@ class OfferFactory extends Factory
    */
   public function definition(): array
   {
-    $products_total_price = fake()->randomFloat(2, 100, 1000);
-    $discount_amount = fake()->randomFloat(2, 10, 200);
+    $products_total_price = $this->faker->randomFloat(2, 100, 1000);
+    $discount_amount = $this->faker->randomFloat(2, 10, 200);
     $offer_price = $products_total_price - $discount_amount;
 
     return [
-      'image_path' => fake()->imageUrl(640, 480, 'offer'),
+      'image_path' => $this->faker->imageUrl(640, 480, 'offer'),
       'products_total_price' => $products_total_price,
       'offer_price' => $offer_price,
-      'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
-      'end_date' => fake()->dateTimeBetween('+1 month', '+3 months'),
-      'status' => fake()->randomElement(OfferStatus::cases()),
+      'start_date' => $this->faker->dateTimeBetween('-1 month', '+1 month'),
+      'end_date' => $this->faker->dateTimeBetween('+1 month', '+3 months'),
+      'status' => $this->faker->randomElement(OfferStatus::cases()),
     ];
   }
 
@@ -46,8 +46,8 @@ class OfferFactory extends Factory
   {
     return $this->state(fn(array $attributes) => [
       'status' => OfferStatus::ACTIVE,
-      'start_date' => fake()->dateTimeBetween('-1 month', 'now'),
-      'end_date' => fake()->dateTimeBetween('now', '+3 months'),
+      'start_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
+      'end_date' => $this->faker->dateTimeBetween('now', '+3 months'),
     ]);
   }
 

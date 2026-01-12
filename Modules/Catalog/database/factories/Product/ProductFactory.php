@@ -25,9 +25,9 @@ class ProductFactory extends Factory
   public function definition(): array
   {
     return [
-      'slug' => fake()->unique()->slug(),
-      'sku' => fake()->unique()->regexify('[A-Z]{2}[0-9]{6}'),
-      'quantity' => fake()->numberBetween(0, 100),
+      'slug' => $this->faker->unique()->slug(),
+      'sku' => $this->faker->unique()->regexify('[A-Z]{2}[0-9]{6}'),
+      'quantity' => $this->faker->numberBetween(0, 100),
     ];
   }
 
@@ -37,7 +37,7 @@ class ProductFactory extends Factory
   public function inStock(): static
   {
     return $this->state(fn(array $attributes) => [
-      'quantity' => fake()->numberBetween(1, 100),
+      'quantity' => $this->faker->numberBetween(1, 100),
     ]);
   }
 
@@ -57,7 +57,7 @@ class ProductFactory extends Factory
   public function lowStock(): static
   {
     return $this->state(fn(array $attributes) => [
-      'quantity' => fake()->numberBetween(1, 10),
+      'quantity' => $this->faker->numberBetween(1, 10),
     ]);
   }
 

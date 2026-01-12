@@ -27,8 +27,8 @@ class ProductColorImageFactory extends Factory
   {
     return [
       'product_color_id' => ProductColor::factory(),
-      'image_url' => fake()->imageUrl(640, 480, 'product'),
-      'alt_text' => fake()->sentence(),
+      'image_url' => $this->faker->imageUrl(640, 480, 'product'),
+      'alt_text' => $this->faker->sentence(),
     ];
   }
 
