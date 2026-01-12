@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
 
             // Module seeders - Order matters for foreign key constraints
+            UserDatabaseSeeder::class,
             AdminDatabaseSeeder::class,
             CatalogDatabaseSeeder::class, // Categories, Products, Variants, Colors, Images, Translations
             OfferDatabaseSeeder::class,   // Offers, Offer Translations, Offer Products
