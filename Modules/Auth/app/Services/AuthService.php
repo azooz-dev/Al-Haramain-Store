@@ -40,7 +40,9 @@ class AuthService implements AuthServiceInterface
         return errorResponse(__("app.messages.auth.unverified"), 403);
       }
 
-      request()->session()->regenerate();
+      if (!request()->is('api/*')) {
+        request()->session()->regenerate();
+      }
 
       $token = $user->createToken('personal_token')->plainTextToken;
 
@@ -63,16 +65,19 @@ class AuthService implements AuthServiceInterface
     }
 
     if ($this->authRepository->logout()) {
-      // Invalidate the session completely
-      if (request()->hasSession()) {
-        request()->session()->invalidate();
-      }
-
       $response = showMessage(__("app.messages.auth.logged_out"), 200);
 
-      // Remove cookies from browser
-      $response->headers->clearCookie('XSRF-TOKEN');
-      $response->headers->clearCookie('laravel-session', '/', request()->getHost(), false, true);
+      // Only invalidate session for Web requests, NOT API
+      if (!request()->is('api/*')) {
+          // Invalidate the session completely
+          if (request()->hasSession()) {
+            request()->session()->invalidate();
+          }
+
+          // Remove cookies from browser
+          $response->headers->clearCookie('XSRF-TOKEN');
+          $response->headers->clearCookie('laravel-session', '/', request()->getHost(), false, true);
+      }
 
       return $response;
     }
