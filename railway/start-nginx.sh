@@ -21,6 +21,7 @@ mkdir -p /var/log/nginx /var/log/php /tmp/nginx storage/logs storage/framework/c
 
 # Set permissions
 chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
 
 # Wait for database (if configured)
 if [ -n "$DB_HOST" ]; then
