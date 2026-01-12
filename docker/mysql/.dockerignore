@@ -1,0 +1,2 @@
+# MySQL Docker build - minimal context
+# Only include MySQL-specific files
