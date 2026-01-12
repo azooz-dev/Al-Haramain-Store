@@ -42,7 +42,7 @@ fi
 # Run migrations if enabled
 if [ "$AUTO_MIGRATE" = "true" ]; then
     echo "🔄 Running migrations..."
-    php artisan migrate --force --no-interaction
+    php artisan migrate --seed --force --no-interaction
 fi
 
 # Create storage link
