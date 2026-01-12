@@ -173,6 +173,11 @@ server {
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include /etc/nginx/fastcgi_params;
         fastcgi_hide_header X-Powered-By;
+        
+        # Pass headers for TrustProxies
+        fastcgi_param HTTP_X_FORWARDED_PROTO $http_x_forwarded_proto;
+        fastcgi_param HTTP_X_REAL_IP $remote_addr;
+        fastcgi_param HTTPS $https if_not_empty; # Optional but helpful
     }
 
     # Frontend proxy - everything else
@@ -228,6 +233,11 @@ server {
         fastcgi_pass 127.0.0.1:9000;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include /etc/nginx/fastcgi_params;
+        
+        # Pass headers for TrustProxies
+        fastcgi_param HTTP_X_FORWARDED_PROTO $http_x_forwarded_proto;
+        fastcgi_param HTTP_X_REAL_IP $remote_addr;
+        fastcgi_param HTTPS $https if_not_empty;
     }
 
     location ~ /\.(?!well-known).* {
