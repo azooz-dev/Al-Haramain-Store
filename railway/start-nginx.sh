@@ -41,11 +41,17 @@ fi
 
 # Run migrations if enabled
 if [ "$AUTO_MIGRATE" = "true" ]; then
-    echo "🔄 Running migrations..."
-    php artisan migrate --force --no-interaction
-    
-    echo "🌱 Running database seeders..."
-    php artisan db:seed --force --no-interaction || echo "⚠️ Seeding skipped or failed (may already be seeded)"
+    if [ "$FRESH_DATABASE" = "true" ]; then
+        echo "�️ Fresh database requested - dropping all tables and re-migrating..."
+        php artisan migrate:fresh --seed --force --no-interaction
+        echo "✅ Database freshly migrated and seeded!"
+    else
+        echo "�🔄 Running migrations..."
+        php artisan migrate --force --no-interaction
+        
+        echo "🌱 Running database seeders..."
+        php artisan db:seed --force --no-interaction || echo "⚠️ Seeding skipped or failed (may already be seeded)"
+    fi
 fi
 
 # Create storage link
