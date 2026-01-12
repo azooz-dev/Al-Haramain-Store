@@ -28,6 +28,16 @@ return Application::configure(basePath: dirname(__DIR__))
         // Ensure locale is set before any API group middleware runs (e.g., auth)
         $middleware->prependToGroup('api', \App\Http\Middleware\SetLocale::class);
         
+        // CRITICAL: Set session config GLOBALLY based on path detection
+        // This ensures it catches ALL requests including Livewire, API, Admin
+        $middleware->append(\App\Http\Middleware\SetSessionPath::class);
+        
+        // CRITICAL: Ensure it runs BEFORE cookies are encrypted
+        $middleware->prependToPriorityList(
+            before: \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            prepend: \App\Http\Middleware\SetSessionPath::class,
+        );
+        
         // Trust all proxies (Required for Railway/Docker load balancers)
         $middleware->trustProxies(
             at: '*',
