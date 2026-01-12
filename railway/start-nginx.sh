@@ -42,7 +42,10 @@ fi
 # Run migrations if enabled
 if [ "$AUTO_MIGRATE" = "true" ]; then
     echo "🔄 Running migrations..."
-    php artisan migrate --seed --force --no-interaction
+    php artisan migrate --force --no-interaction
+    
+    echo "🌱 Running database seeders..."
+    php artisan db:seed --force --no-interaction || echo "⚠️ Seeding skipped or failed (may already be seeded)"
 fi
 
 # Create storage link
