@@ -45,6 +45,7 @@ if [ "$AUTO_MIGRATE" = "true" ]; then
     if [ "$FRESH_DATABASE" = "true" ]; then
         echo "�️ Fresh database requested - dropping all tables and re-migrating..."
         php artisan migrate:fresh --force --no-interaction
+        php artisan db:seed --class=UserDatabaseSeeder
     fi
 fi
 
