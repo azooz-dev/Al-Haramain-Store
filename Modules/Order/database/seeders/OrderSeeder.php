@@ -18,11 +18,22 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
+        // Get required related records
+        $user = User::first();
+        $address = Address::first();
+        $coupon = Coupon::first();
+
+        // Skip if required records don't exist
+        if (!$user || !$address) {
+            $this->command?->warn('Skipping OrderSeeder: User or Address not found. Run UserDatabaseSeeder first.');
+            return;
+        }
+
         // Create specific orders for testing
         Order::create([
-            'user_id' => User::first()->id,
-            'address_id' => Address::first()->id,
-            'coupon_id' => Coupon::first()->id,
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'coupon_id' => $coupon?->id,
             'order_number' => '1234567890',
             'total_amount' => 100,
             'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
@@ -30,9 +41,9 @@ class OrderSeeder extends Seeder
         ]);
 
         Order::create([
-            'user_id' => User::first()->id,
-            'address_id' => Address::first()->id,
-            'coupon_id' => Coupon::first()->id,
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'coupon_id' => $coupon?->id,
             'order_number' => '123123123',
             'total_amount' => 100,
             'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
