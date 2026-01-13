@@ -106,6 +106,7 @@ class AuthServiceTest extends TestCase
         $sessionMock->shouldReceive('regenerate')->once();
 
         $requestMock = \Mockery::mock(\Illuminate\Http\Request::class);
+        $requestMock->shouldReceive('is')->with('api/*')->andReturn(false);
         $requestMock->shouldReceive('session')->andReturn($sessionMock);
         $requestMock->shouldReceive('user')->andReturn($user);
         $requestMock->shouldReceive('setUserResolver')->andReturnSelf();
