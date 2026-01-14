@@ -31,12 +31,27 @@ class ViewProduct extends ViewRecord
     parent::fillForm();
 
     if ($record = $this->record) {
-      $formData = $this->translationService->getFormData($this->record);
-      $formData['en'] = ['name' => $formData['en']['title'], 'description' => $formData['en']['details']];
-      $formData['ar'] = ['name' => $formData['ar']['title'], 'description' => $formData['ar']['details']];
-      $formData['quantity'] = $formData['stock'];
-
-      unset($formData['stock']);
+      $apiData = $this->getTranslationService()->getFormData($this->record);
+      
+      // Only extract the fields that the form schema expects
+      // Exclude complex nested arrays like available_sizes, available_colors, reviews, etc.
+      // that Livewire cannot serialize properly
+      $formData = [
+        'sku' => $apiData['sku'] ?? '',
+        'slug' => $apiData['slug'] ?? '',
+        'quantity' => $apiData['stock'] ?? 0,
+        'en' => [
+          'name' => $apiData['en']['title'] ?? '',
+          'description' => $apiData['en']['details'] ?? '',
+        ],
+        'ar' => [
+          'name' => $apiData['ar']['title'] ?? '',
+          'description' => $apiData['ar']['details'] ?? '',
+        ],
+        // Colors and categories are handled via relationships in the Repeater/Select components
+        'colors' => $apiData['colors'] ?? [],
+        'categories' => $apiData['categories'] ?? [],
+      ];
 
       $this->form->fill($formData);
     }
