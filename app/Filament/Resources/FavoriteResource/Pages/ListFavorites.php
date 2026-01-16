@@ -16,10 +16,7 @@ class ListFavorites extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->icon('heroicon-o-plus')
-                ->label(__('app.actions.create_favorite'))
-                ->color('primary'),
+            //
         ];
     }
 

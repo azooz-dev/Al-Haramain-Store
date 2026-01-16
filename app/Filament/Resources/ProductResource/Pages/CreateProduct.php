@@ -19,10 +19,12 @@ class CreateProduct extends CreateRecord
     private array $translationData = [];
     private ?array $categoryIds = null;
 
-    public function __construct(
-        protected ProductServiceInterface $productService
-    ) {
-        parent::__construct();
+    /**
+     * Get the product service instance from the container
+     */
+    protected function getProductService(): ProductServiceInterface
+    {
+        return app(ProductServiceInterface::class);
     }
 
     protected function getRedirectUrl(): string
@@ -59,7 +61,7 @@ class CreateProduct extends CreateRecord
     {
         // Create product with translations and categories via service
         // Service handles slug generation, translation saving, and category sync
-        $product = $this->productService->createProduct($data, $this->translationData, $this->categoryIds);
+        $product = $this->getProductService()->createProduct($data, $this->translationData, $this->categoryIds);
 
         return $product;
     }

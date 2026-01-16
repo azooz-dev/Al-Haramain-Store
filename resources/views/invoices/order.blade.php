@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+
 <head>
   <meta charset="utf-8">
   <title>{{ __('app.invoice.title', ['number' => $order->order_number]) }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @if(app()->getLocale() === 'ar')
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   @else
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   @endif
@@ -44,7 +46,7 @@
     body {
       font-family: {
           {
-          app()->getLocale()==='ar'? "'Noto Kufi Arabic', Tahoma, Arial, sans-serif": "'Inter', system-ui, -apple-system, sans-serif"
+          app()->getLocale()==='ar' ? "'Noto Kufi Arabic', Tahoma, Arial, sans-serif": "'Inter', system-ui, -apple-system, sans-serif"
         }
       }
 
@@ -56,7 +58,7 @@
 
       direction: {
           {
-          app()->getLocale()==='ar'? 'rtl': 'ltr'
+          app()->getLocale()==='ar' ? 'rtl': 'ltr'
         }
       }
 
@@ -131,7 +133,7 @@
     .invoice-meta {
       text-align: {
           {
-          app()->getLocale()==='ar'? 'left': 'right'
+          app()->getLocale()==='ar' ? 'left': 'right'
         }
       }
 
@@ -244,7 +246,7 @@
 
       text-align: {
           {
-          app()->getLocale()==='ar'? 'right': 'left'
+          app()->getLocale()==='ar' ? 'right': 'left'
         }
       }
 
@@ -275,7 +277,7 @@
     .text-right {
       text-align: {
           {
-          app()->getLocale()==='ar'? 'left': 'right'
+          app()->getLocale()==='ar' ? 'left': 'right'
         }
       }
 
@@ -285,7 +287,7 @@
     .text-left {
       text-align: {
           {
-          app()->getLocale()==='ar'? 'right': 'left'
+          app()->getLocale()==='ar' ? 'right': 'left'
         }
       }
 
@@ -520,9 +522,9 @@
         padding: 10px 12px;
       }
     }
-
   </style>
 </head>
+
 <body>
   <div class="invoice-container">
     <!-- Header -->
@@ -535,7 +537,7 @@
         <div class="invoice-meta">
           <div class="invoice-title">{{ __('app.invoice.label') }}</div>
           <div class="invoice-number">#{{ $order->order_number }}</div>
-          <div class="status-badge">{{ __('app.status.' . $order->status) }}</div>
+          <div class="status-badge">{{ $order->status->label() }}</div>
         </div>
       </div>
     </div>
@@ -552,9 +554,10 @@
           </div>
           <p><strong>{{ __('app.invoice.date') }}:</strong> {{ $order->created_at->format('M j, Y') }}</p>
           <p><strong>{{ __('app.invoice.time') }}:</strong> {{ $order->created_at->format('g:i A') }}</p>
-          <p><strong>{{ __('app.invoice.payment_method') }}:</strong> {{ __('app.payment.' . $order->payment_method) }}</p>
+          <p><strong>{{ __('app.invoice.payment_method') }}:</strong> {{ $order->payment_method->label() }}</p>
           @if($order->coupon)
-          <p class="text-primary"><strong>{{ __('app.invoice.coupon') }}:</strong> {{ $order->coupon->code }} (-${{ number_format((float)$order->coupon->discount_amount, 2) }})</p>
+          <p class="text-primary"><strong>{{ __('app.invoice.coupon') }}:</strong> {{ $order->coupon->code }} (-${{
+            number_format((float)$order->coupon->discount_amount, 2) }})</p>
           @endif
         </div>
 
@@ -564,9 +567,12 @@
             <div class="info-card-icon">👤</div>
             <div class="info-card-title">{{ __('app.invoice.customer_information') }}</div>
           </div>
-          <p><strong>{{ __('app.invoice.customer_name') }}:</strong> {{ $order->user?->name ?? __('app.invoice.not_available') }}</p>
-          <p><strong>{{ __('app.invoice.customer_email') }}:</strong> {{ $order->user?->email ?? __('app.invoice.not_available') }}</p>
-          <p><strong>{{ __('app.invoice.customer_phone') }}:</strong> {{ $order->user?->phone ?? __('app.invoice.not_available') }}</p>
+          <p><strong>{{ __('app.invoice.customer_name') }}:</strong>
+            {{ $order->user?->name ?? __('app.invoice.not_available') }}</p>
+          <p><strong>{{ __('app.invoice.customer_email') }}:</strong>
+            {{ $order->user?->email ?? __('app.invoice.not_available') }}</p>
+          <p><strong>{{ __('app.invoice.customer_phone') }}:</strong>
+            {{ $order->user?->phone ?? __('app.invoice.not_available') }}</p>
         </div>
 
         <!-- Shipping Address -->
@@ -595,7 +601,9 @@
             @foreach($order->items as $item)
             <tr>
               <td>
-                <div class="product-name">{{ $item->product?->translations->where('locale', app()->getLocale())->first()?->name ?? __('app.invoice.product_not_found') }}</div>
+                <div class="product-name">
+                  {{ $item->product?->translations->where('locale', app()->getLocale())->first()?->name ?? __('app.invoice.product_not_found') }}
+                </div>
                 <div class="product-sku">SKU: {{ $item->product?->sku ?? __('app.invoice.not_available') }}</div>
               </td>
               <td class="text-center font-semibold">{{ $item->quantity }}</td>
@@ -619,7 +627,8 @@
             @if($order->total_discount > 0)
             <tr>
               <td colspan="4" class="text-right font-semibold text-danger">{{ __('app.invoice.total_discount') }}</td>
-              <td class="text-right font-semibold text-danger">-${{ number_format((float)$order->total_discount, 2) }}</td>
+              <td class="text-right font-semibold text-danger">-${{ number_format((float)$order->total_discount, 2) }}
+              </td>
             </tr>
             @endif
             <tr class="total-row">
@@ -648,14 +657,16 @@
             @foreach($order->payments as $payment)
             <tr>
               <td class="text-sm text-muted">{{ $payment->transaction_id }}</td>
-              <td>{{ __('app.payment.' . $payment->payment_method) }}</td>
+              <td>{{ $payment->payment_method->label() }}</td>
               <td class="text-right font-semibold">${{ number_format((float)$payment->amount, 2) }}</td>
               <td class="text-center">
-                <span class="status-pill status-{{ $payment->status }}">
-                  {{ __('app.payment_status.' . $payment->status) }}
+                <span class="status-pill status-{{ $payment->status->value }}">
+                  {{ $payment->status->label() }}
                 </span>
               </td>
-              <td class="text-right text-sm">{{ $payment->paid_at ? $payment->paid_at->format('M j, Y g:i A') : $payment->created_at->format('M j, Y g:i A') }}</td>
+              <td class="text-right text-sm">
+                {{ $payment->paid_at ? $payment->paid_at->format('M j, Y g:i A') : $payment->created_at->format('M j, Y g:i A') }}
+              </td>
             </tr>
             @endforeach
           </tbody>
@@ -678,4 +689,5 @@
     </div>
   </div>
 </body>
+
 </html>

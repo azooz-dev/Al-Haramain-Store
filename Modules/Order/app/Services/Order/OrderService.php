@@ -160,22 +160,26 @@ class OrderService implements OrderServiceInterface
             throw new OrderException(__('app.messages.order.invalid_status_transition'), 422);
         }
 
-        $oldStatus = $order->status instanceof OrderStatus
-            ? $order->status->value
-            : $order->status;
+        // Store old status as enum
+        $oldStatusEnum = $order->status instanceof OrderStatus
+            ? $order->status
+            : OrderStatus::from($order->status);
 
         // Update order status via repository
         $updatedOrder = $this->orderRepository->updateStatus($id, $status);
 
-        // Dispatch OrderStatusChanged event
-        OrderStatusChanged::dispatch($updatedOrder, $oldStatus, $status);
+        // Get new status as enum
+        $newStatusEnum = OrderStatus::from($status);
+
+        // Dispatch OrderStatusChanged event with enum values
+        OrderStatusChanged::dispatch($updatedOrder, $oldStatusEnum, $newStatusEnum);
 
         // Log status change
         Log::info('Order status changed', [
             'order_id' => $id,
             'order_number' => $order->order_number,
-            'old_status' => $oldStatus,
-            'new_status' => $status,
+            'old_status' => $oldStatusEnum->value,
+            'new_status' => $newStatusEnum->value,
             'user_id' => Auth::id(),
         ]);
 
@@ -219,7 +223,7 @@ class OrderService implements OrderServiceInterface
         return $this->orderRepository->getQueryBuilder();
     }
 
-    public function getPaymentStatus(Order $order): string
+    public function getPaymentStatus(Order $order): \Modules\Payment\Enums\PaymentStatus
     {
         // Use model accessor
         return $order->payment_status;

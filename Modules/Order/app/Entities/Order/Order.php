@@ -9,6 +9,7 @@ use Modules\Order\Entities\OrderItem\OrderItem;
 use Modules\Order\Enums\OrderStatus;
 use Modules\Payment\Entities\Payment\Payment;
 use Modules\Payment\Enums\PaymentMethod;
+use Modules\Payment\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Entities\Address;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -94,14 +95,14 @@ class Order extends Model
     /**
      * Get payment status
      */
-    public function getPaymentStatusAttribute(): string
+    public function getPaymentStatusAttribute(): PaymentStatus
     {
         if ($this->payment_method === PaymentMethod::CASH_ON_DELIVERY) {
-            return $this->status === OrderStatus::DELIVERED ? 'paid' : 'pending';
+            return $this->status === OrderStatus::DELIVERED ? PaymentStatus::SUCCESS : PaymentStatus::PENDING;
         }
 
         $payment = $this->payments()->latest()->first();
-        return $payment?->status ?? 'unknown';
+        return $payment?->status ?? PaymentStatus::PENDING;
     }
 
     /**
@@ -109,12 +110,7 @@ class Order extends Model
      */
     public function getPaymentStatusColorAttribute(): string
     {
-        return match ($this->payment_status) {
-            'paid' => 'success',
-            'pending' => 'warning',
-            'failed' => 'danger',
-            default => 'gray',
-        };
+        return $this->payment_status->color();
     }
 
     /**

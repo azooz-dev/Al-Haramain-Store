@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OrderResource\Pages;
 use Modules\Order\Contracts\OrderServiceInterface;
 use Modules\Order\Enums\OrderStatus;
+use Modules\Payment\Enums\PaymentMethod;
+use Modules\Payment\Enums\PaymentStatus;
 use App\Filament\Concerns\SendsFilamentNotifications;
 use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Filament\Resources\OrderResource\RelationManagers\PaymentsRelationManager;
@@ -136,32 +138,32 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('app.columns.order.status'))
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        OrderStatus::PENDING->value => 'warning',
-                        OrderStatus::PROCESSING->value => 'info',
-                        OrderStatus::SHIPPED->value => 'primary',
-                        OrderStatus::DELIVERED->value => 'success',
-                        OrderStatus::CANCELLED->value => 'danger',
-                        OrderStatus::REFUNDED->value => 'gray',
+                    ->color(fn(OrderStatus $state): string => match ($state) {
+                        OrderStatus::PENDING => 'warning',
+                        OrderStatus::PROCESSING => 'info',
+                        OrderStatus::SHIPPED => 'primary',
+                        OrderStatus::DELIVERED => 'success',
+                        OrderStatus::CANCELLED => 'danger',
+                        OrderStatus::REFUNDED => 'gray',
                         default => 'gray',
                     })
-                    ->icon(fn(string $state): string => match ($state) {
-                        OrderStatus::PENDING->value => 'heroicon-o-clock',
-                        OrderStatus::PROCESSING->value => 'heroicon-o-cog-6-tooth',
-                        OrderStatus::SHIPPED->value => 'heroicon-o-truck',
-                        OrderStatus::DELIVERED->value => 'heroicon-o-check-circle',
-                        OrderStatus::CANCELLED->value => 'heroicon-o-x-circle',
-                        OrderStatus::REFUNDED->value => 'heroicon-o-arrow-path',
+                    ->icon(fn(OrderStatus $state): string => match ($state) {
+                        OrderStatus::PENDING => 'heroicon-o-clock',
+                        OrderStatus::PROCESSING => 'heroicon-o-cog-6-tooth',
+                        OrderStatus::SHIPPED => 'heroicon-o-truck',
+                        OrderStatus::DELIVERED => 'heroicon-o-check-circle',
+                        OrderStatus::CANCELLED => 'heroicon-o-x-circle',
+                        OrderStatus::REFUNDED => 'heroicon-o-arrow-path',
                         default => 'heroicon-o-question-mark-circle',
                     })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        OrderStatus::PENDING->value => __('app.status.pending'),
-                        OrderStatus::PROCESSING->value => __('app.status.processing'),
-                        OrderStatus::SHIPPED->value => __('app.status.shipped'),
-                        OrderStatus::DELIVERED->value => __('app.status.delivered'),
-                        OrderStatus::CANCELLED->value => __('app.status.cancelled'),
-                        OrderStatus::REFUNDED->value => __('app.status.refunded'),
-                        default => $state,
+                    ->formatStateUsing(fn(OrderStatus $state): string => match ($state) {
+                        OrderStatus::PENDING => __('app.status.pending'),
+                        OrderStatus::PROCESSING => __('app.status.processing'),
+                        OrderStatus::SHIPPED => __('app.status.shipped'),
+                        OrderStatus::DELIVERED => __('app.status.delivered'),
+                        OrderStatus::CANCELLED => __('app.status.cancelled'),
+                        OrderStatus::REFUNDED => __('app.status.refunded'),
+                        default => $state->value,
                     })
                     ->sortable(),
 
@@ -186,27 +188,13 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('payment_method')
                     ->label(__('app.columns.order.payment_method'))
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'credit_card' => 'success',
-                        'paypal' => 'info',
-                        'cash_on_delivery' => 'warning',
-                        'bank_transfer' => 'primary',
+                    ->color(fn(PaymentMethod $state): string => match ($state) {
+                        PaymentMethod::CREDIT_CARD => 'success',
+                        PaymentMethod::CASH_ON_DELIVERY => 'warning',
                         default => 'gray',
                     })
-                    ->icon(fn(string $state): string => match ($state) {
-                        'credit_card' => 'heroicon-o-credit-card',
-                        'paypal' => 'heroicon-o-globe-alt',
-                        'cash_on_delivery' => 'heroicon-o-banknotes',
-                        'bank_transfer' => 'heroicon-o-building-library',
-                        default => 'heroicon-o-question-mark-circle',
-                    })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'credit_card' => __('app.payment.credit_card'),
-                        'paypal' => __('app.payment.paypal'),
-                        'cash_on_delivery' => __('app.payment.cash_on_delivery'),
-                        'bank_transfer' => __('app.payment.bank_transfer'),
-                        default => $state,
-                    }),
+                    ->icon(fn(PaymentMethod $state): string => $state->icon())
+                    ->formatStateUsing(fn(PaymentMethod $state): string => $state->label()),
 
                 Tables\Columns\TextColumn::make('payment_status')
                     ->label(__('app.columns.order.payment_status'))
@@ -215,25 +203,9 @@ class OrderResource extends Resource
                         // Use model accessor
                         return $record->payment_status;
                     })
-                    ->colors([
-                        'success' => 'paid',
-                        'warning' => 'pending',
-                        'danger' => 'failed',
-                        'gray' => 'unknown',
-                    ])
-                    ->icons([
-                        'heroicon-o-check-circle' => 'paid',
-                        'heroicon-o-clock' => 'pending',
-                        'heroicon-o-x-circle' => 'failed',
-                        'heroicon-o-question-mark-circle' => 'unknown',
-                    ])
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'paid' => __('app.payment_status.paid'),
-                        'pending' => __('app.payment_status.pending'),
-                        'failed' => __('app.payment_status.failed'),
-                        'unknown' => __('app.payment_status.unknown'),
-                        default => $state,
-                    }),
+                    ->color(fn(PaymentStatus $state): string => $state->color())
+                    ->icon(fn(PaymentStatus $state): string => $state->icon())
+                    ->formatStateUsing(fn(PaymentStatus $state): string => $state->label()),
 
                 Tables\Columns\TextColumn::make('address.full_address')
                     ->label(__('app.columns.order.shipping_address'))
@@ -338,9 +310,9 @@ class OrderResource extends Resource
                         Forms\Components\Select::make('payment_status')
                             ->label(__('app.filters.payment_status'))
                             ->options([
-                                'paid' => __('app.payment_status.paid'),
-                                'pending' => __('app.payment_status.pending'),
-                                'failed' => __('app.payment_status.failed'),
+                                PaymentStatus::SUCCESS->value => __('app.payment_status.paid'),
+                                PaymentStatus::PENDING->value => __('app.payment_status.pending'),
+                                PaymentStatus::FAILED->value => __('app.payment_status.failed'),
                             ])
                             ->native(false),
                     ])
@@ -352,27 +324,27 @@ class OrderResource extends Resource
                         $status = $data['payment_status'];
 
                         return $query->where(function ($query) use ($status) {
-                            if ($status === 'paid') {
+                            if ($status === PaymentStatus::SUCCESS->value) {
                                 $query->where(function ($subQuery) {
                                     // Cash on delivery orders that are delivered
-                                    $subQuery->where('payment_method', 'cash_on_delivery')
+                                    $subQuery->where('payment_method', PaymentMethod::CASH_ON_DELIVERY->value)
                                         ->where('status', OrderStatus::DELIVERED->value);
                                 })->orWhereHas('payments', function ($paymentQuery) {
                                     // Credit card payments that are successful
-                                    $paymentQuery->where('status', 'paid');
+                                    $paymentQuery->where('status', PaymentStatus::SUCCESS->value);
                                 });
-                            } elseif ($status === 'pending') {
+                            } elseif ($status === PaymentStatus::PENDING->value) {
                                 $query->where(function ($subQuery) {
                                     // Cash on delivery orders that are not delivered
-                                    $subQuery->where('payment_method', 'cash_on_delivery')
+                                    $subQuery->where('payment_method', PaymentMethod::CASH_ON_DELIVERY->value)
                                         ->where('status', '!=', OrderStatus::DELIVERED->value);
                                 })->orWhereHas('payments', function ($paymentQuery) {
                                     // Credit card payments that are pending
-                                    $paymentQuery->where('status', 'pending');
+                                    $paymentQuery->where('status', PaymentStatus::PENDING->value);
                                 });
-                            } elseif ($status === 'failed') {
+                            } elseif ($status === PaymentStatus::FAILED->value) {
                                 $query->whereHas('payments', function ($paymentQuery) {
-                                    $paymentQuery->where('status', 'failed');
+                                    $paymentQuery->where('status', PaymentStatus::FAILED->value);
                                 });
                             }
                         });
@@ -435,7 +407,7 @@ class OrderResource extends Resource
                     Tables\Actions\EditAction::make()
                         ->icon('heroicon-o-pencil')
                         ->color('warning')
-                        ->visible(fn(Order $record): bool => in_array($record->status, [OrderStatus::PENDING->value, OrderStatus::PROCESSING->value, OrderStatus::SHIPPED->value])),
+                        ->visible(fn(Order $record): bool => in_array($record->status, [OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::SHIPPED])),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash')
                         ->color('danger')
@@ -455,7 +427,7 @@ class OrderResource extends Resource
                             __('app.messages.order.deleted_success'),
                             __('app.messages.order.deleted_success_body', ['name' => $record->order_number])
                         ))
-                        ->visible(fn(Order $record): bool => in_array($record->status, [OrderStatus::CANCELLED->value, OrderStatus::REFUNDED->value])),
+                        ->visible(fn(Order $record): bool => in_array($record->status, [OrderStatus::CANCELLED, OrderStatus::REFUNDED])),
 
                     Tables\Actions\Action::make('download_invoice')
                         ->label(__('app.actions.generate_invoice'))
@@ -500,13 +472,13 @@ class OrderResource extends Resource
                                         Infolists\Components\TextEntry::make('status')
                                             ->label(__('app.fields.status'))
                                             ->badge()
-                                            ->color(fn(string $state): string => match ($state) {
-                                                OrderStatus::PENDING->value => 'warning',
-                                                OrderStatus::PROCESSING->value => 'info',
-                                                OrderStatus::SHIPPED->value => 'primary',
-                                                OrderStatus::DELIVERED->value => 'success',
-                                                OrderStatus::CANCELLED->value => 'danger',
-                                                OrderStatus::REFUNDED->value => 'gray',
+                                            ->color(fn(OrderStatus $state): string => match ($state) {
+                                                OrderStatus::PENDING => 'warning',
+                                                OrderStatus::PROCESSING => 'info',
+                                                OrderStatus::SHIPPED => 'primary',
+                                                OrderStatus::DELIVERED => 'success',
+                                                OrderStatus::CANCELLED => 'danger',
+                                                OrderStatus::REFUNDED => 'gray',
                                                 default => 'gray',
                                             }),
 
@@ -550,16 +522,7 @@ class OrderResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('payment_method')
                             ->label(__('app.fields.payment_method'))
-                            ->formatStateUsing(function ($state) {
-                                // Use translation keys for payment methods
-                                return match ($state) {
-                                    'cash_on_delivery' => __('app.payment.cash_on_delivery'),
-                                    'credit_card' => __('app.payment.credit_card'),
-                                    'paypal' => __('app.payment.paypal'),
-                                    'bank_transfer' => __('app.payment.bank_transfer'),
-                                    default => $state,
-                                };
-                            }),
+                            ->formatStateUsing(fn(PaymentMethod $state): string => $state->label()),
                         Infolists\Components\RepeatableEntry::make('payments')
                             ->label(__('app.fields.payment_transactions'))
                             ->schema([

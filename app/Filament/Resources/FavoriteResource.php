@@ -68,15 +68,7 @@ class FavoriteResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make(__('app.forms.favorite.information'))
-                    ->description(__('app.forms.favorite.information_description'))
-                    ->icon('heroicon-o-heart')
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([]),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
+                //
             ]);
     }
 

@@ -3,6 +3,7 @@
 namespace Modules\Order\Events;
 
 use Modules\Order\Entities\Order\Order;
+use Modules\Order\Enums\OrderStatus;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -15,8 +16,8 @@ class OrderStatusChanged
      */
     public function __construct(
         public Order $order,
-        public string $oldStatus,
-        public string $newStatus
+        public OrderStatus $oldStatus,
+        public OrderStatus $newStatus
     ) {}
 }
 

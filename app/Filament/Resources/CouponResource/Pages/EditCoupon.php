@@ -42,4 +42,9 @@ class EditCoupon extends EditRecord
             __('app.messages.coupon.updated_success_body', ['name' => $this->record->name])
         );
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

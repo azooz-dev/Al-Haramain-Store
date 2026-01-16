@@ -5,6 +5,7 @@ namespace App\Filament\Resources\OrderResource\RelationManagers;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Modules\Payment\Enums\PaymentStatus;
 
 class PaymentsRelationManager extends RelationManager
 {
@@ -34,20 +35,9 @@ class PaymentsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('app.columns.payment.status'))
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'paid' => 'success',
-                        'failed' => 'danger',
-                        'refunded' => 'gray',
-                        default => 'gray',
-                    })
-                    ->icon(fn(string $state): string => match ($state) {
-                        'pending' => 'heroicon-o-clock',
-                        'paid' => 'heroicon-o-check-circle',
-                        'failed' => 'heroicon-o-x-circle',
-                        'refunded' => 'heroicon-o-arrow-path',
-                        default => 'heroicon-o-question-mark-circle',
-                    }),
+                    ->color(fn(PaymentStatus $state): string => $state->color())
+                    ->icon(fn(PaymentStatus $state): string => $state->icon())
+                    ->formatStateUsing(fn(PaymentStatus $state): string => $state->label()),
 
                 Tables\Columns\TextColumn::make('paid_at')
                     ->label(__('app.columns.payment.paid_at'))

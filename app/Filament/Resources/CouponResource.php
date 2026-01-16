@@ -180,11 +180,11 @@ class CouponResource extends Resource
                     ->alignCenter(),
                 BadgeColumn::make('type')
                     ->label(__('app.columns.coupon.type'))
-                    ->colors([
-                        'primary' => CouponType::FIXED->value,
-                        'warning' => CouponType::PERCENTAGE->value,
-                    ])
-                    ->formatStateUsing(fn($state) => CouponType::tryFrom($state)?->label() ?? ucfirst($state))
+                    ->color(fn(CouponType $state): string => match ($state) {
+                        CouponType::FIXED => 'primary',
+                        CouponType::PERCENTAGE => 'warning',
+                    })
+                    ->formatStateUsing(fn(CouponType $state): string => $state->label())
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('discount_amount')
@@ -225,14 +225,11 @@ class CouponResource extends Resource
                     ->alignCenter()
                     ->icon('heroicon-o-clock'),
                 BadgeColumn::make('status')
-                    ->colors([
-                        'success' => 'active',
-                        'danger' => 'inactive',
-                    ])
-                    ->formatStateUsing(fn($state) => ucfirst($state))
+                    ->color(fn(CouponStatus $state): string => $state->color())
+                    ->formatStateUsing(fn(CouponStatus $state): string => $state->label())
                     ->sortable()
                     ->alignCenter()
-                    ->icon('heroicon-o-power'),
+                    ->icon(fn(CouponStatus $state): string => $state->icon()),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true)
