@@ -24,7 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Modules\\Offer\\Tests\\": "tests/"
+            "Modules\\Offer\\tests\\": "tests/"
         }
     }
 }

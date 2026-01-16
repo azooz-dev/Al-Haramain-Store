@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Payment\Tests\Unit\Processors;
+namespace Modules\Payment\tests\Unit\Processors;
 
 use Tests\TestCase;
 use Modules\Payment\Services\Payment\Processors\StripePaymentProcessor;

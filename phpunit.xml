@@ -7,17 +7,17 @@
     <testsuites>
         <!-- Module Unit Tests -->
         <testsuite name="Module-Unit">
-            <directory>Modules/*/Tests/Unit</directory>
+            <directory>Modules/*/tests/Unit</directory>
         </testsuite>
 
         <!-- Module Integration Tests -->
         <testsuite name="Module-Integration">
-            <directory>Modules/*/Tests/Integration</directory>
+            <directory>Modules/*/tests/Integration</directory>
         </testsuite>
 
         <!-- Module Feature Tests -->
         <testsuite name="Module-Feature">
-            <directory>Modules/*/Tests/Feature</directory>
+            <directory>Modules/*/tests/Feature</directory>
         </testsuite>
 
         <!-- E2E Tests (Root) -->

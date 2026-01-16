@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Payment\Tests\Unit\Services;
+namespace Modules\Payment\tests\Unit\Services;
 
 use Tests\TestCase;
 use Modules\Payment\Services\Payment\WebhookService;
