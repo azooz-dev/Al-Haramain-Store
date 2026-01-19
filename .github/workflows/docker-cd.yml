@@ -1,0 +1,131 @@
+name: Docker Build & Deploy Test
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          load: true
+          tags: al-haramain-store:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Test container starts correctly
+        run: |
+          # Start the container with minimal config
+          # Use --entrypoint to bypass the default entrypoint and run run.sh directly
+          docker run -d --name test-container \
+            --entrypoint /bin/bash \
+            -e APP_KEY=base64:$(openssl rand -base64 32) \
+            -e APP_ENV=production \
+            -e APP_DEBUG=false \
+            -e LOG_CHANNEL=stderr \
+            -p 8080:80 \
+            al-haramain-store:test -c "./railway/run.sh"
+          
+          # Give it more time to start (nginx config generation + startup)
+          sleep 20
+          
+          # Check if container is still running
+          if ! docker ps | grep -q test-container; then
+            echo "❌ Container failed to start"
+            docker logs test-container
+            exit 1
+          fi
+          
+          echo "✅ Container started successfully"
+
+      - name: Test health endpoint
+        run: |
+          # Wait for nginx to be ready
+          for i in {1..30}; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/health | grep -q "200"; then
+              echo "✅ Health check passed!"
+              exit 0
+            fi
+            echo "Waiting for health endpoint... ($i/30)"
+            sleep 2
+          done
+          
+          echo "❌ Health check failed"
+          docker logs test-container
+          exit 1
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker stop test-container || true
+          docker rm test-container || true
+
+  # Validate Railway configuration files
+  validate-railway-config:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate railway.toml syntax
+        run: |
+          echo "Checking Railway configuration files..."
+          
+          # Check main railway.toml exists
+          if [ ! -f "railway.toml" ]; then
+            echo "❌ railway.toml not found"
+            exit 1
+          fi
+          echo "✅ railway.toml exists"
+          
+          # Check railway scripts are executable (have shebang)
+          for script in railway/run.sh railway/run-worker.sh railway/run-cron.sh railway/run-reverb.sh; do
+            if [ -f "$script" ]; then
+              if head -1 "$script" | grep -q "^#!"; then
+                echo "✅ $script has valid shebang"
+              else
+                echo "❌ $script missing shebang"
+                exit 1
+              fi
+            fi
+          done
+          
+          echo "✅ All Railway configuration files validated"
+
+      - name: Check Dockerfile syntax
+        run: |
+          # Use hadolint to check Dockerfile (optional but recommended)
+          docker run --rm -i hadolint/hadolint < Dockerfile || true
+          echo "✅ Dockerfile syntax check complete"
+
+  # Run on main branch only - notify about deployment readiness
+  deployment-ready:
+    needs: [docker-build, validate-railway-config]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Deployment Ready
+        run: |
+          echo "🚀 All checks passed!"
+          echo "Docker build: ✅"
+          echo "Health check: ✅"
+          echo "Railway config: ✅"
+          echo ""
+          echo "Ready for Railway deployment!"
