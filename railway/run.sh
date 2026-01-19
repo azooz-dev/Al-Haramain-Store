@@ -149,7 +149,7 @@ server {
     location ~ \.php$ {
         fastcgi_pass 127.0.0.1:9000;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
+        include /etc/nginx/fastcgi_params;
         fastcgi_hide_header X-Powered-By;
     }
 
@@ -205,7 +205,7 @@ server {
     location ~ \.php$ {
         fastcgi_pass 127.0.0.1:9000;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
+        include /etc/nginx/fastcgi_params;
     }
 
     location ~ /\.(?!well-known).* {
