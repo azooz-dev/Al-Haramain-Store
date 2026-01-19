@@ -31,16 +31,18 @@ jobs:
       - name: Test container starts correctly
         run: |
           # Start the container with minimal config
+          # Use --entrypoint to bypass the default entrypoint and run run.sh directly
           docker run -d --name test-container \
+            --entrypoint /bin/bash \
             -e APP_KEY=base64:$(openssl rand -base64 32) \
             -e APP_ENV=production \
             -e APP_DEBUG=false \
             -e LOG_CHANNEL=stderr \
             -p 8080:80 \
-            al-haramain-store:test ./railway/run.sh &
+            al-haramain-store:test -c "./railway/run.sh"
           
-          # Give it time to start
-          sleep 10
+          # Give it more time to start (nginx config generation + startup)
+          sleep 20
           
           # Check if container is still running
           if ! docker ps | grep -q test-container; then
