@@ -1,8 +1,16 @@
+# ============================================
+# Railway Configuration for Main Web Service
+# ============================================
+# This is the main web application service
+# Runs PHP-FPM + Nginx
+
 [build]
 builder = "dockerfile"
 dockerfilePath = "Dockerfile"
 
 [deploy]
+# Use the railway/run.sh which starts PHP-FPM + Nginx with /health endpoint
+startCommand = "./railway/run.sh"
 healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "on_failure"

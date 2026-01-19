@@ -1,0 +1,15 @@
+# ============================================
+# Railway Configuration for Cron/Scheduler Service
+# ============================================
+# This service runs Laravel's scheduler - no HTTP server
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# No healthcheck - this is a background worker
+# It doesn't serve HTTP requests
+startCommand = "./railway/run-cron.sh"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5

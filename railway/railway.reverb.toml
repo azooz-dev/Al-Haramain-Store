@@ -1,0 +1,17 @@
+# ============================================
+# Railway Configuration for Reverb WebSocket Service
+# ============================================
+# This service runs Laravel Reverb for WebSockets
+# It uses Nginx as a proxy for the WebSocket server
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Reverb runs through Nginx proxy, so healthcheck works
+startCommand = "./railway/run-reverb.sh"
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
