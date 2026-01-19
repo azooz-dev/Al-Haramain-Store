@@ -247,6 +247,7 @@ events {
 
 http {
     include /etc/nginx/mime.types;
+    include /etc/nginx/fastcgi_params;
     default_type application/octet-stream;
     
     log_format main '$remote_addr - $remote_user [$time_local] "$request" '
