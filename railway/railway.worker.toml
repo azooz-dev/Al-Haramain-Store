@@ -1,0 +1,15 @@
+# ============================================
+# Railway Configuration for Queue Worker Service
+# ============================================
+# This service runs Laravel's queue worker - no HTTP server
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# No healthcheck - this is a background worker
+# It doesn't serve HTTP requests
+startCommand = "./railway/run-worker.sh"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
