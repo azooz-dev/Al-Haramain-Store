@@ -75,7 +75,7 @@ if [ -n "$FRONTEND_UPSTREAM_HOST" ]; then
 server {
     listen ${PORT};
     server_name _;
-    root /app/public;
+    root /var/www/html/public;
     index index.php;
     charset utf-8;
 
@@ -117,7 +117,7 @@ server {
 
     # Storage files
     location /storage/ {
-        alias /app/storage/app/public/;
+        alias /var/www/html/storage/app/public/;
         expires 1M;
         add_header Cache-Control "public";
         add_header Access-Control-Allow-Origin "*";
@@ -126,7 +126,7 @@ server {
 
     # Laravel build assets
     location /build/ {
-        alias /app/public/build/;
+        alias /var/www/html/public/build/;
         expires 1y;
         add_header Cache-Control "public, immutable";
         try_files $uri =404;
@@ -134,13 +134,13 @@ server {
 
     # Filament assets
     location /js/filament/ {
-        alias /app/public/js/filament/;
+        alias /var/www/html/public/js/filament/;
         expires 1y;
         try_files $uri =404;
     }
 
     location /css/filament/ {
-        alias /app/public/css/filament/;
+        alias /var/www/html/public/css/filament/;
         expires 1y;
         try_files $uri =404;
     }
@@ -185,7 +185,7 @@ else
 server {
     listen ${PORT};
     server_name _;
-    root /app/public;
+    root /var/www/html/public;
     index index.php;
     charset utf-8;
 
