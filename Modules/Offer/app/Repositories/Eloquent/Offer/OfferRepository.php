@@ -18,8 +18,8 @@ class OfferRepository implements OfferRepositoryInterface
 
     return Offer::with(['translations', 'products'])
       ->where('status', OfferStatus::ACTIVE)
-      ->where('start_date', '<=', $now)
-      ->where('end_date', '>=', $now)
+      // ->where('start_date', '<=', $now)
+      // ->where('end_date', '>=', $now)
       ->get();
   }
 
