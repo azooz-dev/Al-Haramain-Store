@@ -17,9 +17,9 @@ class OfferRepository implements OfferRepositoryInterface
     $now = \Carbon\Carbon::now();
 
     return Offer::with(['translations', 'products'])
-      ->where('status', OfferStatus::ACTIVE)
-      ->where('start_date', '<=', $now)
-      ->where('end_date', '>=', $now)
+      // ->where('status', OfferStatus::ACTIVE)
+      // ->where('start_date', '<=', $now)
+      // ->where('end_date', '>=', $now)
       ->get();
   }
 
